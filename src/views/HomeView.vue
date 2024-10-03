@@ -2,10 +2,10 @@
 // eslint-disable-next-line no-unused-vars
 import SplashComponent from '@/components/core/splash/SplashComponent.vue'
 import WelcomeComponent from '@/components/core/welcome/WelcomeComponent.vue'
-import { useAppStore } from '@/stores/app'
+import { UseAppStore } from '@/stores/App'
 import { storeToRefs } from 'pinia'
 
-const appDataStore = useAppStore()
+const appDataStore = UseAppStore()
 const { isTestModeOn, isAuthorized } = storeToRefs(appDataStore)
 </script>
 

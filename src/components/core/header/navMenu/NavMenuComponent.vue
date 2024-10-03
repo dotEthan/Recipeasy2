@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useAppStore } from '@/stores/app'
+import { UseAppStore } from '@/stores/App'
 import { storeToRefs } from 'pinia'
 import router from '@/router'
 
-const appDataStore = useAppStore()
+const appDataStore = UseAppStore()
 const { isTestModeOn, isAuthorized } = storeToRefs(appDataStore)
 
 function testModeOff() {

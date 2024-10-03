@@ -1,39 +1,63 @@
 <script setup lang="ts">
-import { useRecipeStore } from '@/stores/recipe'
+import { ref } from 'vue'
+import { UseRecipeStore } from '@/stores/Recipe'
 import RecipeListItemComponent from './recipeListItem/RecipeListItemComponent.vue'
+import CheckboxComponent from '../shared/CheckboxComponent.vue'
+import { Filter, CircleX } from 'lucide-vue-next'
 
-const recipeStore = useRecipeStore()
+const recipeStore = UseRecipeStore()
+let mobileFiltersOpen = ref(false)
+
+const filterList = ['Vegan', 'healthy', 'Beets', ' Snack']
 
 function onNewRecipe() {
   console.log('add recipe')
 }
+
+function openFilters() {
+  mobileFiltersOpen.value = true
+}
+
+function closeFilters() {
+  mobileFiltersOpen.value = false
+}
 </script>
 
 <template>
-  <div class="row">
-    <div class="recipe-list-container">
-      <div class="recipeRow" v-if="recipeStore.recipeLength">
-        <RecipeListItemComponent
-          class="recipe-item-contain"
-          v-for="recipe in recipeStore.recipes"
-          :key="recipe.id"
-          :recipeData="recipe"
-        />
-        <div class="new-container">
-          <button class="btn new-recipe" @click="onNewRecipe()">+</button>
-          <div class="recipe-title">
-            <h5>New Recipe</h5>
-          </div>
+  <button class="filter-btn-mobile" @click="openFilters()"><Filter class="filter-icon" /></button>
+  <div class="filter-box" :class="{ floating: mobileFiltersOpen }">
+    <h2 class="filter-title">Filters</h2>
+    <CircleX class="button-close" @click="closeFilters()" />
+    <div class="filters-contain">
+      <CheckboxComponent
+        v-for="(filter, index) in filterList"
+        :key="index"
+        :checkboxLabel="filter"
+      />
+    </div>
+  </div>
+  <div class="recipe-list-container">
+    <div class="recipeRow" v-if="recipeStore.recipeLength">
+      <RecipeListItemComponent
+        class="recipe-item-contain"
+        v-for="recipe in recipeStore.recipes"
+        :key="recipe.id"
+        :recipeData="recipe"
+      />
+      <div class="new-container">
+        <button class="btn new-recipe" @click="onNewRecipe()">+</button>
+        <div class="recipe-title">
+          <h5>New Recipe</h5>
         </div>
       </div>
-      <div class="no-recipes" v-else>
-        I looked for Recipes and found none. What madness is this? Add a recipe below before you
-        starve!
-        <div class="new-container">
-          <button class="btn new-recipe" @click="onNewRecipe()">+</button>
-          <div class="recipe-title">
-            <h5>New Recipe</h5>
-          </div>
+    </div>
+    <div class="no-recipes" v-else>
+      I looked for Recipes and found none. What madness is this? Add a recipe below before you
+      starve!
+      <div class="new-container">
+        <button class="btn new-recipe" @click="onNewRecipe()">+</button>
+        <div class="recipe-title">
+          <h5>New Recipe</h5>
         </div>
       </div>
     </div>
@@ -41,6 +65,77 @@ function onNewRecipe() {
 </template>
 
 <style lang="sass">
+
+.filter-btn-mobile
+  position: absolute
+  top: 20px
+  right: 20px
+  display: flex
+  padding: 6px 12px
+  background-color: #e0e0e0
+  color: #333
+  border: none
+  border-radius: 30px
+  font-family: 'Arial', sans-serif
+  font-size: 16px
+  cursor: pointer
+  transition: all 0.3s ease
+  filter: grayscale(100%)
+  text-align: center
+
+  &:hover
+    filter: grayscale(40%)
+    background-color: #d0d0d0
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
+
+  &:active
+    filter: grayscale(20%)
+    background-color: #bbb
+
+  &:focus
+    outline: none
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5)
+
+  @media (min-width: 768px)
+    display: none
+
+.filter-icon
+  height: 15px
+  width: 15px
+
+.filter-box
+  display: none
+
+  @media (min-width: 768px)
+    display: block
+
+.floating
+  display: block
+  position: absolute
+  top: 0
+  left: 0
+  background-color: white
+  z-index: 1
+  border-radius: 5px
+
+.filter-title
+  // display: none
+  text-align: center
+
+  @media (min-width: 768px)
+    display: block
+
+.button-close
+  position: absolute
+  top:15px
+  right:25px
+  cursor: pointer
+
+.filters-contain
+  display: flex
+  flex-direction: row
+  flex-wrap: wrap
+
 .recipe-list-container
   width: 90%
   margin: 0 auto

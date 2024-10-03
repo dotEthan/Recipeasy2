@@ -2,12 +2,12 @@
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import MenuBurger from '@/components/core/header/menuBurger/MenuBurger.vue'
-import { useAppStore } from '@/stores/app'
+import { UseAppStore } from '@/stores/App'
 import { storeToRefs } from 'pinia'
 import router from '@/router'
 import NavMenuComponent from './navMenu/NavMenuComponent.vue'
 
-const appDataStore = useAppStore()
+const appDataStore = UseAppStore()
 const { isTestModeOn, isAuthorized } = storeToRefs(appDataStore)
 
 let isMobileMenuActive = ref(false)
