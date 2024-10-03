@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import MenuBurger from '@/components/core/header/MenuBurger/MenuBurger.vue'
+import MenuBurger from '@/components/core/header/menuBurger/MenuBurger.vue'
 import { useAppStore } from '@/stores/app'
 import { storeToRefs } from 'pinia'
 import router from '@/router'
+import NavMenuComponent from './navMenu/NavMenuComponent.vue'
 
 const appDataStore = useAppStore()
 const { isTestModeOn, isAuthorized } = storeToRefs(appDataStore)
+
+let isMobileMenuActive = ref(false)
 
 function onPageChange() {
   console.log('pagechange')
@@ -31,28 +34,8 @@ function testModeOff() {
   router.push('/')
 }
 
-function onSave() {
-  console.log('saved')
-  // this.store.dispatch(new RecipeActions.StoreRecipes())
-  // this.store.dispatch(new ShoppingListActions.StoreShoppingLists())
-}
-
-function onFetch() {
-  console.log('fetched')
-  // this.store.dispatch(new RecipeActions.FetchRecipes())
-}
-
-function onModalOpen(type: string) {
-  console.log('open modal')
-  // this.authService.authType.next(type)
-  // this.authService.modalOpen.next(true)
-  // this.authService.errorMsg.next({ code: '', message: '' })
-}
-
-function authLogout() {
-  appDataStore.deauthorize()
-  appDataStore.turnTestModeOff()
-  router.push('/')
+function unhideMobileMenu() {
+  isMobileMenuActive.value = !isMobileMenuActive.value
 }
 </script>
 
@@ -62,59 +45,13 @@ function authLogout() {
       <div class="navbar-brand-contain">
         <RouterLink class="navbar-brand" to="/">Recipeasy</RouterLink>
       </div>
-      <MenuBurger />
-      <div class="navbar-default nav__header" ref="headermenu">
-        <ul class="nav navbar-nav">
-          <div class="nav-menu-items" v-if="isTestModeOn || isAuthorized">
-            <li routerLinkActive="active" class="nav-recipes">
-              <RouterLink class="nav-menu-item" to="/recipes">Recipes</RouterLink>
-            </li>
-            <li routerLinkActive="active" class="nav-shopping-list">
-              <RouterLink class="nav-menu-item" to="/shopping-list">Shopping List</RouterLink>
-            </li>
-          </div>
-          <div v-if="isTestModeOn">
-            <li @click="testModeOff" class="test-text-contain">
-              <span class="test-text nav-menu-item">Test Mode Off</span>
-            </li>
-          </div>
-        </ul>
-        <ul class="nav navbar-nav rightward">
-          <div class="nav-menu-items" v-if="!isAuthorized && !isTestModeOn">
-            <li>
-              <a class="nav-menu-item" style="cursor: pointer" @click="onModalOpen('register')"
-                >Register</a
-              >
-            </li>
-            <li class="sign-in-button">
-              <a class="nav-menu-item" style="cursor: pointer" @click="onModalOpen('signin')"
-                >Sign In</a
-              >
-            </li>
-          </div>
-          <div class="nav-menu-items" v-if="isTestModeOn || isAuthorized">
-            <li class="nav-menu-item">
-              <a @click="authLogout()" style="cursor: pointer" routerLink="/">Log Out</a>
-            </li>
-            <li class="dropdown nav-menu-item" appDropdown>
-              <a style="cursor: pointer" class="dropdown-toggle" role="button"
-                >Manage <span class="caret"></span
-              ></a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="dropdown-menu-item" style="cursor: pointer" @click="onSave()"
-                    >Save Data (use Radix Vue dropdown)</a
-                  >
-                </li>
-                <li>
-                  <a class="dropdown-menu-item" style="cursor: pointer" @click="onFetch()"
-                    >Fetch Data</a
-                  >
-                </li>
-              </ul>
-            </li>
-          </div>
-        </ul>
+      <MenuBurger @mobileMenuClicked="unhideMobileMenu()" />
+      <div
+        class="navbar-default nav__header"
+        :class="{ active: isMobileMenuActive }"
+        ref="headermenu"
+      >
+        <NavMenuComponent />
       </div>
     </div>
   </nav>
@@ -125,6 +62,9 @@ function authLogout() {
 .navbar
   margin-bottom: 0
   width: 100%
+
+.navbar-default
+  background-color: white
 
 .nav__container
   height: $navbar-height
@@ -156,14 +96,15 @@ function authLogout() {
 
 .nav__header
   position: absolute
-  top: $navbar-height
+  top: 75px
   left: 100vw
   display: flex
   flex-direction: column
   padding: 25px
   transition: all 0.5s ease-in-out
   width: 40vw
-  // z-index: 1
+  background-color: white
+  z-index: 1
   box-shadow: -2px 2px 2px -1px #666
 
   &.active
@@ -184,100 +125,10 @@ function authLogout() {
     flex-direction: row
     padding: 0
     border: none
-    width: auto
-    box-shadow: none
-
-.nav__header
-  position: absolute
-  top: 75px
-  left: 100vw
-  display: flex
-  flex-direction: column
-  padding: 25px
-  transition: all 0.5s ease-in-out
-  width: 40vw
-  // z-index: 1
-  box-shadow: -2px 2px 2px -1px #666
-
-  @media (min-width: 768px)
-    position: relative
-    left: 0
-    top: 0
-    justify-content: space-between
-    flex-grow: 1
-    flex-direction: row
-    padding: 0
-    border: none
     border-top-color: currentcolor
     border-right-color: currentcolor
     border-bottom-color: currentcolor
     border-left-color: currentcolor
     width: auto
     box-shadow: none
-
-.navbar-nav
-  margin: 0
-  list-style-type: none
-  display: flex
-  align-items: center
-
-.nav-menu-items
-  display: flex
-  flex-direction: row
-
-.test-text
-  display: block
-  align-items: center
-  cursor: pointer
-
-  &:hover
-    color: #333
-
-.nav-menu-item
-  position: relative
-  display: flex
-  align-items: center
-  text-decoration: none
-  padding: 0 10px
-  font-size: 1.2em
-
-  &:hover
-    text-decoration: underline
-
-.rightward
-  margin-right: 30px
-
-.dropdown
-  position: relative
-
-  &:hover
-    background-color: #eee
-
-  &:hover .dropdown-menu
-    display: block
-
-.dropdown-menu
-  display: none
-  position: absolute
-  top: 100%
-  left: 0%
-  background: white
-  padding: 15px 0
-  list-style-type: none
-  width: 120%
-
-.dropdown-toggle
-  display: block
-  padding: 15px
-
-.dropdown-menu-item
-  display: flex
-  align-items: center
-  text-decoration: none
-  font-size: 0.9em
-  // padding-left: 5px
-  padding: 5px 5px
-
-  &:hover
-    background-color: #eee
 </style>

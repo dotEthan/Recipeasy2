@@ -22,24 +22,23 @@ Slow and steady win the race
 
 ### Done:
 
-- Redesign Started
-- Front Page Up
+- Learn Vue/Router/Store functionality thought docs
 
 ### Working on Now:
 
-- Routing
-- Store
+- Routing & Store (ongoing as needed)
+- Header (Authorization/save/load missing, CSS incomplete)
+- Recipe Book Functionality (Component creation underway)
 
 ### To Come:
 
-- Authorization/Animations/Testing
 - Shopping List Functionality
-- Recipe Boo Functionality
-- Meal Planning & Calendar
+- Authorization/Animations/Testing
 - bespoke Backend Functionality
 
 ### Future thoughts:
 
+- Meal Planning & Calendar
 - Website Parsing to allow importing recipes
 - Calorie counter
 

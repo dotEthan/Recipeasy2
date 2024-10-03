@@ -1,21 +1,26 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
+const emit = defineEmits(['mobileMenuClicked', 'yeah'])
+
+let isStopped = ref(true)
+let isActive = ref(false)
+
 function onMobileMenuClick() {
-  console.log('mobilemenu')
-  // this.$refs.headerMenu.nativeElement.classList.toggle('active')
-  // this.$refs.beyondBurger.nativeElement.children[0].classList.toggle('active')
-  // const childLength = this.beyondBurger.nativeElement.children[0].children.length
-  // for (let i = 0 i < childLength i++) {
-  //     this.$refs.beyondBurger.nativeElement.children[0].children[i].classList.remove('stopped')
-  // }
+  isStopped.value = false
+  isActive.value = !isActive.value
+  emit('mobileMenuClicked')
 }
 </script>
 
 <template>
   <div class="beyond-burger" @click="onMobileMenuClick()" ref="beyondburger">
-    <div class="burger-container">
-      <div class="line1 stopped"></div>
-      <div class="line2 stopped"></div>
-      <div class="line3 stopped"></div>
+    <div class="burger-container" :class="{ active: isActive }" ref="burger-container">
+      <div
+        v-for="(n, index) in 3"
+        :key="index"
+        :class="['line' + (index + 1), isStopped ? 'stopped' : '']"
+      ></div>
     </div>
   </div>
 </template>
@@ -47,24 +52,24 @@ function onMobileMenuClick() {
   height: $iconheight
 
   .line1
-    animation: firstline--back 1s
+    animation: firstline--back .5s
 
   .line2
     margin: $spaceheight 0
-    animation: secondline--back 1s
+    animation: secondline--back .5s
 
   .line3
-    animation: thirdline--back 1s
+    animation: thirdline--back .5s
 
   &.active
     .line1
-      animation: firstline 1s forwards
+      animation: firstline .5s forwards
 
     .line2
-      animation: secondline 1s forwards
+      animation: secondline .5s forwards
 
     .line3
-      animation: thirdline 1s forwards
+      animation: thirdline .5s forwards
 
 .line1,
 .line2,
