@@ -1,8 +1,7 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { Recipe } from '@/types/Recipes'
 
-export const useRecipeStore = defineStore('recipes', {
+export const UseRecipeStore = defineStore('recipes', {
   state: () => ({
     userId: '1', // UUID
     recipes: [

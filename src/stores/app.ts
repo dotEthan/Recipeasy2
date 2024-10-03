@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useAppStore = defineStore('app', {
+export const UseAppStore = defineStore('app', {
   state: () => ({
     testModeOn: false,
     authorized: false

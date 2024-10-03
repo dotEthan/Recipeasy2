@@ -12,7 +12,7 @@ console.log(props.recipeData?.imgPath)
     <div class="recipeicon">
       <img :src="recipeData?.imgPath" alt="Logo" />
     </div>
-    <span class="recipe-title">{{ recipeData?.title }}</span>
+    <span class="recipe-title">{{ recipeData?.name }}</span>
     <span class="rating-text">rating: {{ recipeData?.rating }}</span>
   </div>
 </template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useAppStore } from '@/stores/app'
+import { UseAppStore } from '@/stores/App'
 
-const appDataStore = useAppStore()
+const appDataStore = UseAppStore()
 const { isTestModeOn } = storeToRefs(appDataStore)
 let modalOpen = false
 // let testMode: false
