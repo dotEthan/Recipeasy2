@@ -1,9 +1,9 @@
 export type Recipe = {
   id?: number
-  title?: string
+  name?: string
   rating?: number
   ingredients?: Ingredients[]
-  imgUrl?: string
+  imgPath?: string
   private?: boolean
   tags?: string[]
 }

@@ -28,18 +28,20 @@ Slow and steady win the race
 ### Working on Now:
 
 - Routing
+- Store
 
 ### To Come:
 
-- bespoke Backend Functionality
+- Authorization/Animations/Testing
 - Shopping List Functionality
 - Recipe Boo Functionality
 - Meal Planning & Calendar
-- App Store/Router/Animations/Testing all to come.
+- bespoke Backend Functionality
 
 ### Future thoughts:
 
 - Website Parsing to allow importing recipes
+- Calorie counter
 
 ## Built With
 

@@ -10,37 +10,8 @@ const { isTestModeOn, isAuthorized } = storeToRefs(appDataStore)
 </script>
 
 <template>
-  <div class="home-container fullbackground">
-    <SplashComponent v-if="!isTestModeOn && !isAuthorized" />
-    <WelcomeComponent v-else />
-  </div>
+  <SplashComponent v-if="!isTestModeOn && !isAuthorized" />
+  <WelcomeComponent v-else />
 </template>
 
-<style lang="scss">
-@import '../assets/variables.scss';
-.home-container {
-  width: 100%;
-  height: 100vh * 0.75;
-}
-
-.fullbackground {
-  height: calc(100vh - $navbar-height);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: url('../assets/main.jpg') no-repeat center top;
-  background-size: cover;
-  // z-index: 0;
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 75px;
-    left: 0;
-    width: 100%;
-    height: calc(100vh - $navbar-height);
-    background: rgba(0, 0, 0, 0.6);
-    // z-index: 1;
-  }
-}
-</style>
+<style lang="sass"></style>

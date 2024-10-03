@@ -11,7 +11,7 @@ const recipeStore = useRecipeStore()
 </script>
 
 <template>
-  <div class="welcome-container">
+  <div class="base-container welcome">
     <h1>What's for Supper?</h1>
     <div class="searchbar">
       <input type="text" class="searchbar" placeholder="Burritos" />
@@ -21,38 +21,29 @@ const recipeStore = useRecipeStore()
   </div>
 </template>
 
-<style lang="scss">
-@import '../../../assets/variables.scss';
-.welcome-container {
-  position: relative;
-  display: flex;
-  //   justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 98vw;
-  height: calc(80vh - $navbar-height);
-  background-color: white;
-  margin-top: 10vh;
-  border-radius: 5px;
-}
+<style lang="sass">
+@import '../../../assets/variables.sass'
 
-.searchbar {
-  width: 80%;
+.welcome
+  height: calc(80vh - $navbar-height)
+  margin-top: 10vh
 
-  input {
-    line-height: 2em;
-    vertical-align: middle;
-  }
 
-  button {
-    margin-left: 10px;
-    line-height: 2em;
-    vertical-align: middle;
-  }
+.searchbar
+  width: 80%
 
-  .magnifying {
-    display: flex;
-    align-items: center;
-  }
-}
+  input
+    line-height: 2em
+    vertical-align: middle
+
+
+  button
+    margin-left: 10px
+    line-height: 2em
+    vertical-align: middle
+
+
+  .magnifying
+    display: flex
+    align-items: center
 </style>

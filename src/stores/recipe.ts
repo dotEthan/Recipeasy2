@@ -8,7 +8,7 @@ export const useRecipeStore = defineStore('recipes', {
     recipes: [
       {
         id: 1,
-        title: 'Beyond Burger',
+        name: 'Beyond Burger',
         ingredients: [
           { name: 'stuff', amount: '3', unit: 'cups' },
           { name: 'things' },
@@ -21,29 +21,29 @@ export const useRecipeStore = defineStore('recipes', {
       },
       {
         id: 2,
-        title: 'Milkshake',
+        name: 'Milkshake',
         ingredients: ['stuff', 'things', 'etc'],
-        imgUrl:
+        imgPath:
           'https://assets.epicurious.com/photos/647df8cad9749492c4d5d407/1:1/w_1920,c_limit/StrawberryMilkshake_RECIPE_053123_3599.jpg',
         rating: 3.5
       },
       {
         id: 3,
-        title: 'Fries and Coke',
+        name: 'Fries and Coke',
         ingredients: ['stuff', 'things', 'etc'],
         imgUrl: 'https://retailworldmagazine.com.au/wp-content/uploads/2021/06/Beyond_Burger1.jpg',
         rating: 3.5
       },
       {
         id: 4,
-        title: 'naps',
+        name: 'naps',
         ingredients: ['stuff', 'things', 'etc'],
         imgUrl: 'https://retailworldmagazine.com.au/wp-content/uploads/2021/06/Beyond_Burger1.jpg',
         rating: 3.5
       },
       {
         id: 5,
-        title: 'relapse',
+        name: 'relapse',
         ingredients: ['stuff', 'things', 'etc'],
         imgUrl: 'https://retailworldmagazine.com.au/wp-content/uploads/2021/06/Beyond_Burger1.jpg',
         rating: 3.5
