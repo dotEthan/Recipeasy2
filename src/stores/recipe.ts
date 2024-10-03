@@ -14,7 +14,7 @@ export const useRecipeStore = defineStore('recipes', {
           { name: 'things' },
           { name: 'etc' }
         ],
-        imgUrl: 'https://retailworldmagazine.com.au/wp-content/uploads/2021/06/Beyond_Burger1.jpg',
+        imgPath: 'https://picsum.photos/seed/picsum/200/300',
         rating: 3.5,
         private: true,
         tags: ['burger', 'snack', 'dinner', 'fast food']
@@ -31,21 +31,21 @@ export const useRecipeStore = defineStore('recipes', {
         id: 3,
         name: 'Fries and Coke',
         ingredients: ['stuff', 'things', 'etc'],
-        imgUrl: 'https://retailworldmagazine.com.au/wp-content/uploads/2021/06/Beyond_Burger1.jpg',
+        imgPath: 'https://retailworldmagazine.com.au/wp-content/uploads/2021/06/Beyond_Burger1.jpg',
         rating: 3.5
       },
       {
         id: 4,
         name: 'naps',
         ingredients: ['stuff', 'things', 'etc'],
-        imgUrl: 'https://retailworldmagazine.com.au/wp-content/uploads/2021/06/Beyond_Burger1.jpg',
+        imgPath: 'https://retailworldmagazine.com.au/wp-content/uploads/2021/06/Beyond_Burger1.jpg',
         rating: 3.5
       },
       {
         id: 5,
         name: 'relapse',
         ingredients: ['stuff', 'things', 'etc'],
-        imgUrl: 'https://retailworldmagazine.com.au/wp-content/uploads/2021/06/Beyond_Burger1.jpg',
+        imgPath: 'https://retailworldmagazine.com.au/wp-content/uploads/2021/06/Beyond_Burger1.jpg',
         rating: 3.5
       }
     ] as Recipe[]
