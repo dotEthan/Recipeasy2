@@ -2,12 +2,10 @@ import { defineStore } from 'pinia'
 
 export const UseAppStore = defineStore('app', {
   state: () => ({
-    testModeOn: false,
-    authorized: false
+    testModeOn: false
   }),
   getters: {
-    isTestModeOn: (state) => state.testModeOn,
-    isAuthorized: (state) => state.authorized
+    isTestModeOn: (state) => state.testModeOn
   },
   actions: {
     turnTestModeOn() {
@@ -15,12 +13,6 @@ export const UseAppStore = defineStore('app', {
     },
     turnTestModeOff() {
       this.testModeOn = false
-    },
-    deauthorize() {
-      this.authorized = false
-    },
-    authorize() {
-      this.authorized = true
     }
   }
 })

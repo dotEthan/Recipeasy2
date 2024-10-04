@@ -28,16 +28,17 @@ Slow and steady win the race
 
 - Routing & Store (ongoing as needed)
 - Header (Authorization/save/load missing, CSS incomplete)
-- Recipe Book Functionality (Component creation underway)
+- Recipe Book Functionality (Mock data creation, filtering options, design)
 
 ### To Come:
 
 - Shopping List Functionality
-- Authorization/Animations/Testing
-- bespoke Backend Functionality
+- basic backend/Auth (firebase?)
+- Animations/Testing
 
 ### Future thoughts:
 
+- bespoke Backend Functionality
 - Meal Planning & Calendar
 - Website Parsing to allow importing recipes
 - Calorie counter
