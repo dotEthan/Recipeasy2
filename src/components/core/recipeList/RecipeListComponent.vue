@@ -1,46 +1,72 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { UseRecipeStore } from '@/stores/Recipe'
+import { ref, reactive } from 'vue'
+import { UseRecipeStore } from '@/stores/recipe'
+import { UseUserStore } from '@/stores/user'
 import RecipeListItemComponent from './recipeListItem/RecipeListItemComponent.vue'
 import CheckboxComponent from '../shared/CheckboxComponent.vue'
 import { Filter, CircleX } from 'lucide-vue-next'
+import type { Recipe } from '@/types/Recipes'
+// import type { Recipe } from '@/types/Recipes'
 
 const recipeStore = UseRecipeStore()
+const userStore = UseUserStore()
+
+let filteredRecipes = ref<Recipe[]>([...recipeStore.recipes])
+
+let allUserTags = ref<String[]>([...userStore.allTags])
+const filterState = reactive<{ [key: string]: boolean }>({})
+let filterList = ref(allUserTags.value as string[])
+
 let mobileFiltersOpen = ref(false)
 
-const filterList = ['Vegan', 'healthy', 'Beets', ' Snack']
+filterList.value.forEach((filter) => {
+  filterState[filter] = false
+})
 
 function onNewRecipe() {
   console.log('add recipe')
 }
 
-function openFilters() {
-  mobileFiltersOpen.value = true
+function toggleShowFilters() {
+  mobileFiltersOpen.value = !mobileFiltersOpen.value
 }
 
-function closeFilters() {
-  mobileFiltersOpen.value = false
+function filterRecipes() {
+  const activeFilters = Object.entries(filterState)
+    .filter(([_, isChecked]) => isChecked)
+    .map(([filterName]) => filterName)
+
+  filteredRecipes.value = recipeStore.recipes.filter((recipe) => {
+    console.log('tags: ' + recipe.tags)
+    return activeFilters.every((filter) => recipe.tags?.includes(filter))
+  })
+
+  if (mobileFiltersOpen.value === true) mobileFiltersOpen.value = false
 }
 </script>
 
 <template>
-  <button class="filter-btn-mobile" @click="openFilters()"><Filter class="filter-icon" /></button>
+  <button class="filter-btn-mobile" @click="toggleShowFilters()">
+    <Filter class="filter-icon" />
+  </button>
   <div class="filter-box" :class="{ floating: mobileFiltersOpen }">
     <h2 class="filter-title">Filters</h2>
-    <CircleX class="button-close" @click="closeFilters()" />
+    <CircleX class="button-close" @click="toggleShowFilters()" />
     <div class="filters-contain">
       <CheckboxComponent
         v-for="(filter, index) in filterList"
         :key="index"
         :checkboxLabel="filter"
+        v-model="filterState[filter]"
       />
     </div>
+    <button @click="filterRecipes()">Filter</button>
   </div>
   <div class="recipe-list-container">
     <div class="recipeRow" v-if="recipeStore.recipeLength">
       <RecipeListItemComponent
         class="recipe-item-contain"
-        v-for="recipe in recipeStore.recipes"
+        v-for="recipe in filteredRecipes"
         :key="recipe.id"
         :recipeData="recipe"
       />

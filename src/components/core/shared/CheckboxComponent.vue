@@ -1,21 +1,40 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { CheckboxIndicator, CheckboxRoot } from 'radix-vue'
 import { Check } from 'lucide-vue-next'
-const checkboxOne = ref(true)
-defineProps({
-  checkboxLabel: String
+const props = defineProps({
+  checkboxLabel: String,
+  modelValue: Boolean
 })
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: boolean): void
+}>()
+
+const isChecked = ref(props.modelValue)
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    isChecked.value = newValue
+  }
+)
+
+function toggleCheckbox() {
+  isChecked.value = !isChecked.value
+  emit('update:modelValue', isChecked.value)
+  console.log('Checkbox is now:', isChecked.value) // Log the updated state
+}
 </script>
 
 <template>
   <label>
-    <CheckboxRoot v-model:checked="checkboxOne" class="CheckboxRoot">
-      <CheckboxIndicator class="CheckboxIndicator">
-        <Check />
+    <CheckboxRoot @update:checked="toggleCheckbox" class="checkboxRoot">
+      <CheckboxIndicator class="checkboxIndicator">
+        <Check v-if="isChecked" />
       </CheckboxIndicator>
     </CheckboxRoot>
-    <span class="Label">{{ checkboxLabel }}</span>
+    <span class="label">{{ checkboxLabel }}</span>
   </label>
 </template>
 
@@ -30,7 +49,7 @@ button
   all: unset
 
 
-.CheckboxRoot
+.checkboxRoot
   background-color: white
   width: 25px
   height: 25px
@@ -40,18 +59,18 @@ button
   justify-content: center
   box-shadow: 0 2px 10px var(--black-a7)
 
-.CheckboxRoot:hover
+.checkboxRoot:hover
   background-color: black
 
-.CheckboxRoot:focus
+.checkboxRoot:focus
   box-shadow: 0 0 0 2px black
 
 
-.CheckboxIndicator
+.checkboxIndicator
   color: blue
 
 
-.Label
+.label
   color: black
   padding-left: 15px
   font-size: 15px

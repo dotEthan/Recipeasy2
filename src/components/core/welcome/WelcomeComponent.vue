@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Search } from 'lucide-vue-next'
 import CollectionComponent from '../collections/CollectionComponent.vue'
-import { UseRecipeStore } from '@/stores/Recipe'
+import { UseRecipeStore } from '@/stores/recipe'
 // import { storeToRefs } from 'pinia'
 
 const recipeStore = UseRecipeStore()
