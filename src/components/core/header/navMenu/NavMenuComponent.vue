@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { UseAppStore } from '@/stores/App'
+import { UseUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
-import router from '@/router'
+import router from '@/router/main'
 
-const appDataStore = UseAppStore()
-const { isTestModeOn, isAuthorized } = storeToRefs(appDataStore)
+const useAppStore = UseAppStore()
+const useUserStore = UseUserStore()
+const { isTestModeOn } = storeToRefs(useAppStore)
+const { isAuthorized } = storeToRefs(useUserStore)
 
 function testModeOff() {
-  appDataStore.turnTestModeOff()
-  appDataStore.deauthorize()
+  useAppStore.turnTestModeOff()
+  useUserStore.deauthorize()
   router.push('/')
 }
 
@@ -31,8 +34,8 @@ function onFetch() {
 }
 
 function authLogout() {
-  appDataStore.deauthorize()
-  appDataStore.turnTestModeOff()
+  useUserStore.deauthorize()
+  useAppStore.turnTestModeOff()
   router.push('/')
 }
 </script>
@@ -40,10 +43,10 @@ function authLogout() {
 <template>
   <ul class="nav navbar-nav">
     <li routerLinkActive="active" class="nav-recipes">
-      <RouterLink class="nav-menu-item" to="/recipes">Recipes</RouterLink>
+      <RouterLink class="nav-menu-item" to="recipes">Recipes</RouterLink>
     </li>
     <li routerLinkActive="active" class="nav-shopping-list">
-      <RouterLink class="nav-menu-item" to="/shopping-list">Shopping List</RouterLink>
+      <RouterLink class="nav-menu-item" to="shopping-list">Shopping List</RouterLink>
     </li>
     <li v-if="isTestModeOn" @click="testModeOff" class="test-text-contain">
       <span class="test-text nav-menu-item">Test Mode Off</span>

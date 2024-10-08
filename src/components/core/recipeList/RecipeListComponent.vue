@@ -1,67 +1,37 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
-import { UseRecipeStore } from '@/stores/recipe'
-import { UseUserStore } from '@/stores/user'
+import { ref } from 'vue'
+import { useRecipeStore } from '@/stores/recipe'
 import RecipeListItemComponent from './recipeListItem/RecipeListItemComponent.vue'
-import CheckboxComponent from '../shared/CheckboxComponent.vue'
-import { Filter, CircleX } from 'lucide-vue-next'
+import FilterComponent from './recipeFilter/FilterComponent.vue'
 import type { Recipe } from '@/types/Recipes'
-// import type { Recipe } from '@/types/Recipes'
+import router from '@/router/main'
 
-const recipeStore = UseRecipeStore()
-const userStore = UseUserStore()
+const recipeStore = useRecipeStore()
+let selectedRecipe: Recipe
 
 let filteredRecipes = ref<Recipe[]>([...recipeStore.recipes])
-
-let allUserTags = ref<String[]>([...userStore.allTags])
-const filterState = reactive<{ [key: string]: boolean }>({})
-let filterList = ref(allUserTags.value as string[])
-
-let mobileFiltersOpen = ref(false)
-
-filterList.value.forEach((filter) => {
-  filterState[filter] = false
-})
 
 function onNewRecipe() {
   console.log('add recipe')
 }
 
-function toggleShowFilters() {
-  mobileFiltersOpen.value = !mobileFiltersOpen.value
+function filterRecipes(filters: string[]) {
+  filteredRecipes.value = recipeStore.recipes.filter((recipe) =>
+    filters.every((filter) => recipe.tags?.includes(filter))
+  )
 }
 
-function filterRecipes() {
-  const activeFilters = Object.entries(filterState)
-    .filter(([_, isChecked]) => isChecked)
-    .map(([filterName]) => filterName)
-
-  filteredRecipes.value = recipeStore.recipes.filter((recipe) => {
-    console.log('tags: ' + recipe.tags)
-    return activeFilters.every((filter) => recipe.tags?.includes(filter))
-  })
-
-  if (mobileFiltersOpen.value === true) mobileFiltersOpen.value = false
+function openRecipeDetail(id: number) {
+  console.log('id: ', id)
+  selectedRecipe = recipeStore.recipes.filter((recipe) => recipe.id === id)[0]
+  console.log(selectedRecipe.name)
+  recipeStore.setSelectedRecipeId(id)
+  router.push({ name: 'recipeDetails', params: { id } })
 }
 </script>
 
 <template>
-  <button class="filter-btn-mobile" @click="toggleShowFilters()">
-    <Filter class="filter-icon" />
-  </button>
-  <div class="filter-box" :class="{ floating: mobileFiltersOpen }">
-    <h2 class="filter-title">Filters</h2>
-    <CircleX class="button-close" @click="toggleShowFilters()" />
-    <div class="filters-contain">
-      <CheckboxComponent
-        v-for="(filter, index) in filterList"
-        :key="index"
-        :checkboxLabel="filter"
-        v-model="filterState[filter]"
-      />
-    </div>
-    <button @click="filterRecipes()">Filter</button>
-  </div>
+  <FilterComponent @filter="filterRecipes" />
   <div class="recipe-list-container">
     <div class="recipeRow" v-if="recipeStore.recipeLength">
       <RecipeListItemComponent
@@ -69,6 +39,7 @@ function filterRecipes() {
         v-for="recipe in filteredRecipes"
         :key="recipe.id"
         :recipeData="recipe"
+        @openRecipe="openRecipeDetail"
       />
       <div class="new-container">
         <button class="btn new-recipe" @click="onNewRecipe()">+</button>
@@ -88,79 +59,10 @@ function filterRecipes() {
       </div>
     </div>
   </div>
+  <RouterView />
 </template>
 
 <style lang="sass">
-
-.filter-btn-mobile
-  position: absolute
-  top: 20px
-  right: 20px
-  display: flex
-  padding: 6px 12px
-  background-color: #e0e0e0
-  color: #333
-  border: none
-  border-radius: 30px
-  font-family: 'Arial', sans-serif
-  font-size: 16px
-  cursor: pointer
-  transition: all 0.3s ease
-  filter: grayscale(100%)
-  text-align: center
-
-  &:hover
-    filter: grayscale(40%)
-    background-color: #d0d0d0
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
-
-  &:active
-    filter: grayscale(20%)
-    background-color: #bbb
-
-  &:focus
-    outline: none
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5)
-
-  @media (min-width: 768px)
-    display: none
-
-.filter-icon
-  height: 15px
-  width: 15px
-
-.filter-box
-  display: none
-
-  @media (min-width: 768px)
-    display: block
-
-.floating
-  display: block
-  position: absolute
-  top: 0
-  left: 0
-  background-color: white
-  z-index: 1
-  border-radius: 5px
-
-.filter-title
-  // display: none
-  text-align: center
-
-  @media (min-width: 768px)
-    display: block
-
-.button-close
-  position: absolute
-  top:15px
-  right:25px
-  cursor: pointer
-
-.filters-contain
-  display: flex
-  flex-direction: row
-  flex-wrap: wrap
 
 .recipe-list-container
   width: 90%

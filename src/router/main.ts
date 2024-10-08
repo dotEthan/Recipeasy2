@@ -18,7 +18,15 @@ const routes = [
   {
     path: '/recipes',
     name: 'recipes',
-    component: () => import('../views/RecipesView.vue')
+    component: () => import('../views/RecipesView.vue'),
+    children: [
+      {
+        path: ':id',
+        name: 'recipeDetails',
+        component: () =>
+          import('../components/core/recipeList/recipeDetails/recipeDetailsComponent.vue')
+      }
+    ]
   }
 ]
 

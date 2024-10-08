@@ -5,10 +5,10 @@ import RecipeListComponent from '@/components/core/recipeList/RecipeListComponen
 <template>
   <div class="base-container">
     <div class="row borderize-contain">
-      <div class="col-xs-12 text-center headline-title">
+      <div class="headline-title">
         <h1>Recipe Book</h1>
       </div>
-      <div class="col-xs-12">
+      <div class="recipe-viewer">
         <RecipeListComponent />
       </div>
     </div>
@@ -17,9 +17,6 @@ import RecipeListComponent from '@/components/core/recipeList/RecipeListComponen
 
 <style lang="sass">
 @import '../assets/variables.sass'
-.recipe-container
-  display: flex
-
 
 .borderize
   background: white

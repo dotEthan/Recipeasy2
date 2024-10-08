@@ -4,7 +4,7 @@ import { RouterLink } from 'vue-router'
 import MenuBurger from '@/components/core/header/menuBurger/MenuBurger.vue'
 import { UseAppStore } from '@/stores/App'
 import { storeToRefs } from 'pinia'
-import router from '@/router'
+import router from '@/router/main'
 import NavMenuComponent from './navMenu/NavMenuComponent.vue'
 
 const appDataStore = UseAppStore()
