@@ -4,13 +4,11 @@ import RecipeListComponent from '@/components/core/recipeList/RecipeListComponen
 
 <template>
   <div class="base-container">
-    <div class="row borderize-contain">
+    <div class="recipe-viewer">
       <div class="headline-title">
         <h1>Recipe Book</h1>
       </div>
-      <div class="recipe-viewer">
-        <RecipeListComponent />
-      </div>
+      <RecipeListComponent />
     </div>
   </div>
 </template>
@@ -18,7 +16,7 @@ import RecipeListComponent from '@/components/core/recipeList/RecipeListComponen
 <style lang="sass">
 @import '../assets/variables.sass'
 
-.borderize
+.recipe-viewer
   background: white
   height: calc(100vh - #{$navbar-height-minus} - #{$borderize-margin})
   border-radius: 10px

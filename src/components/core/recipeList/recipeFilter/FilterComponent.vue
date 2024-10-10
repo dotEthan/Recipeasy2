@@ -32,7 +32,7 @@ function filterButtonOnClick() {
   </button>
   <div class="filter-box" :class="{ floating: mobileFiltersOpen }">
     <h2 class="filter-title">Filters</h2>
-    <CircleX class="button-close" @click="toggleShowFilters()" />
+    <CircleX class="button-close" @click="toggleShowFilters()" v-if="mobileFiltersOpen" />
     <div class="filters-contain">
       <CheckboxComponent
         v-for="(filter, index) in filterList"
@@ -50,7 +50,7 @@ function filterButtonOnClick() {
 
 .filter-btn-mobile
   position: absolute
-  top: 20px
+  top: -50px
   right: 20px
   display: flex
   padding: 6px 12px

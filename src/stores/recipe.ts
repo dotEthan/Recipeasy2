@@ -8,11 +8,18 @@ export const useRecipeStore = defineStore('recipes', {
       {
         id: 1,
         name: 'Beyond Burger',
+        description: 'A burger Beyond Burgers of Burger Beyondness',
         ingredients: [
-          { name: 'stuff', amount: '3', unit: 'cups' },
-          { name: 'things' },
-          { name: 'etc' }
+          {
+            title: 'Cake',
+            steps: [
+              { name: 'stuff', amount: '3', unit: 'cups' },
+              { name: 'things' },
+              { name: 'etc' }
+            ]
+          }
         ],
+        directions: [{ title: 'do first', steps: ['stir it', 'mix it', 'lick it'] }],
         imgPath: 'https://picsum.photos/seed/picsum/200/300',
         rating: 3.5,
         private: true,

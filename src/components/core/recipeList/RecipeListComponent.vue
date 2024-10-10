@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import { useRecipeStore } from '@/stores/recipe'
 import RecipeListItemComponent from './recipeListItem/RecipeListItemComponent.vue'
 import FilterComponent from './recipeFilter/FilterComponent.vue'
 import type { Recipe } from '@/types/Recipes'
 import router from '@/router/main'
+import RecipeDetailsComponent from './recipeDetails/recipeDetailsComponent.vue'
 
 const recipeStore = useRecipeStore()
-let selectedRecipe: Recipe
+let selectedRecipe = ref<Recipe | undefined>(undefined)
 
 let filteredRecipes = ref<Recipe[]>([...recipeStore.recipes])
+const recipeDetailElement = useTemplateRef('recipeDetailElement')
 
 function onNewRecipe() {
   console.log('add recipe')
@@ -21,18 +23,21 @@ function filterRecipes(filters: string[]) {
   )
 }
 
+function closeRecipeDetails() {
+  selectedRecipe.value = undefined
+}
+
 function openRecipeDetail(id: number) {
   console.log('id: ', id)
-  selectedRecipe = recipeStore.recipes.filter((recipe) => recipe.id === id)[0]
-  console.log(selectedRecipe.name)
+  selectedRecipe.value = recipeStore.recipes.find((recipe) => recipe.id === id)
+  console.log(selectedRecipe.value?.name)
   recipeStore.setSelectedRecipeId(id)
-  router.push({ name: 'recipeDetails', params: { id } })
 }
 </script>
 
 <template>
-  <FilterComponent @filter="filterRecipes" />
   <div class="recipe-list-container">
+    <FilterComponent @filter="filterRecipes" />
     <div class="recipeRow" v-if="recipeStore.recipeLength">
       <RecipeListItemComponent
         class="recipe-item-contain"
@@ -58,8 +63,10 @@ function openRecipeDetail(id: number) {
         </div>
       </div>
     </div>
+    <div class="recipe-details-container open" v-if="selectedRecipe">
+      <RecipeDetailsComponent @closeRecipeDetails="closeRecipeDetails" ref="recipeDetailElement" />
+    </div>
   </div>
-  <RouterView />
 </template>
 
 <style lang="sass">
@@ -68,6 +75,7 @@ function openRecipeDetail(id: number) {
   width: 90%
   margin: 0 auto
   justify-items: center
+  position: relative
 
 .recipeRow
   display: flex
@@ -133,4 +141,16 @@ function openRecipeDetail(id: number) {
 .no-recipes
   text-align: center
   padding-bottom: 50px
+
+.recipe-details-container
+  // display: none
+  position: absolute
+  top: 0
+  left: 0
+  background-color: green
+  width: 100vw
+  height: 100vh
+
+  &.open
+    display: block
 </style>

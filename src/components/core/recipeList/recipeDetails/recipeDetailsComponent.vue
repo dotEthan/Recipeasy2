@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import router from '@/router/main'
 import { useRecipeStore } from '@/stores/recipe'
+import ListItemComponent from './listItem/ListItemComponent.vue'
 
 const recipeStore = useRecipeStore()
+const emit = defineEmits(['closeRecipeDetails'])
 console.log('here we are: ', recipeStore.getSelectedRecipe)
 
 const selectedRecipe = recipeStore.getSelectedRecipe
 
 function onClose() {
-  router.push('/recipes')
+  emit('closeRecipeDetails')
 }
 
 function onOverlayShadowClick(e: Event) {
@@ -16,6 +18,12 @@ function onOverlayShadowClick(e: Event) {
     router.push('/recipes')
   }
 }
+
+function onAddToShoppingList() {}
+
+function onEditRecipe() {}
+
+function onDeleteRecipe() {}
 </script>
 
 <template>
@@ -42,44 +50,46 @@ function onOverlayShadowClick(e: Event) {
               </div>
             </div>
           </div>
-          <!-- <div class="recipe-manage-row">
-          <div class="recipe-manage-buttons">
-            <button class="manage-btn-1"
-                    (click)="onAddToShoppingList()"><i class="add-to-list"></i>
-              <div>Add <span class="green-word">Ingredients</span>
-                <br />
-                to List</div>
-            </button>
-            <button class="manage-btn-2"
-                    (click)="onEditRecipe()">
-              <div class="edit-recipe"></div>
-              <span class="yellow-word">Edit</span>&nbsp;Recipe
-            </button>
-            <button class="manage-btn-3"
-                    (click)="onDeleteRecipe()">
-              <div class="delete-recipe"></div><span class="red-word">Delete</span>&nbsp;Recipe
-            </button>
+          <div class="recipe-manage-row">
+            <div class="recipe-manage-buttons">
+              <button class="manage-btn-1" @click="onAddToShoppingList">
+                <i class="add-to-list"></i>
+                <div>
+                  Add <span class="green-word">Ingredients</span>
+                  <br />
+                  to List
+                </div>
+              </button>
+              <button class="manage-btn-2" @click="onEditRecipe">
+                <div class="edit-recipe"></div>
+                <span class="yellow-word">Edit</span>&nbsp;Recipe
+              </button>
+              <button class="manage-btn-3" @click="onDeleteRecipe">
+                <div class="delete-recipe"></div>
+                <span class="red-word">Delete</span>&nbsp;Recipe
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="ingredients-contain">
-          <div class="type-section-title"
-               *ngIf="(recipeState | async).recipes[id].ingredients[0]; else noIngredients">INGREDIENTS: <span
-                  class="help-text">(click to add ingredient to shopping list)</span></div>
-          <ng-template class="type-section-title"
-                       #noIngredients>No Ingredients</ng-template>
-          <app-item-list *ngFor='let ingredientsObject of (recipeState | async).recipes[id].ingredients'
-                         [itemsObject]='ingredientsObject'
-                         itemType="ingredient"></app-item-list>
-        </div>
-        <div class="ingredients-contain">
-          <div class="type-section-title"
-               *ngIf="(recipeState | async).recipes[id].directions[0]; else noDirections">DIRECTIONS:</div>
-          <ng-template class="type-section-title"
-                       #noDirections>No Directions</ng-template>
-          <app-item-list *ngFor='let directionsObject of (recipeState | async).recipes[id].directions'
-                         [itemsObject]='directionsObject'
-                         itemType="directions"></app-item-list>
-        </div> -->
+          <div class="ingredients-contain">
+            <div class="type-section-title" v-if="selectedRecipe?.ingredients">
+              INGREDIENTS: <span class="help-text">(click to add ingredient to shopping list)</span>
+            </div>
+            <div v-else class="type-section-title">No Ingredients</div>
+            <ListItemComponent
+              v-for="(ingredient, index) of selectedRecipe?.ingredients"
+              v-bind:key="index"
+              :itemObject="ingredient"
+            />
+          </div>
+          <div class="ingredients-contain">
+            <div class="type-section-title" v-if="selectedRecipe?.directions">DIRECTIONS:</div>
+            <div class="type-section-title" v-else>No Directions</div>
+            <ListItemComponent
+              v-for="(direction, index) of selectedRecipe?.directions"
+              v-bind:key="index"
+              :itemObject="direction"
+            />
+          </div>
         </div>
       </div>
     </div>
