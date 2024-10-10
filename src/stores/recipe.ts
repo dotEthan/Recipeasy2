@@ -1,18 +1,25 @@
 import { defineStore } from 'pinia'
 import type { Recipe } from '@/types/Recipes'
 
-export const UseRecipeStore = defineStore('recipes', {
+export const useRecipeStore = defineStore('recipes', {
   state: () => ({
     userId: '1', // UUID
     recipes: [
       {
         id: 1,
         name: 'Beyond Burger',
+        description: 'A burger Beyond Burgers of Burger Beyondness',
         ingredients: [
-          { name: 'stuff', amount: '3', unit: 'cups' },
-          { name: 'things' },
-          { name: 'etc' }
+          {
+            title: 'Cake',
+            steps: [
+              { name: 'stuff', amount: '3', unit: 'cups' },
+              { name: 'things' },
+              { name: 'etc' }
+            ]
+          }
         ],
+        directions: [{ title: 'do first', steps: ['stir it', 'mix it', 'lick it'] }],
         imgPath: 'https://picsum.photos/seed/picsum/200/300',
         rating: 3.5,
         private: true,
@@ -51,9 +58,17 @@ export const UseRecipeStore = defineStore('recipes', {
         rating: 3.5,
         tags: ['milk', 'drink', 'fast food', 'vegan']
       }
-    ] as Recipe[]
+    ] as Recipe[],
+    selectedRecipeId: 0
   }),
   getters: {
-    recipeLength: (state) => state.recipes.length
+    recipeLength: (state) => state.recipes.length,
+    getSelectedRecipe: (state) =>
+      state.recipes.find((recipe) => recipe.id === state.selectedRecipeId)
+  },
+  actions: {
+    setSelectedRecipeId(id: number) {
+      this.selectedRecipeId = id
+    }
   }
 })

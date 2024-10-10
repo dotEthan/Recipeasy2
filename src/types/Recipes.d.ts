@@ -2,14 +2,20 @@ export type Recipe = {
   id?: number
   name?: string
   rating?: number
-  ingredients?: Ingredients[]
+  description?: string
+  ingredients?: Ingredient[]
+  directions?: Direction[]
   imgPath?: string
+  url?: string
   private?: boolean
   tags?: string[]
 }
 
-export type Ingredients = {
-  name?: string
-  amount?: string
-  unit?: string
+export type Ingredient = {
+  title?: string
+  steps?: string[]
+}
+export type Direction = {
+  title?: string
+  steps?: string[]
 }

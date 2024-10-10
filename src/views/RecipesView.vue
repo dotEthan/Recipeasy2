@@ -4,24 +4,19 @@ import RecipeListComponent from '@/components/core/recipeList/RecipeListComponen
 
 <template>
   <div class="base-container">
-    <div class="row borderize-contain">
-      <div class="col-xs-12 text-center headline-title">
+    <div class="recipe-viewer">
+      <div class="headline-title">
         <h1>Recipe Book</h1>
       </div>
-      <div class="col-xs-12">
-        <RecipeListComponent />
-      </div>
+      <RecipeListComponent />
     </div>
   </div>
 </template>
 
 <style lang="sass">
 @import '../assets/variables.sass'
-.recipe-container
-  display: flex
 
-
-.borderize
+.recipe-viewer
   background: white
   height: calc(100vh - #{$navbar-height-minus} - #{$borderize-margin})
   border-radius: 10px
