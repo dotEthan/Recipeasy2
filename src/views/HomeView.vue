@@ -3,10 +3,13 @@
 import SplashComponent from '@/components/core/splash/SplashComponent.vue'
 import WelcomeComponent from '@/components/core/welcome/WelcomeComponent.vue'
 import { UseAppStore } from '@/stores/App'
+import { UseUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 
 const appDataStore = UseAppStore()
-const { isTestModeOn, isAuthorized } = storeToRefs(appDataStore)
+const userStore = UseUserStore()
+const isTestModeOn = storeToRefs(appDataStore)
+const isAuthorized = storeToRefs(userStore)
 </script>
 
 <template>

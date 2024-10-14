@@ -3,9 +3,14 @@ import { ref, defineEmits, reactive, toRaw } from 'vue'
 import { Filter, CircleX } from 'lucide-vue-next'
 import CheckboxComponent from '../../shared/CheckboxComponent.vue'
 import { UseUserStore } from '@/stores/user'
+import { UseRecipeStore } from '@/stores/recipe'
 
+const recipeStore = UseRecipeStore()
 const userStore = UseUserStore()
 const emit = defineEmits(['filter'])
+defineProps({
+  allRecipeTags: Array as () => string[]
+})
 
 let mobileFiltersOpen = ref(false)
 let allUserTags = ref<String[]>([...userStore.allTags])
@@ -22,7 +27,8 @@ function toggleShowFilters() {
 function filterButtonOnClick() {
   if (mobileFiltersOpen.value === true) mobileFiltersOpen.value = false
   const activeFilters = Object.keys(toRaw(filterState)).filter((key) => filterState[key])
-  emit('filter', activeFilters)
+  recipeStore.setActiveFilters(activeFilters)
+  emit('filter')
 }
 </script>
 
@@ -35,7 +41,7 @@ function filterButtonOnClick() {
     <CircleX class="button-close" @click="toggleShowFilters()" v-if="mobileFiltersOpen" />
     <div class="filters-contain">
       <CheckboxComponent
-        v-for="(filter, index) in filterList"
+        v-for="(filter, index) in allRecipeTags"
         :key="index"
         :checkboxLabel="filter"
         v-model="filterState[filter]"

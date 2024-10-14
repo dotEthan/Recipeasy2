@@ -1,25 +1,35 @@
 <script setup lang="ts">
 import { ref, useTemplateRef } from 'vue'
-import { useRecipeStore } from '@/stores/recipe'
+import { UseRecipeStore } from '@/stores/recipe'
 import RecipeListItemComponent from './recipeListItem/RecipeListItemComponent.vue'
 import FilterComponent from './recipeFilter/FilterComponent.vue'
 import type { Recipe } from '@/types/Recipes'
-import router from '@/router/main'
 import RecipeDetailsComponent from './recipeDetails/recipeDetailsComponent.vue'
 
-const recipeStore = useRecipeStore()
+const recipeStore = UseRecipeStore()
 let selectedRecipe = ref<Recipe | undefined>(undefined)
+const recipeDetailElement = useTemplateRef('recipeDetailElement')
 
 let filteredRecipes = ref<Recipe[]>([...recipeStore.recipes])
-const recipeDetailElement = useTemplateRef('recipeDetailElement')
+let allRecipeTags = ref<string[] | undefined>(undefined)
+
+allRecipeTags.value = recipeStore.getAllRecipeTags
 
 function onNewRecipe() {
   console.log('add recipe')
 }
 
-function filterRecipes(filters: string[]) {
-  filteredRecipes.value = recipeStore.recipes.filter((recipe) =>
-    filters.every((filter) => recipe.tags?.includes(filter))
+function filterRecipes() {
+  const activeFilters = recipeStore.getActiveFilters
+  console.log(activeFilters.length)
+  if (!activeFilters.length) {
+    console.log('No active filters, resetting to full recipe list')
+    filteredRecipes.value = [...recipeStore.recipes]
+    return
+  }
+
+  filteredRecipes.value = recipeStore.recipes.filter(
+    (recipe) => activeFilters.length > 0 && recipe.tags?.some((tag) => activeFilters.includes(tag))
   )
 }
 
@@ -37,7 +47,7 @@ function openRecipeDetail(id: number) {
 
 <template>
   <div class="recipe-list-container">
-    <FilterComponent @filter="filterRecipes" />
+    <FilterComponent @filter="filterRecipes" :allRecipeTags />
     <div class="recipeRow" v-if="recipeStore.recipeLength">
       <RecipeListItemComponent
         class="recipe-item-contain"
@@ -45,6 +55,7 @@ function openRecipeDetail(id: number) {
         :key="recipe.id"
         :recipeData="recipe"
         @openRecipe="openRecipeDetail"
+        @removedRecipe="filterRecipes"
       />
       <div class="new-container">
         <button class="btn new-recipe" @click="onNewRecipe()">+</button>
@@ -63,7 +74,7 @@ function openRecipeDetail(id: number) {
         </div>
       </div>
     </div>
-    <div class="recipe-details-container open" v-if="selectedRecipe">
+    <div class="recipe-details-container" v-if="selectedRecipe">
       <RecipeDetailsComponent @closeRecipeDetails="closeRecipeDetails" ref="recipeDetailElement" />
     </div>
   </div>
@@ -75,7 +86,6 @@ function openRecipeDetail(id: number) {
   width: 90%
   margin: 0 auto
   justify-items: center
-  position: relative
 
 .recipeRow
   display: flex
@@ -141,16 +151,4 @@ function openRecipeDetail(id: number) {
 .no-recipes
   text-align: center
   padding-bottom: 50px
-
-.recipe-details-container
-  // display: none
-  position: absolute
-  top: 0
-  left: 0
-  background-color: green
-  width: 100vw
-  height: 100vh
-
-  &.open
-    display: block
 </style>

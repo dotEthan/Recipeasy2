@@ -2,39 +2,11 @@
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import MenuBurger from '@/components/core/header/menuBurger/MenuBurger.vue'
-import { UseAppStore } from '@/stores/App'
-import { storeToRefs } from 'pinia'
-import router from '@/router/main'
 import NavMenuComponent from './navMenu/NavMenuComponent.vue'
-
-const appDataStore = UseAppStore()
-const { isTestModeOn, isAuthorized } = storeToRefs(appDataStore)
 
 let isMobileMenuActive = ref(false)
 
-function onPageChange() {
-  console.log('pagechange')
-  // this.authService.modalOpen.next(false)
-  // if (this.headerMenu.nativeElement.classList.contains('active')) this.onMobileMenuClick()
-}
-
-function onMobileMenuClick() {
-  console.log('mobilemenu')
-  // this.$refs.headerMenu.nativeElement.classList.toggle('active')
-  // this.$refs.beyondBurger.nativeElement.children[0].classList.toggle('active')
-  // const childLength = this.beyondBurger.nativeElement.children[0].children.length
-  // for (let i = 0 i < childLength i++) {
-  //     this.$refs.beyondBurger.nativeElement.children[0].children[i].classList.remove('stopped')
-  // }
-}
-
-function testModeOff() {
-  appDataStore.turnTestModeOff()
-  appDataStore.deauthorize()
-  router.push('/')
-}
-
-function unhideMobileMenu() {
+function toggleMobileMenu() {
   isMobileMenuActive.value = !isMobileMenuActive.value
 }
 </script>
@@ -45,13 +17,13 @@ function unhideMobileMenu() {
       <div class="navbar-brand-contain">
         <RouterLink class="navbar-brand" to="/">Recipeasy</RouterLink>
       </div>
-      <MenuBurger @mobileMenuClicked="unhideMobileMenu()" />
+      <MenuBurger @mobileMenuClicked="toggleMobileMenu" />
       <div
         class="navbar-default nav__header"
         :class="{ active: isMobileMenuActive }"
         ref="headermenu"
       >
-        <NavMenuComponent />
+        <NavMenuComponent @mobileModalClose="toggleMobileMenu" />
       </div>
     </div>
   </nav>
