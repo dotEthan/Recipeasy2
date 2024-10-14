@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import type { Recipe } from '@/types/Recipes'
 
-export const useRecipeStore = defineStore('recipes', {
+export const UseRecipeStore = defineStore('recipes', {
   state: () => ({
     userId: '1', // UUID
     recipes: [
@@ -59,16 +59,38 @@ export const useRecipeStore = defineStore('recipes', {
         tags: ['milk', 'drink', 'fast food', 'vegan']
       }
     ] as Recipe[],
-    selectedRecipeId: 0
+    selectedRecipeId: 0,
+    activeFilters: [] as String[]
   }),
   getters: {
     recipeLength: (state) => state.recipes.length,
     getSelectedRecipe: (state) =>
-      state.recipes.find((recipe) => recipe.id === state.selectedRecipeId)
+      state.recipes.find((recipe) => recipe.id === state.selectedRecipeId),
+    getAllRecipeTags: (state) =>
+      Array.from(
+        new Set(
+          state.recipes.flatMap(
+            (recipe) => recipe.tags?.filter((tag): tag is string => typeof tag === 'string') || []
+          )
+        )
+      ),
+    getActiveFilters: (state) => state.activeFilters
   },
   actions: {
     setSelectedRecipeId(id: number) {
       this.selectedRecipeId = id
+    },
+    removeSelectedRecipe() {
+      const recipeToDelete = this.recipes.find((recipe) => recipe.id === this.selectedRecipeId)
+      const deletedRecipeIndex = recipeToDelete ? this.recipes.indexOf(recipeToDelete) : -1
+      if (deletedRecipeIndex) {
+        this.recipes.splice(deletedRecipeIndex, 1)
+      } else {
+        console.log('recipe does not exist')
+      }
+    },
+    setActiveFilters(filters: string[]) {
+      this.activeFilters = filters
     }
   }
 })

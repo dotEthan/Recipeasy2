@@ -30,11 +30,12 @@ import RecipeListComponent from '@/components/core/recipeList/RecipeListComponen
 
 
 .headline-title
-  margin: 25px 0
+  margin-top: 25px
   font-family: pacifico, sans-serif
 
   @media (min-width: 768px)
-    margin: 25px 0
+    margin-top: 25px
+    text-align: center
 
 
   @media (min-width: 1200px)

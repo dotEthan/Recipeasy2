@@ -6,7 +6,9 @@ import HeaderComponent from './components/core/header/HeaderComponent.vue'
 <template>
   <HeaderComponent />
   <div class="home-container fullbackground">
-    <RouterView />
+    <div class="router-contain">
+      <RouterView />
+    </div>
   </div>
 </template>
 
@@ -34,4 +36,16 @@ import HeaderComponent from './components/core/header/HeaderComponent.vue'
     width: 100%
     height: calc(100vh - $navbar-height)
     background: rgba(0, 0, 0, 0.6)
+
+
+.router-contain
+  position: absolute
+  top: $navbar-height
+  left: 0
+  width: 100%
+  height: calc(100vh - #{$navbar-height-minus})
+  display: flex
+  justify-content: center
+  align-items: center
+  overflow: hidden
 </style>

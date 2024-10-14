@@ -13,8 +13,15 @@ export type Recipe = {
 
 export type Ingredient = {
   title?: string
-  steps?: string[]
+  steps?: IngredientSteps[]
 }
+
+export type IngredientSteps = {
+  name?: string
+  amount?: string
+  unit?: string
+}
+
 export type Direction = {
   title?: string
   steps?: string[]

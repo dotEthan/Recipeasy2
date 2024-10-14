@@ -9,6 +9,8 @@ const useUserStore = UseUserStore()
 const { isTestModeOn } = storeToRefs(useAppStore)
 const { isAuthorized } = storeToRefs(useUserStore)
 
+const emit = defineEmits(['mobileModalClose', 'yeah'])
+
 function testModeOff() {
   useAppStore.turnTestModeOff()
   useUserStore.deauthorize()
@@ -20,6 +22,11 @@ function onModalOpen(type: string) {
   // this.authService.authType.next(type)
   // this.authService.modalOpen.next(true)
   // this.authService.errorMsg.next({ code: '', message: '' })
+}
+
+function onRegisterSaveClick(type: string) {
+  onModalOpen(type)
+  emit('mobileModalClose')
 }
 
 function onSave() {
@@ -43,24 +50,30 @@ function authLogout() {
 <template>
   <ul class="nav navbar-nav">
     <li routerLinkActive="active" class="nav-recipes">
-      <RouterLink class="nav-menu-item" to="recipes">Recipes</RouterLink>
+      <RouterLink class="nav-menu-item" to="recipes" @click="$emit('mobileModalClose')"
+        >Recipes</RouterLink
+      >
     </li>
     <li routerLinkActive="active" class="nav-shopping-list">
-      <RouterLink class="nav-menu-item" to="shopping-list">Shopping List</RouterLink>
+      <RouterLink class="nav-menu-item" to="shopping-list" @click="$emit('mobileModalClose')"
+        >Shopping List</RouterLink
+      >
     </li>
     <li v-if="isTestModeOn" @click="testModeOff" class="test-text-contain">
-      <span class="test-text nav-menu-item">Test Mode Off</span>
+      <span class="test-text nav-menu-item" @click="$emit('mobileModalClose')">Test Mode Off</span>
     </li>
   </ul>
   <ul class="nav navbar-nav rightward">
     <div class="nav-menu-items" v-if="!isAuthorized && !isTestModeOn">
       <li>
-        <a class="nav-menu-item" style="cursor: pointer" @click="onModalOpen('register')"
+        <a class="nav-menu-item" style="cursor: pointer" @click="onRegisterSaveClick('register')"
           >Register</a
         >
       </li>
       <li class="sign-in-button">
-        <a class="nav-menu-item" style="cursor: pointer" @click="onModalOpen('signin')">Sign In</a>
+        <a class="nav-menu-item" style="cursor: pointer" @click="onRegisterSaveClick('signin')"
+          >Sign In</a
+        >
       </li>
     </div>
     <div class="nav-menu-items" v-if="isTestModeOn || isAuthorized">
