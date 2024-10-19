@@ -29,11 +29,12 @@ Slow and steady win the race
 - Routing & Store (ongoing as needed)
 - Header (Authorization/save/load missing, CSS incomplete)
 - Recipe Book Functionality (Mock data creation, filtering options, design)
+- Authorization (firebase)
 
 ### To Come:
 
 - Shopping List Functionality
-- basic backend/Auth (firebase?)
+- basic backend
 - Animations/Testing
 
 ### Future thoughts:
@@ -58,7 +59,3 @@ Slow and steady win the race
 ## Author
 
 - **Ethan Strauss** - [Portfolio](https://dotethan.github.io)
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details

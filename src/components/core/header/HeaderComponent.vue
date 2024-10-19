@@ -103,4 +103,7 @@ function toggleMobileMenu() {
     border-left-color: currentcolor
     width: auto
     box-shadow: none
+
+    &.active
+      left: 0
 </style>

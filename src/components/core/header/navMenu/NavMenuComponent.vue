@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UseAppStore } from '@/stores/App'
+import { UseAppStore } from '@/stores/app'
 import { UseUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import router from '@/router/main'
@@ -19,12 +19,13 @@ function testModeOff() {
 
 function onModalOpen(type: string) {
   console.log('open modal: ' + type)
+  useAppStore.toggleRegistrationModal()
   // this.authService.authType.next(type)
   // this.authService.modalOpen.next(true)
   // this.authService.errorMsg.next({ code: '', message: '' })
 }
 
-function onRegisterSaveClick(type: string) {
+function onClickRegisterSigning(type: string) {
   onModalOpen(type)
   emit('mobileModalClose')
 }
@@ -66,12 +67,12 @@ function authLogout() {
   <ul class="nav navbar-nav rightward">
     <div class="nav-menu-items" v-if="!isAuthorized && !isTestModeOn">
       <li>
-        <a class="nav-menu-item" style="cursor: pointer" @click="onRegisterSaveClick('register')"
+        <a class="nav-menu-item" style="cursor: pointer" @click="onClickRegisterSigning('register')"
           >Register</a
         >
       </li>
       <li class="sign-in-button">
-        <a class="nav-menu-item" style="cursor: pointer" @click="onRegisterSaveClick('signin')"
+        <a class="nav-menu-item" style="cursor: pointer" @click="onClickRegisterSigning('signin')"
           >Sign In</a
         >
       </li>
