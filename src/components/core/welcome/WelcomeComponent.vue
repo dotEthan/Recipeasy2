@@ -6,7 +6,6 @@ import { UseRecipeStore } from '@/stores/recipe'
 
 const recipeStore = UseRecipeStore()
 // const { recipes } = storeToRefs(recipeStore)
-
 // console.log(recipes.value[0])
 </script>
 

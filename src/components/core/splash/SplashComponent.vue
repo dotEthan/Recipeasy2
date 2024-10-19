@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { UseAppStore } from '@/stores/App'
+import { ref } from 'vue'
+import { UseAppStore } from '@/stores/app'
+import { UseUserStore } from '@/stores/user'
+import AuthComponent from '../auth/AuthComponent.vue'
 
-const appDataStore = UseAppStore()
-const { isTestModeOn } = storeToRefs(appDataStore)
-let modalOpen = false
-// let testMode: false
-let loggedIn: false
-console.log(isTestModeOn.value)
-// function toggleTestMode() {
-//   console.log('testmodetoggled')
-// }
+const useAppStore = UseAppStore()
+const useUserStore = UseUserStore()
+const isTestModeOn = useAppStore.isTestModeOn
+const isAuthorized = useUserStore.isAuthorized
+const isRegistrationModalOpen = ref(useAppStore.isRegistrationModalOpen)
+
+console.log('is it on: ', isRegistrationModalOpen.value)
 </script>
 
 <template>
@@ -20,8 +20,8 @@ console.log(isTestModeOn.value)
         <div class="titleback">
           <h1 class="app-title">Welcome to Recipeasy</h1>
           <button
-            v-if="!isTestModeOn && !loggedIn"
-            @click="appDataStore.turnTestModeOn"
+            v-if="!isTestModeOn && !isAuthorized"
+            @click="useAppStore.turnTestModeOn"
             class="testmode-btn"
             :class="{ testmodeOn: isTestModeOn }"
           >
@@ -34,7 +34,7 @@ console.log(isTestModeOn.value)
   <div class="attribute">
     <a href="https://nick-karvounis.com/" target="_blank">Photo by Nick Karvounis on Unsplash</a>
   </div>
-  <app-auth-modal v-if="modalOpen"></app-auth-modal>
+  <AuthComponent></AuthComponent>
 </template>
 
 <style lang="sass">
