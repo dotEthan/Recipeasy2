@@ -3,17 +3,17 @@ export type Recipe = {
   name?: string
   rating?: number
   description?: string
-  ingredients?: Ingredient[]
-  directions?: Direction[]
+  ingredients: Ingredient[]
+  directions: Direction[]
   imgPath?: string
   url?: string
   private?: boolean
-  tags?: string[]
+  tags: string[]
 }
 
 export type Ingredient = {
   title?: string
-  steps?: IngredientSteps[]
+  steps: IngredientSteps[]
 }
 
 export type IngredientSteps = {
@@ -24,5 +24,5 @@ export type IngredientSteps = {
 
 export type Direction = {
   title?: string
-  steps?: string[]
+  steps: string[]
 }

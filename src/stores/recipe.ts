@@ -59,14 +59,14 @@ export const UseRecipeStore = defineStore('recipes', {
         tags: ['milk', 'drink', 'fast food', 'vegan']
       }
     ] as Recipe[],
-    selectedRecipeId: 0,
+    selectedRecipeId: -1,
     activeFilters: [] as String[]
   }),
   getters: {
-    recipeLength: (state) => state.recipes.length,
-    getSelectedRecipe: (state) =>
+    recipeLength: (state): number => state.recipes.length,
+    getSelectedRecipe: (state): Recipe | undefined =>
       state.recipes.find((recipe) => recipe.id === state.selectedRecipeId),
-    getAllRecipeTags: (state) =>
+    getAllRecipeTags: (state): string[] =>
       Array.from(
         new Set(
           state.recipes.flatMap(
@@ -77,6 +77,16 @@ export const UseRecipeStore = defineStore('recipes', {
     getActiveFilters: (state) => state.activeFilters
   },
   actions: {
+    updateRecipe(recipe: Recipe) {
+      this.recipes = this.recipes.map((r) => {
+        return r.id === recipe.id ? recipe : r
+      })
+    },
+    createRecipe(recipe: Recipe) {
+      this.$patch((state) => {
+        state.recipes.push(recipe)
+      })
+    },
     setSelectedRecipeId(id: number) {
       this.selectedRecipeId = id
     },
@@ -85,6 +95,7 @@ export const UseRecipeStore = defineStore('recipes', {
       const deletedRecipeIndex = recipeToDelete ? this.recipes.indexOf(recipeToDelete) : -1
       if (deletedRecipeIndex) {
         this.recipes.splice(deletedRecipeIndex, 1)
+        console.log('recipe removed')
       } else {
         console.log('recipe does not exist')
       }
@@ -92,7 +103,7 @@ export const UseRecipeStore = defineStore('recipes', {
     setActiveFilters(filters: string[]) {
       this.activeFilters = filters
     },
-    setRecipes(recipes: Recipe[]) {
+    setAllRecipes(recipes: Recipe[]) {
       this.recipes = recipes
     }
   }

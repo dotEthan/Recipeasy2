@@ -1,21 +1,27 @@
 <script setup lang="ts">
-import { ref, useTemplateRef } from 'vue'
+import { ref, watch } from 'vue'
 import { UseRecipeStore } from '@/stores/recipe'
 import RecipeListItemComponent from './recipeListItem/RecipeListItemComponent.vue'
 import FilterComponent from './recipeFilter/FilterComponent.vue'
 import type { Recipe } from '@/types/Recipes'
 import RecipeDetailsComponent from './recipeDetails/recipeDetailsComponent.vue'
+import RecipeEditComponent from './recipeEdit/RecipeEditComponent.vue'
 
 const recipeStore = UseRecipeStore()
 let selectedRecipe = ref<Recipe | undefined>(undefined)
-const recipeDetailElement = useTemplateRef('recipeDetailElement')
+let editSelectedRecipe = ref(false)
+// const recipeDetailElement = useTemplateRef('recipeDetailElement')
 
 let filteredRecipes = ref<Recipe[]>([...recipeStore.recipes])
 let allRecipeTags = ref<string[] | undefined>(undefined)
 
 allRecipeTags.value = recipeStore.getAllRecipeTags
 
+watch(recipeStore.recipes, filterRecipes, { deep: true, immediate: true })
+
 function onNewRecipe() {
+  recipeStore.setSelectedRecipeId(-1)
+  editSelectedRecipe.value = true
   console.log('add recipe')
 }
 
@@ -74,8 +80,17 @@ function openRecipeDetail(id: number) {
         </div>
       </div>
     </div>
-    <div class="recipe-details-container" v-if="selectedRecipe">
-      <RecipeDetailsComponent @closeRecipeDetails="closeRecipeDetails" ref="recipeDetailElement" />
+    <div class="recipe-details-container" v-if="selectedRecipe && !editSelectedRecipe">
+      <RecipeDetailsComponent
+        @closeRecipeDetails="closeRecipeDetails"
+        @edit-selected-recipe="editSelectedRecipe = true"
+      />
+    </div>
+    <div class="recipe-details-container" v-else-if="editSelectedRecipe">
+      <RecipeEditComponent
+        class="recipe-item-contain"
+        @editing-canceled="editSelectedRecipe = false"
+      />
     </div>
   </div>
 </template>

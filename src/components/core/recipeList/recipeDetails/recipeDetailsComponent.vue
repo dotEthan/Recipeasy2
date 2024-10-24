@@ -4,7 +4,7 @@ import { UseRecipeStore } from '@/stores/recipe'
 import ListItemComponent from './listItem/ListItemComponent.vue'
 
 const recipeStore = UseRecipeStore()
-const emit = defineEmits(['closeRecipeDetails', 'removedRecipe'])
+const emit = defineEmits(['closeRecipeDetails', 'removedRecipe', 'editSelectedRecipe'])
 
 const selectedRecipe = recipeStore.getSelectedRecipe
 
@@ -17,6 +17,7 @@ function onAddToShoppingList() {
 }
 
 function onEditRecipe() {
+  emit('editSelectedRecipe')
   console.log('editing')
 }
 
@@ -24,7 +25,8 @@ function onDeleteRecipe() {
   console.log('removing')
   recipeStore.removeSelectedRecipe()
   recipeStore.setSelectedRecipeId(-1)
-  emit('removedRecipe')
+  emit('closeRecipeDetails')
+  // emit('removedRecipe')
 }
 </script>
 
