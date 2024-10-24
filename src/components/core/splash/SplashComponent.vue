@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { UseAppStore } from '@/stores/app'
 import { UseUserStore } from '@/stores/user'
 import AuthComponent from '../auth/AuthComponent.vue'
@@ -8,7 +8,8 @@ const useAppStore = UseAppStore()
 const useUserStore = UseUserStore()
 const isTestModeOn = useAppStore.isTestModeOn
 const isAuthorized = useUserStore.isAuthorized
-const isRegistrationModalOpen = ref(useAppStore.isRegistrationModalOpen)
+
+const isRegistrationModalOpen = computed(() => useAppStore.isRegistrationModalOpen)
 
 console.log('is it on: ', isRegistrationModalOpen.value)
 </script>
@@ -34,7 +35,8 @@ console.log('is it on: ', isRegistrationModalOpen.value)
   <div class="attribute">
     <a href="https://nick-karvounis.com/" target="_blank">Photo by Nick Karvounis on Unsplash</a>
   </div>
-  <AuthComponent></AuthComponent>
+
+  <AuthComponent v-if="isRegistrationModalOpen"></AuthComponent>
 </template>
 
 <style lang="sass">

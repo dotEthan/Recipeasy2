@@ -1,13 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import { getUserState } from '../firebase'
 import HomeView from '../views/HomeView.vue'
+import { UseUserStore } from '@/stores/user'
 
 const routes = [
   {
     path: '/',
     name: 'home',
     component: HomeView
-    // meta: { requiresUnauth: true }
   },
   {
     path: '/shopping-list',
@@ -15,8 +14,8 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (About.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import('../views/ShoppingView.vue')
-    // meta: { requiresAuth: true }
+    component: () => import('../views/ShoppingView.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/recipes',
@@ -29,8 +28,8 @@ const routes = [
         component: () =>
           import('../components/core/recipeList/recipeDetails/recipeDetailsComponent.vue')
       }
-    ]
-    // meta: { requiresAuth: true }
+    ],
+    meta: { requiresAuth: true }
   }
 ]
 
@@ -39,14 +38,16 @@ const router = createRouter({
   routes
 })
 
-// router.beforeEach(async (to, from, next) => {
-//   const isAuth = await getUserState()
-//   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
-//   const requiresUnauth = to.matched.some((record) => record.meta.unrequiresAuth)
+router.beforeEach(async (to, from, next) => {
+  const userStore = UseUserStore()
+  const isAuth = userStore.isAuthorized
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
+  // const requiresUnauth = to.matched.some((record) => record.meta.unrequiresAuth)
 
-//   if (requiresAuth && !isAuth) next('/')
-//   else if (requiresUnauth && isAuth) next('/')
-//   else next(to)
-// })
+  console.log('router to: ', to)
+  if (requiresAuth && !isAuth) next('/')
+  // else if (requiresUnauth && isAuth) next('/')
+  next()
+})
 
 export default router
