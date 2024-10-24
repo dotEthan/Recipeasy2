@@ -17,7 +17,6 @@ import { auth, firebaseapp } from '../../../firebase'
 import { UseRecipeStore } from '@/stores/recipe'
 import router from '@/router/main'
 import { UseUserStore } from '@/stores/user'
-import type { LocalUser, UserState } from '@/types/UserState'
 import type { Recipe } from '@/types/Recipes'
 
 let authError = ref(false)
@@ -99,7 +98,7 @@ function initializeUserStoreData(user: User | undefined, userData: DocumentData 
 }
 
 function initializeRecipeStoreData(userData: DocumentData) {
-  recipeStore.setRecipes(userData.recipes)
+  recipeStore.setAllRecipes(userData.recipes)
   console.log('recipeStore filled. data: ', userData.recipes)
 }
 

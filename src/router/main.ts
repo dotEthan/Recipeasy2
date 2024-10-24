@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { UseUserStore } from '@/stores/user'
+import { UseAppStore } from '@/stores/app'
 
 const routes = [
   {
@@ -40,12 +41,14 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const userStore = UseUserStore()
+  const appStore = UseAppStore()
   const isAuth = userStore.isAuthorized
+  const isTestModeOn = appStore.isTestModeOn
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
   // const requiresUnauth = to.matched.some((record) => record.meta.unrequiresAuth)
 
   console.log('router to: ', to)
-  if (requiresAuth && !isAuth) next('/')
+  if (!isTestModeOn && requiresAuth && !isAuth) next('/')
   // else if (requiresUnauth && isAuth) next('/')
   next()
 })
