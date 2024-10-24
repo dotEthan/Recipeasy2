@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { collection, doc, setDoc, getFirestore } from 'firebase/firestore'
+import { getAuth, signOut } from 'firebase/auth'
+import { firebaseapp } from '../../../../firebase'
 import { UseAppStore } from '@/stores/app'
 import { UseUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import router from '@/router/main'
 
+const usersRef = collection(getFirestore(firebaseapp), 'users')
 const useAppStore = UseAppStore()
 const useUserStore = UseUserStore()
 const { isTestModeOn } = storeToRefs(useAppStore)
@@ -18,11 +22,8 @@ function testModeOff() {
 }
 
 function onModalOpen(type: string) {
-  console.log('open modal: ' + type)
+  // COnfusing, how's this working? all needed?
   useAppStore.toggleRegistrationModal()
-  // this.authService.authType.next(type)
-  // this.authService.modalOpen.next(true)
-  // this.authService.errorMsg.next({ code: '', message: '' })
 }
 
 function onClickRegisterSigning(type: string) {
@@ -30,20 +31,40 @@ function onClickRegisterSigning(type: string) {
   emit('mobileModalClose')
 }
 
-function onSave() {
+async function onSave() {
+  const loggedInUser = useUserStore.getCurrentUser
   console.log('saved')
-  // this.store.dispatch(new RecipeActions.StoreRecipes())
-  // this.store.dispatch(new ShoppingListActions.StoreShoppingLists())
+  try {
+    console.log('saving user: ', loggedInUser)
+    await setDoc(doc(usersRef, loggedInUser?.uid), loggedInUser)
+    console.log('saved')
+  } catch (error: any) {
+    // TODO: handle errors
+    console.log('Error during Saving:', error)
+  }
 }
 
-function onFetch() {
+function onReset() {
   console.log('fetched')
   // this.store.dispatch(new RecipeActions.FetchRecipes())
 }
 
-function authLogout() {
-  useUserStore.deauthorize()
-  useAppStore.turnTestModeOff()
+async function onSignOut() {
+  console.log('signing Out')
+  if (!useAppStore.isTestModeOn) {
+    const auth = getAuth()
+
+    try {
+      await signOut(auth)
+      console.log('signed out of firebase')
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
+  } else {
+    testModeOff()
+  }
+  useUserStore.$reset()
+  console.log('store reset')
   router.push('/')
 }
 </script>
@@ -79,7 +100,7 @@ function authLogout() {
     </div>
     <div class="nav-menu-items" v-if="isTestModeOn || isAuthorized">
       <li class="nav-menu-item">
-        <a @click="authLogout()" style="cursor: pointer" routerLink="/">Log Out</a>
+        <a @click="onSignOut()" style="cursor: pointer" routerLink="/">Log Out</a>
       </li>
       <li class="dropdown nav-menu-item" appDropdown>
         <a style="cursor: pointer" class="dropdown-toggle" role="button"
@@ -92,7 +113,7 @@ function authLogout() {
             >
           </li>
           <li>
-            <a class="dropdown-menu-item" style="cursor: pointer" @click="onFetch()">Fetch Data</a>
+            <a class="dropdown-menu-item" style="cursor: pointer" @click="onReset()">Reset Data</a>
           </li>
         </ul>
       </li>

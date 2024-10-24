@@ -1,47 +1,106 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../../../firebase'
+import {
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  getFirestore,
+  type DocumentData
+} from 'firebase/firestore'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  type User
+} from 'firebase/auth'
+import { auth, firebaseapp } from '../../../firebase'
+import { UseRecipeStore } from '@/stores/recipe'
 import router from '@/router/main'
+import { UseUserStore } from '@/stores/user'
+import type { LocalUser, UserState } from '@/types/UserState'
+import type { Recipe } from '@/types/Recipes'
 
 let authError = ref(false)
+const recipeStore = UseRecipeStore()
+const userStore = UseUserStore()
 let thisType = ref('signin')
 
-function onSubmit(e: any) {
-  authError.value = false
+// const docRef = doc(db, 'cities', 'SF')
+// const docSnap = await getDoc(docRef)
+
+const usersRef = collection(getFirestore(firebaseapp), 'users')
+
+async function onSubmit(e: any) {
   const { email, password } = e.target.elements
+  let usersFirebaseData
+  authError.value = false
   if (thisType.value === 'register') {
-    createUserWithEmailAndPassword(auth, email.value, password.value)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user
-        console.log('user: ', user)
-        router.push('/')
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        authError.value = error.message
-        console.log('code: ', errorCode)
-        console.log('MSG: ', errorMessage)
-      })
+    usersFirebaseData = await registerUser(email.value, password.value)
+  } else if (thisType.value === 'signin') {
+    usersFirebaseData = await signinUser(email.value, password.value)
+  }
+  const userStoredData = await (await getDoc(doc(usersRef, usersFirebaseData?.uid))).data()
+  if (usersFirebaseData) initializeUserStoreData(usersFirebaseData, userStoredData)
+  if (userStoredData) initializeRecipeStoreData(userStoredData)
+
+  router.push('/')
+}
+
+async function registerUser(email: string, password: string): Promise<User | undefined> {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    const user = userCredential.user
+
+    await setDoc(doc(usersRef, user.uid), {
+      uid: user.uid,
+      email: user.email,
+      displayName: '',
+      createdAt: new Date(),
+      recipes: []
+    })
+
+    console.log('User document created successfully:', user.uid)
+
+    return user
+  } catch (error: any) {
+    // TODO: handle errors
+    console.log('Error during registration:', error)
+    authError.value = error.message
+  }
+}
+
+async function signinUser(email: string, password: string): Promise<User | undefined> {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password)
+    const user = userCredential.user
+
+    return user
+  } catch (error: any) {
+    //TODO: handle errors
+    console.log('Error during registration:', error)
+    authError.value = error.message
+  }
+}
+
+function initializeUserStoreData(user: User | undefined, userData: DocumentData | undefined) {
+  const allUserTags: string[] = Array.from(
+    new Set(userData?.recipes.flatMap((recipe: Recipe) => recipe.tags))
+  )
+
+  console.log('tags set: ', allUserTags)
+  const userState = {
+    uid: user?.uid || '0000',
+    localUser: { ...userData, uid: user?.uid },
+    authorized: true,
+    allTags: allUserTags
   }
 
-  if (thisType.value === 'signin') {
-    signInWithEmailAndPassword(auth, email.value, password.value)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user
-        console.log('signed in: ', user)
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code
-        const errorMessage = error.message
-        authError.value = error.message
-        console.log('signed in error: ', error)
-      })
-  }
+  userStore.setAuthorizedUser(userState)
+}
+
+function initializeRecipeStoreData(userData: DocumentData) {
+  recipeStore.setRecipes(userData.recipes)
+  console.log('recipeStore filled. data: ', userData.recipes)
 }
 
 function onSwitchTypeHandler(type: string) {

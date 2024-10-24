@@ -91,6 +91,9 @@ export const UseRecipeStore = defineStore('recipes', {
     },
     setActiveFilters(filters: string[]) {
       this.activeFilters = filters
+    },
+    setRecipes(recipes: Recipe[]) {
+      this.recipes = recipes
     }
   }
 })
