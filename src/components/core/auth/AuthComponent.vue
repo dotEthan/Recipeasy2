@@ -8,20 +8,19 @@ import {
   getFirestore,
   type DocumentData
 } from 'firebase/firestore'
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  type User
-} from 'firebase/auth'
+import { createUserWithEmailAndPassword, type User } from 'firebase/auth'
 import { auth, firebaseapp } from '../../../firebase'
-import { UseRecipeStore } from '@/stores/recipe'
+import { useRecipeStore } from '@/stores/recipe'
 import router from '@/router/main'
-import { UseUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/user'
 import type { Recipe } from '@/types/Recipes'
+import { useAuthService } from '@/composables/useAuthService'
+import type { LocalUser, UserState } from '@/types/UserState'
 
 let authError = ref(false)
-const recipeStore = UseRecipeStore()
-const userStore = UseUserStore()
+const recipeStore = useRecipeStore()
+const userStore = useUserStore()
+const authService = useAuthService()
 let thisType = ref('signin')
 
 // const docRef = doc(db, 'cities', 'SF')
@@ -31,62 +30,80 @@ const usersRef = collection(getFirestore(firebaseapp), 'users')
 
 async function onSubmit(e: any) {
   const { email, password } = e.target.elements
-  let usersFirebaseData
+  let usersFirebaseData, initUserData: LocalUser, userStoredData
+
   authError.value = false
+
   if (thisType.value === 'register') {
-    usersFirebaseData = await registerUser(email.value, password.value)
+    authService
+      .registerUser(email.value, password.value)
+      .then((user) => {
+        console.log('Logged in user:', user)
+        usersFirebaseData = user
+        userStoredData = {
+          uid: user?.uid,
+          email: user?.email,
+          displayName: '',
+          createdAt: new Date(),
+          recipes: [],
+          shoppingLists: []
+        }
+
+        return setDoc(doc(usersRef, user?.uid), userStoredData)
+      })
+      .then(() => {
+        console.log('New User Data Saved to Firestore')
+      })
+      .catch((error) => console.error(error))
   } else if (thisType.value === 'signin') {
-    usersFirebaseData = await signinUser(email.value, password.value)
+    authService
+      .signIn(email.value, password.value)
+      .then((user) => {
+        console.log('Logged in user:', user)
+        usersFirebaseData = user
+        return getDoc(doc(usersRef, usersFirebaseData?.uid))
+      })
+      .then((data) => {
+        userStoredData = data.data()
+      })
+      .catch((error) => console.error(error))
   }
-  const userStoredData = await (await getDoc(doc(usersRef, usersFirebaseData?.uid))).data()
   if (usersFirebaseData) initializeUserStoreData(usersFirebaseData, userStoredData)
   if (userStoredData) initializeRecipeStoreData(userStoredData)
 
   router.push('/')
 }
 
-async function registerUser(email: string, password: string): Promise<User | undefined> {
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-    const user = userCredential.user
+// async function registerUser(email: string, password: string): Promise<User | undefined> {
+//   try {
+//     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+//     const user = userCredential.user
 
-    await setDoc(doc(usersRef, user.uid), {
-      uid: user.uid,
-      email: user.email,
-      displayName: '',
-      createdAt: new Date(),
-      recipes: []
-    })
+//     await setDoc(doc(usersRef, user.uid), {
+//       uid: user.uid,
+//       email: user.email,
+//       displayName: '',
+//       createdAt: new Date(),
+//       recipes: []
+//     })
 
-    console.log('User document created successfully:', user.uid)
+//     console.log('User document created successfully:', user.uid)
 
-    return user
-  } catch (error: any) {
-    // TODO: handle errors
-    console.log('Error during registration:', error)
-    authError.value = error.message
-  }
-}
-
-async function signinUser(email: string, password: string): Promise<User | undefined> {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password)
-    const user = userCredential.user
-
-    return user
-  } catch (error: any) {
-    //TODO: handle errors
-    console.log('Error during registration:', error)
-    authError.value = error.message
-  }
-}
+//     return user
+//   } catch (error: any) {
+//     // TODO: handle errors
+//     console.log('Error during registration:', error)
+//     authError.value = error.message
+//   }
+// }
 
 function initializeUserStoreData(user: User | undefined, userData: DocumentData | undefined) {
   const allUserTags: string[] = Array.from(
     new Set(userData?.recipes.flatMap((recipe: Recipe) => recipe.tags))
   )
 
-  console.log('tags set: ', allUserTags)
+  console.log('initial user: ', user)
+  console.log('initial userdata: ', userData)
   const userState = {
     uid: user?.uid || '0000',
     localUser: { ...userData, uid: user?.uid },
@@ -94,7 +111,7 @@ function initializeUserStoreData(user: User | undefined, userData: DocumentData 
     allTags: allUserTags
   }
 
-  userStore.setAuthorizedUser(userState)
+  userStore.setInitialUserState(userState)
 }
 
 function initializeRecipeStoreData(userData: DocumentData) {

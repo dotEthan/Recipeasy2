@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import SplashComponent from '@/components/core/splash/SplashComponent.vue'
 import WelcomeComponent from '@/components/core/welcome/WelcomeComponent.vue'
-import { UseAppStore } from '@/stores/app'
-import { UseUserStore } from '@/stores/user'
+import { useAppStore } from '@/stores/app'
+import { useUserStore } from '@/stores/user'
 
-const useAppStore = UseAppStore()
-const useUserStore = UseUserStore()
+const appStore = useAppStore()
+const userStore = useUserStore()
 </script>
 
 <template>
-  <SplashComponent v-if="!useAppStore.isTestModeOn && !useUserStore.isAuthorized" />
+  <SplashComponent v-if="!appStore.isTestModeOn && !userStore.isAuthorized" />
   <WelcomeComponent v-else />
 </template>
 

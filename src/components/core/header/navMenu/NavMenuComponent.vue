@@ -1,29 +1,32 @@
 <script setup lang="ts">
 import { collection, doc, setDoc, getFirestore } from 'firebase/firestore'
 import { getAuth, signOut } from 'firebase/auth'
-import { firebaseapp } from '../../../../firebase'
-import { UseAppStore } from '@/stores/app'
-import { UseUserStore } from '@/stores/user'
+import { auth, firebaseapp } from '../../../../firebase'
+import { useAppStore } from '@/stores/app'
+import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import router from '@/router/main'
+import { useDataService } from '@/composables/useDataService'
 
-const usersRef = collection(getFirestore(firebaseapp), 'users')
-const useAppStore = UseAppStore()
-const useUserStore = UseUserStore()
-const { isTestModeOn } = storeToRefs(useAppStore)
-const { isAuthorized } = storeToRefs(useUserStore)
+// const usersRef = collection(getFirestore(firebaseapp), 'users')
+const usersRef = collection(getFirestore(firebaseapp), 'test_data')
+const appStore = useAppStore()
+const userStore = useUserStore()
+const dataService = useDataService()
+const { isTestModeOn } = storeToRefs(appStore)
+const { isAuthorized } = storeToRefs(userStore)
 
 const emit = defineEmits(['mobileModalClose', 'yeah'])
 
 function testModeOff() {
-  useAppStore.turnTestModeOff()
-  useUserStore.deauthorize()
+  appStore.turnTestModeOff()
+  userStore.deauthorize()
   router.push('/')
 }
 
 function onModalOpen(type: string) {
   // COnfusing, how's this working? all needed?
-  useAppStore.toggleRegistrationModal()
+  appStore.toggleRegistrationModal()
 }
 
 function onClickRegisterSigning(type: string) {
@@ -32,15 +35,14 @@ function onClickRegisterSigning(type: string) {
 }
 
 async function onSave() {
-  const loggedInUser = useUserStore.getCurrentUser
-  console.log('saved')
-  try {
-    console.log('saving user: ', loggedInUser)
-    await setDoc(doc(usersRef, loggedInUser?.uid), loggedInUser)
-    console.log('saved')
-  } catch (error: any) {
-    // TODO: handle errors
-    console.log('Error during Saving:', error)
+  const loggedInUser = userStore.getCurrentUser
+  if (loggedInUser) {
+    try {
+      dataService.saveUserData(loggedInUser)
+    } catch (error: any) {
+      // TODO: handle errors
+      console.log('Error during Saving:', error)
+    }
   }
 }
 
@@ -51,7 +53,7 @@ function onReset() {
 
 async function onSignOut() {
   console.log('signing Out')
-  if (!useAppStore.isTestModeOn) {
+  if (!appStore.isTestModeOn) {
     const auth = getAuth()
 
     try {
@@ -63,7 +65,7 @@ async function onSignOut() {
   } else {
     testModeOff()
   }
-  useUserStore.$reset()
+  userStore.$reset()
   console.log('store reset')
   router.push('/')
 }
@@ -71,12 +73,12 @@ async function onSignOut() {
 
 <template>
   <ul class="nav navbar-nav">
-    <li routerLinkActive="active" class="nav-recipes">
+    <li routerLinkActive="active" class="nav-recipes" v-if="isTestModeOn || isAuthorized">
       <RouterLink class="nav-menu-item" to="recipes" @click="$emit('mobileModalClose')"
         >Recipes</RouterLink
       >
     </li>
-    <li routerLinkActive="active" class="nav-shopping-list">
+    <li routerLinkActive="active" class="nav-shopping-list" v-if="isTestModeOn || isAuthorized">
       <RouterLink class="nav-menu-item" to="shopping-list" @click="$emit('mobileModalClose')"
         >Shopping List</RouterLink
       >

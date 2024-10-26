@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { UseAppStore } from '@/stores/app'
-import { UseUserStore } from '@/stores/user'
+import { useAppStore } from '@/stores/app'
+import { useUserStore } from '@/stores/user'
 import AuthComponent from '../auth/AuthComponent.vue'
 
-const useAppStore = UseAppStore()
-const useUserStore = UseUserStore()
-const isTestModeOn = useAppStore.isTestModeOn
-const isAuthorized = useUserStore.isAuthorized
+const appStore = useAppStore()
+const userStore = useUserStore()
+const isTestModeOn = appStore.isTestModeOn
+const isAuthorized = userStore.isAuthorized
 
-const isRegistrationModalOpen = computed(() => useAppStore.isRegistrationModalOpen)
+const isRegistrationModalOpen = computed(() => appStore.isRegistrationModalOpen)
 
 console.log('is it on: ', isRegistrationModalOpen.value)
 </script>
@@ -22,7 +22,7 @@ console.log('is it on: ', isRegistrationModalOpen.value)
           <h1 class="app-title">Welcome to Recipeasy</h1>
           <button
             v-if="!isTestModeOn && !isAuthorized"
-            @click="useAppStore.turnTestModeOn"
+            @click="appStore.turnTestModeOn"
             class="testmode-btn"
             :class="{ testmodeOn: isTestModeOn }"
           >
