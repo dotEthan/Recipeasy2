@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import type { Ref } from 'vue'
 import type { Recipe } from '@/types/Recipes'
-import { UseRecipeStore } from '@/stores/recipe'
+import { useRecipeStore } from '@/stores/recipe'
 
 const emit = defineEmits(['editingCanceled'])
 
 let formValid = false
 let formData: Ref<Recipe>
 
-const recipeStore = UseRecipeStore()
+const recipeStore = useRecipeStore()
 
 const selectedRecipe: Recipe | undefined = recipeStore.getSelectedRecipe
 
@@ -28,13 +28,11 @@ if (selectedRecipe) {
   formData = ref({ ingredients: [], directions: [], tags: [] })
 }
 
-onMounted(() => {})
-
 function onSubmit() {
   if (formData?.value && selectedRecipe) {
     recipeStore.updateRecipe(formData.value)
   } else if (formData) {
-    recipeStore.createRecipe(formData.value)
+    recipeStore.addRecipe(formData.value)
   }
   onCancel()
 }
@@ -259,7 +257,7 @@ function onAddDirection(ingredientIndex: number) {
                           <button
                             type="button"
                             class="btn-delete"
-                            @click="onDeleteDirection(l)"
+                            @click="onDeleteDirection(k, l)"
                           ></button>
                         </div>
                       </div>

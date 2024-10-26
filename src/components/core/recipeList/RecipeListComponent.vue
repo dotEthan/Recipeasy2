@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { UseRecipeStore } from '@/stores/recipe'
+import { useRecipeStore } from '@/stores/recipe'
 import RecipeListItemComponent from './recipeListItem/RecipeListItemComponent.vue'
 import FilterComponent from './recipeFilter/FilterComponent.vue'
 import type { Recipe } from '@/types/Recipes'
 import RecipeDetailsComponent from './recipeDetails/recipeDetailsComponent.vue'
 import RecipeEditComponent from './recipeEdit/RecipeEditComponent.vue'
 
-const recipeStore = UseRecipeStore()
+const recipeStore = useRecipeStore()
 let selectedRecipe = ref<Recipe | undefined>(undefined)
 let editSelectedRecipe = ref(false)
 // const recipeDetailElement = useTemplateRef('recipeDetailElement')

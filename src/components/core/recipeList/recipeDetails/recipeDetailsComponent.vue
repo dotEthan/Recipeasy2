@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import router from '@/router/main'
-import { UseRecipeStore } from '@/stores/recipe'
+import { useRecipeStore } from '@/stores/recipe'
 import ListItemComponent from './listItem/ListItemComponent.vue'
 
-const recipeStore = UseRecipeStore()
+const recipeStore = useRecipeStore()
 const emit = defineEmits(['closeRecipeDetails', 'removedRecipe', 'editSelectedRecipe'])
 
 const selectedRecipe = recipeStore.getSelectedRecipe

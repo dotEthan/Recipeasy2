@@ -1,16 +1,16 @@
-import type { UserState } from '@/types/UserState'
+import type { LocalUser, UserState } from '@/types/UserState'
 import { defineStore } from 'pinia'
 
-export const UseUserStore = defineStore('user', {
+export const useUserStore = defineStore('user', {
   state: (): UserState => ({
     uid: '',
     authorized: false,
-    allTags: [],
+    allTags: [], // TODO move to recipe store
     localUser: {}
   }),
   getters: {
     isAuthorized: (state) => state.authorized,
-    getCurrentUser: (state) => state.localUser
+    getCurrentUser: (state): LocalUser | undefined => state.localUser
   },
   actions: {
     deauthorize() {
@@ -26,7 +26,7 @@ export const UseUserStore = defineStore('user', {
       const tagIndex = this.allTags.indexOf(tag)
       this.allTags.splice(tagIndex, 1)
     },
-    setAuthorizedUser(user: UserState) {
+    setInitialUserState(user: UserState) {
       this.$patch(user)
     },
     resetState() {

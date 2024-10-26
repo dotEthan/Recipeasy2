@@ -13,4 +13,5 @@ export type LocalUser = {
   lastName?: string
   displayName?: string
   recipes?: Recipe[]
+  email?: string
 }

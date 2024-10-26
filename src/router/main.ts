@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import { UseUserStore } from '@/stores/user'
-import { UseAppStore } from '@/stores/app'
+import { useUserStore } from '@/stores/user'
+import { useAppStore } from '@/stores/app'
 
 const routes = [
   {
@@ -22,14 +22,6 @@ const routes = [
     path: '/recipes',
     name: 'recipes',
     component: () => import('../views/RecipesView.vue'),
-    children: [
-      {
-        path: ':id',
-        name: 'recipeDetails',
-        component: () =>
-          import('../components/core/recipeList/recipeDetails/recipeDetailsComponent.vue')
-      }
-    ],
     meta: { requiresAuth: true }
   }
 ]
@@ -40,8 +32,8 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  const userStore = UseUserStore()
-  const appStore = UseAppStore()
+  const userStore = useUserStore()
+  const appStore = useAppStore()
   const isAuth = userStore.isAuthorized
   const isTestModeOn = appStore.isTestModeOn
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
