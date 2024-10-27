@@ -1,5 +1,12 @@
 import { ref } from 'vue'
-import { collection, doc, getDoc, setDoc, getFirestore } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  getFirestore,
+  CollectionReference
+} from 'firebase/firestore'
 import type { LocalUser } from '@/types/UserState'
 
 export function useDataService() {
@@ -8,9 +15,11 @@ export function useDataService() {
   const error = ref<string | null>(null)
 
   const saveUserData = async (user: LocalUser) => {
+    console.log('localUser data: ', user)
     error.value = null // Reset error
     try {
-      const usersRef = collection(db, 'users')
+      const usersRef = collection(db, 'test_data')
+      console.log('saving data: ', user)
       await setDoc(doc(usersRef, user.uid), user)
       console.log('User data saved successfully')
     } catch (err: any) {
@@ -19,11 +28,10 @@ export function useDataService() {
     }
   }
 
-  const loadUserData = async (uid: string) => {
+  const loadUserData = async (uid: string, collectionReference: CollectionReference) => {
     error.value = null
     try {
-      const usersRef = collection(db, 'users')
-      const docSnap = await getDoc(doc(usersRef, uid))
+      const docSnap = await getDoc(doc(collectionReference, uid))
 
       if (docSnap.exists()) {
         console.log('User data retrieved:', docSnap.data())

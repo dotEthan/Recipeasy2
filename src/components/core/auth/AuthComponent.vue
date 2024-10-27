@@ -1,53 +1,50 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import {
-  collection,
-  doc,
-  getDoc,
-  setDoc,
-  getFirestore,
-  type DocumentData
-} from 'firebase/firestore'
-import { createUserWithEmailAndPassword, type User } from 'firebase/auth'
-import { auth, firebaseapp } from '../../../firebase'
+import { collection, doc, getDoc, setDoc, getFirestore } from 'firebase/firestore'
+import { firebaseapp } from '../../../firebase'
 import { useRecipeStore } from '@/stores/recipe'
 import router from '@/router/main'
 import { useUserStore } from '@/stores/user'
-import type { Recipe } from '@/types/Recipes'
 import { useAuthService } from '@/composables/useAuthService'
 import type { LocalUser, UserState } from '@/types/UserState'
+import { useAppStore } from '@/stores/app'
+import type { User } from 'firebase/auth'
 
 let authError = ref(false)
 const recipeStore = useRecipeStore()
 const userStore = useUserStore()
+const appStore = useAppStore()
 const authService = useAuthService()
-let thisType = ref('signin')
-
-// const docRef = doc(db, 'cities', 'SF')
-// const docSnap = await getDoc(docRef)
+let thisType = ref(appStore.registrationOrSigninModal)
 
 const usersRef = collection(getFirestore(firebaseapp), 'users')
 
 async function onSubmit(e: any) {
   const { email, password } = e.target.elements
-  let usersFirebaseData, initUserData: LocalUser, userStoredData
+  let userState: UserState, userStoredData
 
   authError.value = false
 
   if (thisType.value === 'register') {
     authService
       .registerUser(email.value, password.value)
-      .then((user) => {
-        console.log('Logged in user:', user)
-        usersFirebaseData = user
+      .then((user: User) => {
+        console.log('Registered user:', user)
+        let email = user.email || undefined
+        if (email === null) {
+          email = undefined
+        }
         userStoredData = {
           uid: user?.uid,
-          email: user?.email,
+          email: user?.email ?? undefined,
           displayName: '',
           createdAt: new Date(),
           recipes: [],
           shoppingLists: []
         }
+        userState = { localUser: userStoredData, uid: user.uid, authorized: true }
+
+        initializeStores(userState)
 
         return setDoc(doc(usersRef, user?.uid), userStoredData)
       })
@@ -59,72 +56,40 @@ async function onSubmit(e: any) {
     authService
       .signIn(email.value, password.value)
       .then((user) => {
-        console.log('Logged in user:', user)
-        usersFirebaseData = user
-        return getDoc(doc(usersRef, usersFirebaseData?.uid))
+        console.log('Sign in user:', user)
+        return getDoc(doc(usersRef, user?.uid))
       })
       .then((data) => {
-        userStoredData = data.data()
+        userStoredData = data.data() as LocalUser
+        const userId = userStoredData.uid || ''
+        userState = { ...data.data(), uid: userId, authorized: true, localUser: userStoredData }
+        console.log('Store Data set:', userState)
+        initializeStores(userState)
       })
       .catch((error) => console.error(error))
   }
-  if (usersFirebaseData) initializeUserStoreData(usersFirebaseData, userStoredData)
-  if (userStoredData) initializeRecipeStoreData(userStoredData)
+  console.log('user signed in, initializing store')
 
   router.push('/')
+  appStore.toggleRegistrationModal()
 }
 
-// async function registerUser(email: string, password: string): Promise<User | undefined> {
-//   try {
-//     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-//     const user = userCredential.user
-
-//     await setDoc(doc(usersRef, user.uid), {
-//       uid: user.uid,
-//       email: user.email,
-//       displayName: '',
-//       createdAt: new Date(),
-//       recipes: []
-//     })
-
-//     console.log('User document created successfully:', user.uid)
-
-//     return user
-//   } catch (error: any) {
-//     // TODO: handle errors
-//     console.log('Error during registration:', error)
-//     authError.value = error.message
-//   }
-// }
-
-function initializeUserStoreData(user: User | undefined, userData: DocumentData | undefined) {
-  const allUserTags: string[] = Array.from(
-    new Set(userData?.recipes.flatMap((recipe: Recipe) => recipe.tags))
-  )
-
-  console.log('initial user: ', user)
-  console.log('initial userdata: ', userData)
-  const userState = {
-    uid: user?.uid || '0000',
-    localUser: { ...userData, uid: user?.uid },
-    authorized: true,
-    allTags: allUserTags
-  }
-
+function initializeStores(userState: UserState) {
+  // User Store
   userStore.setInitialUserState(userState)
-}
 
-function initializeRecipeStoreData(userData: DocumentData) {
-  recipeStore.setAllRecipes(userData.recipes)
-  console.log('recipeStore filled. data: ', userData.recipes)
+  // Recipe Store
+  if (userState.localUser?.recipes) recipeStore.setAllRecipes(userState.localUser?.recipes)
+
+  // App Store (if needed)
 }
 
 function onSwitchTypeHandler(type: string) {
-  thisType.value = type
+  appStore.toggleRegistrationModal(type)
 }
 
 function onClose() {
-  console.log('close')
+  appStore.toggleRegistrationModal()
 }
 </script>
 <template>
