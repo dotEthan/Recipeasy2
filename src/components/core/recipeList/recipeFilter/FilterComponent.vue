@@ -13,7 +13,7 @@ defineProps({
 })
 
 let mobileFiltersOpen = ref(false)
-let allUserTags = ref<String[]>([...userStore.allTags])
+let allUserTags = ref<String[]>([...recipeStore.getAllRecipeTags])
 const filterState = reactive<{ [key: string]: boolean }>({})
 let filterList = ref(allUserTags.value as string[])
 

@@ -23,16 +23,17 @@ Slow and steady win the race
 ### Done:
 
 - Learn Vue/Router/Store functionality thought docs
+- authentication (through firebase)
+- Recipe Book Functionality (display, edit, crud with firebase)
 
 ### Working on Now:
 
 - Routing & Store (ongoing as needed)
-- Header (Authorization/save/load missing, CSS incomplete)
-- Recipe Book Functionality (Mock data creation, filtering options, design)
-- Authorization (firebase)
+- Recipe Book Functionality (delete & shopping list integration)
 
 ### To Come:
 
+- Redesign
 - Shopping List Functionality
 - basic backend
 - Animations/Testing

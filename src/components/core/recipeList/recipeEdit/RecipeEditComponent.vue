@@ -34,6 +34,10 @@ function onSubmit() {
   } else if (formData) {
     recipeStore.addRecipe(formData.value)
   }
+  //TODO add new tags
+  // const allUserTags: string[] = Array.from(
+  //   new Set(userData?.recipes.flatMap((recipe: Recipe) => recipe.tags))
+  // )
   onCancel()
 }
 

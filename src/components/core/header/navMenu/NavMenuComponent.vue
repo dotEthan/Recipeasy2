@@ -1,22 +1,19 @@
 <script setup lang="ts">
-import { collection, doc, setDoc, getFirestore } from 'firebase/firestore'
+import { computed } from 'vue'
 import { getAuth, signOut } from 'firebase/auth'
-import { auth, firebaseapp } from '../../../../firebase'
 import { useAppStore } from '@/stores/app'
 import { useUserStore } from '@/stores/user'
-import { storeToRefs } from 'pinia'
 import router from '@/router/main'
 import { useDataService } from '@/composables/useDataService'
+import { useRecipeStore } from '@/stores/recipe'
 
-// const usersRef = collection(getFirestore(firebaseapp), 'users')
-const usersRef = collection(getFirestore(firebaseapp), 'test_data')
 const appStore = useAppStore()
 const userStore = useUserStore()
+const recipeStore = useRecipeStore()
 const dataService = useDataService()
-const { isTestModeOn } = storeToRefs(appStore)
-const { isAuthorized } = storeToRefs(userStore)
-
-const emit = defineEmits(['mobileModalClose', 'yeah'])
+const isTestModeOn = computed(() => appStore.isTestModeOn)
+const isAuthorized = computed(() => userStore.isAuthorized)
+const currentUser = computed(() => userStore.getCurrentUser)
 
 function testModeOff() {
   appStore.turnTestModeOff()
@@ -24,21 +21,14 @@ function testModeOff() {
   router.push('/')
 }
 
-function onModalOpen(type: string) {
-  // COnfusing, how's this working? all needed?
-  appStore.toggleRegistrationModal()
-}
-
 function onClickRegisterSigning(type: string) {
-  onModalOpen(type)
-  emit('mobileModalClose')
+  appStore.toggleRegistrationModal(type)
 }
 
 async function onSave() {
-  const loggedInUser = userStore.getCurrentUser
-  if (loggedInUser) {
+  if (currentUser.value) {
     try {
-      dataService.saveUserData(loggedInUser)
+      dataService.saveUserData(currentUser.value)
     } catch (error: any) {
       // TODO: handle errors
       console.log('Error during Saving:', error)
@@ -65,8 +55,10 @@ async function onSignOut() {
   } else {
     testModeOff()
   }
-  userStore.$reset()
-  console.log('store reset')
+  userStore.resetState()
+  recipeStore.resetState()
+  appStore.resetState()
+  console.log('stores reset')
   router.push('/')
 }
 </script>

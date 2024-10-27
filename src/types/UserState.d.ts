@@ -1,10 +1,10 @@
 import type { Recipe } from '@/types/Recipes'
+import type { ShoppingList } from './ShoppingLists'
 
 export type UserState = {
   uid: string
-  localUser?: LocalUser
+  localUser: LocalUser
   authorized: boolean
-  allTags: string[]
 }
 
 export type LocalUser = {
@@ -14,4 +14,6 @@ export type LocalUser = {
   displayName?: string
   recipes?: Recipe[]
   email?: string
+  createdAt?: date
+  shoppingLists?: ShoppingList[]
 }

@@ -1,5 +1,13 @@
+export type RecipeState = {
+  userId: string
+  recipes?: Recipe[]
+  allTags?: String[]
+  selectedRecipeId?: string
+  activeFilters?: String[]
+}
+
 export type Recipe = {
-  id?: number
+  id?: string
   name?: string
   rating?: number
   description?: string
