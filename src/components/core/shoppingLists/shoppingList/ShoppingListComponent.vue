@@ -1,38 +1,59 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { useShoppingListStore } from '@/stores/shoppingList'
 import ShoppingListItemComponent from './shoppingListItem/ShoppingListItemComponent.vue'
+import NewListButtonComponent from '../newListButton/NewListButtonComponent.vue'
 
 const shoppingListStore = useShoppingListStore()
 
-const props = defineProps({ viewableListIndex: String })
+const props = defineProps({
+  viewableListIndex: {
+    type: Number,
+    default: -1
+  }
+})
 
-const allShoppingLists = shoppingListStore.getAllShoppingLists
-// const allShoppingLists = ref()
-// console.log(allShoppingLists)
-console.log('index: ', props?.viewableListIndex)
-const currentShoppingList = allShoppingLists.value.filter(
-  (list) => list.id === props.viewableListIndex
-)[0]
-const currentItems = currentShoppingList.items || []
+const dummyData = { id: '', items: [], isDefault: false }
 
-let editingListIndex = '1'
-let editingIngredientIndex = '1'
-let defaultListIndex = '1'
-// let currentShoppingList = { title: 'fud', items: ['potate'] }
-// console.log(currentShoppingList)
+const allShoppingLists = shoppingListStore.getAllLists
+console.log('props: ', props.viewableListIndex)
+console.log('ids: ', shoppingListStore.viewableShoppingListIds)
+
+const listId = shoppingListStore.viewableShoppingListIds[props?.viewableListIndex]
+console.log('listId: ', listId)
+console.log('all lists: ', allShoppingLists.value)
+let currentList = allShoppingLists.value.filter((list) => list.id === listId)[0] || dummyData
+
+let currentListItems = currentList?.items
+let defaultListId = shoppingListStore.getDefaultId
+let isMinimized = ref(false)
+const hideOrShow = computed(() => (currentList.isShowing ? 'show' : 'hide'))
+let editingListIndex = 1
+let editingItemIndex = -1
+
 function onAddItem() {
-  console.log('add item')
+  currentListItems.push('')
+  editingItemIndex = currentListItems.length
 }
 
-function onDeleteItem(index: number) {
-  console.log('delete item')
+function onAddList() {
+  // shoppingListStore.
+  console.log('adding list')
+  // console.log('length', allShoppingLists.value.length - 1)
+  // console.log('cirrent', allShoppingLists.value[allShoppingLists.value.length - 1])
+  // currentList = allShoppingLists.value[allShoppingLists.value.length - 1] as ShoppingList
 }
 
-function onDeleteList() {
-  console.log('delete list')
+function onDeleteItem(itemIndex: number) {
+  currentListItems.splice(itemIndex, 1)
+}
+
+function onDeleteList(index: number) {
+  shoppingListStore.deleteList(index)
 }
 
 function onSaveList() {
+  // editingListIndex = -1
   console.log('save')
 }
 
@@ -40,38 +61,40 @@ function onEditList() {
   console.log('edit')
 }
 
-function onViewableListClose() {
+function toggleListCollapse() {
+  isMinimized.value = !isMinimized.value
+  currentList.isShowing = !currentList.isShowing
   console.log('close')
 }
 
 function onMakeDefault() {
-  console.log('make default')
+  shoppingListStore.setDefaultList(currentList.id)
 }
 </script>
 
 <template>
-  <div class="sl-each-contain">
+  <div class="sl-each-contain" v-if="currentList.id">
     <div class="sl-full-space">
       <div class="sl-contain">
         <div
           class="sl-main"
-          v-if="editingListIndex !== viewableListIndex || editingIngredientIndex !== ''"
+          v-if="editingListIndex !== viewableListIndex || editingItemIndex !== -1"
         >
           <div class="sl-full-header">
             <div class="sl-type-title">
-              {{ currentShoppingList.title }}
+              {{ currentList.title }}
             </div>
           </div>
-          <ul class="sl-ingredient-list">
+          <ul class="sl-ingredient-list" :class="{ minimize: isMinimized }">
             <li
               class="sl-ingredient-list-item"
-              v-for="(item, i) of currentShoppingList.items"
+              v-for="(item, i) of currentList.items"
               v-bind:key="i"
             >
               <ShoppingListItemComponent
-                v-model="currentItems[i]"
+                v-model="currentListItems[i]"
                 :class="
-                  editingListIndex === viewableListIndex && editingIngredientIndex === String(i)
+                  editingListIndex === viewableListIndex && editingItemIndex === i
                     ? 'sl-ingredient-input'
                     : 'sl-ingredient-input-hidden'
                 "
@@ -79,7 +102,7 @@ function onMakeDefault() {
               <!-- <app-ingredient-input
                 v-model="currentItems[i]"
                 :class="
-                  editingListIndex === viewableListIndex && editingIngredientIndex === String(i)
+                  editingListIndex === viewableListIndex && editingIngredientIndex === i
                     ? 'sl-ingredient-input'
                     : 'sl-ingredient-input-hidden'
                 "
@@ -88,7 +111,7 @@ function onMakeDefault() {
               </app-ingredient-input> -->
               <div
                 :class="
-                  editingListIndex !== viewableListIndex || editingIngredientIndex !== String(i)
+                  editingListIndex !== viewableListIndex || editingItemIndex !== i
                     ? 'sl-ingredient'
                     : 'sl-ingredient-hidden'
                 "
@@ -101,6 +124,32 @@ function onMakeDefault() {
               <div class="ingredient-add" @click="onAddItem()">+ Add Item</div>
             </li>
           </ul>
+          <div class="sl-footer">
+            <div class="list-edit-default" @click="onMakeDefault()">
+              <div
+                class="default-circle"
+                :class="{
+                  on: defaultListId === listId
+                }"
+              ></div>
+              Default
+            </div>
+            <div v-if="editingListIndex === viewableListIndex && editingItemIndex !== -1">
+              <div class="list-edit">Disabled</div>
+            </div>
+            <template v-else>
+              <div
+                class="list-edit"
+                v-if="editingListIndex !== viewableListIndex"
+                @click="onEditList()"
+              >
+                Edit
+              </div>
+              <div class="list-edit" v-else @click="onSaveList()">Save</div>
+              <div class="list-edit" @click="toggleListCollapse()">{{ hideOrShow }}</div>
+              <div class="list-edit" @click="onDeleteList(viewableListIndex || -1)">Delete</div>
+            </template>
+          </div>
         </div>
         <div v-else>
           <form class="sl-main" @submit="onSaveList()">
@@ -112,7 +161,7 @@ function onMakeDefault() {
             <ul class="sl-ingredient-list">
               <li
                 class="sl-list-item"
-                v-for="(ingredient, p) of currentShoppingList.items"
+                v-for="(ingredient, p) of currentList.items"
                 v-bind:key="p"
                 formArrayName="ingredients"
               >
@@ -127,35 +176,10 @@ function onMakeDefault() {
             </ul>
           </form>
         </div>
-        <div class="sl-footer">
-          <div class="list-edit-default" @click="onMakeDefault()">
-            <div
-              class="default-circle"
-              :class="{
-                on: defaultListIndex === viewableListIndex
-              }"
-            ></div>
-            Default
-          </div>
-          <div v-if="editingListIndex === viewableListIndex && editingIngredientIndex !== ''">
-            <div class="list-edit">Disabled</div>
-          </div>
-          <template v-else>
-            <div
-              class="list-edit"
-              v-if="editingListIndex !== viewableListIndex"
-              @click="onEditList()"
-            >
-              Edit
-            </div>
-            <div class="list-edit" v-else @click="onSaveList()">Save</div>
-            <div class="list-edit" @click="onViewableListClose()">Hide</div>
-            <div class="list-edit" @click="onDeleteList()">Delete</div>
-          </template>
-        </div>
       </div>
     </div>
   </div>
+  <NewListButtonComponent class="sl-list" v-else @add-new-list="onAddList()" />
 </template>
 
 <style lang="sass">
@@ -163,32 +187,32 @@ function onMakeDefault() {
 
 .sl-each-contain
     display: flex
-    height: 100%
+    // height: 100%
 
 .sl-full-space
     width: 100%
 
 .sl-contain
     width: 100%
-    height: 100%
+    // height: 100%
     // border-radius: 5px
     min-height: 200px
     display: flex
     flex-direction: column
     justify-content: space-between
     overflow: hidden
-    min-height: 40vh
-    max-height: 50vh
+    // min-height: 40vh
+    // max-height: 50vh
 
 .sl-main
-    height: 100%
-    min-height: 30vh
+    // height: 100%
+    // min-height: 30vh
 
 .sl-full-header
     display: flex
     align-items: center
     justify-content: center
-    min-height: 40px
+    min-height: 50px
     background: $colorLighter
     color: $colorDarkest
     border-top-right-radius: 2px
@@ -207,13 +231,18 @@ function onMakeDefault() {
 
 .sl-ingredient-list
     padding: 10px
-    height: 100%
+    height: 250px
     overflow-y: scroll
     border-left: 1px solid #cccccc
     border-right: 1px solid #cccccc
     flex-grow: 1
-    margin-bottom: 0
+    margin: 0
     list-style-type: none
+
+    &.minimize
+      padding: 0
+      margin: 0
+      height: 0
 
 .sl-list-item
     list-style-type: none
@@ -274,6 +303,7 @@ function onMakeDefault() {
 
 .sl-footer
     display: flex
+    height: 50px
 
 .list-edit, .list-edit-default
     background: $colorLighter

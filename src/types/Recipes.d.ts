@@ -1,9 +1,9 @@
 export type RecipeState = {
   userId: string
   recipes?: Recipe[]
-  allTags?: String[]
+  allTags?: string[]
   selectedRecipeId?: string
-  activeFilters?: String[]
+  activeFilters?: string[]
 }
 
 export type Recipe = {

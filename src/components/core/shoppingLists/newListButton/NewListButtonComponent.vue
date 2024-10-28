@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import { useShoppingListStore } from '@/stores/shoppingList'
+
+const emits = defineEmits(['addNewList'])
+
+const shoppingListStore = useShoppingListStore()
+
 function onAddNewList() {
-  console.log('add list)')
+  emits('addNewList')
+  shoppingListStore.addList()
 }
 </script>
 

@@ -71,8 +71,8 @@ async function onSignOut() {
       >
     </li>
     <li routerLinkActive="active" class="nav-shopping-list" v-if="isTestModeOn || isAuthorized">
-      <RouterLink class="nav-menu-item" to="shopping-list" @click="$emit('mobileModalClose')"
-        >Shopping List</RouterLink
+      <RouterLink class="nav-menu-item" to="shopping-lists" @click="$emit('mobileModalClose')"
+        >Shopping Lists</RouterLink
       >
     </li>
     <li v-if="isTestModeOn" @click="testModeOff" class="test-text-contain">

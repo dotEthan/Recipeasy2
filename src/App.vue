@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import HeaderComponent from './components/core/header/HeaderComponent.vue'
+import { useWindowResize } from './composables/useAppService'
+import { useAppStore } from './stores/app'
+import router from './router/main'
+
+const appStore = useAppStore()
+appStore.turnTestModeOn()
+router.push('/shopping-lists')
+useWindowResize()
 </script>
 
 <template>

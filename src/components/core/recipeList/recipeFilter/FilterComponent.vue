@@ -30,6 +30,8 @@ function filterButtonOnClick() {
   recipeStore.setActiveFilters(activeFilters)
   emit('filter')
 }
+
+//TODO Update filters when adding and removing
 </script>
 
 <template>
