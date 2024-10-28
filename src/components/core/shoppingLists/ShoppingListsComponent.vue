@@ -1,13 +1,22 @@
 <script setup lang="ts">
-const defaultListIndex = 0
-const viewableListsIndexArray: string[] = []
-const shoppingLists: any = []
+import { ref } from 'vue'
+import { useShoppingListStore } from '@/stores/shoppingList'
+import ShoppingListComponent from './shoppingList/ShoppingListComponent.vue'
+import NewListButtonComponent from './newListButton/NewListButtonComponent.vue'
 
+const shoppingListStore = useShoppingListStore()
+
+const defaultListIndex = 0
+const shoppingLists = ref([...shoppingListStore.shoppingLists])
+const viewableShoppingListIds = shoppingListStore.viewableShoppingListIds
+const wantedViewableListLength = shoppingListStore.wantedViewableListLength
+console.log('wanted legnth: ', wantedViewableListLength)
+console.log('viwable ids: ', viewableShoppingListIds)
 function onSlButtonClick(i: number) {}
 </script>
 
 <template>
-  <div class="container-fluid borderize">
+  <div class="shoppinglists-container">
     <div class="row borderize-contain">
       <div class="headline">
         <div class="text-center headline-title">
@@ -20,13 +29,15 @@ function onSlButtonClick(i: number) {}
           <!-- <hr> -->
           <div class="shopping-lists-contain">
             <div class="viewable-lists">
-              <app-sl-each
-                v-for="(listIndex, i) of viewableListsIndexArray"
-                v-bind:key="i"
-                class="sl-list"
-                :class="{ 'sl-default-list': defaultListIndex === i }"
-              >
-              </app-sl-each>
+              <template v-for="index in wantedViewableListLength" :key="index - 1">
+                <ShoppingListComponent
+                  v-if="viewableShoppingListIds[index - 1] !== undefined"
+                  class="sl-list"
+                  :class="{ 'sl-default-list': defaultListIndex }"
+                  :viewable-list-index="viewableShoppingListIds[index - 1]"
+                />
+                <NewListButtonComponent v-else />
+              </template>
             </div>
             <div class="full-shopping-lists">
               <div
@@ -57,6 +68,8 @@ function onSlButtonClick(i: number) {}
 <style lang="sass">
 @import "../../../assets/variables"
 
+.shoppinglists-container
+  width: 100%
 .headline
     display: flex
     position: relative

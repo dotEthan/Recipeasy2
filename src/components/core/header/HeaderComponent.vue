@@ -13,7 +13,7 @@ function toggleMobileMenu() {
 
 <template>
   <nav class="navbar navbar-default">
-    <div class="container-fluid nav__container" appMenuClose>
+    <div class="nav__container">
       <div class="navbar-brand-contain">
         <RouterLink class="navbar-brand" to="/">Recipeasy</RouterLink>
       </div>

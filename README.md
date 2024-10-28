@@ -2,7 +2,7 @@
 
 [Landing Page is Here!](https://stupefied-morse-5e1233.netlify.com/) (Old Site)
 
-All backend functionality is broken.
+All backend functionality is broken. New site Deploy coming this week
 
 ### Status
 
