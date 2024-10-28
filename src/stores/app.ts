@@ -27,7 +27,15 @@ export const useAppStore = defineStore('app', () => {
       await signInWithEmailAndPassword(auth, 'testmode@testmode.com', 'testmode')
       testModeOn.value = true
 
-      const userStoredData = (await dataService.loadUserData('testmode', testDataRef)) as LocalUser
+      // const userStoredData = (await dataService.loadUserData('testmode', testDataRef)) as LocalUser
+
+      const userStoredData = {
+        uid: '007',
+        recipes: [],
+        shoppingLists: [
+          { id: '007', isDefault: true, title: 'groceries', items: ['potates', 'mylk', 'buefy'] }
+        ]
+      } as LocalUser
       userStore.setTestModeOn(userStoredData)
       recipeStore.setAllRecipes(userStoredData.recipes || [])
     } catch (error: any) {

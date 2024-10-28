@@ -20,7 +20,7 @@ allRecipeTags.value = recipeStore.getAllRecipeTags
 watch(recipeStore.recipes, filterRecipes, { deep: true, immediate: true })
 
 function onNewRecipe() {
-  recipeStore.setSelectedRecipeId(-1)
+  recipeStore.setSelectedRecipeId('-1')
   editSelectedRecipe.value = true
   console.log('add recipe')
 }
@@ -43,7 +43,7 @@ function closeRecipeDetails() {
   selectedRecipe.value = undefined
 }
 
-function openRecipeDetail(id: number) {
+function openRecipeDetail(id: string) {
   console.log('id: ', id)
   selectedRecipe.value = recipeStore.recipes.find((recipe) => recipe.id === id)
   console.log(selectedRecipe.value?.name)
