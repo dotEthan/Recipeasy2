@@ -8,6 +8,7 @@ export type ShoppingListState = {
 export type ShoppingList = {
   id: string
   title?: string
-  items?: string[]
+  items: string[]
   isDefault: boolean
+  isShowing: boolean
 }

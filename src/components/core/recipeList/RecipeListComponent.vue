@@ -6,6 +6,8 @@ import FilterComponent from './recipeFilter/FilterComponent.vue'
 import type { Recipe } from '@/types/Recipes'
 import RecipeDetailsComponent from './recipeDetails/recipeDetailsComponent.vue'
 import RecipeEditComponent from './recipeEdit/RecipeEditComponent.vue'
+import RecipesEmptyComponent from './recipesEmpty/recipesEmptyComponent.vue'
+import NewRecipeButtonComponent from './newRecipeButton/newRecipeButtonComponent.vue'
 
 const recipeStore = useRecipeStore()
 let selectedRecipe = ref<Recipe | undefined>(undefined)
@@ -18,12 +20,6 @@ let allRecipeTags = ref<string[] | undefined>(undefined)
 allRecipeTags.value = recipeStore.getAllRecipeTags
 
 watch(recipeStore.recipes, filterRecipes, { deep: true, immediate: true })
-
-function onNewRecipe() {
-  recipeStore.setSelectedRecipeId('-1')
-  editSelectedRecipe.value = true
-  console.log('add recipe')
-}
 
 function filterRecipes() {
   const activeFilters = recipeStore.getActiveFilters
@@ -63,23 +59,9 @@ function openRecipeDetail(id: string) {
         @openRecipe="openRecipeDetail"
         @removedRecipe="filterRecipes"
       />
-      <div class="new-container">
-        <button class="btn new-recipe" @click="onNewRecipe()">+</button>
-        <div class="recipe-title">
-          <h5>New Recipe</h5>
-        </div>
-      </div>
+      <NewRecipeButtonComponent />
     </div>
-    <div class="no-recipes" v-else>
-      I looked for Recipes and found none. What madness is this? Add a recipe below before you
-      starve!
-      <div class="new-container">
-        <button class="btn new-recipe" @click="onNewRecipe()">+</button>
-        <div class="recipe-title">
-          <h5>New Recipe</h5>
-        </div>
-      </div>
-    </div>
+    <RecipesEmptyComponent v-else />
     <div class="recipe-details-container" v-if="selectedRecipe && !editSelectedRecipe">
       <RecipeDetailsComponent
         @closeRecipeDetails="closeRecipeDetails"

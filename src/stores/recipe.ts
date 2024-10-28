@@ -10,11 +10,9 @@ export const useRecipeStore = defineStore('recipes', () => {
   const activeFilters = ref<string[]>([])
 
   const recipeLength = computed(() => recipes.value.length)
-
   const getSelectedRecipe = computed(() =>
     recipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
   )
-
   const getAllRecipeTags = computed(() =>
     Array.from(
       new Set(
@@ -24,8 +22,15 @@ export const useRecipeStore = defineStore('recipes', () => {
       )
     )
   )
-
   const getActiveFilters = computed(() => activeFilters.value)
+
+  function setRecipeState(state: RecipeState) {
+    userId.value = state.userId
+    recipes.value = state.recipes || []
+    allTags.value = state.allTags || []
+    selectedRecipeId.value = state.selectedRecipeId || ''
+    activeFilters.value = state.activeFilters || []
+  }
 
   function updateRecipe(recipe: Recipe) {
     recipes.value = recipes.value.map((r) => (r.id === recipe.id ? recipe : r))
@@ -117,6 +122,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     getSelectedRecipe,
     getAllRecipeTags,
     getActiveFilters,
+    setRecipeState,
     updateRecipe,
     addRecipe,
     setSelectedRecipeId,

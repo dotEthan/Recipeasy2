@@ -1,46 +1,33 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { useRecipeStore } from './recipe'
-import { auth } from '../firebase'
-import { collection, getFirestore } from 'firebase/firestore'
-import { signInWithEmailAndPassword } from 'firebase/auth'
 
 import { useUserStore } from './user'
-import { useDataService } from '@/composables/useDataService'
-import type { LocalUser } from '@/types/UserState'
+
+import dummyData from '../assets/dummyData.json'
+import { useShoppingListStore } from './shoppingList'
+
+type ScreenSize = 'sm' | 'md' | 'lg'
 
 export const useAppStore = defineStore('app', () => {
   const recipeStore = useRecipeStore()
   const userStore = useUserStore()
-  const dataService = useDataService()
-  const db = getFirestore()
-  const testDataRef = collection(db, 'test_data')
+  const shoppingListStore = useShoppingListStore()
 
   const testModeOn = ref(false)
   const registrationOrSigninModal = ref('')
+  const screenSize = ref<ScreenSize>('lg')
 
   const isTestModeOn = computed(() => testModeOn.value)
   const isRegistrationModalOpen = computed(() => registrationOrSigninModal.value.length > 0)
 
-  async function turnTestModeOn() {
-    try {
-      await signInWithEmailAndPassword(auth, 'testmode@testmode.com', 'testmode')
-      testModeOn.value = true
-
-      // const userStoredData = (await dataService.loadUserData('testmode', testDataRef)) as LocalUser
-
-      const userStoredData = {
-        uid: '007',
-        recipes: [],
-        shoppingLists: [
-          { id: '007', isDefault: true, title: 'groceries', items: ['potates', 'mylk', 'buefy'] }
-        ]
-      } as LocalUser
-      userStore.setTestModeOn(userStoredData)
-      recipeStore.setAllRecipes(userStoredData.recipes || [])
-    } catch (error: any) {
-      console.log('Error during registration:', error)
-    }
+  function turnTestModeOn() {
+    const parsedDummyData = dummyData as any //TODO Correctly type
+    console.log(parsedDummyData)
+    testModeOn.value = true
+    userStore.setTestModeOn(parsedDummyData)
+    recipeStore.setRecipeState(parsedDummyData.recipeState || {})
+    shoppingListStore.setListState(parsedDummyData.shoppingListState || {})
   }
 
   function turnTestModeOff() {
@@ -57,6 +44,10 @@ export const useAppStore = defineStore('app', () => {
     }, 10)
   }
 
+  function setScreenSize(updatedScreenSize: ScreenSize) {
+    screenSize.value = updatedScreenSize
+  }
+
   function resetState() {
     testModeOn.value = false
     registrationOrSigninModal.value = ''
@@ -70,6 +61,7 @@ export const useAppStore = defineStore('app', () => {
     turnTestModeOn,
     turnTestModeOff,
     toggleRegistrationModal,
+    setScreenSize,
     resetState
   }
 })

@@ -2,16 +2,11 @@
 import { ref } from 'vue'
 import { useShoppingListStore } from '@/stores/shoppingList'
 import ShoppingListComponent from './shoppingList/ShoppingListComponent.vue'
-import NewListButtonComponent from './newListButton/NewListButtonComponent.vue'
 
 const shoppingListStore = useShoppingListStore()
 
 const defaultListIndex = 0
 const shoppingLists = ref([...shoppingListStore.shoppingLists])
-const viewableShoppingListIds = shoppingListStore.viewableShoppingListIds
-const wantedViewableListLength = shoppingListStore.wantedViewableListLength
-console.log('wanted legnth: ', wantedViewableListLength)
-console.log('viwable ids: ', viewableShoppingListIds)
 function onSlButtonClick(i: number) {}
 </script>
 
@@ -29,14 +24,15 @@ function onSlButtonClick(i: number) {}
           <!-- <hr> -->
           <div class="shopping-lists-contain">
             <div class="viewable-lists">
-              <template v-for="index in wantedViewableListLength" :key="index - 1">
+              <template
+                v-for="index in shoppingListStore.wantedViewableListLength"
+                :key="index - 1"
+              >
                 <ShoppingListComponent
-                  v-if="viewableShoppingListIds[index - 1] !== undefined"
                   class="sl-list"
                   :class="{ 'sl-default-list': defaultListIndex }"
-                  :viewable-list-index="viewableShoppingListIds[index - 1]"
+                  :viewable-list-index="index - 1"
                 />
-                <NewListButtonComponent v-else />
               </template>
             </div>
             <div class="full-shopping-lists">
@@ -70,6 +66,7 @@ function onSlButtonClick(i: number) {}
 
 .shoppinglists-container
   width: 100%
+
 .headline
     display: flex
     position: relative
@@ -94,14 +91,13 @@ function onSlButtonClick(i: number) {}
 .sl-list
     width: 100%
     margin: 0 5px
-    min-height: 350px
     max-width: 250px
 
     @media (min-width: 768px)
         width: 50%
 
     @media (min-width: 1024px)
-        width: 25%
+        flex-grow: 1
 
 .viewable-lists
     display: flex
