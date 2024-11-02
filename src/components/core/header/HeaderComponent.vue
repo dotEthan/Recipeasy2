@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import MenuBurger from '@/components/core/header/menuBurger/MenuBurger.vue'
+import MenuBurger from './menuBurger/MenuBurger.vue'
 import NavMenuComponent from './navMenu/NavMenuComponent.vue'
 
 let isMobileMenuActive = ref(false)
