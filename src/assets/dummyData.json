@@ -68,14 +68,14 @@
         "title": "Groceries",
         "items": ["potatoes", "Tomatoes", "Potahtoes", "Tomahtoes"],
         "isDefault": true,
-        "isShowing": true
+        "isOpen": true
       },
       {
         "id": "108",
         "title": "Camping",
         "items": ["Hot Dogs", "Marshmallows", "Tent"],
         "isDefault": false,
-        "isShowing": false
+        "isOpen": false
       }
     ],
     "defaultListId": "107"

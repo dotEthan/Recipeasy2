@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+// import { ref } from 'vue'
 import { useShoppingListStore } from '@/stores/shoppingList'
 import ShoppingListComponent from './shoppingList/ShoppingListComponent.vue'
+import NewListButtonComponent from './newListButton/NewListButtonComponent.vue'
 
 const shoppingListStore = useShoppingListStore()
 
 const defaultListIndex = 0
-const shoppingLists = ref([...shoppingListStore.shoppingLists])
-function onSlButtonClick(i: number) {}
+
+function onAddList() {
+  shoppingListStore.addNewList()
+  console.log('adding list')
+}
 </script>
 
 <template>
@@ -20,40 +24,20 @@ function onSlButtonClick(i: number) {}
       </div>
       <div class="row all-lists-contain">
         <div class="col-xs-12">
-          <!-- <app-shopping-edit></app-shopping-edit> -->
-          <!-- <hr> -->
           <div class="shopping-lists-contain">
             <div class="viewable-lists">
               <template
-                v-for="index in shoppingListStore.wantedViewableListLength"
-                :key="index - 1"
+                v-for="(shoppingList, i) in shoppingListStore.shoppingLists"
+                :key="shoppingList.id"
               >
                 <ShoppingListComponent
                   class="sl-list"
                   :class="{ 'sl-default-list': defaultListIndex }"
-                  :viewable-list-index="index - 1"
+                  :currentList="shoppingListStore.shoppingLists[i]"
+                  :currentListIndex="i"
                 />
               </template>
-            </div>
-            <div class="full-shopping-lists">
-              <div
-                v-for="(shoppingList, j) of shoppingLists"
-                v-bind:key="j"
-                class="full-shopping-list"
-              >
-                <div class="sl-button-contain">
-                  <button class="sl-button" @click="onSlButtonClick(j)">
-                    {{ shoppingList.title }} <br />
-                    <div v-if="defaultListIndex === j" class="sl-button-isdefault">(Default)</div>
-                  </button>
-                </div>
-              </div>
-              <!-- <app-sl-button *ngFor="let shoppingList of (shoppingListState$ | async).shoppingLists; let i = index"
-                           [shoppingListTitle]="shoppingList.title"
-                           [listIndex]="i"
-                           [isDefault]="defaultListIndex===i"
-                           class="full-shopping-list">
-            </app-sl-button> -->
+              <NewListButtonComponent class="sl-list" @add-new-list="onAddList()" />
             </div>
           </div>
         </div>
@@ -101,6 +85,7 @@ function onSlButtonClick(i: number) {}
 
 .viewable-lists
     display: flex
+    flex-wrap: wrap
     justify-content: space-around
     width: 100%
 

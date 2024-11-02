@@ -1,80 +1,66 @@
 <script setup lang="ts">
+import { useShoppingListStore } from '@/stores/shoppingList'
 import { ref } from 'vue'
 
-const inputValue = ref('value')
-let editingItemIndex = '1'
+const props = defineProps({
+  item: String,
+  itemIndex: {
+    type: Number,
+    default: -1
+  },
+  listIndex: {
+    type: Number,
+    default: -1
+  }
+})
 
-function saveItem(item: string) {
-  console.log('save item: ', item)
+const shoppingListStore = useShoppingListStore()
+
+function onEditItem() {
+  console.log('edit item index: ', props.itemIndex)
+  console.log('edit list index: ', props.listIndex)
+  shoppingListStore.setEditingListIndex(props.listIndex)
+  shoppingListStore.setEditingItemIndex(props.itemIndex)
+}
+function onDeleteItem() {
+  shoppingListStore.deleteListItem(props.listIndex, props.itemIndex)
 }
 </script>
 <template>
-  <div class="input-row">
-    <input type="text" class="ingredient-inplace" v-model="inputValue" />
-    <div class="save-icon" @click="saveItem(inputValue)" v-if="editingItemIndex !== '-1'">
-      <div class="labels"></div>
-    </div>
+  <div class="sl-ingredient">
+    <div class="sl-ingredient-name" @click="onEditItem()">{{ item }}</div>
+    <div class="ingredient-delete" @click="onDeleteItem()"></div>
   </div>
 </template>
 <style lang="sass">
-.input-row
-    display: flex
-    justify-content: space-between
 
-.ingredient-inplace
-    width: 80%
+.sl-ingredient
+  display: flex
+  justify-content: space-between
+  align-items: center
 
-.save-icon
-    width: 24px
-    height: 25px
-    background: black
-    border-radius: 3px
-    position: relative
-    cursor: pointer
+.sl-ingredient-name
+  width: 100%
 
-    &:after
-        content: ''
-        position: absolute
-        top: 0
-        right: 0
-        width: 0
-        height: 0
-        border-style: solid
-        border-width: 0 .5rem .5rem 0
-        border-color: transparent rgb(255,255,255) transparent transparent
+.ingredient-delete
+  width: 25px
+  height: 25px
+  position: relative
+  cursor: pointer
 
-    &:hover
-        background: green
-
-        .labels:before
-            background: green
-
-.labels
+  &:before, &:after
+    content: ''
     position: absolute
-    top: 15%
+    top: 50%
     left: 50%
-    transform: translateX(-50%)
-    width: 60%
-    height: 30%
-    background: white
-    border-radius: 2px
+    transform: translate(-50%, -50%) rotate(45deg)
+    background: #A41C1C
 
-    &:before
-        content: ''
-        position: absolute
-        top: 15%
-        left: 55%
-        width: 25%
-        height: 70%
-        background: black
+  &:before
+    width: 2px
+    height: 15px
 
-    &:after
-        content: ''
-        position: absolute
-        bottom: -160%
-        left: 50%
-        transform: translateX(-50%)
-        width: 125%
-        height: 125%
-        background: white
+  &:after
+    width: 15px
+    height: 2px
 </style>

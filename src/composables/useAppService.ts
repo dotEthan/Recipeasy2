@@ -29,7 +29,7 @@ export function useWindowResize() {
     }
     console.log(screenSize)
     appStore.setScreenSize(screenSize)
-    shoppingListStore.updateWantedViewableLength(screenSize)
+    // shoppingListStore.updateWantedViewableLength(screenSize)
   }
 
   const onResize = debounce(() => {

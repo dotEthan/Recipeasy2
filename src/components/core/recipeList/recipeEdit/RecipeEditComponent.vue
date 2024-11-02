@@ -129,11 +129,7 @@ function onAddDirection(ingredientIndex: number) {
           </div>
           <hr />
           <div class="item-group-contain" formGroupName="ingredients">
-            <div
-              class="item-contain"
-              v-for="(ingredientType, i) of formData.ingredients"
-              v-bind:key="i"
-            >
+            <div class="item-contain" v-for="(ingredientType, i) of formData.ingredients" :key="i">
               <div class="form-group item-type-contain">
                 <label class="section-title" for="ingredient-group{{i}}"
                   >INGREDIENT GROUP NAME:</label
@@ -154,11 +150,7 @@ function onAddDirection(ingredientIndex: number) {
                 <div class="item-list-contain">
                   <div class="section-title">INGREDIENTS:</div>
                   <div class="item-list">
-                    <div
-                      class="item-each"
-                      v-for="(ingredient, j) of ingredientType.steps"
-                      v-bind:key="j"
-                    >
+                    <div class="item-each" v-for="(ingredient, j) of ingredientType.steps" :key="j">
                       <div class="item-each-container">
                         <div>
                           <label class="hidden" for="ingredient-{{j}}">Amount</label>
@@ -220,11 +212,7 @@ function onAddDirection(ingredientIndex: number) {
           </div>
           <hr />
           <div class="item-group-contain" formGroupName="directions">
-            <div
-              class="item-contain"
-              v-for="(directionType, k) of formData.directions"
-              v-bind:key="k"
-            >
+            <div class="item-contain" v-for="(directionType, k) of formData.directions" :key="k">
               <div class="form-group">
                 <label class="section-title" for="direction-group{{k}}">DIRECTION GROUP NAME</label>
                 <div class="item-type-row">
@@ -243,11 +231,7 @@ function onAddDirection(ingredientIndex: number) {
                 <div class="item-list-contain">
                   <div class="section-title">DIRECTIONS</div>
                   <div class="item-list">
-                    <div
-                      class="item-each"
-                      v-for="(direction, l) of directionType.steps"
-                      v-bind:key="l"
-                    >
+                    <div class="item-each" v-for="(direction, l) of directionType.steps" :key="l">
                       <div>
                         <label class="hidden" for="direction{{l}}">DIRECTION</label>
 

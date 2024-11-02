@@ -24,7 +24,7 @@ function onEditRecipe() {
 function onDeleteRecipe() {
   console.log('removing')
   recipeStore.removeSelectedRecipe()
-  recipeStore.setSelectedRecipeId(-1)
+  recipeStore.setSelectedRecipeId('-1')
   emit('closeRecipeDetails')
   // emit('removedRecipe')
 }
@@ -81,7 +81,7 @@ function onDeleteRecipe() {
           <div v-else class="type-section-title">No Ingredients</div>
           <ListItemComponent
             v-for="(ingredient, index) of selectedRecipe?.ingredients"
-            v-bind:key="index"
+            :key="index"
             :itemObject="ingredient"
             itemType="ingredient"
           />
