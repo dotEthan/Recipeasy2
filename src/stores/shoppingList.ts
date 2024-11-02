@@ -5,31 +5,40 @@ import type { ShoppingList, ShoppingListState } from '@/types/ShoppingLists'
 
 export const useShoppingListStore = defineStore('shopping-lists', () => {
   const uid = ref('')
-  const shoppingLists = ref<ShoppingList[]>([
-    { id: '007', items: ['potates', 'lotion', 'lots of lotion'], title: 'Stuff', isDefault: true }
-  ])
+  const shoppingLists = ref<ShoppingList[]>([])
   const defaultListId = ref(shoppingLists.value.find((list) => list.isDefault)?.id || '')
-  const viewableShoppingListIds = ref(['107'])
-  const wantedViewableListLength = ref(4)
-
-  const getAllLists = computed(() => shoppingLists)
-  const getDefaultId = computed(() => defaultListId)
+  const editingListIndex = ref(-1)
+  const editingItemIndex = ref(-1)
 
   function setListState(state: ShoppingListState) {
     console.log()
     uid.value = state.uid
     shoppingLists.value = state.shoppingLists
-    viewableShoppingListIds.value = state.viewableShoppingListIds
     defaultListId.value = state.defaultListId
   }
 
-  function addList() {
-    const newList = { id: uuidv4(), isDefault: false, items: [] } as ShoppingList
+  function getItemValue(listIndex: number, itemIndex: number) {
+    return shoppingLists.value[listIndex].items[itemIndex]
+  }
+
+  function addNewList() {
+    const listTitle = 'New List #' + shoppingLists.value.length
+    const newList = {
+      id: uuidv4(),
+      title: listTitle,
+      isDefault: false,
+      items: [],
+      isOpen: true
+    } as ShoppingList
     shoppingLists.value.push(newList)
   }
 
   function deleteList(index: number) {
-    shoppingLists.value.splice(index, 1)
+    console.log('deleting index: ', index)
+    console.log('dleteing list: ', shoppingLists.value[index])
+    if (index >= 0 && index < shoppingLists.value.length) {
+      shoppingLists.value.splice(index, 1)
+    }
   }
 
   function setDefaultList(newDefaultId: string) {
@@ -40,29 +49,23 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
     )
   }
 
-  function updateWantedViewableLength(screensize: string) {
-    if (screensize === 'sm') {
-      wantedViewableListLength.value = 1
-    } else if (screensize === 'md') {
-      wantedViewableListLength.value = 2
-    } else {
-      wantedViewableListLength.value = 4
-    }
-    console.log('screensize changed, list size now: ', wantedViewableListLength.value)
+  function setEditingListIndex(i: number) {
+    editingListIndex.value = i
   }
 
-  // addListToViewable() {
+  function setEditingItemIndex(i: number) {
+    editingItemIndex.value = i
+  }
 
-  // }
-
-  // removeListFromViewable() {
-
-  // }
+  function deleteListItem(listIndex: number, itemIndex: number) {
+    console.log('listIndex: ', listIndex)
+    console.log('itemIndex: ', itemIndex)
+    if (listIndex >= 0 && itemIndex >= 0) shoppingLists.value[listIndex].items.splice(itemIndex, 1)
+  }
 
   function resetListState() {
     uid.value = ''
     shoppingLists.value = []
-    viewableShoppingListIds.value = []
     defaultListId.value = ''
   }
 
@@ -70,15 +73,16 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
     uid,
     shoppingLists,
     defaultListId,
-    viewableShoppingListIds,
-    wantedViewableListLength,
-    getAllLists,
-    getDefaultId,
+    editingListIndex,
+    editingItemIndex,
     setListState,
-    addList,
+    setEditingListIndex,
+    setEditingItemIndex,
+    getItemValue,
+    addNewList,
     deleteList,
     setDefaultList,
-    updateWantedViewableLength,
+    deleteListItem,
     resetListState
   }
 })

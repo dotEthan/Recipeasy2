@@ -10,5 +10,5 @@ export type ShoppingList = {
   title?: string
   items: string[]
   isDefault: boolean
-  isShowing: boolean
+  isOpen: boolean
 }
