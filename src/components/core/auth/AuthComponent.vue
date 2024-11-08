@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { collection, doc, getDoc, setDoc, getFirestore } from 'firebase/firestore'
-import { firebaseapp } from '../../../firebase'
+import type { User } from 'firebase/auth'
 import { useRecipeStore } from '@/stores/recipe'
-import router from '@/router/main'
 import { useUserStore } from '@/stores/user'
+import { useAppStore } from '@/stores/app'
+import router from '@/router/main'
 import { useAuthService } from '@/composables/useAuthService'
 import type { LocalUser, UserState } from '@/types/UserState'
-import { useAppStore } from '@/stores/app'
-import type { User } from 'firebase/auth'
 
 let authError = ref(false)
 const recipeStore = useRecipeStore()
@@ -17,7 +16,8 @@ const appStore = useAppStore()
 const authService = useAuthService()
 let thisType = ref(appStore.registrationOrSigninModal)
 
-const usersRef = collection(getFirestore(firebaseapp), 'users')
+const db = getFirestore()
+const usersRef = collection(db, 'users')
 
 async function onSubmit(e: any) {
   const { email, password } = e.target.elements
