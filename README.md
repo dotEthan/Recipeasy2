@@ -2,7 +2,7 @@
 
 [Landing Page is Here!](https://stupefied-morse-5e1233.netlify.com/) (Old Site)
 
-All backend functionality is broken. New site Deploy coming this week
+All backend functionality is broken. New site Deploy coming shortly
 
 ### Status
 
@@ -23,23 +23,22 @@ Slow and steady win the race
 ### Done:
 
 - Learn Vue/Router/Store functionality thought docs
-- authentication (through firebase)
+- authentication and Data storage(through firebase)
 - Recipe Book Functionality (display, edit, crud with firebase)
 
 ### Working on Now:
 
 - Routing & Store (ongoing as needed)
 - Recipe Book Functionality (delete & shopping list integration)
+- Shopping List Functionality
 
 ### To Come:
 
-- Redesign
-- Shopping List Functionality
-- basic backend
 - Animations/Testing
 
 ### Future thoughts:
 
+- Redesign
 - bespoke Backend Functionality
 - Meal Planning & Calendar
 - Website Parsing to allow importing recipes
