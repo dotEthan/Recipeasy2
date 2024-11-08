@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import MenuBurger from './menuBurger/MenuBurger.vue'
+import MenuBurgerComponent from './menuBurger/MenuBurgerComponent.vue'
 import NavMenuComponent from './navMenu/NavMenuComponent.vue'
 
 let isMobileMenuActive = ref(false)
@@ -17,7 +17,7 @@ function toggleMobileMenu() {
       <div class="navbar-brand-contain">
         <RouterLink class="navbar-brand" to="/">Recipeasy</RouterLink>
       </div>
-      <MenuBurger @mobileMenuClicked="toggleMobileMenu" />
+      <MenuBurgerComponent @mobileMenuClicked="toggleMobileMenu" />
       <div
         class="navbar-default nav__header"
         :class="{ active: isMobileMenuActive }"
