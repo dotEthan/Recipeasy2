@@ -18,7 +18,7 @@ export function useDataService() {
     console.log('localUser data: ', user)
     error.value = null // Reset error
     try {
-      const usersRef = collection(db, 'test_data')
+      const usersRef = collection(db, 'users')
       console.log('saving data: ', user)
       await setDoc(doc(usersRef, user.uid), user)
       console.log('User data saved successfully')
