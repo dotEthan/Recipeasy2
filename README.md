@@ -28,17 +28,17 @@ So far nothing.
 - authentication and Data storage(through firebase)
 - Recipe Book Functionality (display, edit, crud with firebase)
 - Auto deploy to netlify
+- Shopping List Functionality
 
 ### Working on Now:
 
 - Routing & Store (ongoing as needed)
-- Recipe Book Functionality (delete & shopping list integration)
-- Shopping List Functionality
+- Basic Responsive design
 
 ### To Come:
 
-- Error Handling
 - Animations/Testing
+- Error Handling
 - Defaults (images)
 
 ### Future thoughts:

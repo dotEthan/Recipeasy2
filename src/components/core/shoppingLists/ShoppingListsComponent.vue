@@ -1,133 +1,91 @@
 <script setup lang="ts">
-// import { ref } from 'vue'
 import { useShoppingListStore } from '@/stores/shoppingList'
 import ShoppingListComponent from './shoppingList/ShoppingListComponent.vue'
 import NewListButtonComponent from './newListButton/NewListButtonComponent.vue'
 
 const shoppingListStore = useShoppingListStore()
-
 const defaultListIndex = 0
 
 function onAddList() {
   shoppingListStore.addNewList()
-  console.log('adding list')
 }
 </script>
 
 <template>
-  <div class="shoppinglists-container">
-    <div class="row borderize-contain">
-      <div class="headline">
-        <div class="text-center headline-title">
-          <h1>Shopping Lists</h1>
-        </div>
-      </div>
-      <div class="row all-lists-contain">
-        <div class="col-xs-12">
-          <div class="shopping-lists-contain">
-            <div class="viewable-lists">
-              <template
-                v-for="(shoppingList, i) in shoppingListStore.shoppingLists"
-                :key="shoppingList.id"
-              >
-                <ShoppingListComponent
-                  class="sl-list"
-                  :class="{ 'sl-default-list': defaultListIndex }"
-                  :currentList="shoppingListStore.shoppingLists[i]"
-                  :currentListIndex="i"
-                />
-              </template>
-              <NewListButtonComponent class="sl-list" @add-new-list="onAddList()" />
-            </div>
-          </div>
-        </div>
-      </div>
+  <section class="shoppinglists-container">
+    <div class="headline-contain">
+      <h1>Shopping Lists</h1>
     </div>
-  </div>
+    <div class="viewable-lists">
+      <ShoppingListComponent
+        v-for="(shoppingList, i) in shoppingListStore.shoppingLists"
+        :key="shoppingList.id"
+        class="sl-list"
+        :class="{ 'sl-default-list': defaultListIndex }"
+        :currentList="shoppingListStore.shoppingLists[i]"
+        :currentListIndex="i"
+      />
+      <NewListButtonComponent class="sl-list" @add-new-list="onAddList" />
+    </div>
+  </section>
 </template>
 <style lang="sass">
 @import "../../../assets/variables"
 
 .shoppinglists-container
   width: 100%
+  height: 100%
+  padding: 10px
+  overflow-y: scroll
 
-.headline
-    display: flex
-    position: relative
-
-.headline-title
-    width: 100%
-
-
-.all-lists-contain
-    margin-right: 0
-    margin-left: 0
-
-.shopping-lists-contain
-    display: flex
-    flex-wrap: wrap
-    width: 90%
-    margin: 0 auto
-    justify-content: flex-start
-    padding: 0 25px
-    overflow: hidden
+.headline-contain
+  position: relative
+  width: 100%
+  text-align: center
 
 .sl-list
-    width: 100%
-    margin: 0 5px
-    max-width: 250px
+  width: 100%
+  margin-right: 10px
+  max-width: 250px
+  height: 350px
+  display: flex
+  flex-direction: column
 
-    @media (min-width: 768px)
-        width: 50%
-
-    @media (min-width: 1024px)
-        flex-grow: 1
+  @media (min-width: 768px)
+    width: 50%
 
 .viewable-lists
-    display: flex
-    flex-wrap: wrap
-    justify-content: space-around
-    width: 100%
+  display: grid
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr))
+  justify-items: start
+  gap: 10px
+  width: 100%
+  height: 100%
 
-.full-shopping-lists
-    display: flex
-    flex-wrap: wrap
-    width: 100%
-    justify-content: space-around
-    margin-top: 50px
-
-.full-shopping-list
-    width: 48%
-    margin: 0 1%
-
-    @media (min-width: 450px)
-        width: 30%
-        margin: 0 1%
-
-    @media (min-width: 800px)
-        width: 17%
-        margin: 0 1%
+.viewable-lists > .sl-list
+  width: 250px
+  height: 350px
 
 .sl-button-contain
-    margin-bottom: 15px
-    width: 100%
+  margin-bottom: 15px
+  width: 100%
 
 .sl-button
-    background: $colorLightest
-    border: 2px solid $colorLighter
-    padding: 25px 5%
-    height: 75px
-    width: 100%
+  background: $colorLightest
+  border: 2px solid $colorLighter
+  padding: 25px 5%
+  height: 75px
+  width: 100%
+
+  &:hover
+    border: 2px solid $colorDarker
+
+  &:disabled
+    color: #cccccc
 
     &:hover
-        border: 2px solid $colorDarker
-
-    &:disabled
-        color: #cccccc
-
-        &:hover
-            border: 2px solid $colorLighter
+      border: 2px solid $colorLighter
 
 .sl-button-isdefault
-    font-size: .6em
+  font-size: .6em
 </style>
