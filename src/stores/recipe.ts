@@ -7,6 +7,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   const recipes = ref<Recipe[]>([])
   const allTags = ref<string[]>([])
   const selectedRecipeId = ref<string>('')
+  const editSelectedRecipe = ref(false)
   const activeFilters = ref<string[]>([])
 
   const recipeLength = computed(() => recipes.value.length)
@@ -117,6 +118,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     recipes,
     allTags,
     selectedRecipeId,
+    editSelectedRecipe,
     activeFilters,
     recipeLength,
     getSelectedRecipe,

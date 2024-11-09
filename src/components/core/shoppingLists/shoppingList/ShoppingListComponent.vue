@@ -5,6 +5,8 @@ import { useShoppingListStore } from '@/stores/shoppingList'
 import ShoppingListItemComponent from './shoppingListItem/ShoppingListItemComponent.vue'
 import type { ShoppingList } from '@/types/ShoppingLists'
 import ShoppingListEditItemComponent from './shoppingListEditItemComponent/ShoppingListEditItemComponent.vue'
+import SlFooter from './slFooter/SlFooterComponent.vue'
+import SlHeaderComponent from './slHeader/SlHeaderComponent.vue'
 
 const shoppingListStore = useShoppingListStore()
 
@@ -50,75 +52,46 @@ function onMakeDefault() {
   shoppingListStore.setDefaultList(currentList.id)
 }
 
-function onEditTitle() {
-  shoppingListStore.setEditingListIndex(props.currentListIndex)
-  shoppingListStore.setEditingItemIndex(-6)
-}
-
-function onSaveTitle() {
-  if (!currentList.title) currentList.title = 'Sample Title'
-  shoppingListStore.setEditingListIndex(-1)
-  shoppingListStore.setEditingItemIndex(-1)
-}
+//TODO Edit Item when clicked focuses on input
 </script>
 
 <template>
   <div class="sl-each-contain">
-    <div class="sl-full-space">
-      <div class="sl-contain">
-        <div class="sl-main">
-          <div class="sl-full-header">
-            <div class="sl-type-title">
-              <input
-                type="text"
-                class="ingredient-inplace"
-                v-model="currentList.title"
-                v-on:blur="onSaveTitle()"
-                v-if="editingListIndex === props.currentListIndex && editingItemIndex === -6"
-              />
-              <div class="sl-type-title" @click="onEditTitle()" v-else>
-                {{ currentList.title }}
-              </div>
-            </div>
-          </div>
-          <ul class="sl-ingredient-list" :class="{ minimize: isMinimized }">
-            <li class="sl-ingredient-list-item" v-for="(item, i) of currentList.items" :key="i">
-              <ShoppingListEditItemComponent
-                v-if="editingListIndex === props.currentListIndex && editingItemIndex === i"
-                :itemIndex="i"
-                :listIndex="currentListIndex"
-              />
-              <ShoppingListItemComponent
-                v-model="currentListItems[i]"
-                class="sl-ingredient-input"
-                :item="currentListItems[i]"
-                :itemIndex="i"
-                :listIndex="currentListIndex"
-                v-else
-              />
-            </li>
-            <li class="sl-list-item">
-              <div class="ingredient-add" @click="onAddItem()">+ Add Item</div>
-            </li>
-          </ul>
-        </div>
-        <div class="sl-footer">
-          <div class="list-edit-default" @click="onMakeDefault()">
-            <div
-              class="default-circle"
-              :class="{
-                on: defaultListId === currentList.id
-              }"
-            ></div>
-            Default
-          </div>
-          <div class="list-edit-alter">
-            <div class="list-edit" @click="toggleListCollapse()">{{ hideOrShow }}</div>
-            <div class="list-edit" @click="onDeleteList()">Delete</div>
-          </div>
-        </div>
-      </div>
+    <div class="sl-contain">
+      <SlHeaderComponent
+        :currentList="currentList"
+        :currentListIndex="currentListIndex"
+        @update:title="currentList.title = $event"
+      />
+      <ul class="sl-ingredient-list" :class="{ minimize: isMinimized }">
+        <li class="sl-ingredient-list-item" v-for="(item, i) in currentList.items" :key="i">
+          <ShoppingListEditItemComponent
+            v-if="editingListIndex === props.currentListIndex && editingItemIndex === i"
+            :itemIndex="i"
+            :listIndex="currentListIndex"
+          />
+          <ShoppingListItemComponent
+            v-model="currentListItems[i]"
+            class="sl-ingredient-input"
+            :item="currentListItems[i]"
+            :itemIndex="i"
+            :listIndex="currentListIndex"
+            v-else
+          />
+        </li>
+        <li class="sl-list-item">
+          <div class="ingredient-add" @click="onAddItem()">+ Add Item</div>
+        </li>
+      </ul>
     </div>
+    <SlFooter
+      :currentList="currentList"
+      :defaultListId="defaultListId"
+      :hideOrShow="hideOrShow"
+      @makeDefault="onMakeDefault"
+      @toggleCollapse="toggleListCollapse"
+      @deleteList="onDeleteList"
+    />
   </div>
 </template>
 
@@ -126,39 +99,35 @@ function onSaveTitle() {
 @import "../../../../assets/variables"
 
 .sl-each-contain
-    display: flex
-
-.sl-full-space
-    width: 100%
+  display: flex
 
 .sl-contain
-    width: 100%
-    min-height: 200px
-    display: flex
-    flex-direction: column
-    justify-content: space-between
-    overflow: hidden
+  width: 100%
+  min-height: 200px
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+  overflow: hidden
 
-.sl-full-header
-    display: flex
-    align-items: center
-    justify-content: center
-    min-height: 50px
-    background: $colorLighter
-    color: $colorDarkest
-    border-top-right-radius: 2px
-    border-top-left-radius: 2px
+.sl-header
+  display: flex
+  align-items: center
+  justify-content: center
+  min-height: 50px
+  background: $colorLighter
+  color: $colorDarkest
+  border-radius: 2px 2px 0 0
 
 .sl-type-title
-    display: flex
-    justify-content: center
-    text-align: center
-    font-weight: 500
-    font-size: 1.3em
-    font-family: pacifico, sans-serif
+  display: flex
+  justify-content: center
+  text-align: center
+  font-weight: 500
+  font-size: 1.3em
+  font-family: pacifico, sans-serif
 
-.title-inplace
-    width: 90%
+.ingredient-inplace
+  width: 90%
 
 .sl-ingredient-list
   padding: 10px
@@ -175,25 +144,8 @@ function onSaveTitle() {
     margin: 0
     height: 0
 
-.sl-list-item
-  list-style-type: none
-  font-size: .9em
-  margin-left: 5px
-  display: flex
-  padding: 5px 0
-
-  &:hover
-    text-decoration: underline
-
-
 .sl-ingredient-list-item
   padding: 5px 0
-
-.sl-ingredient-hidden
-  display: none
-
-.sl-ingredient-input-hidden
-  display: none
 
 .ingredient-add
   cursor: pointer
@@ -211,16 +163,11 @@ function onSaveTitle() {
   text-align: center
   padding: 15px 0
   cursor: pointer
-  border-bottom-right-radius: 2px
-  border-bottom-left-radius: 2px
+  border-radius: 0 0 2px 2px
   border: 1px solid #ccc
   display: flex
   justify-content: center
   align-items: center
-
-  &:hover
-    background: #555
-    color: $colorLightest
 
 .list-edit-default
   flex-grow: 2
@@ -253,13 +200,6 @@ function onSaveTitle() {
   &:hover
     border: 2px solid #666
 
-    .add-new-sl-contain
-      border: 2px solid #666
-
-    .add-new-sl-button
-      &:before, &:after
-        background: #666
-
 .add-new-sl-contain, .add-new-sl-button
   width: 75px
   height: 75px
@@ -270,14 +210,12 @@ function onSaveTitle() {
   border-radius: 50%
 
 .add-new-sl-button
-  // position: absolute
-
   &:before, &:after
     content: ''
     position: absolute
     top: 50%
     left: 50%
-    transform: translate(-48%,-48%)
+    transform: translate(-50%, -50%)
     background: #bbb
 
   &:before

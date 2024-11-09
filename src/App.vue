@@ -2,6 +2,13 @@
 import { RouterView } from 'vue-router'
 import HeaderComponent from './components/core/header/HeaderComponent.vue'
 import { useWindowResize } from './composables/useAppService'
+// import { useAppStore } from './stores/app'
+// import router from './router/main'
+
+// const appStore = useAppStore()
+// appStore.turnTestModeOn()
+// router.push('/shopping-lists')
+// router.push('/recipes')
 useWindowResize()
 </script>
 

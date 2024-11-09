@@ -33,6 +33,16 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
     shoppingLists.value.push(newList)
   }
 
+  function addToDefaultList(items: string[]) {
+    const defaultList = shoppingLists.value.find((list) => list.id === defaultListId.value)
+
+    if (defaultList) {
+      defaultList.items.push(...items)
+    } else {
+      console.error('Default shopping list not found')
+    }
+  }
+
   function deleteList(index: number) {
     console.log('deleting index: ', index)
     console.log('dleteing list: ', shoppingLists.value[index])
@@ -80,6 +90,7 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
     setEditingItemIndex,
     getItemValue,
     addNewList,
+    addToDefaultList,
     deleteList,
     setDefaultList,
     deleteListItem,
