@@ -37,7 +37,9 @@ So far nothing.
 
 ### To Come:
 
+- Error Handling
 - Animations/Testing
+- Defaults (images)
 
 ### Future thoughts:
 

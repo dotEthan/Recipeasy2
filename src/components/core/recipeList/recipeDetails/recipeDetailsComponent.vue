@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import router from '@/router/main'
 import { useRecipeStore } from '@/stores/recipe'
 import ListItemComponent from './listItem/ListItemComponent.vue'
+import { useShoppingListStore } from '@/stores/shoppingList'
 
 const recipeStore = useRecipeStore()
+const shoppingListStore = useShoppingListStore()
 const emit = defineEmits(['closeRecipeDetails', 'removedRecipe', 'editSelectedRecipe'])
 
 const selectedRecipe = recipeStore.getSelectedRecipe
@@ -13,6 +14,20 @@ function onClose() {
 }
 
 function onAddToShoppingList() {
+  const items = selectedRecipe?.ingredients.reduce((acc, ingredient) => {
+    if (!Array.isArray(ingredient.steps)) {
+      console.warn(`Ingredient ${ingredient.title || 'unknown'} has no valid steps`)
+      return acc
+    }
+
+    ingredient.steps.forEach((step) => {
+      const parts = [step.amount, step.unit, step.name].filter(Boolean)
+      acc.push(parts.join(' '))
+    })
+
+    return acc
+  }, [] as string[])
+  if (items) shoppingListStore.addToDefaultList(items)
   console.log('adding')
 }
 
@@ -56,7 +71,7 @@ function onDeleteRecipe() {
         </div>
         <div class="recipe-manage-row">
           <div class="recipe-manage-buttons">
-            <button class="manage-btn-1" @click="onAddToShoppingList">
+            <button class="manage-btn-1" @click="onAddToShoppingList()">
               <i class="add-to-list"></i>
               <div>
                 Add all <span class="green-word">Ingredients</span>

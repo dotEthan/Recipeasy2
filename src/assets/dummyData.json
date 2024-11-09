@@ -3,56 +3,130 @@
   "recipeState": {
     "recipes": [
       {
-        "id": "1",
+        "id": "test-1",
         "name": "Beyond Burger",
+        "url": "",
         "description": "A burger Beyond Burgers of Burger Beyondness",
         "ingredients": [
           {
-            "title": "Cake",
+            "title": "burger and fries",
             "steps": [
               { "name": "stuff", "amount": "3", "unit": "cups" },
-              { "name": "things" },
-              { "name": "etc" }
+              { "name": "seitan burger", "amount": "3", "unit": "cups" },
+              { "name": "spices" },
+              { "name": "potatoes", "amount": "4" }
+            ]
+          },
+          {
+            "title": "Bun",
+            "steps": [
+              { "name": "wheat", "amount": "", "unit": "cups" },
+              { "name": "Buckwheat", "amount": "1", "unit": "cup" },
+              { "name": "water", "amount": "till done" },
+              { "name": "salt", "unit": "tbsp" }
             ]
           }
         ],
         "directions": [{ "title": "do first", "steps": ["stir it", "mix it", "lick it"] }],
-        "imgPath": "https://picsum.photos/seed/picsum/200/300",
+        "imgPath": "https://picsum.photos/200/300",
         "rating": 3.5,
         "private": true,
         "tags": ["burger", "snack", "dinner", "fast food", "vegan"]
       },
       {
-        "id": "2",
-        "name": "Milkshake",
-        "ingredients": ["stuff", "things", "etc"],
-        "imgPath": "https://assets.epicurious.com/photos/647df8cad9749492c4d5d407/1:1/w_1920,c_limit/StrawberryMilkshake_RECIPE_053123_3599.jpg",
+        "id": "test-2",
+        "name": "Vanilla Milkshake",
+        "url": "https://www.theconsciousplantkitchen.com/vegan-milkshake/",
+        "description": "A cool tasty Summer treat!",
+        "ingredients": [
+          {
+            "title": "Milkshake",
+            "steps": [
+              { "name": "Oat Milk", "amount": "1/2", "unit": "cup" },
+              { "name": "Plant-Ice Vanilla Ice Cream", "amount": "1", "unit": "cup" },
+              { "name": "Frozen Strawberries", "amount": "3/4", "unit": "cup" },
+              { "name": "Vanilla Extract", "amount": "1/2", "unit": "teaspoon" }
+            ]
+          },
+          {
+            "title": "Topping",
+            "steps": [
+              { "name": "Vegan sprinkles", "amount": "1-2", "unit": "teaspoons" },
+              { "name": "Vegan Marshmallows", "amount": "10" },
+              { "name": "Dairy-free Whipped Cream", "amount": "1/4", "unit": "cup" }
+            ]
+          }
+        ],
+        "imgPath": "https://picsum.photos/200/300",
         "rating": 3.5,
-        "tags": ["milk", "drink", "fast food", "vegan"]
+        "private": true,
+        "tags": ["milk", "milkshake", "drink", "fast food", "vegan"]
       },
       {
-        "id": "3",
-        "name": "Fries and Coke",
-        "ingredients": ["stuff", "things", "etc"],
-        "imgPath": "https://retailworldmagazine.com.au/wp-content/uploads/2021/06/Beyond_Burger1.jpg",
-        "rating": 3.5,
-        "tags": ["potato", "drink", "fast food"]
+        "id": "test-3",
+        "name": "Plant Based Cheese Dip",
+        "url": "https://simpleveganblog.com/vegan-cheese/",
+        "description": "Healthy, gooey, and delicious!",
+        "ingredients": [
+          {
+            "title": "Ingredients",
+            "steps": [
+              { "name": "Oat Milk", "amount": "1/2", "unit": "cup" },
+              { "name": "Plant-Ice Vanilla Ice Cream", "amount": "1", "unit": "cup" },
+              { "name": "Frozen Strawberries", "amount": "3/4", "unit": "cup" },
+              { "name": "Vanilla Extract", "amount": "1/2", "unit": "teaspoon" }
+            ]
+          }
+        ],
+        "imgPath": "https://picsum.photos/200/300",
+        "rating": 5,
+        "private": false,
+        "tags": ["cheese", "dip", "potato", "carrot", "vegan"]
       },
       {
-        "id": "4",
-        "name": "naps",
-        "ingredients": ["stuff", "things", "etc"],
-        "imgPath": "https://retailworldmagazine.com.au/wp-content/uploads/2021/06/Beyond_Burger1.jpg",
-        "rating": 3.5,
-        "tags": ["beets", "drink", "fast food", "vegan"]
-      },
-      {
-        "id": "5",
-        "name": "relapse",
-        "ingredients": ["stuff", "things", "etc"],
-        "imgPath": "https://retailworldmagazine.com.au/wp-content/uploads/2021/06/Beyond_Burger1.jpg",
-        "rating": 3.5,
-        "tags": ["milk", "drink", "fast food", "vegan"]
+        "id": "test-4",
+        "name": "\"Chick'un\" Shreds",
+        "url": "https://avocadosandales.com/2017/12/17/chickwheat-shreds/",
+        "description": "So real they might worry Vegan guests",
+        "ingredients": [
+          {
+            "title": "Ingredients",
+            "steps": [
+              { "name": "Cold Cooked Chickpeas", "amount": "2", "unit": "cups" },
+              {
+                "name": "Aquafaba (Veggie broth or water can be substituted)",
+                "amount": "1",
+                "unit": "cup"
+              },
+              { "name": "Vegetable oil", "amount": "2", "unit": "tbsp" },
+              { "name": "White miso paste", "amount": "2", "unit": "tbsp" },
+              { "name": "Salt", "amount": "1.5", "unit": "tsp" },
+              { "name": "Onion Powder", "amount": "1", "unit": "tbsp" },
+              { "name": "Garlic Powder", "amount": "2", "unit": "tsp" },
+              { "name": "Apple Cider Vinegar", "amount": "1", "unit": "tsp" },
+              { "name": "Vital Wheat Gluten", "amount": "1 3/4", "unit": "cup" }
+            ]
+          }
+        ],
+        "directions": [
+          {
+            "title": "do first",
+            "steps": [
+              "Measure all ingredients up to the vinegar. ",
+              "Blend all ingredients in a high speed blender until completely smooth",
+              "Combine vital wheat gluten and chickpea mixture in a large bowl. Let rest about 15 minutes to allow gluten to absorb the moisture.",
+              "Separate dough into 2 parts. Fit a food processor with a dough hook (see note above), blend each portion until the dough is warm, stretchy, smooth, and ‘shreds’ of gluten are visible, this can take up to 8 minutes",
+              "Combine 2 kneaded balls of dough onto a large sheet of aluminum foil. Wrap fully, then repeat once more.",
+              "Add 2 cups of water to your Instant Pot, then set for manual, high pressure for 120 minutes. ",
+              "Once finished quick release the pressure and remove foil when cool enouhg to touch. Split roast in half and gently shred along the grains",
+              "Refrigerate for best texture."
+            ]
+          }
+        ],
+        "imgPath": "https://picsum.photos/200/300",
+        "rating": 5,
+        "private": false,
+        "tags": ["Seitan", "Chickwheat", "Chickpeas", "Vital Wheat Glute", "Vegan", "Protein"]
       }
     ],
     "selectedRecipeId": "",

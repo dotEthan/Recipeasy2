@@ -21,10 +21,10 @@ export type Recipe = {
 
 export type Ingredient = {
   title?: string
-  steps: IngredientSteps[]
+  steps: IngredientStep[]
 }
 
-export type IngredientSteps = {
+export type IngredientStep = {
   name?: string
   amount?: string
   unit?: string

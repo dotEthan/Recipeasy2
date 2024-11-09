@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { v4 as uuidv4 } from 'uuid'
 import { ref, watch } from 'vue'
 import { useRecipeStore } from '@/stores/recipe'
 import RecipeListItemComponent from './recipeListItem/RecipeListItemComponent.vue'
@@ -12,7 +13,6 @@ import NewRecipeButtonComponent from './newRecipeButton/newRecipeButtonComponent
 const recipeStore = useRecipeStore()
 let selectedRecipe = ref<Recipe | undefined>(undefined)
 let editSelectedRecipe = ref(false)
-// const recipeDetailElement = useTemplateRef('recipeDetailElement')
 
 let filteredRecipes = ref<Recipe[]>([...recipeStore.recipes])
 let allRecipeTags = ref<string[] | undefined>(undefined)
@@ -45,6 +45,24 @@ function openRecipeDetail(id: string) {
   console.log(selectedRecipe.value?.name)
   recipeStore.setSelectedRecipeId(id)
 }
+
+function newRecipeAdded() {
+  console.log('adding')
+  const newId = uuidv4()
+  const newRecipe = {
+    id: newId,
+    name: 'Default Recipe',
+    ingredients: [{ title: 'Ingedients', steps: [] }],
+    directions: [{ title: 'Directions', steps: [] }],
+    description: '',
+    tags: []
+  }
+  recipeStore.addRecipe(newRecipe)
+  selectedRecipe.value = newRecipe
+  recipeStore.setSelectedRecipeId(newId)
+  editSelectedRecipe.value = true
+  //TODO Remove if empty, Error handling
+}
 </script>
 
 <template>
@@ -59,7 +77,7 @@ function openRecipeDetail(id: string) {
         @openRecipe="openRecipeDetail"
         @removedRecipe="filterRecipes"
       />
-      <NewRecipeButtonComponent />
+      <NewRecipeButtonComponent @add-new-recipe="newRecipeAdded" />
     </div>
     <RecipesEmptyComponent v-else />
     <div class="recipe-details-container" v-if="selectedRecipe && !editSelectedRecipe">
@@ -68,7 +86,7 @@ function openRecipeDetail(id: string) {
         @edit-selected-recipe="editSelectedRecipe = true"
       />
     </div>
-    <div class="recipe-details-container" v-else-if="editSelectedRecipe">
+    <div class="recipe-details-container" v-else-if="selectedRecipe && editSelectedRecipe">
       <RecipeEditComponent
         class="recipe-item-contain"
         @editing-canceled="editSelectedRecipe = false"
