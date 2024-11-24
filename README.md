@@ -22,7 +22,7 @@ So far nothing.
 
 ## Where are we?
 
-### Done:
+### Working (not feature complete, full design still in progress):
 
 - Learn Vue/Router/Store functionality thought docs
 - authentication and Data storage(through firebase)
