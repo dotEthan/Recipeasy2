@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import type { Ref } from 'vue'
 import type { Recipe } from '@/types/Recipes'
 import { useRecipeStore } from '@/stores/recipe'
+import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue'
 
 const emit = defineEmits(['editingCanceled'])
 
@@ -107,7 +108,12 @@ function onAddDirection(ingredientIndex: number) {
               </div>
               <div class="form-group">
                 <label>Recipe Image</label>
-                <img :src="formData.imgPath" class="img-responsive recipe-edit-image" />
+                <img
+                  :src="formData.imgPath"
+                  class="img-responsive recipe-edit-image"
+                  v-if="formData.imgPath"
+                />
+                <UserImageUploadComponent v-else />
               </div>
             </div>
             <div class="edit-header-column">

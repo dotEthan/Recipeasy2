@@ -8,12 +8,10 @@
     "playwright.config.*"
   ],
   "compilerOptions": {
-    "composite": true,
-    "noEmit": true,
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "types": ["node"]
+    "composite": true, // This enables project references
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo", // Store build info
+    "module": "ESNext", // Adjust module system if needed
+    "moduleResolution": "Bundler", // Adjust module resolution strategy
+    "types": ["node"] // Include Node types
   }
 }

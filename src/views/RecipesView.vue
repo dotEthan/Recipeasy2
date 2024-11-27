@@ -50,5 +50,5 @@ import RecipeListComponent from '@/components/core/recipeList/RecipeListComponen
 
 
     @media (min-width: 1200px)
-      font-size: 30px
+      font-size: 90px
 </style>

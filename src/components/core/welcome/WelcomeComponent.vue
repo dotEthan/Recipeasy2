@@ -2,11 +2,25 @@
 import { Search } from 'lucide-vue-next'
 import CollectionComponent from '../collections/CollectionComponent.vue'
 import { useRecipeStore } from '@/stores/recipe'
+import { computed, ref } from 'vue'
 // import { storeToRefs } from 'pinia'
 
 const recipeStore = useRecipeStore()
 // const { recipes } = storeToRefs(recipeStore)
 // console.log(recipes.value[0])
+const currentTime = ref(new Date())
+
+const mealTime = computed(() => {
+  const hours = currentTime.value.getHours()
+  console.log(hours)
+  if (hours >= 2 && hours < 10) {
+    return 'Breakfast'
+  } else if (hours >= 10 && hours < 16) {
+    return 'Lunch'
+  } else {
+    return 'Dinner'
+  }
+})
 </script>
 
 <template>
@@ -16,7 +30,12 @@ const recipeStore = useRecipeStore()
       <input type="text" class="searchbar" placeholder="Burritos" />
       <button><Search class="magnifying" :size="20" /></button>
     </div>
-    <CollectionComponent title="Collections" :recipeData="recipeStore.recipes" />
+    <CollectionComponent title="Recommended" :recipeData="recipeStore.recipes" />
+    <CollectionComponent :title="mealTime" :recipeData="recipeStore.recipes" />
+    <CollectionComponent title="Snacks" :recipeData="recipeStore.recipes" />
+    <CollectionComponent title="Desserts" :recipeData="recipeStore.recipes" />
+    <CollectionComponent title="Healthy Foods" :recipeData="recipeStore.recipes" />
+    <CollectionComponent title="Quick Recipes" :recipeData="recipeStore.recipes" />
   </div>
 </template>
 
@@ -26,7 +45,7 @@ const recipeStore = useRecipeStore()
 .welcome
   height: calc(80vh - $navbar-height)
   margin-top: 10vh
-
+  overflow-y: scroll
 
 .searchbar
   width: 80%

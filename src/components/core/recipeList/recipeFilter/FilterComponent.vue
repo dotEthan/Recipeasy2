@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, defineEmits, reactive, toRaw } from 'vue'
 import { Filter, CircleX } from 'lucide-vue-next'
-import CheckboxComponent from '../../shared/CheckboxComponent.vue'
+import CheckboxComponent from '../../shared/checkbox/CheckboxComponent.vue'
 import { useUserStore } from '@/stores/user'
 import { useRecipeStore } from '@/stores/recipe'
 

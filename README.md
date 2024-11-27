@@ -22,21 +22,26 @@ So far nothing.
 
 ## Where are we?
 
-### Done:
+### Working (not feature complete, full design still in progress):
 
 - Learn Vue/Router/Store functionality thought docs
 - authentication and Data storage(through firebase)
 - Recipe Book Functionality (display, edit, crud with firebase)
 - Auto deploy to netlify
 - Shopping List Functionality
+- Firebase image upload Signature
 
 ### Working on Now:
 
 - Routing & Store (ongoing as needed)
 - Basic Responsive design
+- Welcome page and "Public" recipe display/search
+- Image uploading 
 
 ### To Come:
 
+- Recipes URL and Public/Private
+- All //TODO comments
 - Animations/Testing
 - Error Handling
 - Defaults (images)
