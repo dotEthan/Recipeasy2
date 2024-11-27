@@ -34,7 +34,7 @@ useWindowResize()
   display: flex
   align-items: center
   justify-content: center
-  background: url('./assets/main.jpg') no-repeat center top
+  background: url('https://res.cloudinary.com/dotethan/image/upload/v1731356238/Recipeasy/main.jpg') no-repeat center top
   background-size: cover
 
   &:before

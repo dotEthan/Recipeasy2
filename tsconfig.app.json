@@ -1,14 +1,27 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
-  "exclude": ["src/**/__tests__/*"],
+  "extends": "@vue/tsconfig/tsconfig.dom.json", // This is fine if you're extending from a Vue-specific config
+  "include": [
+    "env.d.ts", // Ensure any type declarations are included
+    "src/**/*", // Include all TypeScript files in the src directory
+    "src/**/*.vue", // Include Vue files for TypeScript processing
+    "firebase.ts" // If Firebase is a separate file outside of src, include it
+  ],
+  "exclude": [
+    "src/**/__tests__/*" // Exclude test files if needed
+  ],
   "compilerOptions": {
-    "composite": true,
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "noEmit": false, // Do not emit output (this is typical for development)
+    "composite": true, // Enable project references for better TypeScript organization
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo", // Store incremental build info
 
-    "baseUrl": ".",
+    "baseUrl": ".", // Set the base URL for relative module imports
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"] // Set path aliases, e.g., '@' will point to the src directory
+    },
+
+    // Add additional options for Vue and TypeScript compatibility
+    "esModuleInterop": true, // Allow default imports from modules with no default export
+    "skipLibCheck": true, // Skip type checking of declaration files for faster builds
+    "strict": true // Enable strict type checking for better type safety
   }
 }

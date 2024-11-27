@@ -1,11 +1,21 @@
 {
-  "extends": "./tsconfig.app.json",
-  "exclude": [],
+  "extends": "./tsconfig.app.json", // Inherit from the main app config
   "compilerOptions": {
-    "composite": true,
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.vitest.tsbuildinfo",
+    "noEmit": false, // Do not emit output (this is typical for development)
+    "composite": true, // Enable project references for Vitest if using them
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.vitest.tsbuildinfo", // Incremental build info for Vitest
 
-    "lib": [],
-    "types": ["node", "jsdom"]
-  }
+    "lib": [
+      "esnext", // Ensure you have modern JavaScript/ECMAScript features available
+      "dom" // Include DOM types for browser-based testing
+    ],
+    "types": [
+      "node", // Node.js types for server-side testing
+      "vitest/globals" // Import Vitest globals for easier testing syntax
+    ]
+  },
+  "exclude": [
+    "node_modules", // Exclude third-party modules
+    "dist" // Exclude the build output
+  ]
 }

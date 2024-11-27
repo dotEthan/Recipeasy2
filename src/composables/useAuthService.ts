@@ -1,6 +1,6 @@
 // src/composables/useDataService.ts
 import { ref } from 'vue'
-import { auth } from '../firebase'
+import { auth } from '../../firebase'
 import type { User } from 'firebase/auth'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth'
 
