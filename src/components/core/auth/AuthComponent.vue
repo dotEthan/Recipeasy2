@@ -13,7 +13,7 @@ let authError = ref(false)
 const recipeStore = useRecipeStore()
 const userStore = useUserStore()
 const appStore = useAppStore()
-const authService = useAuthService()
+const {registerUser, signIn} = useAuthService()
 let thisType = ref(appStore.registrationOrSigninModal)
 
 const db = getFirestore()
@@ -26,8 +26,7 @@ async function onSubmit(e: any) {
   authError.value = false
 
   if (thisType.value === 'register') {
-    authService
-      .registerUser(email.value, password.value)
+    registerUser(email.value, password.value)
       .then((user: User) => {
         console.log('Registered user:', user)
         let email = user.email || undefined
@@ -53,8 +52,7 @@ async function onSubmit(e: any) {
       })
       .catch((error) => console.error(error))
   } else if (thisType.value === 'signin') {
-    authService
-      .signIn(email.value, password.value)
+    signIn(email.value, password.value)
       .then((user) => {
         console.log('Sign in user:', user)
         return getDoc(doc(usersRef, user?.uid))
