@@ -8,6 +8,7 @@ import {
   CollectionReference
 } from 'firebase/firestore'
 import type { LocalUser } from '@/types/UserState'
+import dummyData from '../assets/dummyData.json'
 
 export function useDataService() {
   const db = getFirestore()
@@ -16,6 +17,8 @@ export function useDataService() {
 
   const saveUserData = async (user: LocalUser) => {
     console.log('localUser data: ', user)
+    // const tempUpdateData = user
+    // tempUpdateData.recipes = dummyData.recipeState.recipes as any
     error.value = null // Reset error
     try {
       const usersRef = collection(db, 'users')

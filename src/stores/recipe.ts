@@ -64,47 +64,6 @@ export const useRecipeStore = defineStore('recipes', () => {
     recipes.value = newRecipes
   }
 
-  function loadDummyData() {
-    userId.value = '1'
-    recipes.value = [
-      {
-        id: 'testmode',
-        name: 'Beyond Burger',
-        description: 'A burger Beyond Burgers of Burger Beyondness',
-        ingredients: [
-          {
-            title: 'burger and fries',
-            steps: [
-              { name: 'stuff', amount: '3', unit: 'cups' },
-              { name: 'seitan burger', amount: '3', unit: 'cups' },
-              { name: 'spices' },
-              { name: 'potatoes', amount: '4' }
-            ]
-          },
-          {
-            title: 'Bun',
-            steps: [
-              { name: 'wheat', amount: '', unit: 'cups' },
-              { name: 'Buckwheat', amount: '1', unit: 'cup' },
-              { name: 'water', amount: 'till done' },
-              { name: 'salt', unit: 'tbsp' }
-            ]
-          }
-        ],
-        directions: [
-          { title: 'Burger', steps: ['cook burger', 'bake fries', 'add stuff if you want'] },
-          { title: 'bun', steps: ['combine', 'smoke break', 'Proft!'] }
-        ],
-        imgPath: 'https://picsum.photos/seed/picsum/200/300',
-        rating: 3.5,
-        private: true,
-        tags: ['burger', 'snack', 'dinner', 'fast food', 'vegan']
-      }
-    ]
-    selectedRecipeId.value = ''
-    activeFilters.value = []
-  }
-
   function resetState() {
     userId.value = ''
     recipes.value = []
@@ -131,7 +90,6 @@ export const useRecipeStore = defineStore('recipes', () => {
     removeSelectedRecipe,
     setActiveFilters,
     setAllRecipes,
-    loadDummyData,
     resetState
   }
 })

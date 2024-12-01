@@ -81,208 +81,209 @@ function onAddDirection(ingredientIndex: number) {
 </script>
 
 <template>
-  <div class="overlay-shadow" @click="onCancel()"></div>
-  <div class="recipe-overlay edit">
-    <div class="overlay-contain edit">
-      <div class="form-contain">
-        <form @submit.prevent="onSubmit">
-          <div class="save-cancel-btns text-center">
-            <button type="submit" :class="{ valid: formValid }" class="recipe-edit-button save">
-              Save
-            </button>
-            <button type="button" class="recipe-edit-button cancel" @click="onCancel">
-              Cancel
-            </button>
-          </div>
-          <div class="edit-header-contain">
-            <div class="edit-header-column">
-              <div class="form-group">
-                <label for="imagePath">Image URL</label>
-                <input
-                  type="text"
-                  id="imagePath"
-                  class="form-control"
-                  formControlName="imagePath"
-                  v-model="formData.imgPath"
-                />
-              </div>
-              <div class="form-group">
-                <label>Recipe Image</label>
-                <img
-                  :src="formData.imgPath"
-                  class="img-responsive recipe-edit-image"
-                  v-if="formData.imgPath"
-                />
-                <UserImageUploadComponent v-else />
-              </div>
+  <div class="recipe-item-contain">
+    <div class="overlay-shadow" @click="onCancel()"></div>
+    <div class="recipe-overlay edit">
+      <div class="overlay-contain edit">
+        <div class="form-contain">
+          <form @submit.prevent="onSubmit">
+            <div class="save-cancel-btns text-center">
+              <button type="submit" :class="{ valid: formValid }" class="recipe-edit-button save">
+                Save
+              </button>
+              <button type="button" class="recipe-edit-button cancel" @click="onCancel">
+                Cancel
+              </button>
             </div>
-            <div class="edit-header-column">
-              <div class="form-group">
-                <label for="name">Recipe Name</label>
-                <input type="text" id="name" class="form-control" v-model="formData.name" />
-              </div>
-              <div class="form-group">
-                <label for="description">Description</label>
-                <textarea
-                  type="text"
-                  id="description"
-                  class="form-control recipe-description-area"
-                  v-model="formData.description"
-                  rows="6"
-                ></textarea>
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div class="item-group-contain" formGroupName="ingredients">
-            <div class="item-contain" v-for="(ingredientType, i) of formData.ingredients" :key="i">
-              <div class="form-group item-type-contain">
-                <label class="section-title" for="ingredient-group{{i}}"
-                  >INGREDIENT GROUP NAME:</label
-                >
-                <div class="item-type-row">
+            <div class="edit-header-contain">
+              <div class="edit-header-column">
+                <div class="form-group">
+                  <label for="imagePath">Image URL</label>
                   <input
                     type="text"
-                    class="form-control item-type-input"
-                    id="ingredient-group{{i}}"
-                    v-model="formData.ingredients[i].title"
+                    id="imagePath"
+                    class="form-control"
+                    formControlName="imagePath"
+                    v-model="formData.imgPath"
                   />
-                  <button
-                    type="button"
-                    class="btn-delete"
-                    @click="onDeleteIngredientType(i)"
-                  ></button>
                 </div>
-                <div class="item-list-contain">
-                  <div class="section-title">INGREDIENTS:</div>
-                  <div class="item-list">
-                    <div class="item-each" v-for="(ingredient, j) of ingredientType.steps" :key="j">
-                      <div class="item-each-container">
-                        <div>
-                          <label class="hidden" for="ingredient-{{j}}">Amount</label>
-                          <div class="item-input-row">
-                            <input
-                              type="text"
-                              class="form-control item-input"
-                              v-model="formData.ingredients[i].steps[j].amount"
-                              id="ingredient-{{j}}"
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <label class="hidden" for="ingredient-{jp}}">Unit</label>
-                          <div class="item-input-row">
-                            <input
-                              type="text"
-                              class="form-control item-input"
-                              v-model="formData.ingredients[i].steps[j].unit"
-                              id="ingredient-{{j}}"
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <label class="hidden" for="ingredient-{{j}}">Name</label>
-                          <div class="item-input-row">
-                            <input
-                              type="text"
-                              class="form-control item-input"
-                              v-model="formData.ingredients[i].steps[j].name"
-                              id="ingredient-{{j}}"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        class="btn-delete"
-                        @click="onDeleteIngredient(i, j)"
-                      ></button>
-                    </div>
-                    <div class="item-each">
-                      <button type="button" class="btn btn-clear" @click="onAddIngredient(i)">
-                        + Add Ingredient
-                      </button>
-                    </div>
+                <div class="form-group">
+                  <label>Recipe Image</label>
+                  <img
+                    :src="formData.imgPath"
+                    class="img-responsive recipe-edit-image"
+                    v-if="formData.imgPath"
+                  />
+                  <UserImageUploadComponent v-else />
+                </div>
+              </div>
+              <div class="edit-header-column">
+                <div class="form-group">
+                  <label for="name">Recipe Name</label>
+                  <input type="text" id="name" class="form-control" v-model="formData.name" />
+                </div>
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <textarea
+                    type="text"
+                    id="description"
+                    class="form-control recipe-description-area"
+                    v-model="formData.description"
+                    rows="6"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="item-group-contain" formGroupName="ingredients">
+              <div class="item-contain" v-for="(ingredientType, i) of formData.ingredients" :key="i">
+                <div class="form-group item-type-contain">
+                  <label class="section-title" for="ingredient-group{{i}}"
+                    >INGREDIENT GROUP NAME:</label
+                  >
+                  <div class="item-type-row">
+                    <input
+                      type="text"
+                      class="form-control item-type-input"
+                      id="ingredient-group{{i}}"
+                      v-model="formData.ingredients[i].title"
+                    />
+                    <button
+                      type="button"
+                      class="btn-delete"
+                      @click="onDeleteIngredientType(i)"
+                    ></button>
                   </div>
-                </div>
-                <hr />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12">
-                <button type="button" class="btn btn-clear" @click="onAddIngredientType()">
-                  + Add Ingredient Group
-                </button>
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div class="item-group-contain" formGroupName="directions">
-            <div class="item-contain" v-for="(directionType, k) of formData.directions" :key="k">
-              <div class="form-group">
-                <label class="section-title" for="direction-group{{k}}">DIRECTION GROUP NAME</label>
-                <div class="item-type-row">
-                  <input
-                    type="text"
-                    class="form-control item-type-input"
-                    v-model="directionType.title"
-                    id="direction-group{{k}}"
-                  />
-                  <button
-                    type="button"
-                    class="btn-delete"
-                    @click="onDeleteDirectionType(k)"
-                  ></button>
-                </div>
-                <div class="item-list-contain">
-                  <div class="section-title">DIRECTIONS</div>
-                  <div class="item-list">
-                    <div class="item-each" v-for="(direction, l) of directionType.steps" :key="l">
-                      <div>
-                        <label class="hidden" for="direction{{l}}">DIRECTION</label>
-
-                        <div class="item-input-row">
-                          <input
-                            type="text"
-                            class="form-control"
-                            v-model="directionType.steps[l]"
-                            id="direction{{l}}"
-                          />
-                          <button
-                            type="button"
-                            class="btn-delete"
-                            @click="onDeleteDirection(k, l)"
-                          ></button>
+                  <div class="item-list-contain">
+                    <div class="section-title">INGREDIENTS:</div>
+                    <div class="item-list">
+                      <div class="item-each" v-for="(ingredient, j) of ingredientType.steps" :key="j">
+                        <div class="item-each-container">
+                          <div>
+                            <label class="hidden" for="ingredient-{{j}}">Amount</label>
+                            <div class="item-input-row">
+                              <input
+                                type="text"
+                                class="form-control item-input"
+                                v-model="formData.ingredients[i].steps[j].amount"
+                                id="ingredient-{{j}}"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <label class="hidden" for="ingredient-{jp}}">Unit</label>
+                            <div class="item-input-row">
+                              <input
+                                type="text"
+                                class="form-control item-input"
+                                v-model="formData.ingredients[i].steps[j].unit"
+                                id="ingredient-{{j}}"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <label class="hidden" for="ingredient-{{j}}">Name</label>
+                            <div class="item-input-row">
+                              <input
+                                type="text"
+                                class="form-control item-input"
+                                v-model="formData.ingredients[i].steps[j].name"
+                                id="ingredient-{{j}}"
+                              />
+                            </div>
+                          </div>
                         </div>
+                        <button
+                          type="button"
+                          class="btn-delete"
+                          @click="onDeleteIngredient(i, j)"
+                        ></button>
                       </div>
-                    </div>
-                    <div class="item-each">
-                      <button type="button" class="btn btn-clear" @click="onAddDirection(k)">
-                        + Add Direction
-                      </button>
+                      <div class="item-each">
+                        <button type="button" class="btn btn-clear" @click="onAddIngredient(i)">
+                          + Add Ingredient
+                        </button>
+                      </div>
                     </div>
                   </div>
                   <hr />
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12">
-                <button type="button" class="btn btn-clear" @click="onAddDirectionType()">
-                  + Add Direction Group
-                </button>
+              <div class="row">
+                <div class="col-xs-12">
+                  <button type="button" class="btn btn-clear" @click="onAddIngredientType()">
+                    + Add Ingredient Group
+                  </button>
+                </div>
               </div>
             </div>
             <hr />
-          </div>
-          <div style="margin-bottom: 25px"></div>
-        </form>
+            <div class="item-group-contain" formGroupName="directions">
+              <div class="item-contain" v-for="(directionType, k) of formData.directions" :key="k">
+                <div class="form-group">
+                  <label class="section-title" for="direction-group{{k}}">DIRECTION GROUP NAME</label>
+                  <div class="item-type-row">
+                    <input
+                      type="text"
+                      class="form-control item-type-input"
+                      v-model="directionType.title"
+                      id="direction-group{{k}}"
+                    />
+                    <button
+                      type="button"
+                      class="btn-delete"
+                      @click="onDeleteDirectionType(k)"
+                    ></button>
+                  </div>
+                  <div class="item-list-contain">
+                    <div class="section-title">DIRECTIONS</div>
+                    <div class="item-list">
+                      <div class="item-each" v-for="(direction, l) of directionType.steps" :key="l">
+                        <div>
+                          <label class="hidden" for="direction{{l}}">DIRECTION</label>
+
+                          <div class="item-input-row">
+                            <input
+                              type="text"
+                              class="form-control"
+                              v-model="directionType.steps[l]"
+                              id="direction{{l}}"
+                            />
+                            <button
+                              type="button"
+                              class="btn-delete"
+                              @click="onDeleteDirection(k, l)"
+                            ></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="item-each">
+                        <button type="button" class="btn btn-clear" @click="onAddDirection(k)">
+                          + Add Direction
+                        </button>
+                      </div>
+                    </div>
+                    <hr />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <button type="button" class="btn btn-clear" @click="onAddDirectionType()">
+                    + Add Direction Group
+                  </button>
+                </div>
+              </div>
+              <hr />
+            </div>
+            <div style="margin-bottom: 25px"></div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <style lang="sass">
-
 input.ng-invalid.ng-touched,
 textarea.ng-invalid.ng-touched
     border: 1px solid red
