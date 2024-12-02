@@ -1,17 +1,15 @@
 import { ref } from 'vue'
 import {
-  collection,
   doc,
+  DocumentData,
   getDoc,
-  setDoc,
-  getFirestore,
-  CollectionReference
+  setDoc
 } from 'firebase/firestore'
 import type { LocalUser } from '@/types/UserState'
 import dummyData from '../assets/dummyData.json'
+import { usersRef } from '../../firebase'
 
 export function useDataService() {
-  const db = getFirestore()
 
   const error = ref<string | null>(null)
 
@@ -21,7 +19,6 @@ export function useDataService() {
     // tempUpdateData.recipes = dummyData.recipeState.recipes as any
     error.value = null // Reset error
     try {
-      const usersRef = collection(db, 'users')
       console.log('saving data: ', user)
       await setDoc(doc(usersRef, user.uid), user)
       console.log('User data saved successfully')
@@ -31,24 +28,25 @@ export function useDataService() {
     }
   }
 
-  const loadUserData = async (uid: string, collectionReference: CollectionReference) => {
-    error.value = null
-    try {
-      const docSnap = await getDoc(doc(collectionReference, uid))
+  
+const loadUserData = async (uid: string): Promise<[DocumentData | null, string]> => {
+  error.value = null;
+  try {
+    const docSnap = await getDoc(doc(usersRef, uid));
 
-      if (docSnap.exists()) {
-        console.log('User data retrieved:', docSnap.data())
-        return docSnap.data()
-      } else {
-        console.log('No such document!')
-        return null
-      }
-    } catch (err: any) {
-      error.value = err
-      console.error('Error loading user data:', error.value)
-      return null
+    if (docSnap.exists()) {
+      console.log('User data retrieved:', docSnap.data());
+      return [docSnap.data(), uid];
+    } else {
+      console.log('User Data Not Found');
+      return [null, uid];
     }
+  } catch (err: any) {
+    error.value = err;
+    console.error('Error loading user data:', error.value);
+    return [null, uid];
   }
+};
 
   return { saveUserData, loadUserData, error }
 }

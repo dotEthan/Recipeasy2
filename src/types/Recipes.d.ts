@@ -10,14 +10,19 @@ export type RecipeState = {
 export type Recipe = {
   id?: string
   name?: string
+  url?: string
   rating?: number
   description?: string
   ingredients: Ingredient[]
   directions: Direction[]
   imgPath?: string
-  url?: string
+  rating?: number
   private?: boolean
+  mealType?: string[]
   tags: string[]
+  cookTime?: string
+  prepTime?: string
+  nutritionalInfo?: NutritionalInfo[]
 }
 
 export type Ingredient = {
@@ -34,4 +39,9 @@ export type IngredientStep = {
 export type Direction = {
   title?: string
   steps: string[]
+}
+
+export type NutritionalInfo = {
+  name?: string
+  amount?: string
 }

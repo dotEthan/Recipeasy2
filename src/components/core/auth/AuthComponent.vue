@@ -1,92 +1,75 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { collection, doc, getDoc, setDoc, getFirestore } from 'firebase/firestore'
-import type { User } from 'firebase/auth'
+import router from '@/router/main'
 import { useRecipeStore } from '@/stores/recipe'
 import { useUserStore } from '@/stores/user'
 import { useAppStore } from '@/stores/app'
-import router from '@/router/main'
 import { useAuthService } from '@/composables/useAuthService'
-import type { LocalUser, UserState } from '@/types/UserState'
 import { useShoppingListStore } from '@/stores/shoppingList'
+import { useDataService } from '@/composables/useDataService'
+import type { LocalUser, UserState } from '@/types/UserState'
+import { DocumentData } from 'firebase/firestore'
 
 const recipeStore = useRecipeStore()
 const userStore = useUserStore()
 const appStore = useAppStore()
 const shoppingListStore = useShoppingListStore()
+const dataService = useDataService()
 
 let authError = ref(false)
 const {registerUser, signIn} = useAuthService()
 let thisType = ref(appStore.registrationOrSigninModal)
 
-const db = getFirestore()
-const usersRef = collection(db, 'users')
-
 async function onSubmit(e: any) {
   const { email, password } = e.target.elements
-  let userState: UserState, userStoredData
+  let userState: UserState
 
   authError.value = false
 
   if (thisType.value === 'register') {
-    registerUser(email.value, password.value)
-      .then((user: User) => {
-        console.log('Registered user:', user)
-        let email = user.email || undefined
-        if (email === null) {
-          email = undefined
-        }
-        userStoredData = {
-          uid: user?.uid,
-          email: user?.email ?? undefined,
-          displayName: '',
-          createdAt: new Date(),
-          recipes: [],
-          shoppingLists: []
-        }
-        userState = { localUser: userStoredData, uid: user.uid, authorized: true}
-
-        initializeStores(userState)
-
-        return setDoc(doc(usersRef, user?.uid), userStoredData)
-      })
-      .then(() => {
-        console.log('New User Data Saved to Firestore')
-      })
-      .catch((error) => console.error(error))
+    try {
+      authError.value = false
+      const { email, password } = e.target.elements
+      const { user, userData } = await registerUser(email.value, password.value)
+      
+      // Initialize stores
+      const userState = { 
+        localUser: userData, 
+        uid: user.uid, 
+        authorized: true 
+      }
+      appStore.initializeApp(userState)
+    } catch (error) {
+      authError.value = true
+      // TODO handle registration error
+      console.error(error)
+    }
   } else if (thisType.value === 'signin') {
-    signIn(email.value, password.value)
-      .then((user) => {
-        console.log('Sign in user:', user)
-        return getDoc(doc(usersRef, user?.uid))
-      })
-      .then((data) => {
-        userStoredData = data.data() as LocalUser
-        const userId = userStoredData.uid || ''
-        userState = { ...data.data(), uid: userId, authorized: true, localUser: userStoredData }
-        console.log('Store Data set:', userState)
-        initializeStores(userState)
-      })
-      .catch((error) => console.error(error))
+    try {
+      signIn(email.value, password.value)
+        .then((user) => {
+          return dataService.loadUserData(user.uid)
+        })
+        .then((returnedData) => {
+          const [userStoredData, uid] = returnedData
+          const localUser = {
+            uid,
+            ...userStoredData
+          }
+          userState = { uid, authorized: true, localUser }
+          console.log('Store Data set:', userState)
+          appStore.initializeApp(userState)
+
+        })
+    } catch(error) {
+      //TODO Handle Errors
+      console.error(error)
+    }
   }
   console.log('user signed in, initializing store')
 
   router.push('/')
   appStore.toggleRegistrationModal()
-}
-
-function initializeStores(userState: UserState) {
-  // App Store (Currently not needed)
-
-  // User Store
-  userStore.setInitialUserState(userState)
-
-  // Recipe Store
-  if (userState.localUser?.recipes) recipeStore.setAllRecipes(userState.localUser?.recipes)
-
-  // Shopping List Store
-  if (userState.localUser?.shoppingLists) shoppingListStore.setListState(userState.uid, userState.localUser?.shoppingLists)
-
 }
 
 function onSwitchTypeHandler(type: string) {

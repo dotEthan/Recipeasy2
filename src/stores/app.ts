@@ -7,7 +7,8 @@ import { useUserStore } from './user'
 import dummyData from '../assets/dummyData.json'
 import { useShoppingListStore } from './shoppingList'
 import { useAuthService } from '@/composables/useAuthService'
-import { LocalUser } from '@/types/UserState'
+import { LocalUser, UserState } from '@/types/UserState'
+import { useDataService } from '@/composables/useDataService'
 
 type ScreenSize = 'sm' | 'md' | 'lg'
 
@@ -16,6 +17,7 @@ export const useAppStore = defineStore('app', () => {
   const userStore = useUserStore()
   const shoppingListStore = useShoppingListStore()
   const authService = useAuthService()
+  const dataService  = useDataService()
 
   const testModeOn = ref(false)
   const registrationOrSigninModal = ref('')
@@ -24,15 +26,35 @@ export const useAppStore = defineStore('app', () => {
   const isTestModeOn = computed(() => testModeOn.value)
   const isRegistrationModalOpen = computed(() => registrationOrSigninModal.value.length > 0)
 
-  function initializeApp(userData: LocalUser) {
+  function initializeApp(userData: UserState) {
+    console.log('initializing App with user Data: ', userData)
     const userId = userData.uid
-    userStore.setInitialUserState({uid: userId, localUser: userData, authorized: true})
-    recipeStore.setInitialRecipeState(userId, userData.recipes || [])
-    shoppingListStore.setListState(userId, userData.shoppingLists || [])
+    userStore.setInitialUserState(userData)
+    recipeStore.setInitialRecipeState(userId, userData.localUser.recipes || [])
+    shoppingListStore.setListState(userId, userData.localUser.shoppingLists || [])
   }
 
   function turnTestModeOn() {
-    authService.signIn('test@test.com', 'password')
+    try {
+      authService.signIn('testmode@testmode.com', 'password')
+        .then((user) => {
+          return dataService.loadUserData(user.uid)
+        })
+        .then((returnedData) => {
+          const [userStoredData, userId] = returnedData
+          // const testmodeData = dummyData as LocalUser
+          const localUser = {
+            ...userStoredData,
+            uid: userId,
+          }
+          const userState = { uid: userId, authorized: true, localUser }
+          initializeApp(userState)
+
+        })
+    } catch (error) {
+      console.log('TestMode Turn On Failed: ', error)
+    }
+    
     testModeOn.value = true
     // const parsedDummyData = dummyData as any //TODO Correctly type
     // console.log(parsedDummyData)
