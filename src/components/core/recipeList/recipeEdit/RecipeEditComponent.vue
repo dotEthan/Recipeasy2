@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { Ref } from 'vue'
-import type { Recipe } from '@/types/Recipes'
+import type { Recipe } from '@/types/Recipes' 
 import { useRecipeStore } from '@/stores/recipe'
 import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue'
+import { useImageUpload } from '@/composables/useImageUpload'
 
 const emit = defineEmits(['editingCanceled'])
 
 let formValid = false
 let formData: Ref<Recipe>
+let updatedImageURL = ''
 
 const recipeStore = useRecipeStore()
+const { deleteImage } = useImageUpload()
 
 const selectedRecipe: Recipe | undefined = recipeStore.getSelectedRecipe
 
@@ -30,6 +33,7 @@ if (selectedRecipe) {
 }
 
 function onSubmit() {
+  console.log(formData.value)
   if (formData?.value && selectedRecipe) {
     recipeStore.updateRecipe(formData.value)
   } else if (formData) {
@@ -78,6 +82,22 @@ function onAddDirectionType() {
 function onAddDirection(ingredientIndex: number) {
   formData.value.directions[ingredientIndex].steps.push('')
 }
+
+async function removeImage() {
+  if (formData.value.imgPath) {
+    const success = await deleteImage(formData.value.imgPath)
+    if (!success) {
+      console.error('Failed to delete image from Cloudinary')
+    }
+    console.log('removing image path')
+    formData.value.imgPath = ""
+  }
+}
+
+function saveImagePath(uploadedImgURL: string) {
+  console.log('saving image path')
+  formData.value.imgPath = uploadedImgURL
+}
 </script>
 
 <template>
@@ -98,23 +118,16 @@ function onAddDirection(ingredientIndex: number) {
             <div class="edit-header-contain">
               <div class="edit-header-column">
                 <div class="form-group">
-                  <label for="imagePath">Image URL</label>
-                  <input
-                    type="text"
-                    id="imagePath"
-                    class="form-control"
-                    formControlName="imagePath"
-                    v-model="formData.imgPath"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Recipe Image</label>
+                  <div>
+                    <label>Recipe Image</label>
+                    <span class="remove-image" @click="removeImage" v-if="formData.imgPath">Remove Image</span>
+                  </div>
                   <img
                     :src="formData.imgPath"
                     class="img-responsive recipe-edit-image"
                     v-if="formData.imgPath"
                   />
-                  <UserImageUploadComponent v-else />
+                  <UserImageUploadComponent @upload-complete="saveImagePath" v-else />
                 </div>
               </div>
               <div class="edit-header-column">

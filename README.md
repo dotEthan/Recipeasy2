@@ -18,7 +18,7 @@ I've also been using this as a time to work with ChatGPT to see how much easier 
 
 ### What isn't working
 
-So far nothing.
+Tried using AI to complete a full feature, it worked, but took far longer as it got very confused regarding syntax changes between versions, and kept getting locked into cyclical changes. 
 
 ## Where are we?
 
@@ -35,16 +35,18 @@ So far nothing.
 
 - Routing & Store (ongoing as needed)
 - Basic Responsive design
+- Image uploading (almost done, need deleting, and saving)
+- Filter (Function, but new design coming)
 - Welcome page and "Public" recipe display/search
-- Image uploading 
 
 ### To Come:
 
-- Recipes URL and Public/Private
+- Display newly added Recipe Data (time, nutritional info, etc)
 - All //TODO comments
 - Animations/Testing
 - Error Handling
 - Defaults (images)
+- Search Functionality
 
 ### Future thoughts:
 

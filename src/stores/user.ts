@@ -6,6 +6,7 @@ export const useUserStore = defineStore('user', () => {
   const uid = ref('')
   const authorized = ref(false)
   const localUser = ref<LocalUser>({})
+  const activeFilters = ref<string[]>([])
 
   const isAuthorized = computed(() => authorized.value)
   const getCurrentUser = computed(() => localUser.value)
@@ -26,6 +27,7 @@ export const useUserStore = defineStore('user', () => {
     uid.value = userState.uid
     authorized.value = userState.authorized
     localUser.value = userState.localUser
+    activeFilters.value = userState.activeFilters
   }
 
   function resetState() {
@@ -44,6 +46,7 @@ export const useUserStore = defineStore('user', () => {
     uid,
     authorized,
     localUser,
+    activeFilters,
     isAuthorized,
     getCurrentUser,
     deauthorize,

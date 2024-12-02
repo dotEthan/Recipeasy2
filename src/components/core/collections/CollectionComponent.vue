@@ -7,6 +7,7 @@ defineProps({
   title: String,
   recipeData: Array as PropType<Recipe[]>
 })
+
 </script>
 
 <template>

@@ -106,6 +106,7 @@ const handleImageUpload = async (file: File): Promise<void> => {
   
   const uploadedUrl = await uploadImage(file)
   if (uploadedUrl) {
+    console.log('upload is complete')
     emit('upload-complete', uploadedUrl)
   } else if (error.value) {
     emit('upload-error', error.value)

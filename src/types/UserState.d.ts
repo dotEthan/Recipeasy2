@@ -5,6 +5,7 @@ export type UserState = {
   uid: string
   localUser: LocalUser
   authorized: boolean
+  activeFilters: string[]
 }
 
 export type LocalUser = {
