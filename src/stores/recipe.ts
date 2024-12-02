@@ -1,14 +1,16 @@
 import { defineStore } from 'pinia'
 import { ref, computed, ComputedRef } from 'vue'
 import type { Recipe, RecipeState } from '@/types/Recipes'
+import { useUserStore } from './user'
 
 export const useRecipeStore = defineStore('recipes', () => {
+  const userStore = useUserStore()
   const userId = ref<string>('')
   const recipes = ref<Recipe[]>([])
   const allTags = ref<string[]>([])
   const selectedRecipeId = ref<string>('')
   const editSelectedRecipe = ref(false)
-  const personalFilters = ref<string[]>([])
+  const personalFilters = computed(() => userStore.localUser.personalFilters || [])
 
   const recipesLength = computed(() => recipes.value.length)
   const getSelectedRecipe = computed(() =>
@@ -39,7 +41,6 @@ export const useRecipeStore = defineStore('recipes', () => {
     recipes.value = state.recipes || []
     allTags.value = state.allTags || []
     selectedRecipeId.value = state.selectedRecipeId || ''
-    personalFilters.value = state.personalFilters || []
   }
 
   function getNRandomRecipes(num: number): Recipe[] {
@@ -97,7 +98,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     recipes.value = []
     allTags.value = []
     selectedRecipeId.value = ''
-    personalFilters.value = []
+    userStore.resetState()
   }
 
   return {
