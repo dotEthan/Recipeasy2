@@ -1,625 +1,311 @@
 {
-  "userId": "007",
-  "recipeState": {
-    "recipes": [
-      {
-        "id": "test-2",
-        "name": "Vanilla Milkshake",
-        "url": "https://www.theconsciousplantkitchen.com/vegan-milkshake/",
-        "description": "A cool tasty Summer treat!",
-        "ingredients": [
-          {
-            "title": "Milkshake",
-            "steps": [
-              { "name": "Oat Milk", "amount": "1/2", "unit": "cup" },
-              { "name": "Plant-Ice Vanilla Ice Cream", "amount": "1", "unit": "cup" },
-              { "name": "Frozen Strawberries", "amount": "3/4", "unit": "cup" },
-              { "name": "Vanilla Extract", "amount": "1/2", "unit": "teaspoon" }
-            ]
-          },
-          {
-            "title": "Topping",
-            "steps": [
-              { "name": "Vegan sprinkles", "amount": "1-2", "unit": "teaspoons" },
-              { "name": "Vegan Marshmallows", "amount": "10" },
-              { "name": "Dairy-free Whipped Cream", "amount": "1/4", "unit": "cup" }
-            ]
-          }
-        ],
-        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090094/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/x3gq5jk5hnnl6vgqmlhx.jpg",
-        "rating": 3.5,
-        "private": true,
-        "mealType": ["snack", "fast food", "junk food"],
-        "tags": ["milkshake", "drink", "vegan"]
-      },
-      {
-        "id": "test-3",
-        "name": "Plant Based Cheese Dip",
-        "url": "https://simpleveganblog.com/vegan-cheese/",
-        "description": "Healthy, gooey, and delicious!",
-        "ingredients": [
-          {
-            "title": "Ingredients",
-            "steps": [
-              { "name": "Carrots", "amount": "1", "unit": "cup" },
-              { "name": "Potatoes", "amount": "2", "unit": "cup" },
-              { "name": "Water", "amount": "1/2", "unit": "cup" },
-              { "name": "Nutritional Yeast", "amount": "1/2", "unit": "cup" },
-              { "name": "Extra virgin olive oil", "amount": "1/2", "unit": "cup" },
-              { "name": "Lemon Juice", "amount": "1/2", "unit": "tablespoon" },
-              { "name": "Salt", "amount": "1/2", "unit": "teaspoon" },
-              { "name": "Onion Powder", "amount": "1/2", "unit": "teaspoon" },
-              { "name": "Garlic Powder", "amount": "1/2", "unit": "teaspoon" }
-            ]
-          }
-        ],
-        "directions": [
-          {
-            "title": "Sauce-y",
-            "steps": [
-              "Place the potatoes and carrots in a medium pot and cover them with cold water by about 1 inch (2.5 cm).",
-              "Bring to a boil, then reduce the heat and simmer, uncovered, for about 15-20 minutes or until soft.",
-              "Drain the potatoes and carrots in a colander.",
-              "Transfer to a high-speed blender with all the remaining ingredients. Blend until smooth and serve immediately."
-            ]
-          }
-        ],
-        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090140/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/yxqha612s1holyscxa5g.webp",
-        "rating": 5,
-        "private": false,
-        "tags": ["cheese", "dip", "potato", "carrot", "vegan"]
-      },
-      {
-        "id": "test-4",
-        "name": "\"Chick'un\" Shreds",
-        "url": "https://avocadosandales.com/2017/12/17/chickwheat-shreds/",
-        "description": "So real they might worry Vegan guests",
-        "ingredients": [
-          {
-            "title": "Ingredients",
-            "steps": [
-              { "name": "Cold Cooked Chickpeas", "amount": "2", "unit": "cups" },
-              {
-                "name": "Aquafaba (Veggie broth or water can be substituted)",
-                "amount": "1",
-                "unit": "cup"
-              },
-              { "name": "Vegetable oil", "amount": "2", "unit": "tbsp" },
-              { "name": "White miso paste", "amount": "2", "unit": "tbsp" },
-              { "name": "Salt", "amount": "1.5", "unit": "tsp" },
-              { "name": "Onion Powder", "amount": "1", "unit": "tbsp" },
-              { "name": "Garlic Powder", "amount": "2", "unit": "tsp" },
-              { "name": "Apple Cider Vinegar", "amount": "1", "unit": "tsp" },
-              { "name": "Vital Wheat Gluten", "amount": "1 3/4", "unit": "cup" }
-            ]
-          }
-        ],
-        "directions": [
-          {
-            "title": "do first",
-            "steps": [
-              "Measure all ingredients up to the vinegar. ",
-              "Blend all ingredients in a high speed blender until completely smooth",
-              "Combine vital wheat gluten and chickpea mixture in a large bowl. Let rest about 15 minutes to allow gluten to absorb the moisture.",
-              "Separate dough into 2 parts. Fit a food processor with a dough hook (see note above), blend each portion until the dough is warm, stretchy, smooth, and ‘shreds’ of gluten are visible, this can take up to 8 minutes",
-              "Combine 2 kneaded balls of dough onto a large sheet of aluminum foil. Wrap fully, then repeat once more.",
-              "Add 2 cups of water to your Instant Pot, then set for manual, high pressure for 120 minutes. ",
-              "Once finished quick release the pressure and remove foil when cool enouhg to touch. Split roast in half and gently shred along the grains",
-              "Refrigerate for best texture."
-            ]
-          }
-        ],
-        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090184/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/rw8pnm2cxqptdivilutu.jpg",
-        "rating": 5,
-        "private": false,
-        "tags": ["Seitan", "Chickwheat", "Chickpeas", "Vital Wheat Glute", "Vegan", "Protein", "dinner", "Dinner"]
-      },
-      {
-        "id": "test-5",
-        "name": "Oatmeal Pancakes",
-        "url": "https://avocadosandales.com/2017/12/17/chickwheat-shreds/",
-        "description": "So real they might worry Vegan guests",
-        "ingredients": [
-          {
-            "title": "Ingredients",
-            "steps": [
-              { "name": "oatmeal", "amount": "1", "unit": "cup" },
-              {
-                "name": "Apples",
-                "amount": "2"
-              },
-              { "name": "Egg Replacer", "amount": "2", "unit": "tbsp" },
-              { "name": "Yogurt", "amount": "1/2", "unit": "cup" },
-              { "name": "Cinanmon", "amount": "2", "unit": "tsp" },
-              { "name": "Vanilla Extract", "amount": "1", "unit": "tbsp" },
-              { "name": "Salt", "amount": "sprinkle" }
-            ]
-          }
-        ],
-        "directions": [
-          {
-            "title": "do first",
-            "steps": ["Mix dry", "Add wet and mix", "Bake at medium heat till cooked"]
-          }
-        ],
-        "imgPath": "https://picsum.photos/200/300",
-        "rating": 2,
-        "private": false,
-        "tags": ["breakfast", "pancake", "Oatmeal", "Vegan"]
-      },
-      {
-        "id": "VR001",
-        "name": "Quinoa Black Bean Buddha Bowl",
-        "url": "",
-        "description": "A protein-packed, nutrient-dense bowl combining quinoa, roasted vegetables, and a zesty tahini dressing",
-        "prepTime": "15 minutes",
-        "cookTime": "25 minutes",
-        "nutritionalInformation": [
-          {"name": "Calories", "amount": "385"},
-          {"name": "Protein", "amount": "18g"},
-          {"name": "Carbohydrates", "amount": "55g"},
-          {"name": "Fat", "amount": "12g"},
-          {"name": "Fiber", "amount": "12g"}
-        ],
-        "ingredients": [
-          {
-            "title": "Quinoa Base",
-            "steps": [
-              {"name": "Quinoa", "amount": 1, "unit": "cup"},
-              {"name": "Water", "amount": 2, "unit": "cups"}
-            ]
-          },
-          {
-            "title": "Roasted Vegetables",
-            "steps": [
-              {"name": "Sweet Potato", "amount": 1, "unit": "large"},
-              {"name": "Red Bell Pepper", "amount": 1, "unit": "whole"},
-              {"name": "Red Onion", "amount": 0.5, "unit": "whole"},
-              {"name": "Olive Oil", "amount": 2, "unit": "tablespoons"}
-            ]
-          },
-          {
-            "title": "Black Beans",
-            "steps": [
-              {"name": "Black Beans", "amount": 1, "unit": "can"},
-              {"name": "Cumin", "amount": 1, "unit": "teaspoon"}
-            ]
-          },
-          {
-            "title": "Tahini Dressing",
-            "steps": [
-              {"name": "Tahini", "amount": 0.25, "unit": "cup"},
-              {"name": "Lemon Juice", "amount": 2, "unit": "tablespoons"},
-              {"name": "Garlic", "amount": 1, "unit": "clove"}
-            ]
-          }
-        ],
-        "directions": [
-          {
-            "title": "Quinoa Preparation",
-            "steps": [
-              "Rinse quinoa thoroughly",
-              "Add quinoa and water to pot",
-              "Bring to boil, then simmer for 15 minutes",
-              "Fluff with fork when done"
-            ]
-          },
-          {
-            "title": "Roasting Vegetables",
-            "steps": [
-              "Chop vegetables into 1-inch cubes",
-              "Toss with olive oil and salt",
-              "Roast at 425°F for 20-25 minutes",
-              "Stir halfway through cooking"
-            ]
-          },
-          {
-            "title": "Black Beans",
-            "steps": [
-              "Drain and rinse canned beans",
-              "Heat in pan with cumin",
-              "Season with salt and pepper"
-            ]
-          },
-          {
-            "title": "Dressing and Assembly",
-            "steps": [
-              "Blend tahini, lemon juice, and garlic",
-              "Add water to reach desired consistency",
-              "Layer quinoa, vegetables, and beans in bowl",
-              "Drizzle with tahini dressing"
-            ]
-          }
-        ],
-        "imgPath": "",
-        "rating": "",
-        "private": true,
-        "tags": [
-          "vegan", 
-          "quinoa", 
-          "buddha-bowl", 
-          "high-protein", 
-          "meal-prep", 
-          "gluten-free", 
-          "lunch", 
-          "dinner", 
-          "healthy",
-          "black-beans",
-          "tahini",
-          "south-american-inspired",
-          "grain-bowl",
-          "quick-meal",
-          "plant-based",
-          "vegetable-rich",
-          "legumes"
-        ]
-      },
-      {
-        "id": "VR002",
-        "name": "Thai Green Curry with Tofu",
-        "url": "",
-        "description": "A creamy, spicy Thai-inspired curry packed with vegetables and crispy tofu, served over jasmine rice",
-        "prepTime": "20 minutes",
-        "cookTime": "30 minutes",
-        "nutritionalInformation": [
-          {"name": "Calories", "amount": "420"},
-          {"name": "Protein", "amount": "22g"},
-          {"name": "Carbohydrates", "amount": "45g"},
-          {"name": "Fat", "amount": "18g"},
-          {"name": "Fiber", "amount": "8g"}
-        ],
-        "ingredients": [
-          {
-            "title": "Tofu",
-            "steps": [
-              {"name": "Extra Firm Tofu", "amount": 1, "unit": "block"},
-              {"name": "Cornstarch", "amount": 2, "unit": "tablespoons"},
-              {"name": "Sesame Oil", "amount": 2, "unit": "tablespoons"}
-            ]
-          },
-          {
-            "title": "Curry Sauce",
-            "steps": [
-              {"name": "Green Curry Paste", "amount": 3, "unit": "tablespoons"},
-              {"name": "Coconut Milk", "amount": 1, "unit": "can"},
-              {"name": "Vegetable Broth", "amount": 0.5, "unit": "cup"}
-            ]
-          },
-          {
-            "title": "Vegetables",
-            "steps": [
-              {"name": "Bell Peppers", "amount": 2, "unit": "whole"},
-              {"name": "Zucchini", "amount": 1, "unit": "medium"},
-              {"name": "Bamboo Shoots", "amount": 0.5, "unit": "cup"},
-              {"name": "Fresh Basil", "amount": 0.25, "unit": "cup"}
-            ]
-          },
-          {
-            "title": "Rice",
-            "steps": [
-              {"name": "Jasmine Rice", "amount": 1, "unit": "cup"},
-              {"name": "Water", "amount": 2, "unit": "cups"}
-            ]
-          }
-        ],
-        "directions": [
-          {
-            "title": "Tofu Preparation",
-            "steps": [
-              "Press tofu to remove excess water",
-              "Cut into cubes",
-              "Toss with cornstarch",
-              "Pan-fry in sesame oil until crispy"
-            ]
-          },
-          {
-            "title": "Curry Sauce",
-            "steps": [
-              "Heat curry paste in large pan",
-              "Add coconut milk and vegetable broth",
-              "Simmer for 10 minutes"
-            ]
-          },
-          {
-            "title": "Vegetable Cooking",
-            "steps": [
-              "Chop all vegetables",
-              "Add to curry sauce",
-              "Cook until tender-crisp"
-            ]
-          },
-          {
-            "title": "Rice Preparation",
-            "steps": [
-              "Rinse rice",
-              "Cook rice in water",
-              "Fluff when done"
-            ]
-          },
-          {
-            "title": "Final Assembly",
-            "steps": [
-              "Add crispy tofu to curry",
-              "Garnish with fresh basil",
-              "Serve over jasmine rice"
-            ]
-          }
-        ],
-        "imgPath": "",
-        "rating": "",
-        "private": true,
-        "tags": [
-          "vegan",
-          "thai-cuisine",
-          "tofu",
-          "curry",
-          "gluten-free",
-          "dinner",
-          "spicy",
-          "coconut-milk",
-          "green-curry",
-          "asian-inspired",
-          "plant-based",
-          "protein-rich",
-          "vegetable-rich",
-          "main-course",
-          "comfort-food",
-          "Dinner"
-        ]
-      },
-      {
-        "id": "VR003",
-        "name": "Mediterranean Stuffed Portobello Mushrooms",
-        "url": "",
-        "description": "Hearty portobello mushrooms filled with a mix of quinoa, spinach, sun-dried tomatoes, and Mediterranean spices",
-        "prepTime": "25 minutes",
-        "cookTime": "35 minutes",
-        "nutritionalInformation": [
-          {"name": "Calories", "amount": "280"},
-          {"name": "Protein", "amount": "15g"},
-          {"name": "Carbohydrates", "amount": "35g"},
-          {"name": "Fat", "amount": "10g"},
-          {"name": "Fiber", "amount": "9g"}
-        ],
-        "ingredients": [
-          {
-            "title": "Mushroom Base",
-            "steps": [
-              {"name": "Portobello Mushrooms", "amount": 4, "unit": "large"},
-              {"name": "Olive Oil", "amount": 2, "unit": "tablespoons"},
-              {"name": "Garlic", "amount": 3, "unit": "cloves"}
-            ]
-          },
-          {
-            "title": "Filling",
-            "steps": [
-              {"name": "Quinoa", "amount": 1, "unit": "cup"},
-              {"name": "Fresh Spinach", "amount": 2, "unit": "cups"},
-              {"name": "Sun-Dried Tomatoes", "amount": 0.5, "unit": "cup"},
-              {"name": "Pine Nuts", "amount": 0.25, "unit": "cup"}
-            ]
-          },
-          {
-            "title": "Herbs and Spices",
-            "steps": [
-              {"name": "Dried Oregano", "amount": 1, "unit": "teaspoon"},
-              {"name": "Dried Thyme", "amount": 1, "unit": "teaspoon"},
-              {"name": "Nutritional Yeast", "amount": 2, "unit": "tablespoons"}
-            ]
-          }
-        ],
-        "directions": [
-          {
-            "title": "Mushroom Preparation",
-            "steps": [
-              "Clean portobello mushrooms",
-              "Remove stems",
-              "Brush with olive oil",
-              "Roast at 400°F for 10 minutes"
-            ]
-          },
-          {
-            "title": "Quinoa Cooking",
-            "steps": [
-              "Cook quinoa according to package instructions",
-              "Let cool slightly"
-            ]
-          },
-          {
-            "title": "Filling Preparation",
-            "steps": [
-              "Sauté garlic in olive oil",
-              "Add spinach and cook until wilted",
-              "Mix with quinoa, sun-dried tomatoes, and pine nuts",
-              "Season with herbs and nutritional yeast"
-            ]
-          },
-          {
-            "title": "Final Assembly",
-            "steps": [
-              "Fill roasted mushrooms with quinoa mixture",
-              "Bake for additional 15 minutes",
-              "Garnish with fresh herbs"
-            ]
-          }
-        ],
-        "imgPath": "",
-        "rating": "",
-        "private": true,
-        "tags": [
-          "vegan",
-          "mediterranean",
-          "portobello",
-          "mushrooms",
-          "quinoa",
-          "gluten-free",
-          "dinner",
-          "stuffed-vegetables",
-          "spinach",
-          "sun-dried-tomatoes",
-          "pine-nuts",
-          "plant-based",
-          "protein-rich",
-          "vegetable-main",
-          "low-carb",
-          "nutritional-yeast"
-        ]
-      },
-      {
-        "id": "VR004",
-        "name": "Indian Chana Masala",
-        "url": "",
-        "description": "Classic North Indian chickpea curry with aromatic spices, served with basmati rice",
-        "prepTime": "15 minutes",
-        "cookTime": "40 minutes",
-        "nutritionalInformation": [
-          {"name": "Calories", "amount": "350"},
-          {"name": "Protein", "amount": "16g"},
-          {"name": "Carbohydrates", "amount": "50g"},
-          {"name": "Fat", "amount": "12g"},
-          {"name": "Fiber", "amount": "14g"}
-        ],
-        "ingredients": [
-          {
-            "title": "Chickpeas",
-            "steps": [
-              {"name": "Chickpeas", "amount": 2, "unit": "cans"},
-              {"name": "Onion", "amount": 1, "unit": "large"},
-              {"name": "Tomatoes", "amount": 2, "unit": "medium"}
-            ]
-          },
-          {
-            "title": "Spices",
-            "steps": [
-              {"name": "Garam Masala", "amount": 2, "unit": "teaspoons"},
-              {"name": "Cumin", "amount": 1, "unit": "teaspoon"},
-              {"name": "Turmeric", "amount": 0.5, "unit": "teaspoon"},
-              {"name": "Chili Powder", "amount": 0.25, "unit": "teaspoon"}
-            ]
-          },
-          {
-            "title": "Base Ingredients",
-            "steps": [
-              {"name": "Garlic", "amount": 4, "unit": "cloves"},
-              {"name": "Ginger", "amount": 1, "unit": "tablespoon"},
-              {"name": "Vegetable Oil", "amount": 2, "unit": "tablespoons"}
-            ]
-          },
-          {
-            "title": "Rice",
-            "steps": [
-              {"name": "Basmati Rice", "amount": 1, "unit": "cup"},
-              {"name": "Water", "amount": 2, "unit": "cups"}
-            ]
-          }
-        ],
-        "directions": [
-          {
-            "title": "Base Preparation",
-            "steps": [
-              "Finely chop onions, garlic, and ginger",
-              "Sauté in oil until golden brown"
-            ]
-          },
-          {
-            "title": "Spice Blend",
-            "steps": [
-              "Add all dry spices",
-              "Cook for 1-2 minutes to release aromatics"
-            ]
-          },
-          {
-            "title": "Chickpea Cooking",
-            "steps": [
-              "Add chopped tomatoes",
-              "Drain and add chickpeas",
-              "Simmer for 30 minutes",
-              "Add water if needed to prevent sticking"
-            ]
-          },
-          {
-            "title": "Rice Preparation",
-            "steps": [
-              "Rinse basmati rice",
-              "Cook in separate pot",
-              "Fluff when done"
-            ]
-          },
-          {
-            "title": "Serving",
-            "steps": [
-              "Garnish with fresh cilantro",
-              "Serve hot over basmati rice"
-            ]
-          }
-        ],
-        "imgPath": "",
-        "rating": "",
-        "private": true,
-        "tags": [
-          "vegan",
-          "indian",
-          "chana-masala",
-          "chickpeas",
-          "curry",
-          "gluten-free",
-          "protein-rich",
-          "dinner",
-          "main-course",
-          "north-indian",
-          "spicy",
-          "plant-based",
-          "legumes",
-          "basmati-rice",
-          "comfort-food"
-        ]
-      },
-      {
-      "id": "VR006",
-      "name": "Japanese Miso Ramen with Crispy Tofu",
-      "url": "",
-      "description": "Rich umami ramen with miso broth, crispy tofu, and seasonal vegetables",
-      "prepTime": "25 minutes",
-      "cookTime": "30 minutes",
-      "nutritionalInformation": [
-        {"name": "Calories", "amount": "390"},
-        {"name": "Protein", "amount": "20g"},
-        {"name": "Carbohydrates", "amount": "45g"},
-        {"name": "Fat", "amount": "15g"},
-        {"name": "Fiber", "amount": "7g"}
-      ],
+  "uid": "KrsgIBvUokhQmnSZ3cFJvzGAGRT2",
+  "firstName": "Sam",
+  "lastName": "Doe",
+  "displayName": "Sammy",
+  "recipes": [
+    {
+      "id": "test-2",
+      "name": "Vanilla Milkshake",
+      "url": "https://www.theconsciousplantkitchen.com/vegan-milkshake/",
+      "description": "A cool tasty Summer treat!",
       "ingredients": [
         {
-          "title": "Ramen Broth",
+          "title": "Milkshake",
           "steps": [
-            {"name": "Vegetable Broth", "amount": 4, "unit": "cups"},
-            {"name": "White Miso Paste", "amount": 3, "unit": "tablespoons"},
-            {"name": "Soy Sauce", "amount": 2, "unit": "tablespoons"},
-            {"name": "Sesame Oil", "amount": 1, "unit": "tablespoon"}
+            { "name": "Oat Milk", "amount": "1/2", "unit": "cup" },
+            { "name": "Plant-Ice Vanilla Ice Cream", "amount": "1", "unit": "cup" },
+            { "name": "Frozen Strawberries", "amount": "3/4", "unit": "cup" },
+            { "name": "Vanilla Extract", "amount": "1/2", "unit": "teaspoon" }
           ]
         },
         {
+          "title": "Topping",
+          "steps": [
+            { "name": "Plant Based sprinkles", "amount": "1-2", "unit": "teaspoons" },
+            { "name": "Plant Based Marshmallows", "amount": "10" },
+            { "name": "Plant Based Whipped Cream", "amount": "1/4", "unit": "cup" }
+          ]
+        }
+      ],
+      "directions": ["put in blender and blend", "drink"],
+      "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090094/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/x3gq5jk5hnnl6vgqmlhx.jpg",
+      "rating": 3.5,
+      "private": true,
+      "mealType": ["snack", "fast food", "junk food"],
+      "tags": ["milkshake", "drink", "vegan"]
+    },
+    {
+      "id": "test-3",
+      "name": "Plant Based Cheese Dip",
+      "url": "https://simpleveganblog.com/vegan-cheese/",
+      "description": "Healthy, gooey, and delicious!",
+      "ingredients": [
+        {
+          "title": "Ingredients",
+          "steps": [
+            { "name": "Carrots", "amount": "1", "unit": "cup" },
+            { "name": "Potatoes", "amount": "2", "unit": "cup" },
+            { "name": "Water", "amount": "1/2", "unit": "cup" },
+            { "name": "Nutritional Yeast", "amount": "1/2", "unit": "cup" },
+            { "name": "Extra virgin olive oil", "amount": "1/2", "unit": "cup" },
+            { "name": "Lemon Juice", "amount": "1/2", "unit": "tablespoon" },
+            { "name": "Salt", "amount": "1/2", "unit": "teaspoon" },
+            { "name": "Onion Powder", "amount": "1/2", "unit": "teaspoon" },
+            { "name": "Garlic Powder", "amount": "1/2", "unit": "teaspoon" }
+          ]
+        }
+      ],
+      "directions": [
+        {
+          "title": "Sauce-y",
+          "steps": [
+            "Place the potatoes and carrots in a medium pot and cover them with cold water by about 1 inch (2.5 cm).",
+            "Bring to a boil, then reduce the heat and simmer, uncovered, for about 15-20 minutes or until soft.",
+            "Drain the potatoes and carrots in a colander.",
+            "Transfer to a high-speed blender with all the remaining ingredients. Blend until smooth and serve immediately."
+          ]
+        }
+      ],
+      "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090140/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/yxqha612s1holyscxa5g.webp",
+      "rating": 5,
+      "private": false,
+      "mealType": ["snack"],
+      "cookTime":"25 minutes",
+      "prepTime":"10 minutes",
+      "tags": ["cheese", "dip", "potato", "carrot", "vegan"]
+    },
+    {
+      "id": "test-4",
+      "name": "\"Chick'un\" Shreds",
+      "url": "https://avocadosandales.com/2017/12/17/chickwheat-shreds/",
+      "description": "So real they might worry Vegan guests",
+      "ingredients": [
+        {
+          "title": "Ingredients",
+          "steps": [
+            { "name": "Cold Cooked Chickpeas", "amount": "2", "unit": "cups" },
+            {
+              "name": "Aquafaba (Veggie broth or water can be substituted)",
+              "amount": "1",
+              "unit": "cup"
+            },
+            { "name": "Vegetable oil", "amount": "2", "unit": "tbsp" },
+            { "name": "White miso paste", "amount": "2", "unit": "tbsp" },
+            { "name": "Salt", "amount": "1.5", "unit": "tsp" },
+            { "name": "Onion Powder", "amount": "1", "unit": "tbsp" },
+            { "name": "Garlic Powder", "amount": "2", "unit": "tsp" },
+            { "name": "Apple Cider Vinegar", "amount": "1", "unit": "tsp" },
+            { "name": "Vital Wheat Gluten", "amount": "1 3/4", "unit": "cup" }
+          ]
+        }
+      ],
+      "directions": [
+        {
+          "title": "do first",
+          "steps": [
+            "Measure all ingredients up to the vinegar. ",
+            "Blend all ingredients in a high speed blender until completely smooth",
+            "Combine vital wheat gluten and chickpea mixture in a large bowl. Let rest about 15 minutes to allow gluten to absorb the moisture.",
+            "Separate dough into 2 parts. Fit a food processor with a dough hook (see note above), blend each portion until the dough is warm, stretchy, smooth, and ‘shreds’ of gluten are visible, this can take up to 8 minutes",
+            "Combine 2 kneaded balls of dough onto a large sheet of aluminum foil. Wrap fully, then repeat once more.",
+            "Add 2 cups of water to your Instant Pot, then set for manual, high pressure for 120 minutes. ",
+            "Once finished quick release the pressure and remove foil when cool enouhg to touch. Split roast in half and gently shred along the grains",
+            "Refrigerate for best texture."
+          ]
+        }
+      ],
+      "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090184/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/rw8pnm2cxqptdivilutu.jpg",
+      "rating": 5,
+      "private": false,
+      "mealType": ["dinner"],
+      "tags": ["Seitan", "Chickwheat", "Chickpeas", "Vital Wheat Glute", "Vegan", "Protein"]
+    },
+    {
+      "id": "test-5",
+      "name": "Oatmeal Pancakes",
+      "url": "https://avocadosandales.com/2017/12/17/chickwheat-shreds/",
+      "description": "So real they might worry Vegan guests",
+      "ingredients": [
+        {
+          "title": "Ingredients",
+          "steps": [
+            { "name": "oatmeal", "amount": "1", "unit": "cup" },
+            {
+              "name": "Apples",
+              "amount": "2"
+            },
+            { "name": "Egg Replacer", "amount": "2", "unit": "tbsp" },
+            { "name": "Yogurt", "amount": "1/2", "unit": "cup" },
+            { "name": "Cinanmon", "amount": "2", "unit": "tsp" },
+            { "name": "Vanilla Extract", "amount": "1", "unit": "tbsp" },
+            { "name": "Salt", "amount": "sprinkle" }
+          ]
+        }
+      ],
+      "directions": [
+        {
+          "title": "do first",
+          "steps": ["Mix dry", "Add wet and mix", "Bake at medium heat till cooked"]
+        }
+      ],
+      "imgPath": "https://picsum.photos/200/300",
+      "rating": 2,
+      "private": false,
+      "mealType": ["breakfast"],
+      "tags": ["pancake", "Oatmeal", "Vegan"]
+    },
+    {
+      "id": "VR001",
+      "name": "Quinoa Black Bean Buddha Bowl",
+      "url": "",
+      "description": "A protein-packed, nutrient-dense bowl combining quinoa, roasted vegetables, and a zesty tahini dressing",
+      "prepTime": "15 minutes",
+      "cookTime": "25 minutes",
+      "nutritionalInfo": [
+        {"name": "Calories", "amount": "385"},
+        {"name": "Protein", "amount": "18g"},
+        {"name": "Carbohydrates", "amount": "55g"},
+        {"name": "Fat", "amount": "12g"},
+        {"name": "Fiber", "amount": "12g"}
+      ],
+      "ingredients": [
+        {
+          "title": "Quinoa Base",
+          "steps": [
+            {"name": "Quinoa", "amount": 1, "unit": "cup"},
+            {"name": "Water", "amount": 2, "unit": "cups"}
+          ]
+        },
+        {
+          "title": "Roasted Vegetables",
+          "steps": [
+            {"name": "Sweet Potato", "amount": 1, "unit": "large"},
+            {"name": "Red Bell Pepper", "amount": 1, "unit": "whole"},
+            {"name": "Red Onion", "amount": 0.5, "unit": "whole"},
+            {"name": "Olive Oil", "amount": 2, "unit": "tablespoons"}
+          ]
+        },
+        {
+          "title": "Black Beans",
+          "steps": [
+            {"name": "Black Beans", "amount": 1, "unit": "can"},
+            {"name": "Cumin", "amount": 1, "unit": "teaspoon"}
+          ]
+        },
+        {
+          "title": "Tahini Dressing",
+          "steps": [
+            {"name": "Tahini", "amount": 0.25, "unit": "cup"},
+            {"name": "Lemon Juice", "amount": 2, "unit": "tablespoons"},
+            {"name": "Garlic", "amount": 1, "unit": "clove"}
+          ]
+        }
+      ],
+      "directions": [
+        {
+          "title": "Quinoa Preparation",
+          "steps": [
+            "Rinse quinoa thoroughly",
+            "Add quinoa and water to pot",
+            "Bring to boil, then simmer for 15 minutes",
+            "Fluff with fork when done"
+          ]
+        },
+        {
+          "title": "Roasting Vegetables",
+          "steps": [
+            "Chop vegetables into 1-inch cubes",
+            "Toss with olive oil and salt",
+            "Roast at 425°F for 20-25 minutes",
+            "Stir halfway through cooking"
+          ]
+        },
+        {
+          "title": "Black Beans",
+          "steps": [
+            "Drain and rinse canned beans",
+            "Heat in pan with cumin",
+            "Season with salt and pepper"
+          ]
+        },
+        {
+          "title": "Dressing and Assembly",
+          "steps": [
+            "Blend tahini, lemon juice, and garlic",
+            "Add water to reach desired consistency",
+            "Layer quinoa, vegetables, and beans in bowl",
+            "Drizzle with tahini dressing"
+          ]
+        }
+      ],
+      "imgPath": "",
+      "rating": "",
+      "private": true,
+      "mealType": ["lunch", "dinner"],
+      "tags": [
+        "vegan", 
+        "quinoa", 
+        "buddha-bowl", 
+        "high-protein", 
+        "meal-prep", 
+        "gluten-free", 
+        "healthy",
+        "black-beans",
+        "tahini",
+        "south-american-inspired",
+        "grain-bowl",
+        "quick-meal",
+        "plant-based",
+        "vegetable-rich",
+        "legumes"
+      ]
+    },
+    {
+      "id": "VR002",
+      "name": "Thai Green Curry with Tofu",
+      "url": "",
+      "description": "A creamy, spicy Thai-inspired curry packed with vegetables and crispy tofu, served over jasmine rice",
+      "prepTime": "20 minutes",
+      "cookTime": "30 minutes",
+      "nutritionalInfo": [
+        {"name": "Calories", "amount": "420"},
+        {"name": "Protein", "amount": "22g"},
+        {"name": "Carbohydrates", "amount": "45g"},
+        {"name": "Fat", "amount": "18g"},
+        {"name": "Fiber", "amount": "8g"}
+      ],
+      "ingredients": [
+        {
           "title": "Tofu",
           "steps": [
-            {"name": "Firm Tofu", "amount": 1, "unit": "block"},
+            {"name": "Extra Firm Tofu", "amount": 1, "unit": "block"},
             {"name": "Cornstarch", "amount": 2, "unit": "tablespoons"},
-            {"name": "Nutritional Yeast", "amount": 1, "unit": "tablespoon"}
+            {"name": "Sesame Oil", "amount": 2, "unit": "tablespoons"}
+          ]
+        },
+        {
+          "title": "Curry Sauce",
+          "steps": [
+            {"name": "Green Curry Paste", "amount": 3, "unit": "tablespoons"},
+            {"name": "Coconut Milk", "amount": 1, "unit": "can"},
+            {"name": "Vegetable Broth", "amount": 0.5, "unit": "cup"}
           ]
         },
         {
           "title": "Vegetables",
           "steps": [
-            {"name": "Bok Choy", "amount": 2, "unit": "heads"},
-            {"name": "Shiitake Mushrooms", "amount": 1, "unit": "cup"},
-            {"name": "Green Onions", "amount": 3, "unit": "stalks"},
-            {"name": "Nori Sheets", "amount": 1, "unit": "sheet"}
+            {"name": "Bell Peppers", "amount": 2, "unit": "whole"},
+            {"name": "Zucchini", "amount": 1, "unit": "medium"},
+            {"name": "Bamboo Shoots", "amount": 0.5, "unit": "cup"},
+            {"name": "Fresh Basil", "amount": 0.25, "unit": "cup"}
           ]
         },
         {
-          "title": "Noodles",
+          "title": "Rice",
           "steps": [
-            {"name": "Ramen Noodles", "amount": 2, "unit": "packages"},
-            {"name": "Water", "amount": 4, "unit": "cups"}
+            {"name": "Jasmine Rice", "amount": 1, "unit": "cup"},
+            {"name": "Water", "amount": 2, "unit": "cups"}
           ]
         }
       ],
@@ -627,807 +313,1125 @@
         {
           "title": "Tofu Preparation",
           "steps": [
-            "Press tofu to remove excess moisture",
+            "Press tofu to remove excess water",
             "Cut into cubes",
-            "Coat with cornstarch and nutritional yeast",
-            "Bake at 425°F until crispy"
+            "Toss with cornstarch",
+            "Pan-fry in sesame oil until crispy"
           ]
         },
         {
-          "title": "Broth Preparation",
+          "title": "Curry Sauce",
           "steps": [
-            "Heat vegetable broth",
-            "Whisk in miso paste",
-            "Add soy sauce and sesame oil",
-            "Simmer for 15 minutes"
+            "Heat curry paste in large pan",
+            "Add coconut milk and vegetable broth",
+            "Simmer for 10 minutes"
           ]
         },
         {
           "title": "Vegetable Cooking",
           "steps": [
-            "Slice bok choy and mushrooms",
-            "Sauté briefly in sesame oil",
-            "Set aside"
+            "Chop all vegetables",
+            "Add to curry sauce",
+            "Cook until tender-crisp"
           ]
         },
         {
-          "title": "Noodle Assembly",
+          "title": "Rice Preparation",
           "steps": [
-            "Cook ramen noodles",
-            "Drain and rinse",
-            "Divide into serving bowls",
-            "Pour hot miso broth over noodles",
-            "Top with crispy tofu, vegetables, and nori"
+            "Rinse rice",
+            "Cook rice in water",
+            "Fluff when done"
+          ]
+        },
+        {
+          "title": "Final Assembly",
+          "steps": [
+            "Add crispy tofu to curry",
+            "Garnish with fresh basil",
+            "Serve over jasmine rice"
           ]
         }
       ],
       "imgPath": "",
       "rating": "",
       "private": true,
+      "mealType": "dinner",
       "tags": [
         "vegan",
-        "japanese",
-        "ramen",
-        "miso",
+        "thai-cuisine",
         "tofu",
-        "noodles",
-        "umami",
-        "asian-cuisine",
-        "soup",
-        "dinner",
+        "curry",
+        "gluten-free",
+        "spicy",
+        "coconut-milk",
+        "green-curry",
+        "asian-inspired",
         "plant-based",
-        "mushrooms",
-        "comfort-food",
-        "nutritional-yeast",
-        "gluten-free-option"
+        "protein-rich",
+        "vegetable-rich",
+        "main-course",
+        "comfort-food"
       ]
     },
     {
-      "id": "VR007",
-      "name": "Middle Eastern Falafel Buddha Bowl",
+      "id": "VR003",
+      "name": "Mediterranean Stuffed Portobello Mushrooms",
       "url": "",
-      "description": "Crispy homemade falafel served over quinoa with roasted vegetables and creamy tahini sauce",
-      "prepTime": "30 minutes",
-      "cookTime": "40 minutes",
-      "nutritionalInformation": [
-        {"name": "Calories", "amount": "425"},
-        {"name": "Protein", "amount": "19g"},
-        {"name": "Carbohydrates", "amount": "55g"},
-        {"name": "Fat", "amount": "16g"},
-        {"name": "Fiber", "amount": "13g"}
+      "description": "Hearty portobello mushrooms filled with a mix of quinoa, spinach, sun-dried tomatoes, and Mediterranean spices",
+      "prepTime": "25 minutes",
+      "cookTime": "35 minutes",
+      "nutritionalInfo": [
+        {"name": "Calories", "amount": "280"},
+        {"name": "Protein", "amount": "15g"},
+        {"name": "Carbohydrates", "amount": "35g"},
+        {"name": "Fat", "amount": "10g"},
+        {"name": "Fiber", "amount": "9g"}
       ],
       "ingredients": [
         {
-          "title": "Falafel",
+          "title": "Mushroom Base",
           "steps": [
-            {"name": "Dried Chickpeas", "amount": 2, "unit": "cups"},
-            {"name": "Fresh Parsley", "amount": 0.5, "unit": "cup"},
-            {"name": "Garlic", "amount": 4, "unit": "cloves"},
-            {"name": "Cumin", "amount": 2, "unit": "teaspoons"}
+            {"name": "Portobello Mushrooms", "amount": 4, "unit": "large"},
+            {"name": "Olive Oil", "amount": 2, "unit": "tablespoons"},
+            {"name": "Garlic", "amount": 3, "unit": "cloves"}
           ]
         },
         {
-          "title": "Roasted Vegetables",
-          "steps": [
-            {"name": "Eggplant", "amount": 1, "unit": "large"},
-            {"name": "Zucchini", "amount": 2, "unit": "medium"},
-            {"name": "Red Onion", "amount": 1, "unit": "whole"},
-            {"name": "Olive Oil", "amount": 3, "unit": "tablespoons"}
-          ]
-        },
-        {
-          "title": "Tahini Sauce",
-          "steps": [
-            {"name": "Tahini", "amount": 0.25, "unit": "cup"},
-            {"name": "Lemon Juice", "amount": 2, "unit": "tablespoons"},
-            {"name": "Garlic Powder", "amount": 0.5, "unit": "teaspoon"}
-          ]
-        },
-        {
-          "title": "Base",
+          "title": "Filling",
           "steps": [
             {"name": "Quinoa", "amount": 1, "unit": "cup"},
+            {"name": "Fresh Spinach", "amount": 2, "unit": "cups"},
+            {"name": "Sun-Dried Tomatoes", "amount": 0.5, "unit": "cup"},
+            {"name": "Pine Nuts", "amount": 0.25, "unit": "cup"}
+          ]
+        },
+        {
+          "title": "Herbs and Spices",
+          "steps": [
+            {"name": "Dried Oregano", "amount": 1, "unit": "teaspoon"},
+            {"name": "Dried Thyme", "amount": 1, "unit": "teaspoon"},
+            {"name": "Nutritional Yeast", "amount": 2, "unit": "tablespoons"}
+          ]
+        }
+      ],
+      "directions": [
+        {
+          "title": "Mushroom Preparation",
+          "steps": [
+            "Clean portobello mushrooms",
+            "Remove stems",
+            "Brush with olive oil",
+            "Roast at 400°F for 10 minutes"
+          ]
+        },
+        {
+          "title": "Quinoa Cooking",
+          "steps": [
+            "Cook quinoa according to package instructions",
+            "Let cool slightly"
+          ]
+        },
+        {
+          "title": "Filling Preparation",
+          "steps": [
+            "Sauté garlic in olive oil",
+            "Add spinach and cook until wilted",
+            "Mix with quinoa, sun-dried tomatoes, and pine nuts",
+            "Season with herbs and nutritional yeast"
+          ]
+        },
+        {
+          "title": "Final Assembly",
+          "steps": [
+            "Fill roasted mushrooms with quinoa mixture",
+            "Bake for additional 15 minutes",
+            "Garnish with fresh herbs"
+          ]
+        }
+      ],
+      "imgPath": "",
+      "rating": "",
+      "private": true,
+      "mealType": ["dinner"],
+      "tags": [
+        "vegan",
+        "mediterranean",
+        "portobello",
+        "mushrooms",
+        "quinoa",
+        "gluten-free",
+        "stuffed-vegetables",
+        "spinach",
+        "sun-dried-tomatoes",
+        "pine-nuts",
+        "plant-based",
+        "protein-rich",
+        "vegetable-main",
+        "low-carb",
+        "nutritional-yeast"
+      ]
+    },
+    {
+      "id": "VR004",
+      "name": "Indian Chana Masala",
+      "url": "",
+      "description": "Classic North Indian chickpea curry with aromatic spices, served with basmati rice",
+      "prepTime": "15 minutes",
+      "cookTime": "40 minutes",
+      "nutritionalInfo": [
+        {"name": "Calories", "amount": "350"},
+        {"name": "Protein", "amount": "16g"},
+        {"name": "Carbohydrates", "amount": "50g"},
+        {"name": "Fat", "amount": "12g"},
+        {"name": "Fiber", "amount": "14g"}
+      ],
+      "ingredients": [
+        {
+          "title": "Chickpeas",
+          "steps": [
+            {"name": "Chickpeas", "amount": 2, "unit": "cans"},
+            {"name": "Onion", "amount": 1, "unit": "large"},
+            {"name": "Tomatoes", "amount": 2, "unit": "medium"}
+          ]
+        },
+        {
+          "title": "Spices",
+          "steps": [
+            {"name": "Garam Masala", "amount": 2, "unit": "teaspoons"},
+            {"name": "Cumin", "amount": 1, "unit": "teaspoon"},
+            {"name": "Turmeric", "amount": 0.5, "unit": "teaspoon"},
+            {"name": "Chili Powder", "amount": 0.25, "unit": "teaspoon"}
+          ]
+        },
+        {
+          "title": "Base Ingredients",
+          "steps": [
+            {"name": "Garlic", "amount": 4, "unit": "cloves"},
+            {"name": "Ginger", "amount": 1, "unit": "tablespoon"},
+            {"name": "Vegetable Oil", "amount": 2, "unit": "tablespoons"}
+          ]
+        },
+        {
+          "title": "Rice",
+          "steps": [
+            {"name": "Basmati Rice", "amount": 1, "unit": "cup"},
             {"name": "Water", "amount": 2, "unit": "cups"}
           ]
         }
       ],
       "directions": [
         {
-          "title": "Falafel Preparation",
+          "title": "Base Preparation",
           "steps": [
-            "Soak chickpeas overnight",
-            "Drain and blend with herbs and spices",
-            "Form into small balls",
-            "Bake at 400°F until crispy"
+            "Finely chop onions, garlic, and ginger",
+            "Sauté in oil until golden brown"
           ]
         },
         {
-          "title": "Vegetable Roasting",
+          "title": "Spice Blend",
           "steps": [
-            "Chop vegetables into similar-sized pieces",
-            "Toss with olive oil and salt",
-            "Roast at 425°F for 25-30 minutes"
+            "Add all dry spices",
+            "Cook for 1-2 minutes to release aromatics"
           ]
         },
         {
-          "title": "Quinoa Cooking",
+          "title": "Chickpea Cooking",
           "steps": [
-            "Rinse quinoa",
-            "Cook in water until fluffy",
-            "Let stand for 5 minutes after cooking"
+            "Add chopped tomatoes",
+            "Drain and add chickpeas",
+            "Simmer for 30 minutes",
+            "Add water if needed to prevent sticking"
           ]
         },
         {
-          "title": "Tahini Sauce",
+          "title": "Rice Preparation",
           "steps": [
-            "Whisk tahini with lemon juice",
-            "Add water to reach desired consistency",
-            "Season with garlic powder"
+            "Rinse basmati rice",
+            "Cook in separate pot",
+            "Fluff when done"
           ]
         },
         {
-          "title": "Bowl Assembly",
+          "title": "Serving",
           "steps": [
-            "Layer quinoa in bowl",
-            "Top with roasted vegetables",
-            "Add falafel",
-            "Drizzle with tahini sauce"
+            "Garnish with fresh cilantro",
+            "Serve hot over basmati rice"
           ]
         }
       ],
       "imgPath": "",
       "rating": "",
       "private": true,
+      "mealType": ["dinner"],
       "tags": [
         "vegan",
-        "middle-eastern",
-        "falafel",
-        "buddha-bowl",
+        "indian",
+        "chana-masala",
         "chickpeas",
-        "quinoa",
+        "curry",
         "gluten-free",
-        "dinner",
-        "lunch",
         "protein-rich",
-        "tahini",
-        "plant-based",
-        "mediterranean",
-        "healthy",
-        "roasted-vegetables"
-      ]
-    },
-    {
-      "id": "VR008",
-      "name": "Caribbean Jerk Jackfruit Tacos",
-      "url": "",
-      "description": "Spicy Caribbean-style pulled jackfruit tacos with mango salsa and lime crema",
-      "prepTime": "20 minutes",
-      "cookTime": "35 minutes",
-      "nutritionalInformation": [
-        {"name": "Calories", "amount": "340"},
-        {"name": "Protein", "amount": "12g"},
-        {"name": "Carbohydrates", "amount": "45g"},
-        {"name": "Fat", "amount": "14g"},
-        {"name": "Fiber", "amount": "8g"}
-      ],
-      "ingredients": [
-        {
-          "title": "Jackfruit",
-          "steps": [
-            {"name": "Young Green Jackfruit", "amount": 2, "unit": "cans"},
-            {"name": "Jerk Seasoning", "amount": 2, "unit": "tablespoons"},
-            {"name": "Coconut Milk", "amount": 0.25, "unit": "cup"}
-          ]
-        },
-        {
-          "title": "Mango Salsa",
-          "steps": [
-            {"name": "Ripe Mango", "amount": 1, "unit": "large"},
-            {"name": "Red Onion", "amount": 0.5, "unit": "whole"},
-            {"name": "Fresh Cilantro", "amount": 0.25, "unit": "cup"},
-            {"name": "Lime Juice", "amount": 2, "unit": "tablespoons"}
-          ]
-        },
-        {
-          "title": "Lime Crema",
-          "steps": [
-            {"name": "Coconut Yogurt", "amount": 0.5, "unit": "cup"},
-            {"name": "Lime Zest", "amount": 1, "unit": "teaspoon"},
-            {"name": "Lime Juice", "amount": 1, "unit": "tablespoon"}
-          ]
-        },
-        {
-          "title": "Taco Components",
-          "steps": [
-            {"name": "Corn Tortillas", "amount": 8, "unit": "whole"},
-            {"name": "Avocado", "amount": 1, "unit": "whole"}
-          ]
-        }
-      ],
-      "directions": [
-        {
-          "title": "Jackfruit Preparation",
-          "steps": [
-            "Drain and rinse canned jackfruit",
-            "Shred with fork",
-            "Mix with jerk seasoning and coconut milk",
-            "Bake at 400°F for 25-30 minutes"
-          ]
-        },
-        {
-          "title": "Mango Salsa",
-          "steps": [
-            "Dice mango and red onion",
-            "Chop cilantro",
-            "Mix with lime juice",
-            "Let sit to develop flavors"
-          ]
-        },
-        {
-          "title": "Lime Crema",
-          "steps": [
-            "Mix coconut yogurt with lime zest",
-            "Add lime juice",
-            "Season with salt"
-          ]
-        },
-        {
-          "title": "Taco Assembly",
-          "steps": [
-            "Warm corn tortillas",
-            "Fill with jerk jackfruit",
-            "Top with mango salsa",
-            "Drizzle lime crema",
-            "Garnish with avocado slices"
-          ]
-        }
-      ],
-      "imgPath": "",
-      "rating": "",
-      "private": true,
-      "tags": [
-        "vegan",
-        "caribbean",
-        "jackfruit",
-        "tacos",
-        "jerk-seasoning",
-        "mango",
-        "gluten-free",
         "dinner",
+        "main-course",
+        "north-indian",
         "spicy",
         "plant-based",
-        "tropical",
-        "mexican-inspired",
-        "coconut-milk",
-        "street-food"
+        "legumes",
+        "basmati-rice",
+        "comfort-food"
       ]
     },
     {
-      "id": "VR009",
-      "name": "Mediterranean Lentil and Roasted Vegetable Moussaka",
-      "url": "",
-      "description": "A hearty plant-based twist on traditional Greek moussaka with layers of lentils, roasted vegetables, and creamy cashew béchamel",
-      "prepTime": "40 minutes",
-      "cookTime": "60 minutes",
-      "nutritionalInformation": [
-        {"name": "Calories", "amount": "380"},
-        {"name": "Protein", "amount": "20g"},
-        {"name": "Carbohydrates", "amount": "40g"},
-        {"name": "Fat", "amount": "16g"},
-        {"name": "Fiber", "amount": "12g"}
-      ],
-      "ingredients": [
-        {
-          "title": "Vegetable Layers",
-          "steps": [
-            {"name": "Eggplant", "amount": 2, "unit": "large"},
-            {"name": "Zucchini", "amount": 2, "unit": "medium"},
-            {"name": "Olive Oil", "amount": 3, "unit": "tablespoons"}
-          ]
-        },
-        {
-          "title": "Lentil Ragout",
-          "steps": [
-            {"name": "Green Lentils", "amount": 1.5, "unit": "cups"},
-            {"name": "Tomato Paste", "amount": 2, "unit": "tablespoons"},
-            {"name": "Garlic", "amount": 4, "unit": "cloves"},
-            {"name": "Dried Oregano", "amount": 1, "unit": "tablespoon"}
-          ]
-        },
-        {
-          "title": "Cashew Béchamel",
-          "steps": [
-            {"name": "Raw Cashews", "amount": 1, "unit": "cup"},
-            {"name": "Nutritional Yeast", "amount": 2, "unit": "tablespoons"},
-            {"name": "Plant Milk", "amount": 1, "unit": "cup"},
-            {"name": "Nutmeg", "amount": 0.25, "unit": "teaspoon"}
-          ]
-        }
-      ],
-      "directions": [
-        {
-          "title": "Vegetable Preparation",
-          "steps": [
-            "Slice eggplant and zucchini",
-            "Brush with olive oil",
-            "Roast at 425°F until golden"
-          ]
-        },
-        {
-          "title": "Lentil Cooking",
-          "steps": [
-            "Cook lentils in vegetable broth",
-            "Add tomato paste and spices",
-            "Simmer until thick"
-          ]
-        },
-        {
-          "title": "Cashew Béchamel",
-          "steps": [
-            "Soak cashews in hot water",
-            "Blend with plant milk and seasonings",
-            "Process until smooth"
-          ]
-        },
-        {
-          "title": "Layering and Baking",
-          "steps": [
-            "Layer roasted vegetables",
-            "Add lentil ragout",
-            "Top with cashew béchamel",
-            "Bake at 375°F for 40 minutes"
-          ]
-        }
-      ],
-      "imgPath": "",
-      "rating": "",
-      "private": true,
-      "tags": [
-        "vegan",
-        "mediterranean"
-      ]
-    },{
-      "id": "VR010",
-      "name": "Korean Bibimbap Buddha Bowl",
-      "url": "",
-      "description": "Colorful Korean-inspired rice bowl with marinated tofu, pickled vegetables, and gochujang sauce",
-      "prepTime": "35 minutes",
-      "cookTime": "25 minutes",
-      "nutritionalInformation": [
-      {"name": "Calories", "amount": "410"},
-      {"name": "Protein", "amount": "22g"},
-      {"name": "Carbohydrates", "amount": "55g"},
-      {"name": "Fat", "amount": "14g"},
-      {"name": "Fiber", "amount": "9g"}
-      ],
-      "ingredients": [
-      {
-      "title": "Tofu",
-      "steps": [
-      {"name": "Firm Tofu", "amount": 1, "unit": "block"},
-      {"name": "Soy Sauce", "amount": 2, "unit": "tablespoons"},
-      {"name": "Sesame Oil", "amount": 1, "unit": "tablespoon"}
-      ]
-      },
-      {
-      "title": "Vegetables",
-      "steps": [
-      {"name": "Carrots", "amount": 2, "unit": "medium"},
-      {"name": "Spinach", "amount": 2, "unit": "cups"},
-      {"name": "Shiitake Mushrooms", "amount": 1, "unit": "cup"},
-      {"name": "Bean Sprouts", "amount": 1, "unit": "cup"}
-      ]
-      },
-      {
-      "title": "Sauce",
-      "steps": [
-      {"name": "Gochujang", "amount": 2, "unit": "tablespoons"},
-      {"name": "Rice Vinegar", "amount": 1, "unit": "tablespoon"},
-      {"name": "Maple Syrup", "amount": 1, "unit": "tablespoon"}
-      ]
-      },
-      {
-      "title": "Base",
-      "steps": [
-      {"name": "Brown Rice", "amount": 1, "unit": "cup"},
-      {"name": "Water", "amount": 2, "unit": "cups"}
-      ]
-      }
-      ],
-      "directions": [
-      {
-      "title": "Tofu Preparation",
-      "steps": [
-      "Press tofu to remove moisture",
-      "Marinate in soy sauce and sesame oil",
-      "Bake at 400°F until crispy"
-      ]
-      },
-      {
-      "title": "Rice Cooking",
-      "steps": [
-      "Rinse brown rice",
-      "Cook in water until tender",
-      "Fluff with fork"
-      ]
-      },
-      {
-      "title": "Vegetable Preparation",
-      "steps": [
-      "Julienne carrots",
-      "Sauté mushrooms",
-      "Blanch spinach",
-      "Quickly stir-fry bean sprouts"
-      ]
-      },
-      {
-      "title": "Sauce Making",
-      "steps": [
-      "Mix gochujang, rice vinegar, and maple syrup",
-      "Whisk until smooth"
-      ]
-      },
-      {
-      "title": "Bowl Assembly",
-      "steps": [
-      "Place rice in bowl",
-      "Arrange vegetables and tofu",
-      "Drizzle with gochujang sauce"
-      ]
-      }
-      ],
-      "imgPath": "",
-      "rating": "",
-      "private": true,
-      "tags": [
-      "vegan",
-      "korean",
-      "bibimbap",
-      "tofu",
-      "buddha-bowl",
-      "gluten-free",
-      "dinner",
-      "rice",
-      "plant-based",
-      "asian-cuisine",
-      "gochujang",
-      "mushrooms"
-      ]
-      },
-      {
-      "id": "VR011",
-      "name": "Brazilian Black Bean Feijoada",
-      "url": "",
-      "description": "Traditional Brazilian black bean stew reimagined as a hearty vegan main course with plantains and rice",
-      "prepTime": "20 minutes",
-      "cookTime": "90 minutes",
-      "nutritionalInformation": [
-      {"name": "Calories", "amount": "420"},
-      {"name": "Protein", "amount": "25g"},
-      {"name": "Carbohydrates", "amount": "65g"},
-      {"name": "Fat", "amount": "10g"},
-      {"name": "Fiber", "amount": "18g"}
-      ],
-      "ingredients": [
-      {
-      "title": "Bean Stew",
-      "steps": [
-      {"name": "Black Beans", "amount": 2, "unit": "cups"},
-      {"name": "Onion", "amount": 1, "unit": "large"},
-      {"name": "Garlic", "amount": 5, "unit": "cloves"},
-      {"name": "Bay Leaves", "amount": 2, "unit": "whole"}
-      ]
-      },
-      {
-      "title": "Vegetable Mix",
-      "steps": [
-      {"name": "Plantains", "amount": 2, "unit": "ripe"},
-      {"name": "Bell Peppers", "amount": 2, "unit": "whole"},
-      {"name": "Orange", "amount": 1, "unit": "whole"}
-      ]
-      },
-      {
-      "title": "Spices",
-      "steps": [
-      {"name": "Smoked Paprika", "amount": 1, "unit": "tablespoon"},
-      {"name": "Cumin", "amount": 2, "unit": "teaspoons"},
-      {"name": "Liquid Smoke", "amount": 1, "unit": "teaspoon"}
-      ]
-      },
-      {
-      "title": "Rice",
-      "steps": [
-      {"name": "White Rice", "amount": 1, "unit": "cup"},
-      {"name": "Water", "amount": 2, "unit": "cups"}
-      ]
-      }
-      ],
-      "directions": [
-      {
-      "title": "Bean Preparation",
-      "steps": [
-      "Soak black beans overnight",
-      "Drain and rinse",
-      "Cook with bay leaves until tender"
-      ]
-      },
-      {
-      "title": "Vegetable Cooking",
-      "steps": [
-      "Chop onions and garlic",
-      "Sauté until golden",
-      "Add spices and cook briefly"
-      ]
-      },
-      {
-      "title": "Plantain Preparation",
-      "steps": [
-      "Slice ripe plantains",
-      "Caramelize in pan",
-      "Set aside"
-      ]
-      },
-      {
-      "title": "Stew Assembly",
-      "steps": [
-      "Combine beans with sautéed vegetables",
-      "Add liquid smoke",
-      "Simmer for 45 minutes"
-      ]
-      },
-      {
-      "title": "Final Touches",
-      "steps": [
-      "Cook rice separately",
-      "Serve stew over rice",
-      "Top with caramelized plantains"
-      ]
-      }
-      ],
-      "imgPath": "",
-      "rating": "",
-      "private": true,
-      "tags": [
-      "vegan",
-      "brazilian",
-      "black-beans",
-      "feijoada",
-      "plantains",
-      "gluten-free",
-      "dinner",
-      "stew",
-      "plant-based",
-      "latin-american",
-      "protein-rich",
-      "comfort-food"
-      ]
-      },
-      {
-      "id": "VR012",
-      "name": "West African Peanut Stew",
-      "url": "",
-      "description": "Creamy, spicy stew with sweet potatoes, kale, and a rich peanut butter base, inspired by West African cuisine",
-      "prepTime": "25 minutes",
-      "cookTime": "45 minutes",
-      "nutritionalInformation": [
+    "id": "VR006",
+    "name": "Japanese Miso Ramen with Crispy Tofu",
+    "url": "",
+    "description": "Rich umami ramen with miso broth, crispy tofu, and seasonal vegetables",
+    "prepTime": "25 minutes",
+    "cookTime": "30 minutes",
+    "nutritionalInfo": [
       {"name": "Calories", "amount": "390"},
-      {"name": "Protein", "amount": "16g"},
-      {"name": "Carbohydrates", "amount": "45g"},
-      {"name": "Fat", "amount": "20g"},
-      {"name": "Fiber", "amount": "10g"}
-      ],
-      "ingredients": [
-      {
-      "title": "Base Vegetables",
-      "steps": [
-      {"name": "Sweet Potatoes", "amount": 2, "unit": "medium"},
-      {"name": "Kale", "amount": 3, "unit": "cups"},
-      {"name": "Onion", "amount": 1, "unit": "large"},
-      {"name": "Garlic", "amount": 4, "unit": "cloves"}
-      ]
-      },
-      {
-      "title": "Sauce Components",
-      "steps": [
-      {"name": "Peanut Butter", "amount": 0.5, "unit": "cup"},
-      {"name": "Tomato Paste", "amount": 2, "unit": "tablespoons"},
-      {"name": "Vegetable Broth", "amount": 3, "unit": "cups"}
-      ]
-      },
-      {
-      "title": "Spices",
-      "steps": [
-      {"name": "Ginger", "amount": 1, "unit": "tablespoon"},
-      {"name": "Cayenne Pepper", "amount": 0.5, "unit": "teaspoon"},
-      {"name": "Ground Coriander", "amount": 1, "unit": "teaspoon"}
-      ]
-      },
-      {
-      "title": "Protein",
-      "steps": [
-      {"name": "Chickpeas", "amount": 1, "unit": "can"}
-      ]
-      }
-      ],
-      "directions": [
-      {
-      "title": "Vegetable Preparation",
-      "steps": [
-      "Dice sweet potatoes",
-      "Chop onions and garlic",
-      "Sauté in large pot until softened"
-      ]
-      },
-      {
-      "title": "Sauce Creation",
-      "steps": [
-      "Whisk peanut butter with vegetable broth",
-      "Add tomato paste and spices",
-      "Stir until smooth"
-      ]
-      },
-      {
-      "title": "Stew Cooking",
-      "steps": [
-      "Add sweet potatoes to pot",
-      "Pour in peanut sauce",
-      "Simmer for 25-30 minutes"
-      ]
-      },
-      {
-      "title": "Final Assembly",
-      "steps": [
-      "Add chickpeas",
-      "Stir in chopped kale",
-      "Cook until kale is wilted",
-      "Season to taste"
-      ]
-      }
-      ],
-      "imgPath": "",
-      "rating": "",
-      "private": true,
-      "tags": [
-      "vegan",
-      "west-african",
-      "peanut-stew",
-      "sweet-potato",
-      "kale",
-      "gluten-free",
-      "dinner",
-      "stew",
-      "plant-based",
-      "african-cuisine",
-      "protein-rich",
-      "comfort-food",
-      "chickpeas"
-      ]
-      },
-      {
-      "id": "VR013",
-      "name": "Vietnamese Tofu Banh Mi",
-      "url": "",
-      "description": "Classic Vietnamese sandwich with crispy marinated tofu, pickled vegetables, and fresh herbs",
-      "prepTime": "30 minutes",
-      "cookTime": "20 minutes",
-      "nutritionalInformation": [
-      {"name": "Calories", "amount": "380"},
       {"name": "Protein", "amount": "20g"},
       {"name": "Carbohydrates", "amount": "45g"},
       {"name": "Fat", "amount": "15g"},
       {"name": "Fiber", "amount": "7g"}
-      ],
-      "ingredients": [
+    ],
+    "ingredients": [
       {
-      "title": "Tofu",
-      "steps": [
-      {"name": "Extra Firm Tofu", "amount": 1, "unit": "block"},
-      {"name": "Soy Sauce", "amount": 3, "unit": "tablespoons"},
-      {"name": "Maple Syrup", "amount": 1, "unit": "tablespoon"}
-      ]
+        "title": "Ramen Broth",
+        "steps": [
+          {"name": "Vegetable Broth", "amount": 4, "unit": "cups"},
+          {"name": "White Miso Paste", "amount": 3, "unit": "tablespoons"},
+          {"name": "Soy Sauce", "amount": 2, "unit": "tablespoons"},
+          {"name": "Sesame Oil", "amount": 1, "unit": "tablespoon"}
+        ]
       },
       {
-      "title": "Pickled Vegetables",
-      "steps": [
-      {"name": "Carrots", "amount": 2, "unit": "medium"},
-      {"name": "Daikon Radish", "amount": 1, "unit": "small"},
-      {"name": "Rice Vinegar", "amount": 0.25, "unit": "cup"},
-      {"name": "Sugar", "amount": 1, "unit": "tablespoon"}
-      ]
+        "title": "Tofu",
+        "steps": [
+          {"name": "Firm Tofu", "amount": 1, "unit": "block"},
+          {"name": "Cornstarch", "amount": 2, "unit": "tablespoons"},
+          {"name": "Nutritional Yeast", "amount": 1, "unit": "tablespoon"}
+        ]
       },
       {
-      "title": "Sandwich Components",
-      "steps": [
-      {"name": "Baguette", "amount": 1, "unit": "vegan"},
-      {"name": "Fresh Cilantro", "amount": 0.5, "unit": "cup"},
-      {"name": "Cucumber", "amount": 1, "unit": "medium"}
-      ]
+        "title": "Vegetables",
+        "steps": [
+          {"name": "Bok Choy", "amount": 2, "unit": "heads"},
+          {"name": "Shiitake Mushrooms", "amount": 1, "unit": "cup"},
+          {"name": "Green Onions", "amount": 3, "unit": "stalks"},
+          {"name": "Nori Sheets", "amount": 1, "unit": "sheet"}
+        ]
       },
       {
-      "title": "Vegan Mayo",
-      "steps": [
-      {"name": "Vegan Mayonnaise", "amount": 0.25, "unit": "cup"},
-      {"name": "Sriracha", "amount": 1, "unit": "tablespoon"}
-      ]
+        "title": "Noodles",
+        "steps": [
+          {"name": "Ramen Noodles", "amount": 2, "unit": "packages"},
+          {"name": "Water", "amount": 4, "unit": "cups"}
+        ]
       }
-      ],
-      "directions": [
+    ],
+    "directions": [
       {
-      "title": "Tofu Preparation",
-      "steps": [
-      "Press tofu to remove moisture",
-      "Cut into thin slices",
-      "Marinate in soy sauce and maple syrup",
-      "Bake at 400°F until crispy"
-      ]
+        "title": "Tofu Preparation",
+        "steps": [
+          "Press tofu to remove excess moisture",
+          "Cut into cubes",
+          "Coat with cornstarch and nutritional yeast",
+          "Bake at 425°F until crispy"
+        ]
       },
       {
-      "title": "Pickled Vegetables",
-      "steps": [
-      "Julienne carrots and daikon",
-      "Mix with rice vinegar and sugar",
-      "Let sit for 15-20 minutes"
-      ]
+        "title": "Broth Preparation",
+        "steps": [
+          "Heat vegetable broth",
+          "Whisk in miso paste",
+          "Add soy sauce and sesame oil",
+          "Simmer for 15 minutes"
+        ]
       },
       {
-      "title": "Vegan Mayo",
-      "steps": [
-      "Mix vegan mayonnaise with sriracha",
-      "Adjust spice to taste"
-      ]
+        "title": "Vegetable Cooking",
+        "steps": [
+          "Slice bok choy and mushrooms",
+          "Sauté briefly in sesame oil",
+          "Set aside"
+        ]
       },
       {
-      "title": "Sandwich Assembly",
-      "steps": [
-      "Slice baguette",
-      "Spread sriracha mayo",
-      "Layer crispy tofu",
-      "Add pickled vegetables",
-      "Top with fresh cilantro and cucumber"
-      ]
+        "title": "Noodle Assembly",
+        "steps": [
+          "Cook ramen noodles",
+          "Drain and rinse",
+          "Divide into serving bowls",
+          "Pour hot miso broth over noodles",
+          "Top with crispy tofu, vegetables, and nori"
+        ]
       }
-      ],
-      "imgPath": "",
-      "rating": "",
-      "private": true,
-      "tags": [
+    ],
+    "imgPath": "",
+    "rating": "",
+    "private": true,
+    "mealType": ["dinner", "lunch"],
+    "tags": [
       "vegan",
-      "vietnamese",
-      "banh-mi",
+      "japanese",
+      "ramen",
+      "miso",
       "tofu",
-      "sandwich",
-      "pickled-vegetables",
-      "lunch",
-      "street-food",
-      "plant-based",
+      "noodles",
+      "umami",
       "asian-cuisine",
-      "sriracha",
-      "fresh-herbs"
-      ]
-      }
-    ],
-    "selectedRecipeId": "",
-    "allTags": []
+      "soup",
+      "plant-based",
+      "mushrooms",
+      "comfort-food",
+      "nutritional-yeast",
+      "gluten-free-option"
+    ]
   },
-  "shoppingListState": {
-    "uid": "007",
-    "viewableShoppingListIds": ["107"],
-    "shoppingLists": [
+  {
+    "id": "VR007",
+    "name": "Middle Eastern Falafel Buddha Bowl",
+    "url": "",
+    "description": "Crispy homemade falafel served over quinoa with roasted vegetables and creamy tahini sauce",
+    "prepTime": "30 minutes",
+    "cookTime": "40 minutes",
+    "nutritionalInfo": [
+      {"name": "Calories", "amount": "425"},
+      {"name": "Protein", "amount": "19g"},
+      {"name": "Carbohydrates", "amount": "55g"},
+      {"name": "Fat", "amount": "16g"},
+      {"name": "Fiber", "amount": "13g"}
+    ],
+    "ingredients": [
       {
-        "id": "107",
-        "title": "Groceries",
-        "items": ["potatoes", "Tomatoes", "Potahtoes", "Tomahtoes"],
-        "isDefault": true,
-        "isOpen": true
+        "title": "Falafel",
+        "steps": [
+          {"name": "Dried Chickpeas", "amount": 2, "unit": "cups"},
+          {"name": "Fresh Parsley", "amount": 0.5, "unit": "cup"},
+          {"name": "Garlic", "amount": 4, "unit": "cloves"},
+          {"name": "Cumin", "amount": 2, "unit": "teaspoons"}
+        ]
       },
       {
-        "id": "108",
-        "title": "Camping",
-        "items": ["Hot Dogs", "Marshmallows", "Tent"],
-        "isDefault": false,
-        "isOpen": false
+        "title": "Roasted Vegetables",
+        "steps": [
+          {"name": "Eggplant", "amount": 1, "unit": "large"},
+          {"name": "Zucchini", "amount": 2, "unit": "medium"},
+          {"name": "Red Onion", "amount": 1, "unit": "whole"},
+          {"name": "Olive Oil", "amount": 3, "unit": "tablespoons"}
+        ]
+      },
+      {
+        "title": "Tahini Sauce",
+        "steps": [
+          {"name": "Tahini", "amount": 0.25, "unit": "cup"},
+          {"name": "Lemon Juice", "amount": 2, "unit": "tablespoons"},
+          {"name": "Garlic Powder", "amount": 0.5, "unit": "teaspoon"}
+        ]
+      },
+      {
+        "title": "Base",
+        "steps": [
+          {"name": "Quinoa", "amount": 1, "unit": "cup"},
+          {"name": "Water", "amount": 2, "unit": "cups"}
+        ]
       }
     ],
-    "defaultListId": "107"
-  }
+    "directions": [
+      {
+        "title": "Falafel Preparation",
+        "steps": [
+          "Soak chickpeas overnight",
+          "Drain and blend with herbs and spices",
+          "Form into small balls",
+          "Bake at 400°F until crispy"
+        ]
+      },
+      {
+        "title": "Vegetable Roasting",
+        "steps": [
+          "Chop vegetables into similar-sized pieces",
+          "Toss with olive oil and salt",
+          "Roast at 425°F for 25-30 minutes"
+        ]
+      },
+      {
+        "title": "Quinoa Cooking",
+        "steps": [
+          "Rinse quinoa",
+          "Cook in water until fluffy",
+          "Let stand for 5 minutes after cooking"
+        ]
+      },
+      {
+        "title": "Tahini Sauce",
+        "steps": [
+          "Whisk tahini with lemon juice",
+          "Add water to reach desired consistency",
+          "Season with garlic powder"
+        ]
+      },
+      {
+        "title": "Bowl Assembly",
+        "steps": [
+          "Layer quinoa in bowl",
+          "Top with roasted vegetables",
+          "Add falafel",
+          "Drizzle with tahini sauce"
+        ]
+      }
+    ],
+    "imgPath": "",
+    "rating": "",
+    "private": true,
+    "mealType": ["lunch", "dinner"],
+    "tags": [
+      "vegan",
+      "middle-eastern",
+      "falafel",
+      "buddha-bowl",
+      "chickpeas",
+      "quinoa",
+      "gluten-free",
+      "protein-rich",
+      "tahini",
+      "plant-based",
+      "mediterranean",
+      "healthy",
+      "roasted-vegetables"
+    ]
+  },
+  {
+    "id": "VR008",
+    "name": "Caribbean Jerk Jackfruit Tacos",
+    "url": "",
+    "description": "Spicy Caribbean-style pulled jackfruit tacos with mango salsa and lime crema",
+    "prepTime": "20 minutes",
+    "cookTime": "35 minutes",
+    "nutritionalInfo": [
+      {"name": "Calories", "amount": "340"},
+      {"name": "Protein", "amount": "12g"},
+      {"name": "Carbohydrates", "amount": "45g"},
+      {"name": "Fat", "amount": "14g"},
+      {"name": "Fiber", "amount": "8g"}
+    ],
+    "ingredients": [
+      {
+        "title": "Jackfruit",
+        "steps": [
+          {"name": "Young Green Jackfruit", "amount": 2, "unit": "cans"},
+          {"name": "Jerk Seasoning", "amount": 2, "unit": "tablespoons"},
+          {"name": "Coconut Milk", "amount": 0.25, "unit": "cup"}
+        ]
+      },
+      {
+        "title": "Mango Salsa",
+        "steps": [
+          {"name": "Ripe Mango", "amount": 1, "unit": "large"},
+          {"name": "Red Onion", "amount": 0.5, "unit": "whole"},
+          {"name": "Fresh Cilantro", "amount": 0.25, "unit": "cup"},
+          {"name": "Lime Juice", "amount": 2, "unit": "tablespoons"}
+        ]
+      },
+      {
+        "title": "Lime Crema",
+        "steps": [
+          {"name": "Coconut Yogurt", "amount": 0.5, "unit": "cup"},
+          {"name": "Lime Zest", "amount": 1, "unit": "teaspoon"},
+          {"name": "Lime Juice", "amount": 1, "unit": "tablespoon"}
+        ]
+      },
+      {
+        "title": "Taco Components",
+        "steps": [
+          {"name": "Corn Tortillas", "amount": 8, "unit": "whole"},
+          {"name": "Avocado", "amount": 1, "unit": "whole"}
+        ]
+      }
+    ],
+    "directions": [
+      {
+        "title": "Jackfruit Preparation",
+        "steps": [
+          "Drain and rinse canned jackfruit",
+          "Shred with fork",
+          "Mix with jerk seasoning and coconut milk",
+          "Bake at 400°F for 25-30 minutes"
+        ]
+      },
+      {
+        "title": "Mango Salsa",
+        "steps": [
+          "Dice mango and red onion",
+          "Chop cilantro",
+          "Mix with lime juice",
+          "Let sit to develop flavors"
+        ]
+      },
+      {
+        "title": "Lime Crema",
+        "steps": [
+          "Mix coconut yogurt with lime zest",
+          "Add lime juice",
+          "Season with salt"
+        ]
+      },
+      {
+        "title": "Taco Assembly",
+        "steps": [
+          "Warm corn tortillas",
+          "Fill with jerk jackfruit",
+          "Top with mango salsa",
+          "Drizzle lime crema",
+          "Garnish with avocado slices"
+        ]
+      }
+    ],
+    "imgPath": "",
+    "rating": "",
+    "private": true,
+    "mealType": ["lunch", "dinner"],
+    "tags": [
+      "vegan",
+      "caribbean",
+      "jackfruit",
+      "tacos",
+      "jerk-seasoning",
+      "mango",
+      "gluten-free",
+      "spicy",
+      "plant-based",
+      "tropical",
+      "mexican-inspired",
+      "coconut-milk",
+      "street-food"
+    ]
+  },
+  {
+    "id": "VR009",
+    "name": "Mediterranean Lentil and Roasted Vegetable Moussaka",
+    "url": "",
+    "description": "A hearty plant-based twist on traditional Greek moussaka with layers of lentils, roasted vegetables, and creamy cashew béchamel",
+    "prepTime": "40 minutes",
+    "cookTime": "60 minutes",
+    "nutritionalInfo": [
+      {"name": "Calories", "amount": "380"},
+      {"name": "Protein", "amount": "20g"},
+      {"name": "Carbohydrates", "amount": "40g"},
+      {"name": "Fat", "amount": "16g"},
+      {"name": "Fiber", "amount": "12g"}
+    ],
+    "ingredients": [
+      {
+        "title": "Vegetable Layers",
+        "steps": [
+          {"name": "Eggplant", "amount": 2, "unit": "large"},
+          {"name": "Zucchini", "amount": 2, "unit": "medium"},
+          {"name": "Olive Oil", "amount": 3, "unit": "tablespoons"}
+        ]
+      },
+      {
+        "title": "Lentil Ragout",
+        "steps": [
+          {"name": "Green Lentils", "amount": 1.5, "unit": "cups"},
+          {"name": "Tomato Paste", "amount": 2, "unit": "tablespoons"},
+          {"name": "Garlic", "amount": 4, "unit": "cloves"},
+          {"name": "Dried Oregano", "amount": 1, "unit": "tablespoon"}
+        ]
+      },
+      {
+        "title": "Cashew Béchamel",
+        "steps": [
+          {"name": "Raw Cashews", "amount": 1, "unit": "cup"},
+          {"name": "Nutritional Yeast", "amount": 2, "unit": "tablespoons"},
+          {"name": "Plant Milk", "amount": 1, "unit": "cup"},
+          {"name": "Nutmeg", "amount": 0.25, "unit": "teaspoon"}
+        ]
+      }
+    ],
+    "directions": [
+      {
+        "title": "Vegetable Preparation",
+        "steps": [
+          "Slice eggplant and zucchini",
+          "Brush with olive oil",
+          "Roast at 425°F until golden"
+        ]
+      },
+      {
+        "title": "Lentil Cooking",
+        "steps": [
+          "Cook lentils in vegetable broth",
+          "Add tomato paste and spices",
+          "Simmer until thick"
+        ]
+      },
+      {
+        "title": "Cashew Béchamel",
+        "steps": [
+          "Soak cashews in hot water",
+          "Blend with plant milk and seasonings",
+          "Process until smooth"
+        ]
+      },
+      {
+        "title": "Layering and Baking",
+        "steps": [
+          "Layer roasted vegetables",
+          "Add lentil ragout",
+          "Top with cashew béchamel",
+          "Bake at 375°F for 40 minutes"
+        ]
+      }
+    ],
+    "imgPath": "",
+    "rating": "",
+    "private": true,
+    "mealType": ["dinner"],
+    "tags": [
+      "vegan",
+      "mediterranean"
+    ]
+  },{
+    "id": "VR010",
+    "name": "Korean Bibimbap Buddha Bowl",
+    "url": "",
+    "description": "Colorful Korean-inspired rice bowl with marinated tofu, pickled vegetables, and gochujang sauce",
+    "prepTime": "35 minutes",
+    "cookTime": "25 minutes",
+    "nutritionalInfo": [
+    {"name": "Calories", "amount": "410"},
+    {"name": "Protein", "amount": "22g"},
+    {"name": "Carbohydrates", "amount": "55g"},
+    {"name": "Fat", "amount": "14g"},
+    {"name": "Fiber", "amount": "9g"}
+    ],
+    "ingredients": [
+    {
+    "title": "Tofu",
+    "steps": [
+    {"name": "Firm Tofu", "amount": 1, "unit": "block"},
+    {"name": "Soy Sauce", "amount": 2, "unit": "tablespoons"},
+    {"name": "Sesame Oil", "amount": 1, "unit": "tablespoon"}
+    ]
+    },
+    {
+    "title": "Vegetables",
+    "steps": [
+    {"name": "Carrots", "amount": 2, "unit": "medium"},
+    {"name": "Spinach", "amount": 2, "unit": "cups"},
+    {"name": "Shiitake Mushrooms", "amount": 1, "unit": "cup"},
+    {"name": "Bean Sprouts", "amount": 1, "unit": "cup"}
+    ]
+    },
+    {
+    "title": "Sauce",
+    "steps": [
+    {"name": "Gochujang", "amount": 2, "unit": "tablespoons"},
+    {"name": "Rice Vinegar", "amount": 1, "unit": "tablespoon"},
+    {"name": "Maple Syrup", "amount": 1, "unit": "tablespoon"}
+    ]
+    },
+    {
+    "title": "Base",
+    "steps": [
+    {"name": "Brown Rice", "amount": 1, "unit": "cup"},
+    {"name": "Water", "amount": 2, "unit": "cups"}
+    ]
+    }
+    ],
+    "directions": [
+    {
+    "title": "Tofu Preparation",
+    "steps": [
+    "Press tofu to remove moisture",
+    "Marinate in soy sauce and sesame oil",
+    "Bake at 400°F until crispy"
+    ]
+    },
+    {
+    "title": "Rice Cooking",
+    "steps": [
+    "Rinse brown rice",
+    "Cook in water until tender",
+    "Fluff with fork"
+    ]
+    },
+    {
+    "title": "Vegetable Preparation",
+    "steps": [
+    "Julienne carrots",
+    "Sauté mushrooms",
+    "Blanch spinach",
+    "Quickly stir-fry bean sprouts"
+    ]
+    },
+    {
+    "title": "Sauce Making",
+    "steps": [
+    "Mix gochujang, rice vinegar, and maple syrup",
+    "Whisk until smooth"
+    ]
+    },
+    {
+    "title": "Bowl Assembly",
+    "steps": [
+    "Place rice in bowl",
+    "Arrange vegetables and tofu",
+    "Drizzle with gochujang sauce"
+    ]
+    }
+    ],
+    "imgPath": "",
+    "rating": "",
+    "private": true,
+    "mealType": ["lunch", "dinner"],
+    "tags": [
+    "vegan",
+    "korean",
+    "bibimbap",
+    "tofu",
+    "buddha-bowl",
+    "gluten-free",
+    "rice",
+    "plant-based",
+    "asian-cuisine",
+    "gochujang",
+    "mushrooms"
+    ]
+    },
+    {
+    "id": "VR011",
+    "name": "Brazilian Black Bean Feijoada",
+    "url": "",
+    "description": "Traditional Brazilian black bean stew reimagined as a hearty vegan main course with plantains and rice",
+    "prepTime": "20 minutes",
+    "cookTime": "90 minutes",
+    "nutritionalInfo": [
+    {"name": "Calories", "amount": "420"},
+    {"name": "Protein", "amount": "25g"},
+    {"name": "Carbohydrates", "amount": "65g"},
+    {"name": "Fat", "amount": "10g"},
+    {"name": "Fiber", "amount": "18g"}
+    ],
+    "ingredients": [
+    {
+    "title": "Bean Stew",
+    "steps": [
+    {"name": "Black Beans", "amount": 2, "unit": "cups"},
+    {"name": "Onion", "amount": 1, "unit": "large"},
+    {"name": "Garlic", "amount": 5, "unit": "cloves"},
+    {"name": "Bay Leaves", "amount": 2, "unit": "whole"}
+    ]
+    },
+    {
+    "title": "Vegetable Mix",
+    "steps": [
+    {"name": "Plantains", "amount": 2, "unit": "ripe"},
+    {"name": "Bell Peppers", "amount": 2, "unit": "whole"},
+    {"name": "Orange", "amount": 1, "unit": "whole"}
+    ]
+    },
+    {
+    "title": "Spices",
+    "steps": [
+    {"name": "Smoked Paprika", "amount": 1, "unit": "tablespoon"},
+    {"name": "Cumin", "amount": 2, "unit": "teaspoons"},
+    {"name": "Liquid Smoke", "amount": 1, "unit": "teaspoon"}
+    ]
+    },
+    {
+    "title": "Rice",
+    "steps": [
+    {"name": "White Rice", "amount": 1, "unit": "cup"},
+    {"name": "Water", "amount": 2, "unit": "cups"}
+    ]
+    }
+    ],
+    "directions": [
+    {
+    "title": "Bean Preparation",
+    "steps": [
+    "Soak black beans overnight",
+    "Drain and rinse",
+    "Cook with bay leaves until tender"
+    ]
+    },
+    {
+    "title": "Vegetable Cooking",
+    "steps": [
+    "Chop onions and garlic",
+    "Sauté until golden",
+    "Add spices and cook briefly"
+    ]
+    },
+    {
+    "title": "Plantain Preparation",
+    "steps": [
+    "Slice ripe plantains",
+    "Caramelize in pan",
+    "Set aside"
+    ]
+    },
+    {
+    "title": "Stew Assembly",
+    "steps": [
+    "Combine beans with sautéed vegetables",
+    "Add liquid smoke",
+    "Simmer for 45 minutes"
+    ]
+    },
+    {
+    "title": "Final Touches",
+    "steps": [
+    "Cook rice separately",
+    "Serve stew over rice",
+    "Top with caramelized plantains"
+    ]
+    }
+    ],
+    "imgPath": "",
+    "rating": "",
+    "private": true,
+    "mealType": ["dinner"],
+    "tags": [
+    "vegan",
+    "brazilian",
+    "black-beans",
+    "feijoada",
+    "plantains",
+    "gluten-free",
+    "dinner",
+    "stew",
+    "plant-based",
+    "latin-american",
+    "protein-rich",
+    "comfort-food"
+    ]
+    },
+    {
+    "id": "VR012",
+    "name": "West African Peanut Stew",
+    "url": "",
+    "description": "Creamy, spicy stew with sweet potatoes, kale, and a rich peanut butter base, inspired by West African cuisine",
+    "prepTime": "25 minutes",
+    "cookTime": "45 minutes",
+    "nutritionalInfo": [
+    {"name": "Calories", "amount": "390"},
+    {"name": "Protein", "amount": "16g"},
+    {"name": "Carbohydrates", "amount": "45g"},
+    {"name": "Fat", "amount": "20g"},
+    {"name": "Fiber", "amount": "10g"}
+    ],
+    "ingredients": [
+    {
+    "title": "Base Vegetables",
+    "steps": [
+    {"name": "Sweet Potatoes", "amount": 2, "unit": "medium"},
+    {"name": "Kale", "amount": 3, "unit": "cups"},
+    {"name": "Onion", "amount": 1, "unit": "large"},
+    {"name": "Garlic", "amount": 4, "unit": "cloves"}
+    ]
+    },
+    {
+    "title": "Sauce Components",
+    "steps": [
+    {"name": "Peanut Butter", "amount": 0.5, "unit": "cup"},
+    {"name": "Tomato Paste", "amount": 2, "unit": "tablespoons"},
+    {"name": "Vegetable Broth", "amount": 3, "unit": "cups"}
+    ]
+    },
+    {
+    "title": "Spices",
+    "steps": [
+    {"name": "Ginger", "amount": 1, "unit": "tablespoon"},
+    {"name": "Cayenne Pepper", "amount": 0.5, "unit": "teaspoon"},
+    {"name": "Ground Coriander", "amount": 1, "unit": "teaspoon"}
+    ]
+    },
+    {
+    "title": "Protein",
+    "steps": [
+    {"name": "Chickpeas", "amount": 1, "unit": "can"}
+    ]
+    }
+    ],
+    "directions": [
+    {
+    "title": "Vegetable Preparation",
+    "steps": [
+    "Dice sweet potatoes",
+    "Chop onions and garlic",
+    "Sauté in large pot until softened"
+    ]
+    },
+    {
+    "title": "Sauce Creation",
+    "steps": [
+    "Whisk peanut butter with vegetable broth",
+    "Add tomato paste and spices",
+    "Stir until smooth"
+    ]
+    },
+    {
+    "title": "Stew Cooking",
+    "steps": [
+    "Add sweet potatoes to pot",
+    "Pour in peanut sauce",
+    "Simmer for 25-30 minutes"
+    ]
+    },
+    {
+    "title": "Final Assembly",
+    "steps": [
+    "Add chickpeas",
+    "Stir in chopped kale",
+    "Cook until kale is wilted",
+    "Season to taste"
+    ]
+    }
+    ],
+    "imgPath": "",
+    "rating": "",
+    "private": true,
+    "mealType": ["dinner"],
+    "tags": [
+    "vegan",
+    "west-african",
+    "peanut-stew",
+    "sweet-potato",
+    "kale",
+    "gluten-free",
+    "stew",
+    "plant-based",
+    "african-cuisine",
+    "protein-rich",
+    "comfort-food",
+    "chickpeas"
+    ]
+    },
+    {
+    "id": "VR013",
+    "name": "Vietnamese Tofu Banh Mi",
+    "url": "",
+    "description": "Classic Vietnamese sandwich with crispy marinated tofu, pickled vegetables, and fresh herbs",
+    "prepTime": "30 minutes",
+    "cookTime": "20 minutes",
+    "nutritionalInfo": [
+    {"name": "Calories", "amount": "380"},
+    {"name": "Protein", "amount": "20g"},
+    {"name": "Carbohydrates", "amount": "45g"},
+    {"name": "Fat", "amount": "15g"},
+    {"name": "Fiber", "amount": "7g"}
+    ],
+    "ingredients": [
+    {
+    "title": "Tofu",
+    "steps": [
+    {"name": "Extra Firm Tofu", "amount": 1, "unit": "block"},
+    {"name": "Soy Sauce", "amount": 3, "unit": "tablespoons"},
+    {"name": "Maple Syrup", "amount": 1, "unit": "tablespoon"}
+    ]
+    },
+    {
+    "title": "Pickled Vegetables",
+    "steps": [
+    {"name": "Carrots", "amount": 2, "unit": "medium"},
+    {"name": "Daikon Radish", "amount": 1, "unit": "small"},
+    {"name": "Rice Vinegar", "amount": 0.25, "unit": "cup"},
+    {"name": "Sugar", "amount": 1, "unit": "tablespoon"}
+    ]
+    },
+    {
+    "title": "Sandwich Components",
+    "steps": [
+    {"name": "Baguette", "amount": 1, "unit": "vegan"},
+    {"name": "Fresh Cilantro", "amount": 0.5, "unit": "cup"},
+    {"name": "Cucumber", "amount": 1, "unit": "medium"}
+    ]
+    },
+    {
+    "title": "Vegan Mayo",
+    "steps": [
+    {"name": "Vegan Mayonnaise", "amount": 0.25, "unit": "cup"},
+    {"name": "Sriracha", "amount": 1, "unit": "tablespoon"}
+    ]
+    }
+    ],
+    "directions": [
+    {
+    "title": "Tofu Preparation",
+    "steps": [
+    "Press tofu to remove moisture",
+    "Cut into thin slices",
+    "Marinate in soy sauce and maple syrup",
+    "Bake at 400°F until crispy"
+    ]
+    },
+    {
+    "title": "Pickled Vegetables",
+    "steps": [
+    "Julienne carrots and daikon",
+    "Mix with rice vinegar and sugar",
+    "Let sit for 15-20 minutes"
+    ]
+    },
+    {
+    "title": "Vegan Mayo",
+    "steps": [
+    "Mix vegan mayonnaise with sriracha",
+    "Adjust spice to taste"
+    ]
+    },
+    {
+    "title": "Sandwich Assembly",
+    "steps": [
+    "Slice baguette",
+    "Spread sriracha mayo",
+    "Layer crispy tofu",
+    "Add pickled vegetables",
+    "Top with fresh cilantro and cucumber"
+    ]
+    }
+    ],
+    "imgPath": "",
+    "rating": "",
+    "private": true,
+    "mealType": ["lunch"],
+    "tags": [
+    "vegan",
+    "vietnamese",
+    "banh-mi",
+    "tofu",
+    "sandwich",
+    "pickled-vegetables",
+    "street-food",
+    "plant-based",
+    "asian-cuisine",
+    "sriracha",
+    "fresh-herbs"
+    ]
+    }
+  ],
+  "shoppingLists": [
+    {
+      "id": "107",
+      "title": "Groceries",
+      "items": ["potatoes", "Tomatoes", "Potahtoes", "Tomahtoes"],
+      "isDefault": true,
+      "isOpen": true
+    },
+    {
+      "id": "108",
+      "title": "Camping",
+      "items": ["Hot Dogs", "Marshmallows", "Tent"],
+      "isDefault": false,
+      "isOpen": false
+    }
+  ],
+  "viewableShoppingListIds": ["107"],
+  "email": "testmode@testmode.com",
+  "createdAt": "December 2, 2024 at 3:42:48 PM UTC-4",
+  "personalFilters": []
 }

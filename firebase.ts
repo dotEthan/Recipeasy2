@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
+import { collection, getFirestore } from 'firebase/firestore'
 
 const config = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -12,3 +13,6 @@ const config = {
 
 export const firebaseapp = initializeApp(config)
 export const auth = getAuth()
+
+const db = getFirestore()
+export const usersRef = collection(db, 'users')

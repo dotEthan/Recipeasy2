@@ -33,20 +33,22 @@ if (selectedRecipe) {
 }
 
 function onSubmit() {
-  console.log(formData.value)
+  console.log('saving: ', formData.value)
   if (formData?.value && selectedRecipe) {
+    console.log('Updating existing Recipe')
     recipeStore.updateRecipe(formData.value)
   } else if (formData) {
+    console.log('Creating New Recipe')
     recipeStore.addRecipe(formData.value)
   }
   //TODO add new tags
   // const allUserTags: string[] = Array.from(
   //   new Set(userData?.recipes.flatMap((recipe: Recipe) => recipe.tags))
   // )
-  onCancel()
+  onEditingOver()
 }
 
-function onCancel() {
+function onEditingOver() {
   emit('editingCanceled')
 }
 
@@ -85,12 +87,12 @@ function onAddDirection(ingredientIndex: number) {
 
 async function removeImage() {
   if (formData.value.imgPath) {
+    formData.value.imgPath = ""
     const success = await deleteImage(formData.value.imgPath)
     if (!success) {
       console.error('Failed to delete image from Cloudinary')
     }
     console.log('removing image path')
-    formData.value.imgPath = ""
   }
 }
 
@@ -102,7 +104,7 @@ function saveImagePath(uploadedImgURL: string) {
 
 <template>
   <div class="recipe-item-contain">
-    <div class="overlay-shadow" @click="onCancel()"></div>
+    <div class="overlay-shadow" @click="onEditingOver"></div>
     <div class="recipe-overlay edit">
       <div class="overlay-contain edit">
         <div class="form-contain">
@@ -111,7 +113,7 @@ function saveImagePath(uploadedImgURL: string) {
               <button type="submit" :class="{ valid: formValid }" class="recipe-edit-button save">
                 Save
               </button>
-              <button type="button" class="recipe-edit-button cancel" @click="onCancel">
+              <button type="button" class="recipe-edit-button cancel" @click="onEditingOver">
                 Cancel
               </button>
             </div>

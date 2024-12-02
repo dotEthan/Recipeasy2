@@ -36,11 +36,11 @@ export const useRecipeStore = defineStore('recipes', () => {
     })
   }
 
-  function setInitialRecipeState(state: RecipeState) {
-    userId.value = state.userId
-    recipes.value = state.recipes || []
-    allTags.value = state.allTags || []
-    selectedRecipeId.value = state.selectedRecipeId || ''
+  function setInitialRecipeState(usersId: string, recipeList: Recipe[]) {
+    userId.value = usersId
+    recipes.value = recipeList || []
+    // allTags.value = state.allTags || []
+    selectedRecipeId.value = ''
   }
 
   function getNRandomRecipes(num: number): Recipe[] {
@@ -66,10 +66,12 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   function updateRecipe(recipe: Recipe) {
+    console.log('updating recipe: ', recipe)
     recipes.value = recipes.value.map((r) => (r.id === recipe.id ? recipe : r))
   }
 
   function addRecipe(recipe: Recipe) {
+    console.log('adding recipe')
     recipes.value.push(recipe)
   }
 
