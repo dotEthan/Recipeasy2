@@ -21,6 +21,7 @@ export function useImageUpload() {
   const { generateSignature, isLoading: isGeneratingSignature } = useCloudinarySignature();
   
   const isUploading = ref(false);
+  const isDeleting = ref(false);
   const error: Ref<UploadError | null> = ref(null);
   const uploadedUrl: Ref<string | null> = ref(null);
   const previewUrl: Ref<string | null> = ref(null);
@@ -34,6 +35,71 @@ export function useImageUpload() {
       URL.revokeObjectURL(previewUrl.value);
     }
     previewUrl.value = URL.createObjectURL(file);
+  };
+
+  /**
+   * Extracts public_id from Cloudinary URL
+   * @param url - The Cloudinary URL
+   * @returns string - The public_id of the image
+   */
+  const getPublicIdFromUrl = (url: string): string => {
+    const matches = url.match(/\/v\d+\/([^/]+)\.[^.]+$/);
+    return matches ? matches[1] : '';
+  };
+
+  /**
+   * Deletes an image from Cloudinary
+   * @param imageUrl - The URL of the image to delete
+   * @returns Promise<boolean> - True if deletion was successful, false otherwise
+   */
+  const deleteImage = async (imageUrl: string): Promise<boolean> => {
+    if (!imageUrl) return false;
+    
+    isDeleting.value = true;
+    error.value = null;
+
+    try {
+      const signatureData = await generateSignature();
+      if (!signatureData) {
+        throw new Error('Failed to generate deletion signature');
+      }
+
+      const publicId = getPublicIdFromUrl(imageUrl);
+      if (!publicId) {
+        throw new Error('Invalid image URL');
+      }
+
+      const formData = new FormData();
+      formData.append('public_id', publicId);
+      formData.append('timestamp', signatureData.timestamp.toString());
+      formData.append('signature', signatureData.signature);
+      formData.append('api_key', import.meta.env.VITE_CLOUDINARY_API_KEY);
+
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_NAME}/image/destroy`,
+        {
+          method: 'POST',
+          body: formData
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || 'Deletion failed: ' + response.statusText);
+      }
+
+      const data = await response.json();
+      return data.result === 'ok';
+    } catch (e: any) {
+      error.value = {
+        message: e.message || 'Failed to delete image',
+        details: e
+      };
+      console.error('Error deleting image:', error.value);
+      return false;
+    } finally {
+      isDeleting.value = false;
+    }
   };
 
   /**
@@ -105,9 +171,11 @@ export function useImageUpload() {
 
   return {
     uploadImage,
+    deleteImage,
     createPreview,
     cleanup,
     isUploading,
+    isDeleting,
     isGeneratingSignature,
     error,
     uploadedUrl,

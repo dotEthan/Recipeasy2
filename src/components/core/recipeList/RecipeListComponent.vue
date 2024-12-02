@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
-import { ref, watch } from 'vue'
+import { computed, ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRecipeStore } from '@/stores/recipe'
 import RecipeListItemComponent from './recipeListItem/RecipeListItemComponent.vue'
 import FilterComponent from './recipeFilter/FilterComponent.vue'
@@ -9,31 +10,22 @@ import RecipeDetailsComponent from './recipeDetails/recipeDetailsComponent.vue'
 import RecipeEditComponent from './recipeEdit/RecipeEditComponent.vue'
 import RecipesEmptyComponent from './recipesEmpty/recipesEmptyComponent.vue'
 import NewRecipeButtonComponent from './newRecipeButton/newRecipeButtonComponent.vue'
+import { useUserStore } from '@/stores/user'
 
+const userStore = useUserStore()
 const recipeStore = useRecipeStore()
 let selectedRecipe = ref<Recipe | undefined>(undefined)
 let editSelectedRecipe = ref(false)
+let activeFilters = ref<string[]>([])
 
-let filteredRecipes = ref<Recipe[]>([...recipeStore.recipes])
+const filteredRecipes = computed(() => {
+  return recipeStore.useFilteredRecipes(activeFilters.value)
+})
+
 let allRecipeTags = ref<string[] | undefined>(undefined)
 
 allRecipeTags.value = recipeStore.getAllRecipeTags
 
-watch(recipeStore.recipes, filterRecipes, { deep: true, immediate: true })
-
-function filterRecipes() {
-  const activeFilters = recipeStore.getActiveFilters
-  console.log(activeFilters.length)
-  if (!activeFilters.length) {
-    console.log('No active filters, resetting to full recipe list')
-    filteredRecipes.value = [...recipeStore.recipes]
-    return
-  }
-
-  filteredRecipes.value = recipeStore.recipes.filter(
-    (recipe) => activeFilters.length > 0 && recipe.tags?.some((tag) => activeFilters.includes(tag))
-  )
-}
 
 function closeRecipeDetails() {
   selectedRecipe.value = undefined
@@ -63,19 +55,27 @@ function newRecipeAdded() {
   editSelectedRecipe.value = true
   //TODO Remove if empty, Error handling
 }
+
+function setFilters(filters: string[]) {
+  activeFilters.value = filters
+}
+
+function removedRecipe() {
+  console.log('ok, so what?')
+}
 </script>
 
 <template>
   <div class="recipe-list-container">
-    <FilterComponent @filter="filterRecipes" :allRecipeTags />
-    <div class="recipeRow" v-if="recipeStore.recipeLength">
+    <FilterComponent @filter="setFilters" :allRecipeTags />
+    <div class="recipeRow" v-if="recipeStore.recipesLength">
       <RecipeListItemComponent
         class="recipe-item-contain"
-        v-for="recipe in filteredRecipes"
+        v-for="recipe in filteredRecipes.value"
         :key="recipe.id"
         :recipeData="recipe"
         @openRecipe="openRecipeDetail"
-        @removedRecipe="filterRecipes"
+        @removedRecipe="removedRecipe" 
       />
       <NewRecipeButtonComponent @add-new-recipe="newRecipeAdded" />
     </div>

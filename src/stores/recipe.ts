@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, ComputedRef } from 'vue'
 import type { Recipe, RecipeState } from '@/types/Recipes'
 
 export const useRecipeStore = defineStore('recipes', () => {
@@ -8,9 +8,9 @@ export const useRecipeStore = defineStore('recipes', () => {
   const allTags = ref<string[]>([])
   const selectedRecipeId = ref<string>('')
   const editSelectedRecipe = ref(false)
-  const activeFilters = ref<string[]>([])
+  const personalFilters = ref<string[]>([])
 
-  const recipeLength = computed(() => recipes.value.length)
+  const recipesLength = computed(() => recipes.value.length)
   const getSelectedRecipe = computed(() =>
     recipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
   )
@@ -23,14 +23,45 @@ export const useRecipeStore = defineStore('recipes', () => {
       )
     )
   )
-  const getActiveFilters = computed(() => activeFilters.value)
 
-  function setRecipeState(state: RecipeState) {
+  function useFilteredRecipes(activeFilters: string[]): ComputedRef<Recipe[]> {
+    const allFilters = new Set([...personalFilters.value, ...activeFilters])
+    return computed(() => {
+      if (allFilters.size === 0) return recipes.value
+      return recipes.value.filter((recipe) => {
+        return recipe.tags.some((tag) => allFilters.has(tag))
+      })
+    })
+  }
+
+  function setInitialRecipeState(state: RecipeState) {
     userId.value = state.userId
     recipes.value = state.recipes || []
     allTags.value = state.allTags || []
     selectedRecipeId.value = state.selectedRecipeId || ''
-    activeFilters.value = state.activeFilters || []
+    personalFilters.value = state.personalFilters || []
+  }
+
+  function getNRandomRecipes(num: number): Recipe[] {
+    const randomRecipes: Recipe[] = []
+    const length = recipesLength.value
+    
+    if (num > length) {
+      num = length
+    }
+  
+    const indices = new Set<number>()
+  
+    while (indices.size < num) {
+      const randomIndex = Math.floor(Math.random() * length)
+      indices.add(randomIndex)
+    }
+  
+    indices.forEach(index => {
+      randomRecipes.push(recipes.value[index])
+    })
+  
+    return randomRecipes
   }
 
   function updateRecipe(recipe: Recipe) {
@@ -56,9 +87,6 @@ export const useRecipeStore = defineStore('recipes', () => {
     }
   }
 
-  function setActiveFilters(filters: string[]) {
-    activeFilters.value = filters
-  }
 
   function setAllRecipes(newRecipes: Recipe[]) {
     recipes.value = newRecipes
@@ -69,7 +97,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     recipes.value = []
     allTags.value = []
     selectedRecipeId.value = ''
-    activeFilters.value = []
+    personalFilters.value = []
   }
 
   return {
@@ -78,17 +106,17 @@ export const useRecipeStore = defineStore('recipes', () => {
     allTags,
     selectedRecipeId,
     editSelectedRecipe,
-    activeFilters,
-    recipeLength,
+    personalFilters,
+    recipesLength,
     getSelectedRecipe,
     getAllRecipeTags,
-    getActiveFilters,
-    setRecipeState,
+    useFilteredRecipes,
+    setInitialRecipeState,
+    getNRandomRecipes,
     updateRecipe,
     addRecipe,
     setSelectedRecipeId,
     removeSelectedRecipe,
-    setActiveFilters,
     setAllRecipes,
     resetState
   }

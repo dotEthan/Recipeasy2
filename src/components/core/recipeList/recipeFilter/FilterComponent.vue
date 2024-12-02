@@ -16,6 +16,7 @@ let mobileFiltersOpen = ref(false)
 let allUserTags = ref<String[]>([...recipeStore.getAllRecipeTags])
 const filterState = reactive<{ [key: string]: boolean }>({})
 let filterList = ref(allUserTags.value as string[])
+let isFiltersOpen = ref(false)
 
 filterList.value.forEach((filter) => {
   filterState[filter] = false
@@ -27,8 +28,12 @@ function toggleShowFilters() {
 function filterButtonOnClick() {
   if (mobileFiltersOpen.value === true) mobileFiltersOpen.value = false
   const activeFilters = Object.keys(toRaw(filterState)).filter((key) => filterState[key])
-  recipeStore.setActiveFilters(activeFilters)
-  emit('filter')
+  // recipeStore.setActiveFilters(activeFilters)
+  emit('filter', activeFilters)
+}
+
+function openFilters() {
+  isFiltersOpen.value = !isFiltersOpen.value
 }
 
 //TODO Update filters when adding and removing
@@ -38,8 +43,9 @@ function filterButtonOnClick() {
   <button class="filter-btn-mobile" @click="toggleShowFilters()">
     <Filter class="filter-icon" />
   </button>
-  <div class="filter-box" :class="{ floating: mobileFiltersOpen }">
-    <h2 class="filter-title">Filters</h2>
+  <h2 class="filter-title" @click="openFilters">Filters</h2>
+  <div class="filter-box" :class="{ floating: mobileFiltersOpen }" v-if="isFiltersOpen">
+    <h3 style="text-align: center;">Proper Filtering structure coming soon!</h3>
     <CircleX class="button-close" @click="toggleShowFilters()" v-if="mobileFiltersOpen" />
     <div class="filters-contain">
       <CheckboxComponent
@@ -49,11 +55,12 @@ function filterButtonOnClick() {
         v-model="filterState[filter]"
       />
     </div>
-    <button @click="filterButtonOnClick()">Filter</button>
+    <button class="filter-btn-submit" @click="filterButtonOnClick()">Filter</button>
   </div>
 </template>
 
 <style lang="sass">
+@import '../../../../assets/variables.sass'
 
 
 .filter-btn-mobile
@@ -62,7 +69,7 @@ function filterButtonOnClick() {
   right: 20px
   display: flex
   padding: 6px 12px
-  background-color: #e0e0e0
+  background-color: $colorLighter
   color: #333
   border: none
   border-radius: 30px
@@ -111,6 +118,7 @@ function filterButtonOnClick() {
 .filter-title
   // display: none
   text-align: center
+  cursor: pointer
 
   @media (min-width: 768px)
     display: block
@@ -125,4 +133,13 @@ function filterButtonOnClick() {
   display: flex
   flex-direction: row
   flex-wrap: wrap
+
+.filter-btn-submit
+  width: 50px
+  height: 30px
+  background-color: $colorMiddle
+  cursor: pointer
+  border-radius: 3px
+  color: $colorLighter
+  text-align: center
 </style>

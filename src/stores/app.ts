@@ -26,7 +26,7 @@ export const useAppStore = defineStore('app', () => {
     console.log(parsedDummyData)
     testModeOn.value = true
     userStore.setTestModeOn(parsedDummyData)
-    recipeStore.setRecipeState(parsedDummyData.recipeState || {})
+    recipeStore.setInitialRecipeState(parsedDummyData.recipeState || {})
     shoppingListStore.setListState(parsedDummyData.shoppingListState || {})
   }
 

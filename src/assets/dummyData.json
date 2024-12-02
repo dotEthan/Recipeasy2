@@ -3,37 +3,6 @@
   "recipeState": {
     "recipes": [
       {
-        "id": "test-1",
-        "name": "Beyond Burger",
-        "url": "",
-        "description": "A burger Beyond Burgers of Burger Beyondness",
-        "ingredients": [
-          {
-            "title": "burger and fries",
-            "steps": [
-              { "name": "stuff", "amount": "3", "unit": "cups" },
-              { "name": "seitan burger", "amount": "3", "unit": "cups" },
-              { "name": "spices" },
-              { "name": "potatoes", "amount": "4" }
-            ]
-          },
-          {
-            "title": "Bun",
-            "steps": [
-              { "name": "wheat", "amount": "", "unit": "cups" },
-              { "name": "Buckwheat", "amount": "1", "unit": "cup" },
-              { "name": "water", "amount": "till done" },
-              { "name": "salt", "unit": "tbsp" }
-            ]
-          }
-        ],
-        "directions": [{ "title": "do first", "steps": ["stir it", "mix it", "lick it"] }],
-        "imgPath": "https://picsum.photos/200/300",
-        "rating": 3.5,
-        "private": true,
-        "tags": ["burger", "snack", "dinner", "fast food", "vegan"]
-      },
-      {
         "id": "test-2",
         "name": "Vanilla Milkshake",
         "url": "https://www.theconsciousplantkitchen.com/vegan-milkshake/",
@@ -57,10 +26,11 @@
             ]
           }
         ],
-        "imgPath": "https://picsum.photos/200/300",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090094/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/x3gq5jk5hnnl6vgqmlhx.jpg",
         "rating": 3.5,
         "private": true,
-        "tags": ["milk", "milkshake", "drink", "fast food", "vegan"]
+        "mealType": ["snack", "fast food", "junk food"],
+        "tags": ["milkshake", "drink", "vegan"]
       },
       {
         "id": "test-3",
@@ -71,14 +41,30 @@
           {
             "title": "Ingredients",
             "steps": [
-              { "name": "Oat Milk", "amount": "1/2", "unit": "cup" },
-              { "name": "Plant-Ice Vanilla Ice Cream", "amount": "1", "unit": "cup" },
-              { "name": "Frozen Strawberries", "amount": "3/4", "unit": "cup" },
-              { "name": "Vanilla Extract", "amount": "1/2", "unit": "teaspoon" }
+              { "name": "Carrots", "amount": "1", "unit": "cup" },
+              { "name": "Potatoes", "amount": "2", "unit": "cup" },
+              { "name": "Water", "amount": "1/2", "unit": "cup" },
+              { "name": "Nutritional Yeast", "amount": "1/2", "unit": "cup" },
+              { "name": "Extra virgin olive oil", "amount": "1/2", "unit": "cup" },
+              { "name": "Lemon Juice", "amount": "1/2", "unit": "tablespoon" },
+              { "name": "Salt", "amount": "1/2", "unit": "teaspoon" },
+              { "name": "Onion Powder", "amount": "1/2", "unit": "teaspoon" },
+              { "name": "Garlic Powder", "amount": "1/2", "unit": "teaspoon" }
             ]
           }
         ],
-        "imgPath": "",
+        "directions": [
+          {
+            "title": "Sauce-y",
+            "steps": [
+              "Place the potatoes and carrots in a medium pot and cover them with cold water by about 1 inch (2.5 cm).",
+              "Bring to a boil, then reduce the heat and simmer, uncovered, for about 15-20 minutes or until soft.",
+              "Drain the potatoes and carrots in a colander.",
+              "Transfer to a high-speed blender with all the remaining ingredients. Blend until smooth and serve immediately."
+            ]
+          }
+        ],
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090140/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/yxqha612s1holyscxa5g.webp",
         "rating": 5,
         "private": false,
         "tags": ["cheese", "dip", "potato", "carrot", "vegan"]
@@ -123,10 +109,10 @@
             ]
           }
         ],
-        "imgPath": "https://picsum.photos/200/300",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090184/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/rw8pnm2cxqptdivilutu.jpg",
         "rating": 5,
         "private": false,
-        "tags": ["Seitan", "Chickwheat", "Chickpeas", "Vital Wheat Glute", "Vegan", "Protein"]
+        "tags": ["Seitan", "Chickwheat", "Chickpeas", "Vital Wheat Glute", "Vegan", "Protein", "dinner", "Dinner"]
       },
       {
         "id": "test-5",
@@ -377,7 +363,8 @@
           "protein-rich",
           "vegetable-rich",
           "main-course",
-          "comfort-food"
+          "comfort-food",
+          "Dinner"
         ]
       },
       {

@@ -4,7 +4,7 @@ export type RecipeState = {
   publicRecipes?: Recipe[]
   allTags?: string[]
   selectedRecipeId?: string
-  activeFilters?: string[]
+  personalFilters?: string[]
 }
 
 export type Recipe = {

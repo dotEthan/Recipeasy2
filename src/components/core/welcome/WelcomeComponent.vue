@@ -21,6 +21,15 @@ const mealTime = computed(() => {
     return 'Dinner'
   }
 })
+
+function mealTimeRecipes() {
+  console.log('it is: ', mealTime.value)
+  return recipeStore.useFilteredRecipes([mealTime.value]).value.slice(4)
+}
+
+function recommendedRecipes() {
+  return recipeStore.getNRandomRecipes(5)
+}
 </script>
 
 <template>
@@ -30,8 +39,8 @@ const mealTime = computed(() => {
       <input type="text" class="searchbar" placeholder="Burritos" />
       <button><Search class="magnifying" :size="20" /></button>
     </div>
-    <CollectionComponent title="Recommended" :recipeData="recipeStore.recipes" />
-    <CollectionComponent :title="mealTime" :recipeData="recipeStore.recipes" />
+    <CollectionComponent title="Recommended" :recipeData="recommendedRecipes()" />
+    <CollectionComponent :title="mealTime" :recipeData="mealTimeRecipes()" />
     <CollectionComponent title="Snacks" :recipeData="recipeStore.recipes" />
     <CollectionComponent title="Desserts" :recipeData="recipeStore.recipes" />
     <CollectionComponent title="Healthy Foods" :recipeData="recipeStore.recipes" />
