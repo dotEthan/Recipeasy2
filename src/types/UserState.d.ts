@@ -5,7 +5,6 @@ export type UserState = {
   uid: string
   localUser: LocalUser
   authorized: boolean
-  activeFilters: string[]
 }
 
 export type LocalUser = {
@@ -17,4 +16,5 @@ export type LocalUser = {
   email?: string
   createdAt?: date
   shoppingLists?: ShoppingList[]
+  personalFilters?: string[]
 }

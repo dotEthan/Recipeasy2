@@ -41,7 +41,7 @@ async function onSubmit(e: any) {
           recipes: [],
           shoppingLists: []
         }
-        userState = { localUser: userStoredData, uid: user.uid, authorized: true }
+        userState = { localUser: userStoredData, uid: user.uid, authorized: true}
 
         initializeStores(userState)
 
