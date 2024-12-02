@@ -20,9 +20,9 @@
           {
             "title": "Topping",
             "steps": [
-              { "name": "Vegan sprinkles", "amount": "1-2", "unit": "teaspoons" },
-              { "name": "Vegan Marshmallows", "amount": "10" },
-              { "name": "Dairy-free Whipped Cream", "amount": "1/4", "unit": "cup" }
+              { "name": "Plant Based sprinkles", "amount": "1-2", "unit": "teaspoons" },
+              { "name": "Plant Based Marshmallows", "amount": "10" },
+              { "name": "Plant Based Whipped Cream", "amount": "1/4", "unit": "cup" }
             ]
           }
         ],
@@ -67,6 +67,9 @@
         "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090140/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/yxqha612s1holyscxa5g.webp",
         "rating": 5,
         "private": false,
+        "mealType": ["snack"],
+        "cookTime":"25 minutes",
+        "prepTime":"10 minutes",
         "tags": ["cheese", "dip", "potato", "carrot", "vegan"]
       },
       {
@@ -112,7 +115,8 @@
         "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090184/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/rw8pnm2cxqptdivilutu.jpg",
         "rating": 5,
         "private": false,
-        "tags": ["Seitan", "Chickwheat", "Chickpeas", "Vital Wheat Glute", "Vegan", "Protein", "dinner", "Dinner"]
+        "mealType": ["dinner"],
+        "tags": ["Seitan", "Chickwheat", "Chickpeas", "Vital Wheat Glute", "Vegan", "Protein"]
       },
       {
         "id": "test-5",
@@ -145,7 +149,8 @@
         "imgPath": "https://picsum.photos/200/300",
         "rating": 2,
         "private": false,
-        "tags": ["breakfast", "pancake", "Oatmeal", "Vegan"]
+        "mealType": ["breakfast"],
+        "tags": ["pancake", "Oatmeal", "Vegan"]
       },
       {
         "id": "VR001",
@@ -234,6 +239,7 @@
         "imgPath": "",
         "rating": "",
         "private": true,
+        "mealType": ["lunch", "dinner"],
         "tags": [
           "vegan", 
           "quinoa", 
@@ -241,8 +247,6 @@
           "high-protein", 
           "meal-prep", 
           "gluten-free", 
-          "lunch", 
-          "dinner", 
           "healthy",
           "black-beans",
           "tahini",
@@ -348,13 +352,13 @@
         "imgPath": "",
         "rating": "",
         "private": true,
+        "mealType": "dinner",
         "tags": [
           "vegan",
           "thai-cuisine",
           "tofu",
           "curry",
           "gluten-free",
-          "dinner",
           "spicy",
           "coconut-milk",
           "green-curry",
@@ -363,8 +367,7 @@
           "protein-rich",
           "vegetable-rich",
           "main-course",
-          "comfort-food",
-          "Dinner"
+          "comfort-food"
         ]
       },
       {
@@ -446,6 +449,7 @@
         "imgPath": "",
         "rating": "",
         "private": true,
+        "mealType": ["dinner"],
         "tags": [
           "vegan",
           "mediterranean",
@@ -453,7 +457,6 @@
           "mushrooms",
           "quinoa",
           "gluten-free",
-          "dinner",
           "stuffed-vegetables",
           "spinach",
           "sun-dried-tomatoes",
@@ -556,6 +559,7 @@
         "imgPath": "",
         "rating": "",
         "private": true,
+        "mealType": ["dinner"],
         "tags": [
           "vegan",
           "indian",
@@ -664,6 +668,7 @@
       "imgPath": "",
       "rating": "",
       "private": true,
+      "mealType": ["dinner", "lunch"],
       "tags": [
         "vegan",
         "japanese",
@@ -674,7 +679,6 @@
         "umami",
         "asian-cuisine",
         "soup",
-        "dinner",
         "plant-based",
         "mushrooms",
         "comfort-food",
@@ -778,6 +782,7 @@
       "imgPath": "",
       "rating": "",
       "private": true,
+      "mealType": ["lunch", "dinner"],
       "tags": [
         "vegan",
         "middle-eastern",
@@ -786,8 +791,6 @@
         "chickpeas",
         "quinoa",
         "gluten-free",
-        "dinner",
-        "lunch",
         "protein-rich",
         "tahini",
         "plant-based",
@@ -885,6 +888,7 @@
       "imgPath": "",
       "rating": "",
       "private": true,
+      "mealType": ["lunch", "dinner"],
       "tags": [
         "vegan",
         "caribbean",
@@ -893,7 +897,6 @@
         "jerk-seasoning",
         "mango",
         "gluten-free",
-        "dinner",
         "spicy",
         "plant-based",
         "tropical",
@@ -982,6 +985,7 @@
       "imgPath": "",
       "rating": "",
       "private": true,
+      "mealType": ["dinner"],
       "tags": [
         "vegan",
         "mediterranean"
@@ -1079,6 +1083,7 @@
       "imgPath": "",
       "rating": "",
       "private": true,
+      "mealType": ["lunch", "dinner"],
       "tags": [
       "vegan",
       "korean",
@@ -1086,7 +1091,6 @@
       "tofu",
       "buddha-bowl",
       "gluten-free",
-      "dinner",
       "rice",
       "plant-based",
       "asian-cuisine",
@@ -1187,6 +1191,7 @@
       "imgPath": "",
       "rating": "",
       "private": true,
+      "mealType": ["dinner"],
       "tags": [
       "vegan",
       "brazilian",
@@ -1287,6 +1292,7 @@
       "imgPath": "",
       "rating": "",
       "private": true,
+      "mealType": ["dinner"],
       "tags": [
       "vegan",
       "west-african",
@@ -1294,7 +1300,6 @@
       "sweet-potato",
       "kale",
       "gluten-free",
-      "dinner",
       "stew",
       "plant-based",
       "african-cuisine",
@@ -1390,6 +1395,7 @@
       "imgPath": "",
       "rating": "",
       "private": true,
+      "mealType": ["lunch"],
       "tags": [
       "vegan",
       "vietnamese",
@@ -1397,7 +1403,6 @@
       "tofu",
       "sandwich",
       "pickled-vegetables",
-      "lunch",
       "street-food",
       "plant-based",
       "asian-cuisine",

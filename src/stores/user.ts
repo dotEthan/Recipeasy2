@@ -5,7 +5,7 @@ import { computed, ref } from 'vue'
 export const useUserStore = defineStore('user', () => {
   const uid = ref('')
   const authorized = ref(false)
-  const localUser = ref<LocalUser>({})
+  const localUser = ref<LocalUser>({uid: ''})
   const personalFilters = ref<string[]>([])
 
   const isAuthorized = computed(() => authorized.value)
@@ -33,7 +33,7 @@ export const useUserStore = defineStore('user', () => {
   function resetState() {
     uid.value = ''
     authorized.value = false
-    localUser.value = {}
+    localUser.value = {uid: ''}
   }
 
   function setTestModeOn(testData: LocalUser) {

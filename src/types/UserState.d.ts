@@ -8,7 +8,7 @@ export type UserState = {
 }
 
 export type LocalUser = {
-  uid?: string
+  uid: string
   firstName?: string
   lastName?: string
   displayName?: string

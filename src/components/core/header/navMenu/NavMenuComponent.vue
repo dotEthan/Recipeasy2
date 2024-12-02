@@ -6,10 +6,13 @@ import { useUserStore } from '@/stores/user'
 import router from '@/router/main'
 import { useDataService } from '@/composables/useDataService'
 import { useRecipeStore } from '@/stores/recipe'
+import { useShoppingListStore } from '@/stores/shoppingList'
+import { LocalUser } from '@/types/UserState'
 
 const appStore = useAppStore()
 const userStore = useUserStore()
 const recipeStore = useRecipeStore()
+const shoppingListStore = useShoppingListStore()
 const dataService = useDataService()
 const isTestModeOn = computed(() => appStore.isTestModeOn)
 const isAuthorized = computed(() => userStore.isAuthorized)
@@ -27,10 +30,11 @@ function onClickRegisterSigning(type: string) {
 
 async function onSave() {
   if (currentUser.value) {
+    const updateUser: LocalUser = {...currentUser.value, recipes: recipeStore.recipes, shoppingLists: shoppingListStore.shoppingLists, personalFilters: recipeStore.personalFilters}
     try {
-      dataService.saveUserData(currentUser.value)
+      dataService.saveUserData(updateUser)
     } catch (error: any) {
-      // TODO: handle errors
+      // TODO: handle & display errors
       console.log('Error during Saving:', error)
     }
   }
@@ -58,6 +62,7 @@ async function onSignOut() {
   userStore.resetState()
   recipeStore.resetState()
   appStore.resetState()
+  shoppingListStore.resetState()
   console.log('stores reset')
   router.push('/')
 }
@@ -103,7 +108,7 @@ async function onSignOut() {
         <ul class="dropdown-menu">
           <li>
             <a class="dropdown-menu-item" style="cursor: pointer" @click="onSave()"
-              >Save Data (use Radix Vue dropdown)</a
+              >Save Data</a
             >
           </li>
           <li>

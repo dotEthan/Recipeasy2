@@ -6,6 +6,8 @@ import { useUserStore } from './user'
 
 import dummyData from '../assets/dummyData.json'
 import { useShoppingListStore } from './shoppingList'
+import { useAuthService } from '@/composables/useAuthService'
+import { LocalUser } from '@/types/UserState'
 
 type ScreenSize = 'sm' | 'md' | 'lg'
 
@@ -13,6 +15,7 @@ export const useAppStore = defineStore('app', () => {
   const recipeStore = useRecipeStore()
   const userStore = useUserStore()
   const shoppingListStore = useShoppingListStore()
+  const authService = useAuthService()
 
   const testModeOn = ref(false)
   const registrationOrSigninModal = ref('')
@@ -21,13 +24,22 @@ export const useAppStore = defineStore('app', () => {
   const isTestModeOn = computed(() => testModeOn.value)
   const isRegistrationModalOpen = computed(() => registrationOrSigninModal.value.length > 0)
 
+  function initializeApp(userData: LocalUser) {
+    const userId = userData.uid
+    userStore.setInitialUserState({uid: userId, localUser: userData, authorized: true})
+    recipeStore.setInitialRecipeState(userId, userData.recipes || [])
+    shoppingListStore.setListState(userId, userData.shoppingLists || [])
+  }
+
   function turnTestModeOn() {
-    const parsedDummyData = dummyData as any //TODO Correctly type
-    console.log(parsedDummyData)
+    authService.signIn('test@test.com', 'password')
     testModeOn.value = true
-    userStore.setTestModeOn(parsedDummyData)
-    recipeStore.setInitialRecipeState(parsedDummyData.recipeState || {})
-    shoppingListStore.setListState(parsedDummyData.shoppingListState || {})
+    // const parsedDummyData = dummyData as any //TODO Correctly type
+    // console.log(parsedDummyData)
+    // testModeOn.value = true
+    // userStore.setTestModeOn(parsedDummyData)
+    // recipeStore.setInitialRecipeState(parsedDummyData.recipeState || {})
+    // shoppingListStore.setListState(parsedDummyData.shoppingListState || {})
   }
 
   function turnTestModeOff() {
@@ -58,6 +70,7 @@ export const useAppStore = defineStore('app', () => {
     registrationOrSigninModal,
     isTestModeOn,
     isRegistrationModalOpen,
+    initializeApp,
     turnTestModeOn,
     turnTestModeOff,
     toggleRegistrationModal,

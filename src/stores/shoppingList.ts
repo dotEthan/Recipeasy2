@@ -1,20 +1,19 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { defineStore } from 'pinia'
-import type { ShoppingList, ShoppingListState } from '@/types/ShoppingLists'
+import type { ShoppingList } from '@/types/ShoppingLists'
 
 export const useShoppingListStore = defineStore('shopping-lists', () => {
   const uid = ref('')
   const shoppingLists = ref<ShoppingList[]>([])
-  const defaultListId = ref(shoppingLists.value.find((list) => list.isDefault)?.id || '')
+  const defaultListId = ref('')
   const editingListIndex = ref(-1)
   const editingItemIndex = ref(-1)
 
-  function setListState(state: ShoppingListState) {
-    console.log()
-    uid.value = state.uid
-    shoppingLists.value = state.shoppingLists
-    defaultListId.value = state.defaultListId
+  function setListState(userId: string, lists: ShoppingList[]) {
+    uid.value = userId
+    shoppingLists.value = lists
+    defaultListId.value = shoppingLists?.value?.find((list) => list.isDefault)?.id || ''
   }
 
   function getItemValue(listIndex: number, itemIndex: number) {
@@ -73,7 +72,7 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
     if (listIndex >= 0 && itemIndex >= 0) shoppingLists.value[listIndex].items.splice(itemIndex, 1)
   }
 
-  function resetListState() {
+  function resetState() {
     uid.value = ''
     shoppingLists.value = []
     defaultListId.value = ''
@@ -94,6 +93,6 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
     deleteList,
     setDefaultList,
     deleteListItem,
-    resetListState
+    resetState
   }
 })

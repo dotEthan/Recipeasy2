@@ -8,11 +8,14 @@ import { useAppStore } from '@/stores/app'
 import router from '@/router/main'
 import { useAuthService } from '@/composables/useAuthService'
 import type { LocalUser, UserState } from '@/types/UserState'
+import { useShoppingListStore } from '@/stores/shoppingList'
 
-let authError = ref(false)
 const recipeStore = useRecipeStore()
 const userStore = useUserStore()
 const appStore = useAppStore()
+const shoppingListStore = useShoppingListStore()
+
+let authError = ref(false)
 const {registerUser, signIn} = useAuthService()
 let thisType = ref(appStore.registrationOrSigninModal)
 
@@ -73,13 +76,17 @@ async function onSubmit(e: any) {
 }
 
 function initializeStores(userState: UserState) {
+  // App Store (Currently not needed)
+
   // User Store
   userStore.setInitialUserState(userState)
 
   // Recipe Store
   if (userState.localUser?.recipes) recipeStore.setAllRecipes(userState.localUser?.recipes)
 
-  // App Store (if needed)
+  // Shopping List Store
+  if (userState.localUser?.shoppingLists) shoppingListStore.setListState(userState.uid, userState.localUser?.shoppingLists)
+
 }
 
 function onSwitchTypeHandler(type: string) {
