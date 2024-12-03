@@ -36,7 +36,7 @@ Tried using AI to complete a full feature, it worked, but took far longer as it 
 - Routing & Store (ongoing as needed)
 - Basic Responsive design
 - Image uploading (almost done, need deleting, and saving)
-- Filter (Function, but new design coming)
+- Filter (Functional, but new design coming)
 - Welcome page and "Public" recipe display/search
 
 ### To Come:

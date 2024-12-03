@@ -9,9 +9,14 @@ import type { Ref } from 'vue';
 interface SignatureResponse {
   signature: string;
   timestamp: number;
-  uploadPreset: string;
-  folder: string;
+  uploadPreset?: string;
+  folder?: string;
   expirationTime: number;
+}
+
+interface SignatureRequest {
+  operation: 'upload' | 'delete';
+  publicId?: string;
 }
 
 /**
@@ -35,7 +40,7 @@ export function useCloudinarySignature() {
   // Initialize Firebase Functions
   const functions = getFunctions(undefined, 'us-central1');
 
-  const createCloudinarySignature = httpsCallable<void, SignatureResponse>(
+  const createCloudinarySignature = httpsCallable<SignatureRequest, SignatureResponse>(
     functions,
     'createCloudinarySignature'
   );
@@ -43,10 +48,11 @@ export function useCloudinarySignature() {
   /**
    * Generates a new Cloudinary signature using Firebase Functions
    * Requires the user to be authenticated
+   * @param {SignatureRequest} request - The signature request details
    * @returns Promise<SignatureResponse | null>
    */
-  const generateSignature = async (): Promise<SignatureResponse | null> => {
-    console.log('Starting signature generation process...');
+  const generateSignature = async (request: SignatureRequest): Promise<SignatureResponse | null> => {
+    console.log('Starting signature generation process...', request);
     isLoading.value = true;
     error.value = null;
     signature.value = null;
@@ -59,7 +65,7 @@ export function useCloudinarySignature() {
       }
 
       console.log('User authenticated, calling cloud function...');
-      const result: HttpsCallableResult<SignatureResponse> = await createCloudinarySignature();
+      const result: HttpsCallableResult<SignatureResponse> = await createCloudinarySignature(request);
       
       if (!result.data) {
         console.error('No data received from cloud function');
