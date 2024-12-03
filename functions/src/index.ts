@@ -1,6 +1,6 @@
 import * as admin from "firebase-admin"
 import { onCall } from "firebase-functions/v2/https"
-import { v2 as cloudinary } from "cloudinary"
+import { v2 } from "cloudinary"
 import { defineSecret } from "firebase-functions/params"
 
 interface SignatureResponse {
@@ -34,59 +34,72 @@ async function generateSignature(userId: string): Promise<SignatureResponse> {
     console.log("User validated successfully")
 
     // Get config from secrets
-    const cloudConfig = {
-      cloud_name: cloudinaryNameSecret.value(),
-      api_key: cloudinaryApiKeySecret.value(),
-      api_secret: cloudinaryApiSecretSecret.value(),
-      upload_preset: cloudinaryUploadPresetSecret.value()
-    }
+    const cloudName = cloudinaryNameSecret.value()
+    const apiKey = cloudinaryApiKeySecret.value()
+    const apiSecret = cloudinaryApiSecretSecret.value()
+    const uploadPreset = cloudinaryUploadPresetSecret.value()
 
     // Log config presence (without values)
     console.log("Cloudinary config keys present:", {
-      has_cloud_name: !!cloudConfig.cloud_name,
-      has_api_key: !!cloudConfig.api_key,
-      has_api_secret: !!cloudConfig.api_secret,
-      has_upload_preset: !!cloudConfig.upload_preset
+      has_cloud_name: !!cloudName,
+      has_api_key: !!apiKey,
+      has_api_secret: !!apiSecret,
+      has_upload_preset: !!uploadPreset
     })
 
     // Validate config
-    if (
-      !cloudConfig.cloud_name ||
-      !cloudConfig.api_key ||
-      !cloudConfig.api_secret ||
-      !cloudConfig.upload_preset
-    ) {
+    if (!cloudName || !apiKey || !apiSecret || !uploadPreset) {
       throw new Error("Missing required Cloudinary configuration")
     }
 
-    cloudinary.config({
-      cloud_name: cloudConfig.cloud_name,
-      api_key: cloudConfig.api_key,
-      api_secret: cloudConfig.api_secret
-    })
-    console.log("Cloudinary configured successfully with cloud name:", cloudConfig.cloud_name)
+    // Configure Cloudinary with explicit values using v2
+    console.log("Attempting to configure Cloudinary with cloud_name:", cloudName)
+
+    try {
+      // Use v2 configuration
+      v2.config({
+        cloud_name: cloudName,
+        api_key: apiKey,
+        api_secret: apiSecret
+      })
+
+      // Verify configuration using v2
+      const testConfig = v2.config()
+      console.log("Cloudinary configured successfully. Verified cloud_name:", testConfig.cloud_name)
+    } catch (configError) {
+      console.error("Error configuring Cloudinary:", configError)
+      throw new Error(`Failed to configure Cloudinary: ${configError}`)
+    }
 
     const timestamp = Math.floor(Date.now() / 1000)
     const folder = `Recipeasy/user_uploads/users/${userId}`
 
     const paramsToSign = {
-      folder,
       timestamp,
-      upload_preset: cloudConfig.upload_preset
+      folder,
+      upload_preset: uploadPreset
     }
 
-    console.log("Generating signature with params:", paramsToSign)
+    console.log("Generating signature with params:", {
+      ...paramsToSign,
+      upload_preset: uploadPreset
+    })
 
-    const signature = cloudinary.utils.api_sign_request(paramsToSign, cloudConfig.api_secret)
+    try {
+      // Use v2 signature generation
+      const signature = v2.utils.api_sign_request(paramsToSign, apiSecret)
+      console.log("Signature generated successfully")
 
-    console.log("Signature generated successfully")
-
-    return {
-      signature,
-      timestamp,
-      uploadPreset: cloudConfig.upload_preset,
-      folder,
-      expirationTime: timestamp + 600 // 10 min expiration
+      return {
+        signature,
+        timestamp,
+        uploadPreset,
+        folder,
+        expirationTime: timestamp + 600 // 10 min expiration
+      }
+    } catch (signError) {
+      console.error("Error generating signature:", signError)
+      throw new Error(`Failed to generate signature: ${signError}`)
     }
   } catch (error) {
     console.error("Error in generateSignature:", error)
@@ -104,10 +117,11 @@ export const createCloudinarySignature = onCall(
     memory: "256MiB",
     region: "us-central1",
     cors: [
-      "http://localhost:5173", // Vite default dev server
-      "http://localhost:3000", // Alternative common dev port
-      "http://127.0.0.1:5173", // Local IPv4
-      "http://127.0.0.1:3000" // Local IPv4 alternative
+      "http://localhost:5173",
+      "http://localhost:3000",
+      "http://127.0.0.1:5173",
+      "http://127.0.0.1:3000",
+      "https://stupefied-morse-5e1233.netlify.app"
     ],
     secrets: [
       cloudinaryNameSecret,
