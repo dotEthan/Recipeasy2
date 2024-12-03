@@ -87,8 +87,9 @@ function onAddDirection(ingredientIndex: number) {
 
 async function removeImage() {
   if (formData.value.imgPath) {
+    const imgPath = formData.value.imgPath
     formData.value.imgPath = ""
-    const success = await deleteImage(formData.value.imgPath)
+    const success = await deleteImage(imgPath)
     if (!success) {
       console.error('Failed to delete image from Cloudinary')
     }

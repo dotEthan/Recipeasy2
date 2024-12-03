@@ -43,7 +43,7 @@ export function useImageUpload() {
    * @returns string - The public_id of the image
    */
   const getPublicIdFromUrl = (url: string): string => {
-    const matches = url.match(/\/v\d+\/([^/]+)\.[^.]+$/);
+    const matches = url.match(/\/v\d+\/(.+)\.[^.]+$/);
     return matches ? matches[1] : '';
   };
 
@@ -59,14 +59,20 @@ export function useImageUpload() {
     error.value = null;
 
     try {
-      const signatureData = await generateSignature();
-      if (!signatureData) {
-        throw new Error('Failed to generate deletion signature');
-      }
-
       const publicId = getPublicIdFromUrl(imageUrl);
+      console.log('imageUrl: ', imageUrl);
+      console.log('publicId: ', publicId);
       if (!publicId) {
         throw new Error('Invalid image URL');
+      }
+
+      const signatureData = await generateSignature({
+        operation: 'delete',
+        publicId
+      });
+
+      if (!signatureData) {
+        throw new Error('Failed to generate deletion signature');
       }
 
       const formData = new FormData();
@@ -74,6 +80,7 @@ export function useImageUpload() {
       formData.append('timestamp', signatureData.timestamp.toString());
       formData.append('signature', signatureData.signature);
       formData.append('api_key', import.meta.env.VITE_CLOUDINARY_API_KEY);
+      console.log('formData: ', formData);
 
       const response = await fetch(
         `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_NAME}/image/destroy`,
@@ -114,7 +121,10 @@ export function useImageUpload() {
 
     try {
       // Generate signature for secure upload
-      const signatureData = await generateSignature();
+      const signatureData = await generateSignature({
+        operation: 'upload'
+      });
+
       if (!signatureData) {
         throw new Error('Failed to generate upload signature');
       }
@@ -122,10 +132,16 @@ export function useImageUpload() {
       // Create form data with signature and file
       const formData = new FormData();
       formData.append('file', file);
+      
       // First add the parameters that were used for signature generation in the same order
-      formData.append('folder', signatureData.folder);
+      if (signatureData.folder) {
+        formData.append('folder', signatureData.folder);
+      }
       formData.append('timestamp', signatureData.timestamp.toString());
-      formData.append('upload_preset', signatureData.uploadPreset);
+      if (signatureData.uploadPreset) {
+        formData.append('upload_preset', signatureData.uploadPreset);
+      }
+      
       // Then add the signature and api_key which weren't part of signature generation
       formData.append('signature', signatureData.signature);
       formData.append('api_key', import.meta.env.VITE_CLOUDINARY_API_KEY);

@@ -1,14 +1,20 @@
 import * as admin from "firebase-admin"
 import { onCall } from "firebase-functions/v2/https"
-import { v2 } from "cloudinary"
+import { v2 as cloudinary } from "cloudinary"
 import { defineSecret } from "firebase-functions/params"
+import * as crypto from "crypto"
 
 interface SignatureResponse {
   signature: string
   timestamp: number
-  uploadPreset: string
-  folder: string
+  uploadPreset?: string
+  folder?: string
   expirationTime: number
+}
+
+interface SignatureRequest {
+  operation: "upload" | "delete"
+  publicId?: string
 }
 
 // Initialize Firebase Admin
@@ -21,12 +27,16 @@ const cloudinaryApiSecretSecret = defineSecret("CLOUDINARY_API_SECRET_SECRET")
 const cloudinaryUploadPresetSecret = defineSecret("CLOUDINARY_UPLOAD_PRESET_SECRET")
 
 /**
- * Creates a Cloudinary signature for secure file uploads.
+ * Creates a Cloudinary signature for secure file operations.
  * @param {string} userId - The authenticated user's ID
+ * @param {SignatureRequest} request - The signature request details
  * @return {Promise<SignatureResponse>} The signature response object
  */
-async function generateSignature(userId: string): Promise<SignatureResponse> {
-  console.log("Generating signature for user:", userId)
+async function generateSignature(
+  userId: string,
+  request: SignatureRequest
+): Promise<SignatureResponse> {
+  console.log("Generating signature for user:", userId, "operation:", request.operation)
 
   try {
     // Validate user exists
@@ -52,54 +62,50 @@ async function generateSignature(userId: string): Promise<SignatureResponse> {
       throw new Error("Missing required Cloudinary configuration")
     }
 
-    // Configure Cloudinary with explicit values using v2
-    console.log("Attempting to configure Cloudinary with cloud_name:", cloudName)
-
-    try {
-      // Use v2 configuration
-      v2.config({
-        cloud_name: cloudName,
-        api_key: apiKey,
-        api_secret: apiSecret
-      })
-
-      // Verify configuration using v2
-      const testConfig = v2.config()
-      console.log("Cloudinary configured successfully. Verified cloud_name:", testConfig.cloud_name)
-    } catch (configError) {
-      console.error("Error configuring Cloudinary:", configError)
-      throw new Error(`Failed to configure Cloudinary: ${configError}`)
-    }
-
-    const timestamp = Math.floor(Date.now() / 1000)
-    const folder = `Recipeasy/user_uploads/users/${userId}`
-
-    const paramsToSign = {
-      timestamp,
-      folder,
-      upload_preset: uploadPreset
-    }
-
-    console.log("Generating signature with params:", {
-      ...paramsToSign,
-      upload_preset: uploadPreset
+    // Configure Cloudinary
+    cloudinary.config({
+      cloud_name: cloudName,
+      api_key: apiKey,
+      api_secret: apiSecret
     })
 
-    try {
-      // Use v2 signature generation
-      const signature = v2.utils.api_sign_request(paramsToSign, apiSecret)
-      console.log("Signature generated successfully")
+    const timestamp = Math.floor(Date.now() / 1000)
+    let signature: string
+
+    if (request.operation === "upload") {
+      const folder = `Recipeasy/user_uploads/users/${userId}`
+      const stringToSign = `folder=${folder}&timestamp=${timestamp}&upload_preset=${uploadPreset}`
+      signature = crypto
+        .createHash("sha1")
+        .update(stringToSign + apiSecret)
+        .digest("hex")
 
       return {
         signature,
         timestamp,
         uploadPreset,
         folder,
-        expirationTime: timestamp + 600 // 10 min expiration
+        expirationTime: timestamp + 600
       }
-    } catch (signError) {
-      console.error("Error generating signature:", signError)
-      throw new Error(`Failed to generate signature: ${signError}`)
+    } else if (request.operation === "delete") {
+      if (!request.publicId) {
+        throw new Error("Public ID is required for delete operation")
+      }
+
+      // For delete operations, only public_id and timestamp are used in the signature
+      const stringToSign = `public_id=${request.publicId}&timestamp=${timestamp}`
+      signature = crypto
+        .createHash("sha1")
+        .update(stringToSign + apiSecret)
+        .digest("hex")
+
+      return {
+        signature,
+        timestamp,
+        expirationTime: timestamp + 600
+      }
+    } else {
+      throw new Error("Invalid operation specified")
     }
   } catch (error) {
     console.error("Error in generateSignature:", error)
@@ -138,8 +144,18 @@ export const createCloudinarySignature = onCall(
       throw new Error("Authentication required")
     }
 
+    if (!request.data || typeof request.data !== "object") {
+      throw new Error("Invalid request data")
+    }
+
+    const { operation, publicId } = request.data as SignatureRequest
+
+    if (!operation || !["upload", "delete"].includes(operation)) {
+      throw new Error("Invalid operation specified")
+    }
+
     try {
-      return await generateSignature(request.auth.uid)
+      return await generateSignature(request.auth.uid, { operation, publicId })
     } catch (error) {
       console.error("Top-level function error:", error)
       throw error
