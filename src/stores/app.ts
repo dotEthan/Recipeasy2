@@ -1,14 +1,10 @@
-import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { defineStore } from 'pinia'
 import { useRecipeStore } from './recipe'
-
 import { useUserStore } from './user'
-
-import dummyData from '../assets/dummyData.json'
 import { useShoppingListStore } from './shoppingList'
 import { useAuthService } from '@/composables/useAuthService'
-import { LocalUser, UserState } from '@/types/UserState'
-import { useDataService } from '@/composables/useDataService'
+import { UserState } from '@/types/UserState'
 
 type ScreenSize = 'sm' | 'md' | 'lg'
 
@@ -17,7 +13,6 @@ export const useAppStore = defineStore('app', () => {
   const userStore = useUserStore()
   const shoppingListStore = useShoppingListStore()
   const authService = useAuthService()
-  const dataService  = useDataService()
 
   const testModeOn = ref(false)
   const registrationOrSigninModal = ref('')
@@ -34,40 +29,26 @@ export const useAppStore = defineStore('app', () => {
     shoppingListStore.setListState(userId, userData.localUser.shoppingLists || [])
   }
 
-  function turnTestModeOn() {
-    try {
-      authService.signIn('testmode@testmode.com', 'password')
-        .then((user) => {
-          return dataService.loadUserData(user.uid)
-        })
-        .then((returnedData) => {
-          const [userStoredData, userId] = returnedData
-          // const testmodeData = dummyData as LocalUser
-          const localUser = {
-            ...userStoredData,
-            uid: userId,
-          }
-          const userState = { uid: userId, authorized: true, localUser }
-          initializeApp(userState)
+  function resetAppStates() {
+    userStore.resetState()
+    recipeStore.resetState()
+    shoppingListStore.resetState()
+    resetState()
+    console.log('all stores reset')
+  }
 
-        })
+  async function turnTestModeOn() {
+    try {
+      await authService.signIn('testmode@testmode.com', 'password')
+      testModeOn.value = true
     } catch (error) {
       console.log('TestMode Turn On Failed: ', error)
     }
-    
-    testModeOn.value = true
-    // const parsedDummyData = dummyData as any //TODO Correctly type
-    // console.log(parsedDummyData)
-    // testModeOn.value = true
-    // userStore.setTestModeOn(parsedDummyData)
-    // recipeStore.setInitialRecipeState(parsedDummyData.recipeState || {})
-    // shoppingListStore.setListState(parsedDummyData.shoppingListState || {})
   }
 
   function turnTestModeOff() {
     testModeOn.value = false
-    recipeStore.resetState()
-    userStore.resetState()
+    resetAppStates()
   }
 
   function toggleRegistrationModal(type?: string) {
@@ -93,6 +74,7 @@ export const useAppStore = defineStore('app', () => {
     isTestModeOn,
     isRegistrationModalOpen,
     initializeApp,
+    resetAppStates,
     turnTestModeOn,
     turnTestModeOff,
     toggleRegistrationModal,

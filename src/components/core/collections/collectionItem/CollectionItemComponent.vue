@@ -4,7 +4,6 @@ import type { Recipe } from '@/types/Recipes'
 const props = defineProps({
   recipeData: Object as PropType<Recipe>
 })
-// console.log(props.recipeData?.imgPath)
 </script>
 
 <template>

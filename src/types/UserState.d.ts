@@ -4,7 +4,7 @@ import type { ShoppingList } from './ShoppingLists'
 export type UserState = {
   uid: string
   localUser: LocalUser
-  authorized: boolean
+  authorized: boolean | null
 }
 
 export type LocalUser = {

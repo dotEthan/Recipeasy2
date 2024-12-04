@@ -34,14 +34,32 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
   const appStore = useAppStore()
-  const isAuth = userStore.isAuthorized
+  // wait a sec to let authorization unfold if needed
+  await new Promise(resolve => setTimeout(resolve, 100))
+
+  const userIsAuth = userStore.authorized
   const isTestModeOn = appStore.isTestModeOn
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
-  // const requiresUnauth = to.matched.some((record) => record.meta.unrequiresAuth)
+  
+  console.log('Router Guard Details:', {
+    path: to.fullPath,
+    userIsAuth,
+    isTestModeOn,
+    requiresAuth
+  })
 
-  console.log('router to: ', to)
-  if (!isTestModeOn && requiresAuth && !isAuth) next('/')
-  // else if (requiresUnauth && isAuth) next('/')
+  if (userIsAuth === null) {
+    console.log('Auth state still initializing, allowing navigation')
+    next()
+    return
+  }
+
+  if (!isTestModeOn && requiresAuth && !userIsAuth) {
+    console.log('Current Path not allowed for user')
+    next('/')
+    return
+  }
+  
   next()
 })
 

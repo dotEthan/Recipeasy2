@@ -25,26 +25,29 @@ Tried using AI to complete a full feature, it worked, but took far longer as it 
 ### Working (not feature complete, full design still in progress):
 
 - Learn Vue/Router/Store functionality thought docs
-- authentication and Data storage(through firebase)
+- persistent authentication and Data storage(through firebase)
 - Recipe Book Functionality (display, edit, crud with firebase)
 - Auto deploy to netlify
 - Shopping List Functionality
 - Firebase image upload Signature
+- Pinia store Implementation
+- Routing and guards
+- Authenticated User Image uploading (and deleting) to CDN
 
 ### Working on Now:
 
-- Routing & Store (ongoing as needed)
 - Basic Responsive design
-- Image uploading (almost done, need deleting, and saving)
 - Filter (Functional, but new design coming)
 - Welcome page and "Public" recipe display/search
+- Ensure TestMode doesn't last through reloads or sessions.
 
 ### To Come:
 
+- User Dashboard
 - Display newly added Recipe Data (time, nutritional info, etc)
 - All //TODO comments
 - Animations/Testing
-- Error Handling
+- Error Handling & User feedback (loadin spinners, etc)
 - Defaults (images)
 - Search Functionality
 
