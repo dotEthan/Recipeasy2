@@ -1,20 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import router from '@/router/main'
-import { useRecipeStore } from '@/stores/recipe'
-import { useUserStore } from '@/stores/user'
 import { useAppStore } from '@/stores/app'
 import { useAuthService } from '@/composables/useAuthService'
-import { useShoppingListStore } from '@/stores/shoppingList'
-import { useDataService } from '@/composables/useDataService'
-import type { LocalUser, UserState } from '@/types/UserState'
-import { DocumentData } from 'firebase/firestore'
 
-const recipeStore = useRecipeStore()
-const userStore = useUserStore()
 const appStore = useAppStore()
-const shoppingListStore = useShoppingListStore()
-const dataService = useDataService()
 
 let authError = ref(false)
 const {registerUser, signIn} = useAuthService()
@@ -22,7 +12,6 @@ let thisType = ref(appStore.registrationOrSigninModal)
 
 async function onSubmit(e: any) {
   const { email, password } = e.target.elements
-  let userState: UserState
 
   authError.value = false
 
@@ -30,15 +19,7 @@ async function onSubmit(e: any) {
     try {
       authError.value = false
       const { email, password } = e.target.elements
-      const { user, userData } = await registerUser(email.value, password.value)
-      
-      // Initialize stores
-      const userState = { 
-        localUser: userData, 
-        uid: user.uid, 
-        authorized: true 
-      }
-      appStore.initializeApp(userState)
+      registerUser(email.value, password.value)
     } catch (error) {
       authError.value = true
       // TODO handle registration error
@@ -47,20 +28,6 @@ async function onSubmit(e: any) {
   } else if (thisType.value === 'signin') {
     try {
       signIn(email.value, password.value)
-        .then((user) => {
-          return dataService.loadUserData(user.uid)
-        })
-        .then((returnedData) => {
-          const [userStoredData, uid] = returnedData
-          const localUser = {
-            uid,
-            ...userStoredData
-          }
-          userState = { uid, authorized: true, localUser }
-          console.log('Store Data set:', userState)
-          appStore.initializeApp(userState)
-
-        })
     } catch(error) {
       //TODO Handle Errors
       console.error(error)

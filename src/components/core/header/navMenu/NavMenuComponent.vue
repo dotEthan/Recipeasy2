@@ -32,7 +32,6 @@ async function onSave() {
   if (currentUser.value) {
     const updateUser: LocalUser = {...currentUser.value, recipes: recipeStore.recipes, shoppingLists: shoppingListStore.shoppingLists, personalFilters: recipeStore.personalFilters}
     try {
-      console.log("Saving Data")
       dataService.saveUserData(updateUser)
     } catch (error: any) {
       // TODO: handle & display errors
@@ -43,11 +42,9 @@ async function onSave() {
 
 function onReset() {
   console.log('fetched')
-  // this.store.dispatch(new RecipeActions.FetchRecipes())
 }
 
 async function onSignOut() {
-  console.log('signing Out')
   if (!appStore.isTestModeOn) {
     const auth = getAuth()
 
@@ -60,11 +57,7 @@ async function onSignOut() {
   } else {
     testModeOff()
   }
-  userStore.resetState()
-  recipeStore.resetState()
-  appStore.resetState()
-  shoppingListStore.resetState()
-  console.log('stores reset')
+  appStore.resetAppStates()
   router.push('/')
 }
 </script>

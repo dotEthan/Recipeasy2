@@ -12,7 +12,6 @@ const currentTime = ref(new Date())
 
 const mealTime = computed(() => {
   const hours = currentTime.value.getHours()
-  console.log(hours)
   if (hours >= 2 && hours < 10) {
     return 'Breakfast'
   } else if (hours >= 10 && hours < 16) {
@@ -23,7 +22,6 @@ const mealTime = computed(() => {
 })
 
 function mealTimeRecipes() {
-  console.log('it is: ', mealTime.value)
   return recipeStore.useFilteredRecipes([mealTime.value]).value.slice(4)
 }
 

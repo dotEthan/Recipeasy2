@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
   const uid = ref('')
-  const authorized = ref(false)
+  const authorized = ref<boolean | null>(false)
   const localUser = ref<LocalUser>({uid: ''})
   const personalFilters = ref<string[]>([])
 
