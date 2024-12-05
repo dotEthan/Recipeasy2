@@ -13,4 +13,4 @@ const userStore = useUserStore()
   <WelcomeComponent v-else />
 </template>
 
-<style lang="sass"></style>
+<style lang="sass" scoped></style>

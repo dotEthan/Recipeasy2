@@ -45,7 +45,7 @@ function openFilters() {
   </button>
   <h2 class="filter-title" @click="openFilters">Filters</h2>
   <div class="filter-box" :class="{ floating: mobileFiltersOpen }" v-if="isFiltersOpen">
-    <h3 style="text-align: center;">Proper Filtering structure coming soon!</h3>
+    <h4 style="text-align: center;">Proper Filtering structure coming soon!</h4>
     <CircleX class="button-close" @click="toggleShowFilters()" v-if="mobileFiltersOpen" />
     <div class="filters-contain">
       <CheckboxComponent
@@ -59,7 +59,7 @@ function openFilters() {
   </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 @import '../../../../assets/variables.sass'
 
 

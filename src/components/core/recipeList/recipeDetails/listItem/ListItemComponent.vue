@@ -54,7 +54,7 @@ function onAddIngredientToList(item: string | undefined) {
   </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 
 .ingredient-contain, .direction-contain
   list-style-type: none

@@ -9,4 +9,4 @@ import SplashComponent from '@/components/core/splash/SplashComponent.vue'
   </div>
 </template>
 
-<style lang="sass"></style>
+<style lang="sass" scoped></style>

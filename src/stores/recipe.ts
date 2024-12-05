@@ -9,6 +9,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   const recipes = ref<Recipe[]>([])
   const allTags = ref<string[]>([])
   const selectedRecipeId = ref<string>('')
+  const isSelectedRecipePublic = ref(false)
   const editSelectedRecipe = ref(false)
   const personalFilters = computed(() => userStore.localUser.personalFilters || [])
 
@@ -41,6 +42,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     recipes.value = recipeList || []
     // allTags.value = state.allTags || []
     selectedRecipeId.value = ''
+    isSelectedRecipePublic.value = false
   }
 
   function getNRandomRecipes(num: number): Recipe[] {
@@ -77,6 +79,7 @@ export const useRecipeStore = defineStore('recipes', () => {
 
   function setSelectedRecipeId(id: string) {
     selectedRecipeId.value = id
+    isSelectedRecipePublic.value = /^pub--/.test(id);
   }
 
   function removeSelectedRecipe() {
@@ -100,6 +103,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     recipes.value = []
     allTags.value = []
     selectedRecipeId.value = ''
+    isSelectedRecipePublic.value = false
     userStore.resetState()
   }
 
@@ -108,6 +112,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     recipes,
     allTags,
     selectedRecipeId,
+    isSelectedRecipePublic,
     editSelectedRecipe,
     personalFilters,
     recipesLength,

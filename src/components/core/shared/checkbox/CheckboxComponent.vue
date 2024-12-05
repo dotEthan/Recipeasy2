@@ -38,7 +38,7 @@ function toggleCheckbox() {
   </label>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 
 label
   display: flex

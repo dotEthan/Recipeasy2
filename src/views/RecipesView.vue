@@ -13,7 +13,7 @@ import RecipeListComponent from '@/components/core/recipeList/RecipeListComponen
   </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 @import '../assets/variables.sass'
 
 .recipe-viewer

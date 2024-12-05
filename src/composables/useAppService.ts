@@ -27,11 +27,11 @@ export function useWindowResize() {
     } else {
       screenSize = 'lg'
     }
-    console.log(screenSize)
+    console.log('it is: ', screenSize)
     appStore.setScreenSize(screenSize)
     // shoppingListStore.updateWantedViewableLength(screenSize)
   }
-
+  updatescreenSize()
   const onResize = debounce(() => {
     screenWidth.value = window.innerWidth
     updatescreenSize()

@@ -18,17 +18,22 @@ const isTestModeOn = computed(() => appStore.isTestModeOn)
 const isAuthorized = computed(() => userStore.isAuthorized)
 const currentUser = computed(() => userStore.getCurrentUser)
 
+//TODO needed or just call resetApp?
 function testModeOff() {
+  closeMobileMenu()
   appStore.turnTestModeOff()
   userStore.deauthorize()
   router.push('/')
 }
 
 function onClickRegisterSigning(type: string) {
+  closeMobileMenu()
   appStore.toggleRegistrationModal(type)
 }
 
 async function onSave() {
+  closeMobileMenu()
+
   if (currentUser.value) {
     const updateUser: LocalUser = {...currentUser.value, recipes: recipeStore.recipes, shoppingLists: shoppingListStore.shoppingLists, personalFilters: recipeStore.personalFilters}
     try {
@@ -45,6 +50,7 @@ function onReset() {
 }
 
 async function onSignOut() {
+  closeMobileMenu()
   if (!appStore.isTestModeOn) {
     const auth = getAuth()
 
@@ -60,17 +66,21 @@ async function onSignOut() {
   appStore.resetAppStates()
   router.push('/')
 }
+
+function closeMobileMenu() {
+  appStore.isMobileMenuOpen = false
+}
 </script>
 
 <template>
   <ul class="nav navbar-nav">
     <li routerLinkActive="active" class="nav-recipes" v-if="isTestModeOn || isAuthorized">
-      <RouterLink class="nav-menu-item" to="recipes" @click="$emit('mobileModalClose')"
+      <RouterLink class="nav-menu-item" to="recipes" @click="closeMobileMenu"
         >Recipes</RouterLink
       >
     </li>
     <li routerLinkActive="active" class="nav-shopping-list" v-if="isTestModeOn || isAuthorized">
-      <RouterLink class="nav-menu-item" to="shopping-lists" @click="$emit('mobileModalClose')"
+      <RouterLink class="nav-menu-item" to="shopping-lists" @click="closeMobileMenu"
         >Shopping Lists</RouterLink
       >
     </li>
@@ -79,18 +89,6 @@ async function onSignOut() {
     </li>
   </ul>
   <ul class="nav navbar-nav rightward">
-    <div class="nav-menu-items" v-if="!isAuthorized && !isTestModeOn">
-      <li>
-        <a class="nav-menu-item" style="cursor: pointer" @click="onClickRegisterSigning('register')"
-          >Register</a
-        >
-      </li>
-      <li class="sign-in-button">
-        <a class="nav-menu-item" style="cursor: pointer" @click="onClickRegisterSigning('signin')"
-          >Sign In</a
-        >
-      </li>
-    </div>
     <div class="nav-menu-items" v-if="isTestModeOn || isAuthorized">
       <li class="nav-menu-item">
         <a @click="onSignOut()" style="cursor: pointer" routerLink="/">Log Out</a>
@@ -111,10 +109,22 @@ async function onSignOut() {
         </ul>
       </li>
     </div>
+    <div class="nav-menu-items" v-if="!isAuthorized && !isTestModeOn">
+      <li>
+        <a class="nav-menu-item" style="cursor: pointer" @click="onClickRegisterSigning('register')"
+          >Register</a
+        >
+      </li>
+      <li class="sign-in-button">
+        <a class="nav-menu-item" style="cursor: pointer" @click="onClickRegisterSigning('signin')"
+          >Sign In</a
+        >
+      </li>
+    </div>
   </ul>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .navbar-nav
     display: flex
     flex-direction: column
@@ -125,14 +135,6 @@ async function onSignOut() {
     @media (min-width: 768px)
         flex-direction: row
         align-items: center
-
-.test-text
-    display: block
-    align-items: center
-    cursor: pointer
-
-    &:hover
-        color: #333
 
 .nav-menu-items
     display: flex
@@ -146,18 +148,17 @@ async function onSignOut() {
     display: flex
     flex-direction: column
     text-decoration: none
-    padding: 0 10px
-    font-size: 1.2em
+    padding: 5px 10px
 
     &:hover
         text-decoration: underline
 
 
 .rightward
-    margin-top: 15px
 
     @media (min-width: 768px)
-        margin-right: 30px
+      margin-top: 15px
+      margin-right: 30px
 
 .dropdown
     position: relative
@@ -185,7 +186,7 @@ async function onSignOut() {
     display: flex
     align-items: center
     text-decoration: none
-    font-size: 0.9em
+    // font-size: 0.9em
     // padding-left: 5px
     padding: 5px 5px
 

@@ -33,12 +33,13 @@ Tried using AI to complete a full feature, it worked, but took far longer as it 
 - Pinia store Implementation
 - Routing and guards
 - Authenticated User Image uploading (and deleting) to CDN
+- Welcome Page basic Redesign
 
 ### Working on Now:
 
-- Basic Responsive design
+- Basic Responsive design (left: Recipes, Shopping Lists)
 - Filter (Functional, but new design coming)
-- Welcome page and "Public" recipe display/search
+- "Public" recipe display/search
 - Ensure TestMode doesn't last through reloads or sessions.
 
 ### To Come:
@@ -50,6 +51,8 @@ Tried using AI to complete a full feature, it worked, but took far longer as it 
 - Error Handling & User feedback (loadin spinners, etc)
 - Defaults (images)
 - Search Functionality
+- On mobile, click and drag, app slides?
+- Google/Facebook login (maybe)
 
 ### Future thoughts:
 

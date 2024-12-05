@@ -43,7 +43,7 @@ function saveItem() {
   </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .input-row
     display: flex
     justify-content: space-between

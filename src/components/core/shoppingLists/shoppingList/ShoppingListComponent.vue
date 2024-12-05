@@ -95,7 +95,7 @@ function onMakeDefault() {
   </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 @import "../../../../assets/variables"
 
 .sl-each-contain
