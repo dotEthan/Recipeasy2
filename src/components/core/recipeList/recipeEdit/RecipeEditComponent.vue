@@ -299,7 +299,7 @@ function saveImagePath(uploadedImgURL: string) {
     </div>
   </div>
 </template>
-<style lang="sass">
+<style lang="sass" scoped>
 input.ng-invalid.ng-touched,
 textarea.ng-invalid.ng-touched
     border: 1px solid red

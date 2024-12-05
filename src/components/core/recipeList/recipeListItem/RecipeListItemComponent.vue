@@ -22,7 +22,7 @@ defineProps({
   </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .recipeItem
   width: 100px
 

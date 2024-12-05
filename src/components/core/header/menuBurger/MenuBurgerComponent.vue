@@ -1,31 +1,31 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useAppStore } from '@/stores/app';
 
-const emit = defineEmits(['mobileMenuClicked', 'yeah'])
+const appStore = useAppStore() 
 
-let isStopped = ref(true)
-let isActive = ref(false)
+const afterFirst = ref(false)
 
 function onMobileMenuClick() {
-  isStopped.value = false
-  isActive.value = !isActive.value
-  emit('mobileMenuClicked')
+  if (!afterFirst.value) afterFirst.value = true
+  appStore.isMobileMenuOpen = !appStore.isMobileMenuOpen
 }
 </script>
 
 <template>
-  <div class="beyond-burger" @click="onMobileMenuClick()" ref="beyondburger">
-    <div class="burger-container" :class="{ active: isActive }" ref="burger-container">
+  <div class="beyond-burger" @click="onMobileMenuClick()">
+    <div class="burger-container" :class="{ active: appStore.isMobileMenuOpen }">
       <div
         v-for="(n, index) in 3"
         :key="index"
-        :class="['line' + (index + 1), isStopped ? 'stopped' : '']"
+        :class="[`line${index + 1}`,
+        !afterFirst ? 'stopped' : '']"
       ></div>
     </div>
   </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 @import '../../../../assets//variables.sass'
 .beyond-burger
   position: relative

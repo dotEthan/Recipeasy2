@@ -39,7 +39,7 @@ console.log('is it on: ', isRegistrationModalOpen.value)
   <AuthComponent v-if="isRegistrationModalOpen"></AuthComponent>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 @import '../../../assets/variables.sass'
 
 .container

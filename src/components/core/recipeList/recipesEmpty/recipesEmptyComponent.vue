@@ -9,4 +9,4 @@ import NewRecipeButtonComponent from '../newRecipeButton/newRecipeButtonComponen
   </div>
 </template>
 
-<style lang="sass"></style>
+<style lang="sass" scoped></style>

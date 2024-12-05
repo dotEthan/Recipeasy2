@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import router from '@/router/main'
 import { useAppStore } from '@/stores/app'
 import { useAuthService } from '@/composables/useAuthService'
+import XToCloseComponent from '../shared/xToClose/XToCloseComponent.vue';
 
 const appStore = useAppStore()
 
@@ -51,9 +52,7 @@ function onClose() {
   <div class="auth__contain">
     <div class="auth__modal">
       <div class="auth__modal--white">
-        <button type="button" class="close" aria-label="Close" @click="onClose()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <XToCloseComponent @close="onClose" />
         <div>
           <div class="row">
             <div class="col-xs-10 col-xs-offset-1">
@@ -64,7 +63,7 @@ function onClose() {
               <form @submit.prevent="onSubmit">
                 <div class="form-group">
                   <label class="signin-label" for="email">Email:</label>
-                  <input type="email" id="email" name="email" class="form-control" ngModel email />
+                  <input type="email" id="email" name="email" class="form-control" />
                   <div class="email-warning">Not a valid Email</div>
                 </div>
                 <div class="form-group">
@@ -102,11 +101,10 @@ function onClose() {
     </div>
   </div>
 </template>
-<style lang="sass">
+<style lang="sass" scoped>
 @import '../../../assets/variables.sass'
 .auth__contain
     position: absolute
-    top: $navbar-height
     left: 0
     width: 100%
     height: calc(100vh - #{$navbar-height-minus})
@@ -122,12 +120,12 @@ function onClose() {
     display: flex
     justify-content: center
     align-items: center
-    z-index: 1000
+    z-index: 99
 
 .auth__modal--white
     background: white
-    width: 350px
-    height: 400px
+    width: 80vw
+    height: calc(80vh - $navbar-height)
     position: relative
     border-radius: 15px
     box-shadow: 2px 3px 10px 1px rgba(0,0,0,.3)
@@ -146,13 +144,19 @@ function onClose() {
     z-index: 99
 
 .auth__title
-    margin-bottom: 50px
+    margin-bottom: 25px
     text-align: center
     font-family: sans-serif
     text-transform: capitalize
 
+    @media (min-width: 768px)
+      margin-bottom: 50px
+
 .auth__title
-    margin: 25px 0 25px
+    margin: 5px 0 5px
+
+    @media (min-width: 768px)
+      margin: 25px 0 25px
 
     h1
         font-size: 1.5em
@@ -162,20 +166,25 @@ function onClose() {
 
 .auth__warning
     color: red
-    font-size: 0.9em
-    margin: 25px auto
+    font-size: clamp(10px, 1vw, 20px)
+    margin: 5px auto 10px
     text-align: center
     border: 1px solid red
     width: 75%
     padding: 5px
 
+    @media (min-width: 768px)
+      margin: 25px auto
+
 .form-group
-    margin-bottom: 15px
+    margin-bottom: 10px
+
+    // @media (min-width: 768px)
+    //   margin-bottom: 15px
 
 .signin-label
-    font-size: 1em
     font-weight: 700
-    margin-bottom: 15px
+    margin-bottom: 5px
 
 input.ng-invalid.ng-touched
     border: 1px solid red
@@ -188,10 +197,11 @@ input.ng-invalid.ng-touched
     width: 100%
     height: 2em
     padding: 6px 12px
-    margin-top: 10px
+    margin-top: 0
 
     @media (min-width: 768px)
         height: 3em
+        margin-top: 10px
 
 .email-warning
     display: none

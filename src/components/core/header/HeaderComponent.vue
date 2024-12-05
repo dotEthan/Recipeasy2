@@ -3,11 +3,12 @@ import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import MenuBurgerComponent from './menuBurger/MenuBurgerComponent.vue'
 import NavMenuComponent from './navMenu/NavMenuComponent.vue'
+import { useAppStore } from '@/stores/app';
 
-let isMobileMenuActive = ref(false)
+const appStore = useAppStore()
 
-function toggleMobileMenu() {
-  isMobileMenuActive.value = !isMobileMenuActive.value
+function closeMobileMenu() {
+  appStore.isMobileMenuOpen = false
 }
 </script>
 
@@ -15,21 +16,21 @@ function toggleMobileMenu() {
   <nav class="navbar navbar-default">
     <div class="nav__container">
       <div class="navbar-brand-contain">
-        <RouterLink class="navbar-brand" to="/">Recipeasy</RouterLink>
+        <RouterLink class="navbar-brand" @click="closeMobileMenu" to="/">Recipeasy</RouterLink>
       </div>
-      <MenuBurgerComponent @mobileMenuClicked="toggleMobileMenu" />
+      <MenuBurgerComponent/>
       <div
         class="navbar-default nav__header"
-        :class="{ active: isMobileMenuActive }"
+        :class="{ active: appStore.isMobileMenuOpen }"
         ref="headermenu"
       >
-        <NavMenuComponent @mobileModalClose="toggleMobileMenu" />
+        <NavMenuComponent />
       </div>
     </div>
   </nav>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 @import '../../../assets/variables.sass'
 .navbar
   margin-bottom: 0
@@ -72,11 +73,11 @@ function toggleMobileMenu() {
   left: 100vw
   display: flex
   flex-direction: column
-  padding: 25px
+  padding: 15px
   transition: all 0.5s ease-in-out
   width: 40vw
   background-color: white
-  z-index: 1
+  z-index: 100
   box-shadow: -2px 2px 2px -1px #666
 
   &.active
@@ -84,6 +85,7 @@ function toggleMobileMenu() {
 
   @media (min-width: 560px)
     width: 25vw
+    padding: 25px
 
     &.active
       left: 75vw

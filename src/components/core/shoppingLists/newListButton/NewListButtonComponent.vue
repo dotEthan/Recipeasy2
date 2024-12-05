@@ -18,4 +18,4 @@ function onAddNewList() {
   </div>
 </template>
 
-<style lang="sass"></style>
+<style lang="sass" scoped></style>

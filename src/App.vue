@@ -3,7 +3,7 @@ import { RouterView } from 'vue-router'
 import HeaderComponent from './components/core/header/HeaderComponent.vue'
 import { useWindowResize } from './composables/useAppService'
 
-
+console.log('hello')
 useWindowResize()
 </script>
 
@@ -16,7 +16,7 @@ useWindowResize()
   </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 @import './assets/variables.sass'
 
 .home-container

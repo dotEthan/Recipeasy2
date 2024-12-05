@@ -32,7 +32,7 @@ function onDeleteItem() {
     <div class="ingredient-delete" @click="onDeleteItem()"></div>
   </div>
 </template>
-<style lang="sass">
+<style lang="sass" scoped>
 
 .sl-ingredient
   display: flex

@@ -29,10 +29,10 @@ allRecipeTags.value = recipeStore.getAllRecipeTags
 
 function closeRecipeDetails() {
   selectedRecipe.value = undefined
+  recipeStore.setSelectedRecipeId('')
 }
 
 function openRecipeDetail(id: string) {
-  console.log('id: ', id)
   selectedRecipe.value = recipeStore.recipes.find((recipe) => recipe.id === id)
   console.log(selectedRecipe.value?.name)
   recipeStore.setSelectedRecipeId(id)
@@ -95,7 +95,7 @@ function removedRecipe() {
   </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 
 .recipe-list-container
   width: 90%

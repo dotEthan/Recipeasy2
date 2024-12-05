@@ -11,29 +11,36 @@ const props = defineProps({
     <div class="recipeicon">
       <img :src="recipeData?.imgPath" alt="Logo" />
     </div>
-    <span class="recipe-title">{{ recipeData?.name }}</span>
+    <span :title="recipeData?.name" class="recipe-title">{{ recipeData?.name }}</span>
     <span class="rating-text">rating: {{ recipeData?.rating }}</span>
   </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 // @import '../../../assets/variables.sass'
 .recipeitem-container
   display: flex
   flex-direction: column
+  width: 100%
 
 .recipeicon
   padding: 5px
 
-  img
-    background-size: contain
-    width: 90px
-    height: 90px
-    border-radius: 5px
+  img 
+    width: 100%
+    height: 100%
+    object-fit: cover
+    object-position: center
+    aspect-ratio: 1 / 1
 
 .rating-text
   font-size: 0.7em
 
 .recipe-title
   font-size: 1em
+  display: -webkit-box
+  -webkit-line-clamp: 2
+  -webkit-box-orient: vertical
+  overflow: hidden
+  text-overflow: ellipsis
 </style>

@@ -3,12 +3,24 @@ import { Search } from 'lucide-vue-next'
 import CollectionComponent from '../collections/CollectionComponent.vue'
 import { useRecipeStore } from '@/stores/recipe'
 import { computed, ref } from 'vue'
-// import { storeToRefs } from 'pinia'
+import { useAppStore } from '@/stores/app';
+import { useUserStore } from '@/stores/user';
 
 const recipeStore = useRecipeStore()
+const appStore = useAppStore()
+const userStore = useUserStore()
 // const { recipes } = storeToRefs(recipeStore)
 // console.log(recipes.value[0])
 const currentTime = ref(new Date())
+
+const greeting = computed(() => {
+  const displayName = userStore.localUser.displayName
+  if (displayName) {
+    return `Welcome, ${displayName}!` 
+  } else {
+    return `Welcome!` 
+  }
+})
 
 const mealTime = computed(() => {
   const hours = currentTime.value.getHours()
@@ -26,49 +38,67 @@ function mealTimeRecipes() {
 }
 
 function recommendedRecipes() {
-  return recipeStore.getNRandomRecipes(5)
+  let numberOfRecipes = 5
+  if(appStore.screenSize === 'sm') numberOfRecipes = 6
+  return recipeStore.getNRandomRecipes(numberOfRecipes)
 }
 </script>
 
 <template>
   <div class="base-container welcome">
-    <h1>What's for Supper?</h1>
+    <h1>{{greeting}}</h1>
+    <h2>What's for Supper?</h2>
     <div class="searchbar">
-      <input type="text" class="searchbar" placeholder="Burritos" />
-      <button><Search class="magnifying" :size="20" /></button>
+      <input disabled type="text" class="searchbar-input" placeholder="Burritos" />
+      <button disabled><Search class="magnifying" :size="15" /></button>
     </div>
-    <CollectionComponent title="Recommended" :recipeData="recommendedRecipes()" />
-    <CollectionComponent :title="mealTime" :recipeData="mealTimeRecipes()" />
-    <CollectionComponent title="Snacks" :recipeData="recipeStore.recipes" />
-    <CollectionComponent title="Desserts" :recipeData="recipeStore.recipes" />
-    <CollectionComponent title="Healthy Foods" :recipeData="recipeStore.recipes" />
-    <CollectionComponent title="Quick Recipes" :recipeData="recipeStore.recipes" />
+    <span style="font-size: 0.7em;">Public Recipes & Search Coming Soon!</span>
+    <CollectionComponent title="Recommended Public Recipes" :recipeData="recommendedRecipes()" />
+    <CollectionComponent :title="'Ready for ' + mealTime" :recipeData="mealTimeRecipes()" />
+    <CollectionComponent title="Snacks" :recipeData="recommendedRecipes()" />
+    <CollectionComponent title="Healthy Foods" :recipeData="recommendedRecipes()" />
+    <CollectionComponent title="Ethan's Favourites" :recipeData="recommendedRecipes()" />
   </div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 @import '../../../assets/variables.sass'
 
 .welcome
-  height: calc(80vh - $navbar-height)
-  margin-top: 10vh
   overflow-y: scroll
 
+  h1
+    margin-bottom: 0px
+
 .searchbar
-  width: 80%
+  width: 90%
+  display: flex
 
-  input
-    line-height: 2em
+
+  .searchbar-input
+    line-height: 1em
     vertical-align: middle
+    flex-grow: 1
 
+    @media (min-width: 768px)
+      line-height: 2em
 
   button
     margin-left: 10px
     line-height: 2em
     vertical-align: middle
-
+    // background-color: $colorMiddle
+    width: 24px
+    height: 24px
+    border-radius: 5px
+    cursor: pointer
 
   .magnifying
     display: flex
     align-items: center
+    // color: white
+    width: 100%
+
+  @media (min-width: 768px)
+    width: 80%
 </style>

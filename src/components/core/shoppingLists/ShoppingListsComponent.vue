@@ -29,7 +29,7 @@ function onAddList() {
     </div>
   </section>
 </template>
-<style lang="sass">
+<style lang="sass" scoped>
 @import "../../../assets/variables"
 
 .shoppinglists-container
