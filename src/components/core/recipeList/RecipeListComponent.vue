@@ -63,11 +63,13 @@ function setFilters(filters: string[]) {
 function removedRecipe() {
   console.log('ok, so what?')
 }
+//TODO align filter and new recipes look
 </script>
 
 <template>
   <div class="recipe-list-container">
-    <FilterComponent @filter="setFilters" :allRecipeTags />
+    <div class="filter-floating"><FilterComponent @filter="setFilters" :filters="allRecipeTags" /></div>
+    <div class="newrecipe-floating-btn"><NewRecipeButtonComponent icon-size="small" @add-new-recipe="newRecipeAdded" /></div>
     <div class="recipeRow" v-if="recipeStore.recipesLength">
       <RecipeListItemComponent
         class="recipe-item-contain"
@@ -77,7 +79,7 @@ function removedRecipe() {
         @openRecipe="openRecipeDetail"
         @removedRecipe="removedRecipe" 
       />
-      <NewRecipeButtonComponent @add-new-recipe="newRecipeAdded" />
+      <NewRecipeButtonComponent icon-size="large" @add-new-recipe="newRecipeAdded" />
     </div>
     <RecipesEmptyComponent v-else />
     <div class="recipe-details-container" v-if="selectedRecipe && !editSelectedRecipe">
@@ -98,70 +100,40 @@ function removedRecipe() {
 <style lang="sass" scoped>
 
 .recipe-list-container
-  width: 90%
+  position: relative
   margin: 0 auto
   justify-items: center
+  padding-top: 15px
+
+.filter-floating
+  position: absolute
+  top: -41px
+  right: 25px
+
+  @media (min-width: 768px)
+    top: -60px
+    right: 40px
+
+.newrecipe-floating-btn
+  position: absolute
+  top: -43px
+  left: 10px
+
+  @media (min-width: 768px)
+    top: -60px
+    left: 40px  
 
 .recipeRow
-  display: flex
-  flex-direction: row
-  flex-wrap: wrap
-  margin: 0 0 20px
-  position: relative
-  align-items: center
-  justify-content: space-around
-
-  @supports (display:grid)
-    display: grid
-    grid-template-columns: repeat(auto-fill, 100px)
-    grid-gap: 5px
-
-  @media (min-width: 768px)
-
-    @supports (display:grid)
-      display: grid
-      grid-template-columns: repeat(auto-fill, 125px)
-      grid-gap: 10px
-
-.new-container
-  width: 100px
-  display: flex
-  flex-direction: column
-  align-items: center
+  display: grid
+  grid-template-columns: repeat(auto-fill, 42%)
+  gap: 15px
   justify-content: center
+  position: relative
 
   @media (min-width: 768px)
-    width: 125px
-
-.new-recipe
-  height: 75px
-  width: 75px
-  font-size: 4rem
-  color: #aaa
-  border: 2px solid #aaa
-  border-radius: 8px
-  transition: all .3s
-
-  &:hover
-    color: #888
-    border: 2px solid #888
-    font-size: 4.5rem
-
-  @media (min-width: 768px)
-    width: 100px
-    height: 100px
-
-.recipe-title
-  text-align: center
-  margin: 10px 0
-  color: #223
-  height: 30px
-
-  h5
-    font-size: 1rem
-
-    @media (min-width: 768px)
-      font-size: 1.2rem
+    display: grid
+    grid-template-columns: repeat(auto-fill, 20%)
+    grid-gap: 10px
 
 .no-recipes
   text-align: center

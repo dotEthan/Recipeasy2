@@ -97,13 +97,13 @@ function onMakeDefault() {
 
 <style lang="sass" scoped>
 @import "../../../../assets/variables"
-
 .sl-each-contain
   display: flex
+  flex-direction: column
+  width: 250px
 
 .sl-contain
   width: 100%
-  min-height: 200px
   display: flex
   flex-direction: column
   justify-content: space-between
@@ -143,6 +143,7 @@ function onMakeDefault() {
     padding: 0
     margin: 0
     height: 0
+    flex-grow: 0
 
 .sl-ingredient-list-item
   padding: 5px 0
@@ -175,56 +176,6 @@ function onMakeDefault() {
 .list-edit-alter
   display: flex
   flex-grow: 1
-
-.default-circle
-  border-radius: 50%
-  width: 10px
-  height: 10px
-  background: grey
-  margin-right: 10px
-
-  &.on
-    background: green
-
-.sl-empty-space
-  width: 100%
-  height: 100%
-  border: 2px solid #cccccc
-  border-radius: 5px
-  display: flex
-  flex-direction: column
-  justify-content: center
-  align-items: center
-  cursor: pointer
-
-  &:hover
-    border: 2px solid #666
-
-.add-new-sl-contain, .add-new-sl-button
-  width: 75px
-  height: 75px
-
-.add-new-sl-contain
-  position: relative
-  border: 2px solid #ddd
-  border-radius: 50%
-
-.add-new-sl-button
-  &:before, &:after
-    content: ''
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
-    background: #bbb
-
-  &:before
-    width: 30px
-    height: 4px
-
-  &:after
-    width: 4px
-    height: 30px
 
 .add-new-text
   font-size: 1.7em

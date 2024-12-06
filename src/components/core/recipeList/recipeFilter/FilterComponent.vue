@@ -2,58 +2,75 @@
 import { ref, defineEmits, reactive, toRaw } from 'vue'
 import { Filter, CircleX } from 'lucide-vue-next'
 import CheckboxComponent from '../../shared/checkbox/CheckboxComponent.vue'
-import { useUserStore } from '@/stores/user'
 import { useRecipeStore } from '@/stores/recipe'
 
 const recipeStore = useRecipeStore()
-const userStore = useUserStore()
 const emit = defineEmits(['filter'])
 defineProps({
-  allRecipeTags: Array as () => string[]
+  filters: Array as () => string[]
 })
 
 let mobileFiltersOpen = ref(false)
 let allUserTags = ref<String[]>([...recipeStore.getAllRecipeTags])
-const filterState = reactive<{ [key: string]: boolean }>({})
+// const filterState = reactive<{ [key: string]: boolean }>({})
 let filterList = ref(allUserTags.value as string[])
 let isFiltersOpen = ref(false)
 
-filterList.value.forEach((filter) => {
-  filterState[filter] = false
+const usersPersonalFilters = recipeStore.personalFilters
+
+//TODO create/alter/disabled on recipe load based on user's reciepes?
+const mealTypes = ['breakfast', 'lunch', 'dinner', 'dessert', 'snack'] 
+
+
+const filterState: any = ref({
+  mealType: [],
+  includedTags: [],
+  excludedTags: [],
+  personalTags: usersPersonalFilters
 })
 
 function toggleShowFilters() {
-  mobileFiltersOpen.value = !mobileFiltersOpen.value
-}
-function filterButtonOnClick() {
-  if (mobileFiltersOpen.value === true) mobileFiltersOpen.value = false
-  const activeFilters = Object.keys(toRaw(filterState)).filter((key) => filterState[key])
-  // recipeStore.setActiveFilters(activeFilters)
-  emit('filter', activeFilters)
-}
-
-function openFilters() {
   isFiltersOpen.value = !isFiltersOpen.value
 }
+function filterButtonOnClick() {
+  console.log('filterState: ', filterState)
+}
 
-//TODO Update filters when adding and removing
+function updateMealType(type: string, isSelected: boolean) {
+  if (isSelected) {
+    filterState.value.mealType.push(type)
+  } else {
+    const index = filterState.value.mealType.indexOf(type)
+    if (index > -1) {
+      filterState.value.mealType.splice(index, 1)
+    }
+  }
+
+}
 </script>
 
 <template>
-  <button class="filter-btn-mobile" @click="toggleShowFilters()">
-    <Filter class="filter-icon" />
-  </button>
-  <h2 class="filter-title" @click="openFilters">Filters</h2>
-  <div class="filter-box" :class="{ floating: mobileFiltersOpen }" v-if="isFiltersOpen">
-    <h4 style="text-align: center;">Proper Filtering structure coming soon!</h4>
+  <div class="filter-button">
+    <button class="filter-btn-icon" @click="toggleShowFilters()">
+      <Filter class="filter-icon" />
+    </button>
+    <span class="filter-text">Filters</span>
+  </div>
+  <div class="filter-box floating" v-if="isFiltersOpen">
+    <h4 style="text-align: center;">Filtering waiting for final schema</h4>
     <CircleX class="button-close" @click="toggleShowFilters()" v-if="mobileFiltersOpen" />
     <div class="filters-contain">
+      <div class="filter-category"><span>Meal Type:</span>
       <CheckboxComponent
-        v-for="(filter, index) in allRecipeTags"
+        v-for="(type, index) in mealTypes"
         :key="index"
-        :checkboxLabel="filter"
-        v-model="filterState[filter]"
+        :checkboxLabel="type"
+        @update:modelValue="(isSelected) => updateMealType(type, isSelected)"
       />
+
+      </div>
+      <div class="inclusive"><label for="includedtags">Included Tag(s): </label><input v-model="filterState.includedTags" type="text" id="includedtags" placeholder="onion, potato, mango"></div>
+      <div class="exclusive"><label for="excludedtags">Excluded Tag(s): </label><input v-model="filterState.excludedTags" type="text" id="excludedtags" placeholder="tears, monkshood, cyanide"></div>
     </div>
     <button class="filter-btn-submit" @click="filterButtonOnClick()">Filter</button>
   </div>
@@ -62,43 +79,45 @@ function openFilters() {
 <style lang="sass" scoped>
 @import '../../../../assets/variables.sass'
 
-
-.filter-btn-mobile
-  position: absolute
-  top: -50px
-  right: 20px
+.filter-button
   display: flex
-  padding: 6px 12px
-  background-color: $colorLighter
-  color: #333
-  border: none
-  border-radius: 30px
-  font-family: 'Arial', sans-serif
-  font-size: 16px
+  flex-direction: column
+  justify-content: center
+  align-items: center
   cursor: pointer
-  transition: all 0.3s ease
   filter: grayscale(100%)
-  text-align: center
 
   &:hover
-    filter: grayscale(40%)
-    background-color: #d0d0d0
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
+    .filter-btn-icon
+      filter: grayscale(40%)
+      background-color: #d0d0d0
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)
 
   &:active
-    filter: grayscale(20%)
-    background-color: #bbb
+    .filter-btn-icon
+      filter: grayscale(20%)
+      background-color: #bbb
 
   &:focus
-    outline: none
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5)
+    .filter-btn-icon
+      outline: none
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5)
 
-  @media (min-width: 768px)
-    display: none
+.filter-btn-icon
+  background-color: $colorLighter
+  color: #333
+  border: 1px solid $colorMiddle
+  border-radius: 5px
+  font-family: 'Arial', sans-serif
+  transition: all 0.3s ease
+  cursor: pointer
 
 .filter-icon
   height: 15px
   width: 15px
+
+.filter-text
+  font-size: clamp(10px, 1.5vw, 15px)
 
 .filter-box
   display: none
@@ -130,6 +149,11 @@ function openFilters() {
   cursor: pointer
 
 .filters-contain
+  display: flex
+  flex-direction: row
+  flex-wrap: wrap
+
+.filter-category
   display: flex
   flex-direction: row
   flex-wrap: wrap

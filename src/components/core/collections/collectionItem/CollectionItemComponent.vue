@@ -36,11 +36,4 @@ const props = defineProps({
 .rating-text
   font-size: 0.7em
 
-.recipe-title
-  font-size: 1em
-  display: -webkit-box
-  -webkit-line-clamp: 2
-  -webkit-box-orient: vertical
-  overflow: hidden
-  text-overflow: ellipsis
 </style>

@@ -15,16 +15,17 @@ defineProps({
   <div class="recipeItem" @click="$emit('openRecipe', recipeData?.id)">
     <a style="cursor: pointer" class="recipeItem-contain">
       <img class="recipe-image" :src="recipeData?.imgPath" />
-      <div class="recipe-title">
-        <h5>{{ recipeData?.name }}</h5>
-      </div>
+      <span class="recipe-title">
+        {{ recipeData?.name }}
+      </span>
     </a>
   </div>
 </template>
 
 <style lang="sass" scoped>
 .recipeItem
-  width: 100px
+  // width: 100px
+  width: 100%
 
   @media (min-width: 768px)
     width: 125px
@@ -35,25 +36,14 @@ defineProps({
   align-items: center
 
 .recipe-image
-  width: 75px
-  height: 75px
+  width: 100%
   object-fit: cover
   object-position: center
   border-radius: 5px
+  aspect-ratio: 1/1
 
   @media (min-width: 768px)
     width: 100px
     height: 100px
 
-.recipe-title
-  height: 30px
-  text-align: center
-  margin: 10px 0
-  color: #223
-
-  h5
-    font-size: 1rem
-
-    @media (min-width: 768px)
-      font-size: 1.2rem
 </style>
