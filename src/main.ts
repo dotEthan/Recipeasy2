@@ -7,7 +7,6 @@ import App from './App.vue'
 import router from './router/main'
 import { useAuthService } from './composables/useAuthService'
 
-
 async function initializeApp() {
   const app = createApp(App)
   app.use(createPinia())

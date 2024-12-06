@@ -4,6 +4,7 @@ import router from '@/router/main'
 import { useAppStore } from '@/stores/app'
 import { useAuthService } from '@/composables/useAuthService'
 import XToCloseComponent from '../shared/xToClose/XToCloseComponent.vue';
+import AppModalComponent from '../shared/appModal/AppModalComponent.vue';
 
 const appStore = useAppStore()
 
@@ -49,99 +50,53 @@ function onClose() {
 }
 </script>
 <template>
-  <div class="auth__contain">
-    <div class="auth__modal">
-      <div class="auth__modal--white">
-        <XToCloseComponent @close="onClose" />
-        <div>
-          <div class="row">
-            <div class="col-xs-10 col-xs-offset-1">
-              <div class="text-center auth__title">
-                <h1>{{ thisType }}</h1>
-              </div>
-              <div class="auth__warning" v-if="authError">{{ authError }}</div>
-              <form @submit.prevent="onSubmit">
-                <div class="form-group">
-                  <label class="signin-label" for="email">Email:</label>
-                  <input type="email" id="email" name="email" class="form-control" />
-                  <div class="email-warning">Not a valid Email</div>
-                </div>
-                <div class="form-group">
-                  <label class="signin-label" for="password">Password:</label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    class="form-control"
-                    ngModel
-                  />
-                </div>
-                <button class="btn btn-primary" type="submit" v-if="thisType === 'signin'">
-                  Sign In
-                </button>
-                <button class="btn btn-primary" type="submit" v-if="thisType === 'register'">
-                  Register
-                </button>
-              </form>
-              <hr />
-              <div class="auth-mistake" v-if="thisType === 'register'">
-                Already Registered?
-                <a style="cursor: pointer" @click="onSwitchTypeHandler('signin')">Sign in here!</a>
-              </div>
-              <div class="auth-mistake" v-if="thisType === 'signin'">
-                No account?
-                <a style="cursor: pointer" @click="onSwitchTypeHandler('register')"
-                  >Register here!</a
-                >
-              </div>
-            </div>
+  <AppModalComponent :close="onClose">
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1">
+        <div class="text-center auth__title">
+          <h1>{{ thisType }}</h1>
+        </div>
+        <div class="auth__warning" v-if="authError">{{ authError }}</div>
+        <form @submit.prevent="onSubmit">
+          <div class="form-group">
+            <label class="signin-label" for="email">Email:</label>
+            <input type="email" id="email" name="email" class="form-control" />
+            <div class="email-warning">Not a valid Email</div>
           </div>
+          <div class="form-group">
+            <label class="signin-label" for="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              ngModel
+            />
+          </div>
+          <button class="btn btn-primary" type="submit" v-if="thisType === 'signin'">
+            Sign In
+          </button>
+          <button class="btn btn-primary" type="submit" v-if="thisType === 'register'">
+            Register
+          </button>
+        </form>
+        <hr />
+        <div class="auth-mistake" v-if="thisType === 'register'">
+          Already Registered?
+          <a style="cursor: pointer" @click="onSwitchTypeHandler('signin')">Sign in here!</a>
+        </div>
+        <div class="auth-mistake" v-if="thisType === 'signin'">
+          No account?
+          <a style="cursor: pointer" @click="onSwitchTypeHandler('register')"
+            >Register here!</a
+          >
         </div>
       </div>
     </div>
-  </div>
+  </AppModalComponent>
 </template>
 <style lang="sass" scoped>
 @import '../../../assets/variables.sass'
-.auth__contain
-    position: absolute
-    left: 0
-    width: 100%
-    height: calc(100vh - #{$navbar-height-minus})
-
-.auth__modal
-    position: absolute
-    top: 0
-    left: 0
-    height: calc(100vh - #{$navbar-height-minus})
-    width: 100%
-    justify-content: center
-    align-items: center
-    display: flex
-    justify-content: center
-    align-items: center
-    z-index: 99
-
-.auth__modal--white
-    background: white
-    width: 80vw
-    height: calc(80vh - $navbar-height)
-    position: relative
-    border-radius: 15px
-    box-shadow: 2px 3px 10px 1px rgba(0,0,0,.3)
-    padding: 0 25px
-
-    @media (min-width: 1024px)
-      width: 350px
-      height: 400px
-
-.close
-    position: absolute
-    top: 15px
-    right: 15px
-    width: 25px
-    height: 25px
-    z-index: 99
 
 .auth__title
     margin-bottom: 25px

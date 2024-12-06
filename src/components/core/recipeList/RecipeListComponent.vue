@@ -68,9 +68,9 @@ function removedRecipe() {
 
 <template>
   <div class="recipe-list-container">
-    <div class="filter-floating"><FilterComponent @filter="setFilters" :filters="allRecipeTags" /></div>
-    <div class="newrecipe-floating-btn"><NewRecipeButtonComponent icon-size="small" @add-new-recipe="newRecipeAdded" /></div>
+    <div class="floating-configs-right"><FilterComponent @filter="setFilters" :filters="allRecipeTags" /></div>
     <div class="recipeRow" v-if="recipeStore.recipesLength">
+      <NewRecipeButtonComponent class="recipe-item-contain" icon-size="large" @add-new-recipe="newRecipeAdded" />
       <RecipeListItemComponent
         class="recipe-item-contain"
         v-for="recipe in filteredRecipes.value"
@@ -79,21 +79,18 @@ function removedRecipe() {
         @openRecipe="openRecipeDetail"
         @removedRecipe="removedRecipe" 
       />
-      <NewRecipeButtonComponent icon-size="large" @add-new-recipe="newRecipeAdded" />
     </div>
     <RecipesEmptyComponent v-else />
-    <div class="recipe-details-container" v-if="selectedRecipe && !editSelectedRecipe">
-      <RecipeDetailsComponent
-        @closeRecipeDetails="closeRecipeDetails"
-        @edit-selected-recipe="editSelectedRecipe = true"
-      />
-    </div>
-    <div class="recipe-details-container" v-else-if="selectedRecipe && editSelectedRecipe">
-      <RecipeEditComponent
-        class="recipe-item-contain"
-        @editing-canceled="editSelectedRecipe = false"
-      />
-    </div>
+    <RecipeDetailsComponent
+      v-if="selectedRecipe && !editSelectedRecipe"
+      @closeRecipeDetails="closeRecipeDetails"
+      @edit-selected-recipe="editSelectedRecipe = true"
+    />
+    <RecipeEditComponent
+      v-else-if="selectedRecipe && editSelectedRecipe"
+      class="recipe-item-contain"
+      @editing-canceled="editSelectedRecipe = false"
+    />
   </div>
 </template>
 
@@ -105,7 +102,7 @@ function removedRecipe() {
   justify-items: center
   padding-top: 15px
 
-.filter-floating
+.floating-configs-right
   position: absolute
   top: -41px
   right: 25px
@@ -113,15 +110,6 @@ function removedRecipe() {
   @media (min-width: 768px)
     top: -60px
     right: 40px
-
-.newrecipe-floating-btn
-  position: absolute
-  top: -43px
-  left: 10px
-
-  @media (min-width: 768px)
-    top: -60px
-    left: 40px  
 
 .recipeRow
   display: grid
@@ -133,6 +121,11 @@ function removedRecipe() {
   @media (min-width: 768px)
     display: grid
     grid-template-columns: repeat(auto-fill, 20%)
+    grid-gap: 10px
+
+  @media (min-width: 1050px)
+    display: grid
+    grid-template-columns: repeat(auto-fill, 10%)
     grid-gap: 10px
 
 .no-recipes

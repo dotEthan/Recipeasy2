@@ -24,11 +24,7 @@ defineProps({
 
 <style lang="sass" scoped>
 .recipeItem
-  // width: 100px
   width: 100%
-
-  @media (min-width: 768px)
-    width: 125px
 
 .recipeItem-contain
   display: flex
@@ -41,9 +37,5 @@ defineProps({
   object-position: center
   border-radius: 5px
   aspect-ratio: 1/1
-
-  @media (min-width: 768px)
-    width: 100px
-    height: 100px
 
 </style>

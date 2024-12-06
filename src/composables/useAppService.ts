@@ -12,14 +12,14 @@ function debounce(fn: Function, delay: number) {
   }
 }
 
-export function useWindowResize() {
+export function useAppService() {
   const appStore = useAppStore()
-  const shoppingListStore = useShoppingListStore()
   const screenWidth = ref(window.innerWidth)
 
   const updatescreenSize = () => {
     const width = screenWidth.value
     let screenSize: ScreenSize
+    console.log('screensizze')
     if (width < 640) {
       screenSize = 'sm'
     } else if (width < 1024) {
@@ -27,18 +27,25 @@ export function useWindowResize() {
     } else {
       screenSize = 'lg'
     }
-    console.log('it is: ', screenSize)
     appStore.setScreenSize(screenSize)
-    // shoppingListStore.updateWantedViewableLength(screenSize)
   }
-  updatescreenSize()
+
   const onResize = debounce(() => {
     screenWidth.value = window.innerWidth
     updatescreenSize()
   }, 10)
 
+  const handleUnsavedChanges = (e: BeforeUnloadEvent) => {
+    const appStore = useAppStore()
+    if (appStore.appHasUnsavedChanges) {
+      appStore.showUnsavedChangesModal = true
+      e.preventDefault()
+      
+    }
+  } 
+
   onMounted(() => window.addEventListener('resize', onResize))
   onUnmounted(() => window.removeEventListener('resize', onResize))
 
-  return { screenWidth }
+  return { onResize, handleUnsavedChanges }
 }

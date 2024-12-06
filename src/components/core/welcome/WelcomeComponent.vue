@@ -5,6 +5,7 @@ import { useRecipeStore } from '@/stores/recipe'
 import { computed, ref } from 'vue'
 import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
+import UnsavedDataModalComponent from '@/components/core/shared/unsavedDataModal/UnsavedDataModalComponent.vue';
 
 const recipeStore = useRecipeStore()
 const appStore = useAppStore()
@@ -42,6 +43,11 @@ function recommendedRecipes() {
   if(appStore.screenSize === 'sm') numberOfRecipes = 6
   return recipeStore.getNRandomRecipes(numberOfRecipes)
 }
+
+function handleUserResponse(userResponse: string) {
+  console.log(userResponse)
+  appStore.showUnsavedChangesModal = false
+}
 </script>
 
 <template>
@@ -59,6 +65,7 @@ function recommendedRecipes() {
     <CollectionComponent title="Healthy Foods" :recipeData="recommendedRecipes()" />
     <CollectionComponent title="Ethan's Favourites" :recipeData="recommendedRecipes()" />
   </div>
+  <UnsavedDataModalComponent v-if="appStore.showUnsavedChangesModal" :close="handleUserResponse('save')"/>
 </template>
 
 <style lang="sass" scoped>

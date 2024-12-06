@@ -1,10 +1,23 @@
 <script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue'
 import { RouterView } from 'vue-router'
 import HeaderComponent from './components/core/header/HeaderComponent.vue'
-import { useWindowResize } from './composables/useAppService'
+import { useAppService } from '@/composables/useAppService'
 
-console.log('hello')
-useWindowResize()
+
+const appService = useAppService()
+
+
+onMounted(() => {
+  window.addEventListener('beforeunload', appService.handleUnsavedChanges)
+})
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', appService.handleUnsavedChanges)
+})
+
+// Once at start
+appService.onResize()
+
 </script>
 
 <template>

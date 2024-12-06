@@ -26,6 +26,7 @@ const btnPadding = props.iconSize === 'small' ? '3px' : '20px'
   flex-direction: column
   align-items: center
   justify-content: center
+  width: 100%
 
 .new-recipe
   display: flex

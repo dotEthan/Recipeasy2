@@ -17,34 +17,36 @@ function onClose() {
 </script>
 
 <template>
-  <div class="overlay-shadow" @click="onClose()"></div>
-  <div class="recipe-overlay">
-    <XToCloseComponent @close="onClose" />
-    <div class="overlay-contain">
-      <div class="recipe-overlay-content">
-        <RecipeDetailHeaderComponent :selectedRecipe="selectedRecipe"/>
-        <RecipeManageButtonsComponent />
-        <div class="ingredients-contain">
-          <div class="type-section-title" v-if="selectedRecipe?.ingredients">
-            INGREDIENTS: <span class="help-text">(click to add ingredient to shopping list)</span>
+  <div class="recipe-detail-container">
+    <div class="overlay-shadow" @click="onClose()"></div>
+    <div class="recipe-overlay">
+      <XToCloseComponent @close="onClose" />
+      <div class="overlay-contain">
+        <div class="recipe-overlay-content">
+          <RecipeDetailHeaderComponent :selectedRecipe="selectedRecipe"/>
+          <RecipeManageButtonsComponent />
+          <div class="ingredients-contain">
+            <div class="type-section-title" v-if="selectedRecipe?.ingredients">
+              INGREDIENTS: <span class="help-text">(click to add ingredient to shopping list)</span>
+            </div>
+            <div v-else class="type-section-title">No Ingredients</div>
+            <ListItemComponent
+              v-for="(ingredient, index) of selectedRecipe?.ingredients"
+              :key="index"
+              :itemObject="ingredient"
+              itemType="ingredient"
+            />
           </div>
-          <div v-else class="type-section-title">No Ingredients</div>
-          <ListItemComponent
-            v-for="(ingredient, index) of selectedRecipe?.ingredients"
-            :key="index"
-            :itemObject="ingredient"
-            itemType="ingredient"
-          />
-        </div>
-        <div class="ingredients-contain">
-          <div class="type-section-title" v-if="selectedRecipe?.directions">DIRECTIONS:</div>
-          <div class="type-section-title" v-else>No Directions</div>
-          <ListItemComponent
-            v-for="(direction, index) of selectedRecipe?.directions"
-            v-bind:key="index"
-            :itemObject="direction"
-            itemType="direction"
-          />
+          <div class="ingredients-contain">
+            <div class="type-section-title" v-if="selectedRecipe?.directions">DIRECTIONS:</div>
+            <div class="type-section-title" v-else>No Directions</div>
+            <ListItemComponent
+              v-for="(direction, index) of selectedRecipe?.directions"
+              v-bind:key="index"
+              :itemObject="direction"
+              itemType="direction"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -53,9 +55,16 @@ function onClose() {
 
 <style lang="sass" scoped>
 @import '@/assets/variables.sass'
-h5
-    margin: 0
-    font-size: 1.5em
+.recipe-detail-container
+  position: absolute
+  top: 0
+  left: 0
+  width: 100vw
+  display: flex
+  justify-content: center
+  align-items: center
+  padding-top: 10px
+  // transform: translate(50%, 50%)
 
 .recipe-detail-title
   padding: 5px 0px 5px 10px

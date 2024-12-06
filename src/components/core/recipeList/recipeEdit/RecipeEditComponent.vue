@@ -300,6 +300,7 @@ function saveImagePath(uploadedImgURL: string) {
   </div>
 </template>
 <style lang="sass" scoped>
+@import '../../../../assets/variables.sass'
 input.ng-invalid.ng-touched,
 textarea.ng-invalid.ng-touched
     border: 1px solid red
@@ -439,4 +440,26 @@ label
     &:hover
         &:before, &:after
             background: #A41C1C
+
+            
+
+.recipe-edit-button
+  background: $recipe-edit-bg
+  height: 100%
+  color: $colorLightest
+  width: 100px
+  border-radius: 10px 10px 0 0
+  border: 0
+  
+  &.save
+    margin-right: 110px
+
+    @media (min-width: 768px)
+      margin-right: 200px
+
+    &.valid
+      text-shadow: 0 0 10px #fff, 0 0 20px green, 0 0 30px green, 0 0 40px green
+
+  &.cancel
+    text-shadow: 0 0 10px #fff, 0 0 20px red, 0 0 30px red, 0 0 40px red
 </style>

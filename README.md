@@ -39,10 +39,12 @@ Tried using AI to complete a full feature, it worked, but took far longer as it 
 
 ### Working on Now:
 
+- I broke Recipes and editing. Fixing tomorrow
 - Basic Responsive design (left: Recipes, Shopping Lists)
 - Filter (Functional, but new design coming)
 - "Public" recipe display/search
 - Ensure TestMode doesn't last through reloads or sessions.
+- unsaved data warning when leaving
 
 ### To Come:
 
