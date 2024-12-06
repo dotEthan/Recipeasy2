@@ -6,7 +6,7 @@ import RecipeListComponent from '@/components/core/recipeList/RecipeListComponen
   <div class="base-container">
     <div class="recipe-viewer">
       <div class="headline-title">
-        <h1>Recipe Book</h1>
+        <h1>Your Recipes</h1>
       </div>
       <RecipeListComponent />
     </div>
@@ -18,37 +18,26 @@ import RecipeListComponent from '@/components/core/recipeList/RecipeListComponen
 
 .recipe-viewer
   background: white
-  height: calc(100vh - #{$navbar-height-minus} - #{$borderize-margin})
+  height: 100%
   border-radius: 10px
-  width: calc(100vw - #{$borderize-margin})
-  max-width: 1366px
+  width: 100%
   overflow: auto
 
   @media (min-width: 768px)
-    width: calc(100vw - #{$borderize-margin * 2})
+    max-width: 1366px
 
 
 
 .headline-title
-  margin-top: 25px
+  margin-top: 10px
   font-family: pacifico, sans-serif
+  text-align: center
 
   @media (min-width: 768px)
     margin-top: 25px
-    text-align: center
 
 
   @media (min-width: 1200px)
     margin: 50px 0
 
-
-  h1
-    font-size: 18px
-
-    @media (min-width: 768px)
-      font-size: 24px
-
-
-    @media (min-width: 1200px)
-      font-size: 90px
 </style>

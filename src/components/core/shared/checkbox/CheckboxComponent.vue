@@ -4,7 +4,10 @@ import { CheckboxIndicator, CheckboxRoot } from 'radix-vue'
 import { Check } from 'lucide-vue-next'
 const props = defineProps({
   checkboxLabel: String,
-  modelValue: Boolean
+  modelValue: {
+    type: Boolean,
+    default: false
+  }
 })
 
 const emit = defineEmits<{
@@ -23,13 +26,14 @@ watch(
 function toggleCheckbox() {
   isChecked.value = !isChecked.value
   emit('update:modelValue', isChecked.value)
-  console.log('Checkbox is now:', isChecked.value) // Log the updated state
 }
 </script>
 
 <template>
   <label>
-    <CheckboxRoot @update:checked="toggleCheckbox" class="checkboxRoot">
+    <CheckboxRoot 
+    :checked="isChecked"
+    @update:checked="toggleCheckbox" class="checkboxRoot">
       <CheckboxIndicator class="checkboxIndicator">
         <Check v-if="isChecked" />
       </CheckboxIndicator>
@@ -43,6 +47,7 @@ function toggleCheckbox() {
 label
   display: flex
   align-items: center
+  text-transform: capitalize
 
 /* reset */
 button

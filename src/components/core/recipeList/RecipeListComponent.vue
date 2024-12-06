@@ -67,7 +67,7 @@ function removedRecipe() {
 
 <template>
   <div class="recipe-list-container">
-    <FilterComponent @filter="setFilters" :allRecipeTags />
+    <FilterComponent @filter="setFilters" :filters="allRecipeTags" />
     <div class="recipeRow" v-if="recipeStore.recipesLength">
       <RecipeListItemComponent
         class="recipe-item-contain"
@@ -98,30 +98,21 @@ function removedRecipe() {
 <style lang="sass" scoped>
 
 .recipe-list-container
-  width: 90%
+  position: relative
   margin: 0 auto
   justify-items: center
 
 .recipeRow
-  display: flex
-  flex-direction: row
-  flex-wrap: wrap
-  margin: 0 0 20px
+  display: grid
+  grid-template-columns: repeat(auto-fill, 42%)
+  gap: 15px
+  justify-content: center
   position: relative
-  align-items: center
-  justify-content: space-around
-
-  @supports (display:grid)
-    display: grid
-    grid-template-columns: repeat(auto-fill, 100px)
-    grid-gap: 5px
 
   @media (min-width: 768px)
-
-    @supports (display:grid)
-      display: grid
-      grid-template-columns: repeat(auto-fill, 125px)
-      grid-gap: 10px
+    display: grid
+    grid-template-columns: repeat(auto-fill, 20%)
+    grid-gap: 10px
 
 .new-container
   width: 100px
@@ -132,36 +123,6 @@ function removedRecipe() {
 
   @media (min-width: 768px)
     width: 125px
-
-.new-recipe
-  height: 75px
-  width: 75px
-  font-size: 4rem
-  color: #aaa
-  border: 2px solid #aaa
-  border-radius: 8px
-  transition: all .3s
-
-  &:hover
-    color: #888
-    border: 2px solid #888
-    font-size: 4.5rem
-
-  @media (min-width: 768px)
-    width: 100px
-    height: 100px
-
-.recipe-title
-  text-align: center
-  margin: 10px 0
-  color: #223
-  height: 30px
-
-  h5
-    font-size: 1rem
-
-    @media (min-width: 768px)
-      font-size: 1.2rem
 
 .no-recipes
   text-align: center

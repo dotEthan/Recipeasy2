@@ -20,6 +20,8 @@ I've also been using this as a time to work with ChatGPT to see how much easier 
 
 Tried using AI to complete a full feature, it worked, but took far longer as it got very confused regarding syntax changes between versions, and kept getting locked into cyclical changes. 
 
+- On mobile, click and drag, app slides?
+
 ## Where are we?
 
 ### Working (not feature complete, full design still in progress):
@@ -44,14 +46,13 @@ Tried using AI to complete a full feature, it worked, but took far longer as it 
 
 ### To Come:
 
-- User Dashboard
-- Display newly added Recipe Data (time, nutritional info, etc)
-- All //TODO comments
 - Animations/Testing
+- User Dashboard
 - Error Handling & User feedback (loadin spinners, etc)
+- All //TODO comments
+- Display newly added Recipe Data (time, nutritional info, etc)
+
 - Defaults (images)
-- Search Functionality
-- On mobile, click and drag, app slides?
 - Google/Facebook login (maybe)
 
 ### Future thoughts:
@@ -67,7 +68,7 @@ Tried using AI to complete a full feature, it worked, but took far longer as it 
 - HTML
 - SASS
 - JavaScript
-- Vue
+- Vue (originally Angular)
 - TypeScript
 - Sass
 - Karma
