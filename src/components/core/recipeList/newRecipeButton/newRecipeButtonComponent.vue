@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import { CirclePlus } from 'lucide-vue-next';
+
+const props = defineProps({
+  iconSize: String,
+})
+
+const iconSizeNumber = props.iconSize === 'small' ? 13 : 30
+const btnPadding = props.iconSize === 'small' ? '3px' : '20px'
+// const btnPadding = props.iconSize === 'small' ? '5px' : '20px'
+
 </script>
 
 <template>
   <div class="new-container">
-    <button class="btn new-recipe" @click="$emit('addNewRecipe')"><CirclePlus :size="30" /></button>
-    <span class="recipe-title">
+    <button class="btn new-recipe" @click="$emit('addNewRecipe')"><CirclePlus :size="iconSizeNumber" /></button>
+    <span :class="(iconSize === 'small') ? 'recipe-title-sm' : 'recipe-title'">
       New Recipe
     </span>
   </div>
@@ -13,26 +22,25 @@ import { CirclePlus } from 'lucide-vue-next';
 <style lang="sass" scoped>
 .new-container
   cursor: pointer
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
 
 .new-recipe
   display: flex
   justify-content: center
   align-items: center
-  width: 75%
-  font-size: 4rem
+  padding: v-bind('btnPadding')
   color: #aaa
-  border: 2px solid #aaa
   border-radius: 8px
   transition: all .3s
   cursor: pointer
   aspect-ratio: 1/1
 
   &:hover
-    color: #888
-    border: 2px solid #888
+    color: #666
 
-  @media (min-width: 768px)
-    width: 100px
-    height: 100px
-
+.recipe-title-sm
+  font-size: clamp(10px, 1.5vw, 15px)
 </style>

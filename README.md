@@ -51,7 +51,7 @@ Tried using AI to complete a full feature, it worked, but took far longer as it 
 - Error Handling & User feedback (loadin spinners, etc)
 - All //TODO comments
 - Display newly added Recipe Data (time, nutritional info, etc)
-
+- Offline Functionality
 - Defaults (images)
 - Google/Facebook login (maybe)
 

@@ -63,11 +63,13 @@ function setFilters(filters: string[]) {
 function removedRecipe() {
   console.log('ok, so what?')
 }
+//TODO align filter and new recipes look
 </script>
 
 <template>
   <div class="recipe-list-container">
-    <FilterComponent @filter="setFilters" :filters="allRecipeTags" />
+    <div class="filter-floating"><FilterComponent @filter="setFilters" :filters="allRecipeTags" /></div>
+    <div class="newrecipe-floating-btn"><NewRecipeButtonComponent icon-size="small" @add-new-recipe="newRecipeAdded" /></div>
     <div class="recipeRow" v-if="recipeStore.recipesLength">
       <RecipeListItemComponent
         class="recipe-item-contain"
@@ -77,7 +79,7 @@ function removedRecipe() {
         @openRecipe="openRecipeDetail"
         @removedRecipe="removedRecipe" 
       />
-      <NewRecipeButtonComponent @add-new-recipe="newRecipeAdded" />
+      <NewRecipeButtonComponent icon-size="large" @add-new-recipe="newRecipeAdded" />
     </div>
     <RecipesEmptyComponent v-else />
     <div class="recipe-details-container" v-if="selectedRecipe && !editSelectedRecipe">
@@ -101,6 +103,25 @@ function removedRecipe() {
   position: relative
   margin: 0 auto
   justify-items: center
+  padding-top: 15px
+
+.filter-floating
+  position: absolute
+  top: -41px
+  right: 25px
+
+  @media (min-width: 768px)
+    top: -60px
+    right: 40px
+
+.newrecipe-floating-btn
+  position: absolute
+  top: -43px
+  left: 10px
+
+  @media (min-width: 768px)
+    top: -60px
+    left: 40px  
 
 .recipeRow
   display: grid
@@ -113,16 +134,6 @@ function removedRecipe() {
     display: grid
     grid-template-columns: repeat(auto-fill, 20%)
     grid-gap: 10px
-
-.new-container
-  width: 100px
-  display: flex
-  flex-direction: column
-  align-items: center
-  justify-content: center
-
-  @media (min-width: 768px)
-    width: 125px
 
 .no-recipes
   text-align: center

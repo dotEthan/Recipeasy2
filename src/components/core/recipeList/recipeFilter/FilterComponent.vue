@@ -56,7 +56,6 @@ function updateMealType(type: string, isSelected: boolean) {
     </button>
     <span class="filter-text">Filters</span>
   </div>
-
   <div class="filter-box floating" v-if="isFiltersOpen">
     <h4 style="text-align: center;">Filtering waiting for final schema</h4>
     <CircleX class="button-close" @click="toggleShowFilters()" v-if="mobileFiltersOpen" />
@@ -81,19 +80,12 @@ function updateMealType(type: string, isSelected: boolean) {
 @import '../../../../assets/variables.sass'
 
 .filter-button
-  position: absolute
-  top: -50px
-  right: 25px
   display: flex
   flex-direction: column
   justify-content: center
   align-items: center
   cursor: pointer
   filter: grayscale(100%)
-
-  @media (min-width: 768px)
-    top: -70px
-    right: 40px
 
   &:hover
     .filter-btn-icon

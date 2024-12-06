@@ -20,12 +20,11 @@ function onAddList() {
       <ShoppingListComponent
         v-for="(shoppingList, i) in shoppingListStore.shoppingLists"
         :key="shoppingList.id"
-        class="sl-list"
         :class="{ 'sl-default-list': defaultListIndex }"
         :currentList="shoppingListStore.shoppingLists[i]"
         :currentListIndex="i"
       />
-      <NewListButtonComponent class="sl-list" @add-new-list="onAddList" />
+      <NewListButtonComponent @add-new-list="onAddList" />
     </div>
   </section>
 </template>
@@ -43,28 +42,17 @@ function onAddList() {
   width: 100%
   text-align: center
 
-.sl-list
-  width: 100%
-  margin-right: 10px
-  max-width: 250px
-  height: 350px
-  display: flex
-  flex-direction: column
-
-  @media (min-width: 768px)
-    width: 50%
-
 .viewable-lists
   display: grid
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr))
-  justify-items: start
+  grid-template-rows: auto
+  justify-items: center
+  align-items: start
   gap: 10px
   width: 100%
-  height: 100%
 
 .viewable-lists > .sl-list
   width: 250px
-  height: 350px
 
 .sl-button-contain
   margin-bottom: 15px
