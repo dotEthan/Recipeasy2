@@ -18,6 +18,8 @@ export const useAppStore = defineStore('app', () => {
   const registrationOrSigninModal = ref('')
   const screenSize = ref<ScreenSize>('lg')
   const isMobileMenuOpen = ref(false)
+  const appHasUnsavedChanges = ref(true)
+  const showUnsavedChangesModal = ref(false)
 
   const isTestModeOn = computed(() => testModeOn.value)
   const isRegistrationModalOpen = computed(() => registrationOrSigninModal.value.length > 0)
@@ -74,6 +76,8 @@ export const useAppStore = defineStore('app', () => {
     testModeOn,
     screenSize,
     isMobileMenuOpen,
+    appHasUnsavedChanges,
+    showUnsavedChangesModal,
     registrationOrSigninModal,
     isTestModeOn,
     isRegistrationModalOpen,

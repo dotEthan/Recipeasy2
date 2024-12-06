@@ -32,13 +32,9 @@ defineProps({
   width: 100%
   min-height: 100px
 
-  @media (min-width: 768px)
-    grid-template-areas: "a b" "c c"
-
 .recipe-image-contain
   position: relative
   width: 100%
-  height: 100px
 
 .recipe-image-bg
   width: 100%

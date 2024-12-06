@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import RecipeListComponent from '@/components/core/recipeList/RecipeListComponent.vue'
+import { useRecipeStore } from '@/stores/recipe';
+const recipeStore = useRecipeStore()
+
 </script>
 
 <template>
   <div class="base-container">
-    <div class="recipe-viewer">
+    <div class="recipe-viewer" :class="{selectedRecipeOpen: recipeStore.selectedRecipeId}">
       <div class="headline-title">
         <h1>Your Recipes</h1>
       </div>
@@ -22,6 +25,9 @@ import RecipeListComponent from '@/components/core/recipeList/RecipeListComponen
   border-radius: 10px
   width: 100%
   overflow: auto
+
+  .selectedRecipeOpen
+    overflow-y: hidden
 
   @media (min-width: 768px)
     max-width: 1366px

@@ -39,54 +39,37 @@ a
   border-radius: 5px
   overflow: hidden
 
-  @media (min-width: 768px)
-    width: 80vw
-
-
 // Recipes
-
 .overlay-shadow
   position: absolute
   top: 0
   left: 0
   width: 100vw
-  height: calc(100vh - #{$navbar-height-minus})
+  height: 100%
   background-color: rgba(0,0,0,.4)
-  // z-index: 10
 
 .recipe-overlay
-  position: absolute
-  top: 50%
-  left: 50%
-  transform: translate(-50%,-50%)
+  width: 85vw
+  position: relative
 
-  &.edit
-    transform: translate(-50%, -47%)
 
 .overlay-contain
   display: block
   background-color: $recipe-edit-bg
   padding: 15px
   border-radius: 15px
-  width: calc(100vw - #{$borderize-margin} - 10px)
-  height: calc(100vh - #{$navbar-height-minus} - #{$borderize-margin} - 10px)
   box-shadow: 1px 3px 5px 1px rgba(0,0,0,.25)
   overflow-y: auto
   position: relative
-
-  &.edit
-    height: calc(100vh - #{$navbar-height-minus} - #{$borderize-margin} - 130px)
 
   @media (min-width: 768px)
     display: flex
     flex-direction: column
     align-items: center
     justify-content: flex-start
-    width: calc(100vw - #{$borderize-margin * 2} - 10px)
 
   @media (min-width: 1024px)
     width: 60vw 
-    height: calc(100vh - #{$navbar-height-minus} - #{$borderize-margin} - 50px)
 
   @media (min-width: 1280px)
     width: 45vw 
@@ -105,23 +88,3 @@ a
     margin: 10px 0
     font-size: 1.2em
   
-
-.recipe-edit-button
-  background: $recipe-edit-bg
-  height: 100%
-  color: $colorLightest
-  width: 100px
-  border-radius: 10px 10px 0 0
-  border: 0
-  
-  &.save
-    margin-right: 110px
-
-    @media (min-width: 768px)
-      margin-right: 200px
-
-    &.valid
-      text-shadow: 0 0 10px #fff, 0 0 20px green, 0 0 30px green, 0 0 40px green
-
-  &.cancel
-    text-shadow: 0 0 10px #fff, 0 0 20px red, 0 0 30px red, 0 0 40px red

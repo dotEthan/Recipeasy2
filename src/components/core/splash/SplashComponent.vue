@@ -93,14 +93,14 @@ console.log('is it on: ', isRegistrationModalOpen.value)
 
 .attribute
   position: absolute
-  bottom: #{$borderize-margin}
-  right: #{$borderize-margin}
+  bottom: 25
+  right: 25
   font-size: 0.8rem
   // z-index: 2
 
   @media (min-width: 768px)
-    bottom: #{$borderize-margin * 2}
-    right: #{$borderize-margin * 2}
+    bottom: 50
+    right: 50
     font-size: 1.2rem
 
 
