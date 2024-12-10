@@ -13,11 +13,12 @@ import {
 import { useDataService } from './useDataService'
 import { useAppStore } from '@/stores/app'
 import { useUserStore } from '@/stores/user'
+import { Recipe } from '@/types/Recipes'
 
 export function useAuthService() {
   const error = ref<string | null>(null)
   const isLoading = ref(false) // For displaying user feedback AKA: TODO
-  const {loadUserData} = useDataService()
+  const dataService = useDataService()
   const appStore = useAppStore()
   const userStore = useUserStore()
 
@@ -40,7 +41,8 @@ export function useAuthService() {
           clearTimeout(timeoutId)
           if (currentUser) {
             const userId = currentUser?.uid
-            const [userStoredData, uid] = await loadUserData(userId)
+            const [userStoredData, uid] = await dataService.loadUserData(userId)
+            const [publicRecipeStoredData] = await dataService.loadPublicRecipeData(userId)
 
             const userState = {
               uid: currentUser?.uid,
@@ -53,7 +55,7 @@ export function useAuthService() {
            
             // Explicitly set authorized to true
             userStore.authorized = true
-            appStore.initializeApp(userState)
+            appStore.initializeApp(userState, publicRecipeStoredData as Recipe[])
             
             resolve(true)
           } else {
@@ -99,7 +101,8 @@ export function useAuthService() {
       }))
 
       // Get user data from database
-      const [userStoredData, uid] = await loadUserData(user.uid)
+      const [userStoredData, uid] = await dataService.loadUserData(user.uid)
+      const [publicRecipeStoredData] = await dataService.loadPublicRecipeData(user.uid)
 
       const userState = { uid, authorized: true, localUser: {
         uid,
@@ -108,7 +111,7 @@ export function useAuthService() {
 
       console.log('Store Data set:', userState)
       // trigger full app initialization
-      appStore.initializeApp(userState)
+      appStore.initializeApp(userState, publicRecipeStoredData as Recipe[])
 
       return
     } catch (err) {
@@ -136,6 +139,7 @@ export function useAuthService() {
   
       // Save user data to Firestore
       await setDoc(doc(usersRef, user.uid), userStoredData)
+      const [publicRecipeStoredData] = await dataService.loadPublicRecipeData(user.uid)
   
       // Initialize stores
       const userState = { 
@@ -143,7 +147,7 @@ export function useAuthService() {
         uid: user.uid, 
         authorized: true 
       }
-      appStore.initializeApp(userState)
+      appStore.initializeApp(userState, publicRecipeStoredData as Recipe[])
       return
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Registration failed'

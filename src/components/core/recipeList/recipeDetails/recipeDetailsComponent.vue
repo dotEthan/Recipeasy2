@@ -59,12 +59,11 @@ function onClose() {
   position: absolute
   top: 0
   left: 0
-  width: 100vw
+  width: 100%
   display: flex
   justify-content: center
   align-items: center
-  padding-top: 10px
-  // transform: translate(50%, 50%)
+  height: calc(100vh - $navbar-height)
 
 .recipe-detail-title
   padding: 5px 0px 5px 10px

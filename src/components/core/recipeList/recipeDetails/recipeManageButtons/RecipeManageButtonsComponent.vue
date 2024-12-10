@@ -27,8 +27,8 @@ function onAddToShoppingList() {
 }
 
 function onEditRecipe() {
-//   emit('editSelectedRecipe')
-  console.log('editing')
+    recipeStore.setEditStatusSelectedId(true)   
+    console.log('editing')
 }
 
 function onDeleteRecipe() {

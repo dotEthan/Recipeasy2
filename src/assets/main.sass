@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Pacifico|Montserrat:500,600,700,800|Fira+Sans')
 @import './variables.sass'
-//TODO Check if all these need to be global
 body 
   margin: 0
   font-family: 'Montserrat', sans-serif
@@ -8,7 +7,7 @@ body
   line-height: 1.42857143
   color: #333
   overflow: hidden
-
+//TODO Once over to be sure
 h1 
   font-size: clamp(20px, 7vw, 36px)
 h2 
@@ -28,6 +27,11 @@ h5
 a 
   color: inherit
 
+button
+  all: unset
+
+//TODO Check if all these classes need to be global
+
 // for all Views
 .base-container 
   display: flex
@@ -37,29 +41,38 @@ a
   width: 95vw
   background-color: white
   border-radius: 5px
-  overflow: hidden
+  overflow-y: hidden
+  
+.base-content-container
+  overflow-y: auto
 
-// Recipes
+// Recipe global for Details and Edit
 .overlay-shadow
   position: absolute
   top: 0
   left: 0
   width: 100vw
-  height: 100%
+  height: 100vh
   background-color: rgba(0,0,0,.4)
 
 .recipe-overlay
-  width: 85vw
+  width: 90vw
   position: relative
+  display: flex
+  justify-content: center
+
+  @media (min-width: 1024px)
+    width: 60vw 
 
 
 .overlay-contain
   display: block
   background-color: $recipe-edit-bg
   padding: 15px
-  border-radius: 15px
+  border-radius: 5px
   box-shadow: 1px 3px 5px 1px rgba(0,0,0,.25)
   overflow-y: auto
+  height: calc(95vh - $navbar-height)
   position: relative
 
   @media (min-width: 768px)
@@ -71,8 +84,6 @@ a
   @media (min-width: 1024px)
     width: 60vw 
 
-  @media (min-width: 1280px)
-    width: 45vw 
 
 .recipe-title
   text-align: center
@@ -88,3 +99,33 @@ a
     margin: 10px 0
     font-size: 1.2em
   
+
+// Radix-vue's container require global style
+.switch-outer
+  width: 23px
+  height: 14px
+  background-color: black
+  border-radius: 9999px
+  position: relative
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1)
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+
+  &:focus
+    box-shadow: 0 0 0 2px black
+
+  &[data-state='checked']
+    background-color: black
+
+.switchthumb
+  display: block
+  width: 10px
+  height: 10px
+  background-color: white
+  border-radius: 9999px
+  box-shadow: 0 2px 2px rgba(0,0,0,0.1)
+  transition: transform 100ms
+  transform: translateX(2px)
+  will-change: transform
+
+  &[data-state='checked']
+    transform: translateX(10px)

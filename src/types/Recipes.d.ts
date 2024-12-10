@@ -9,6 +9,7 @@ export type RecipeState = {
 
 export type Recipe = {
   id?: string
+  createdBy?: string
   name?: string
   url?: string
   rating?: number

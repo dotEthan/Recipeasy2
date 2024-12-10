@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import CollectionItemComponent from './collectionItem/CollectionItemComponent.vue'
-import RecipeDetailsComponent from '../recipeList/recipeDetails/recipeDetailsComponent.vue';
 import type { PropType } from 'vue'
 import type { Recipe } from '@/types/Recipes'
 import { useRecipeStore } from '@/stores/recipe';
@@ -13,22 +12,14 @@ defineProps({
 
 const recipeStore = useRecipeStore()
 
-let selectedRecipe = ref<Recipe | undefined>(undefined)
-let recipeDetailsOpen = ref(false)
 
 
 function openRecipeDetails(id: string) {
   if (id !== '') {
-    selectedRecipe.value = recipeStore.recipes.find((recipe) => recipe.id === id)
     recipeStore.setSelectedRecipeId(id)
   }
 }
 
-function closeRecipeDetails() {
-  recipeDetailsOpen.value = false
-  selectedRecipe.value = undefined
-  recipeStore.setSelectedRecipeId('')
-}
 
 </script>
 
@@ -38,12 +29,6 @@ function closeRecipeDetails() {
     <div class="collection-item-container">
       <CollectionItemComponent @click="() => openRecipeDetails(recipe.id || '')" v-for="recipe in recipeData" :key="recipe.id" :recipeData="recipe" />
     </div>
-  </div>
-  <div class="recipeDetail-container">
-    <RecipeDetailsComponent
-      v-if="selectedRecipe"
-      @closeRecipeDetails="closeRecipeDetails"
-    />
   </div>
 </template>
 

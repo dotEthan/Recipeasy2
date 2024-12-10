@@ -31,7 +31,7 @@
       "directions": ["put in blender and blend", "drink"],
       "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090094/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/x3gq5jk5hnnl6vgqmlhx.jpg",
       "rating": 3.5,
-      "private": true,
+      "private": false,
       "mealType": ["snack", "fast food", "junk food"],
       "tags": ["milkshake", "drink", "vegan"]
     },
@@ -241,7 +241,7 @@
       ],
       "imgPath": "",
       "rating": "",
-      "private": true,
+      "private": false,
       "mealType": ["lunch", "dinner"],
       "tags": [
         "vegan", 
@@ -354,7 +354,7 @@
       ],
       "imgPath": "",
       "rating": "",
-      "private": true,
+      "private": false,
       "mealType": "dinner",
       "tags": [
         "vegan",
@@ -451,7 +451,7 @@
       ],
       "imgPath": "",
       "rating": "",
-      "private": true,
+      "private": false,
       "mealType": ["dinner"],
       "tags": [
         "vegan",
@@ -561,7 +561,7 @@
       ],
       "imgPath": "",
       "rating": "",
-      "private": true,
+      "private": false,
       "mealType": ["dinner"],
       "tags": [
         "vegan",
@@ -670,7 +670,7 @@
     ],
     "imgPath": "",
     "rating": "",
-    "private": true,
+    "private": false,
     "mealType": ["dinner", "lunch"],
     "tags": [
       "vegan",
@@ -784,7 +784,7 @@
     ],
     "imgPath": "",
     "rating": "",
-    "private": true,
+    "private": false,
     "mealType": ["lunch", "dinner"],
     "tags": [
       "vegan",
@@ -890,7 +890,7 @@
     ],
     "imgPath": "",
     "rating": "",
-    "private": true,
+    "private": false,
     "mealType": ["lunch", "dinner"],
     "tags": [
       "vegan",
@@ -987,7 +987,7 @@
     ],
     "imgPath": "",
     "rating": "",
-    "private": true,
+    "private": false,
     "mealType": ["dinner"],
     "tags": [
       "vegan",
@@ -1085,7 +1085,7 @@
     ],
     "imgPath": "",
     "rating": "",
-    "private": true,
+    "private": false,
     "mealType": ["lunch", "dinner"],
     "tags": [
     "vegan",
@@ -1193,7 +1193,7 @@
     ],
     "imgPath": "",
     "rating": "",
-    "private": true,
+    "private": false,
     "mealType": ["dinner"],
     "tags": [
     "vegan",
@@ -1294,7 +1294,7 @@
     ],
     "imgPath": "",
     "rating": "",
-    "private": true,
+    "private": false,
     "mealType": ["dinner"],
     "tags": [
     "vegan",
@@ -1397,7 +1397,7 @@
     ],
     "imgPath": "",
     "rating": "",
-    "private": true,
+    "private": false,
     "mealType": ["lunch"],
     "tags": [
     "vegan",

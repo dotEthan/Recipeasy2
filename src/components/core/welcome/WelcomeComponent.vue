@@ -6,13 +6,15 @@ import { computed, ref } from 'vue'
 import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
 import UnsavedDataModalComponent from '@/components/core/shared/unsavedDataModal/UnsavedDataModalComponent.vue';
+import RecipeDetailsComponent from '@/components/core/recipeList/recipeDetails/recipeDetailsComponent.vue';
+import type { Recipe } from '@/types/Recipes'
 
 const recipeStore = useRecipeStore()
 const appStore = useAppStore()
 const userStore = useUserStore()
-// const { recipes } = storeToRefs(recipeStore)
-// console.log(recipes.value[0])
 const currentTime = ref(new Date())
+
+let recipeDetailsOpen = ref(false)
 
 const greeting = computed(() => {
   const displayName = userStore.localUser.displayName
@@ -48,6 +50,11 @@ function handleUserResponse(userResponse: string) {
   console.log(userResponse)
   appStore.showUnsavedChangesModal = false
 }
+
+function closeRecipeDetails() {
+  recipeDetailsOpen.value = false
+  recipeStore.setSelectedRecipeId('')
+}
 </script>
 
 <template>
@@ -59,23 +66,26 @@ function handleUserResponse(userResponse: string) {
       <button disabled><Search class="magnifying" :size="15" /></button>
     </div>
     <span style="font-size: 0.7em;">Public Recipes & Search Coming Soon!</span>
-    <CollectionComponent title="Recommended Public Recipes" :recipeData="recommendedRecipes()" />
-    <CollectionComponent :title="'Ready for ' + mealTime" :recipeData="mealTimeRecipes()" />
-    <CollectionComponent title="Snacks" :recipeData="recommendedRecipes()" />
-    <CollectionComponent title="Healthy Foods" :recipeData="recommendedRecipes()" />
-    <CollectionComponent title="Ethan's Favourites" :recipeData="recommendedRecipes()" />
+    <div class="base-content-container">
+      <CollectionComponent title="Recommended Public Recipes" :recipeData="recommendedRecipes()" />
+      <CollectionComponent :title="'Ready for ' + mealTime" :recipeData="mealTimeRecipes()" />
+      <CollectionComponent title="Snacks" :recipeData="recommendedRecipes()" />
+      <CollectionComponent title="Healthy Foods" :recipeData="recommendedRecipes()" />
+      <CollectionComponent title="Ethan's Favourites" :recipeData="recommendedRecipes()" />
+    </div>
   </div>
+  <RecipeDetailsComponent v-if="recipeStore.selectedRecipeId" @closeRecipeDetails="closeRecipeDetails" />
   <UnsavedDataModalComponent v-if="appStore.showUnsavedChangesModal" :close="handleUserResponse('save')"/>
 </template>
 
 <style lang="sass" scoped>
 @import '../../../assets/variables.sass'
 
-.welcome
-  overflow-y: scroll
+h1
+  margin-bottom: 0
 
-  h1
-    margin-bottom: 0px
+h2
+  margin: 5px 0
 
 .searchbar
   width: 90%

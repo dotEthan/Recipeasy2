@@ -18,9 +18,8 @@ I've also been using this as a time to work with ChatGPT to see how much easier 
 
 ### What isn't working
 
-Tried using AI to complete a full feature, it worked, but took far longer as it got very confused regarding syntax changes between versions, and kept getting locked into cyclical changes. 
-
 - On mobile, click and drag, app slides?
+- AI is hit or miss. Can be great, but can also completely lie when it doesn't know or get locked into cyclical changes. 
 
 ## Where are we?
 
@@ -39,12 +38,10 @@ Tried using AI to complete a full feature, it worked, but took far longer as it 
 
 ### Working on Now:
 
-- I broke Recipes and editing. Fixing tomorrow
-- Basic Responsive design (left: Recipes, Shopping Lists)
-- Filter (Functional, but new design coming)
+- Basic Responsive design - Left to do: Edit Recipes
 - "Public" recipe display/search
-- Ensure TestMode doesn't last through reloads or sessions.
-- unsaved data warning when leaving
+- Filter (Functional, but waiting on public Recipes)
+- Improve unsaved data warning (if possible)
 
 ### To Come:
 

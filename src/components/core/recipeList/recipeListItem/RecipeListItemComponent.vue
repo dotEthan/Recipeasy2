@@ -4,11 +4,6 @@ import type { Recipe } from '@/types/Recipes'
 defineProps({
   recipeData: Object as PropType<Recipe>
 })
-// defineEmits(['click'])
-
-// const selectRecipe = () => {
-//   emit('click', props.recipeData?.id) // Emit click event to parent
-// }
 </script>
 
 <template>

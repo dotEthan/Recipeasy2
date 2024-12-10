@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useUserStore } from '@/stores/user'
 import { useAppStore } from '@/stores/app'
+import { useRecipeStore } from '@/stores/recipe'
 
 const routes = [
   {
@@ -34,6 +35,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
   const appStore = useAppStore()
+  const recipeStore = useRecipeStore()
   // wait a sec to let authorization unfold if needed
   await new Promise(resolve => setTimeout(resolve, 100))
 
@@ -60,6 +62,8 @@ router.beforeEach(async (to, from, next) => {
     return
   }
   
+  recipeStore.setSelectedRecipeId('')
+  recipeStore.setEditStatusSelectedId(false)
   next()
 })
 

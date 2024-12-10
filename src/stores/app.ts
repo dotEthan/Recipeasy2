@@ -5,6 +5,7 @@ import { useUserStore } from './user'
 import { useShoppingListStore } from './shoppingList'
 import { useAuthService } from '@/composables/useAuthService'
 import { UserState } from '@/types/UserState'
+import { Recipe } from '@/types/Recipes'
 
 type ScreenSize = 'sm' | 'md' | 'lg'
 
@@ -24,11 +25,12 @@ export const useAppStore = defineStore('app', () => {
   const isTestModeOn = computed(() => testModeOn.value)
   const isRegistrationModalOpen = computed(() => registrationOrSigninModal.value.length > 0)
 
-  function initializeApp(userData: UserState) {
+  function initializeApp(userData: UserState, publicRecipeData: Recipe[]) {
     console.log('initializing App with user Data: ', userData)
+    console.log('initializing App with public Recipes Data: ', publicRecipeData)
     const userId = userData.uid
     userStore.setInitialUserState(userData)
-    recipeStore.setInitialRecipeState(userId, userData.localUser.recipes || [])
+    recipeStore.setInitialRecipeState(userData, publicRecipeData)
     shoppingListStore.setListState(userId, userData.localUser.shoppingLists || [])
   }
 

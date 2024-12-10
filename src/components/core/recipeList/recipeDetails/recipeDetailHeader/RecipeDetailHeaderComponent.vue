@@ -1,10 +1,31 @@
 <script setup lang="ts">
+import { PropType, ref, watch} from 'vue';
+import { SwitchRoot, SwitchThumb } from 'radix-vue'
 import type { Recipe } from '@/types/Recipes'
-import { PropType } from 'vue';
+import { useRecipeStore } from '@/stores/recipe';
 
-defineProps({
+const props = defineProps({
   selectedRecipe: Object as PropType<Recipe>
 })
+const recipeStore = useRecipeStore()
+const switchState = ref(false)
+
+watch(switchState, (newState) => {
+  handleSwitchChange(newState);
+});
+
+function handleSwitchChange(newState: boolean) {
+  console.log(newState)
+  const selectedRecipeId = props.selectedRecipe?.id || ''
+  if (newState) {
+    recipeStore.addToPublicRecipes(selectedRecipeId)
+    // copy image to public image repo in cloudinary
+  } else {
+    recipeStore.removeFromPublicRecipes(selectedRecipeId)
+    //remove from public recipes
+    // remove image from public image repo in cloudinary
+  }
+}
 </script>
 
 <template>
@@ -16,25 +37,47 @@ defineProps({
             </div>
           </div>
           <div class="recipe-description">
-            <h4 class="recipe-description-title">Description:</h4>
-            <p class="recipe-description-text">
-              {{ selectedRecipe?.description }}
-            </p>
+            <div class="description-box">
+              <h4 class="recipe-description-title">Description:</h4>
+              <p class="recipe-description-text">
+                {{ selectedRecipe?.description }}
+              </p>
+            </div>
+            <div class="ratingbar">
+              <div class="ratingbar-left"><span class="ratingbar-text">Rating: </span>{{ selectedRecipe?.rating }}</div>
+              <div class="ratingbar-right"><span class="ratingbar-text">Public Recipe: </span>
+                <SwitchRoot
+                  class="switch-outer"
+                  id="public-recipe-switch"
+                  v-model:checked="switchState"
+                  >
+                  <SwitchThumb class="switchthumb" />
+                </SwitchRoot>
+              </div>
+            </div>
           </div>
         </div>
 </template>
-<style lang="sass" scoped>
+<style lang="sass">
 @import '@/assets/variables.sass'
 
 .recipe-header
-  display: flex
-  flex-direction: column
   width: 100%
   min-height: 100px
+  display: flex
+  flex-direction: column
+
+  @media (min-width: 768px)
+    flex-direction: row
+    height: 300px
+
 
 .recipe-image-contain
   position: relative
   width: 100%
+
+  @media (min-width: 768px)
+    width: 50%
 
 .recipe-image-bg
   width: 100%
@@ -47,7 +90,7 @@ defineProps({
   padding-right: 10px
 
   @media (min-width: 768px)
-    max-height: 200px
+    max-height: 300px
     border-radius: 10px
 
 .recipe-name
@@ -64,8 +107,13 @@ defineProps({
     margin: 0
 
 .recipe-description
-  max-height: 150px
   margin-top: 10px
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+
+  @media (min-width: 768px)
+    width: 50%
 
 .recipe-description-title
   margin: 0 5px 5px
@@ -79,4 +127,20 @@ defineProps({
 
   @media (min-width: 768px)
     padding: 0 20px
+
+.ratingbar
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+
+.ratingbar-text
+  font-size: 0.7em
+
+// Radix Switch CSS in Global as required
+
+.Label 
+  color: white
+  font-size: 15px
+  line-height: 1
+
 </style>
