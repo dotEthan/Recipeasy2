@@ -21,6 +21,7 @@ function handleSwitchChange(newState: boolean) {
     recipeStore.addToPublicRecipes(selectedRecipeId)
     // copy image to public image repo in cloudinary
   } else {
+    recipeStore.removeFromPublicRecipes(selectedRecipeId)
     //remove from public recipes
     // remove image from public image repo in cloudinary
   }

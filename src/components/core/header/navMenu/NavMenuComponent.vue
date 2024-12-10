@@ -33,11 +33,12 @@ function onClickRegisterSigning(type: string) {
 
 async function onSave() {
   closeMobileMenu()
-
+  // Public Data Saving. 
   if (currentUser.value) {
     const updateUser: LocalUser = {...currentUser.value, recipes: recipeStore.recipes, shoppingLists: shoppingListStore.shoppingLists, personalFilters: recipeStore.personalFilters}
     try {
       dataService.saveUserData(updateUser)
+      dataService.alterPublicRecipesData()
     } catch (error: any) {
       // TODO: handle & display errors
       console.log('Error during Saving:', error)

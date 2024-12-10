@@ -6,7 +6,7 @@ import { useRecipeStore } from '@/stores/recipe'
 import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue'
 import { useImageUpload } from '@/composables/useImageUpload'
 
-const emit = defineEmits(['editingCanceled'])
+const emit = defineEmits(['editingFinished'])
 
 let formValid = false
 let formData: Ref<Recipe>
@@ -49,7 +49,7 @@ function onSubmit() {
 }
 
 function onEditingOver() {
-  emit('editingCanceled')
+  emit('editingFinished')
 }
 
 function onDeleteIngredientType(ingredientTypeIndex: number) {
@@ -104,7 +104,7 @@ function saveImagePath(uploadedImgURL: string) {
 </script>
 
 <template>
-  <div class="recipe-item-contain">
+  <div class="recipe-detail-container">
     <div class="overlay-shadow" @click="onEditingOver"></div>
     <div class="recipe-overlay edit">
       <div class="overlay-contain edit">
@@ -121,7 +121,7 @@ function saveImagePath(uploadedImgURL: string) {
             <div class="edit-header-contain">
               <div class="edit-header-column">
                 <div class="form-group">
-                  <div>
+                  <div class="image-title-bar">
                     <label>Recipe Image</label>
                     <span class="remove-image" @click="removeImage" v-if="formData.imgPath">Remove Image</span>
                   </div>
@@ -135,7 +135,7 @@ function saveImagePath(uploadedImgURL: string) {
               </div>
               <div class="edit-header-column">
                 <div class="form-group">
-                  <label for="name">Recipe Name</label>
+                  <label for="name">Recipe Name*</label>
                   <input type="text" id="name" class="form-control" v-model="formData.name" />
                 </div>
                 <div class="form-group">
@@ -175,9 +175,9 @@ function saveImagePath(uploadedImgURL: string) {
                     <div class="item-list">
                       <div class="item-each" v-for="(ingredient, j) of ingredientType.steps" :key="j">
                         <div class="item-each-container">
-                          <div>
-                            <label class="hidden" for="ingredient-{{j}}">Amount</label>
-                            <div class="item-input-row">
+                          <div class="item-each-row amount-row">
+                            <label class="item-label" for="ingredient-{{j}}">Amount:</label>
+                            <div class="item-input-row amount-input">
                               <input
                                 type="text"
                                 class="form-control item-input"
@@ -186,9 +186,9 @@ function saveImagePath(uploadedImgURL: string) {
                               />
                             </div>
                           </div>
-                          <div>
-                            <label class="hidden" for="ingredient-{jp}}">Unit</label>
-                            <div class="item-input-row">
+                          <div class="item-each-row unit-row">
+                            <label class="item-label" for="ingredient-{jp}}">Unit:</label>
+                            <div class="item-input-row unit-input">
                               <input
                                 type="text"
                                 class="form-control item-input"
@@ -197,9 +197,9 @@ function saveImagePath(uploadedImgURL: string) {
                               />
                             </div>
                           </div>
-                          <div>
-                            <label class="hidden" for="ingredient-{{j}}">Name</label>
-                            <div class="item-input-row">
+                          <div class="item-each-row name-row">
+                            <label class="item-label" for="ingredient-{{j}}">Name:</label>
+                            <div class="item-input-row title-input">
                               <input
                                 type="text"
                                 class="form-control item-input"
@@ -255,13 +255,13 @@ function saveImagePath(uploadedImgURL: string) {
                     <div class="section-title">DIRECTIONS</div>
                     <div class="item-list">
                       <div class="item-each" v-for="(direction, l) of directionType.steps" :key="l">
-                        <div>
-                          <label class="hidden" for="direction{{l}}">DIRECTION</label>
+                        <div class="item-each-row">
+                          <label style="display: none" for="direction{{l}}">DIRECTION</label>
 
-                          <div class="item-input-row">
+                          <div class="item-input-row directions-row">
                             <input
                               type="text"
-                              class="form-control"
+                              class="form-control direction-input"
                               v-model="directionType.steps[l]"
                               id="direction{{l}}"
                             />
@@ -301,6 +301,16 @@ function saveImagePath(uploadedImgURL: string) {
 </template>
 <style lang="sass" scoped>
 @import '../../../../assets/variables.sass'
+.recipe-detail-container
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  display: flex
+  justify-content: center
+  align-items: center
+  height: calc(100vh - $navbar-height)
+
 input.ng-invalid.ng-touched,
 textarea.ng-invalid.ng-touched
     border: 1px solid red
@@ -315,17 +325,20 @@ textarea.ng-invalid.ng-touched
     overflow: auto
 
 .save-cancel-btns
-    position: absolute
-    top: -59px
-    left: 50%
+    // position: absolute
+    // top: -59px
+    // left: 50%
     height: 60px
     display: flex
-    justify-content: space-between
-    transform: translate(-50%, 0)
+    justify-content: space-around
+    width: 50%
+    // transform: translate(-50%, 0)
 
 label
-    // color: #eef
-    margin-left: 5px
+  margin-left: 5px
+
+  @media (min-width: 768px)
+    margin-left: 10px
 
 .edit-header-contain
     display: flex
@@ -341,9 +354,22 @@ label
     display: flex
     flex-direction: column
 
+.remove-image
+  font-size: clamp(6px, .7vw, 24px)
+  display: flex
+  flex-direction: column
+  justify-content: flex-end
+  cursor: pointer  
+  
+.image-title-bar
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+
 .form-control
     font-size: 1rem
     padding: 5px 5px
+    width: 100%
 
 .recipe-edit-image
     object-fit: cover
@@ -362,7 +388,6 @@ label
 .section-title
     margin-bottom: 10px
     font-size: 1.2em
-    // color: #eef
     font-weight: 500
     margin-left: 0
 
@@ -389,23 +414,36 @@ label
 .item-each
     width: 100%
     padding: 5px
-
-    @media (min-width: 768px)
-        width: 33%
-
-.item-input-row
     display: flex
+    flex-direction: row
 
-.item-input
-    width: 80%
+    // @media (min-width: 768px)
+    //     width: 33%
+
+.item-each-container
+  display: flex
+  flex-direction: row
+  width: 100%
+
+.item-each-row
+  display: flex
+  flex-direction: row
+  align-items: center
+
+.item-label
+  margin-right: 15px
+
+.amount-input
+  width: 5vw
+
+.unit-input
+  width: 10vw
+
+.title-input, .name-row
+  flex-grow: 1
 
 .btn-clear
     cursor: pointer
-    // background: transparent
-    // color: #eeeeff
-
-    // &:hover
-    //     background: rgba(255,255,255,.2)
 
 .btn-delete
     background: transparent
@@ -415,6 +453,7 @@ label
     padding: 0
     position: relative
     transform: rotate(45deg)
+    cursor: pointer
 
     &:before
         content: ''
@@ -424,7 +463,7 @@ label
         transform: translate(-50%, -50%)
         width: 3px
         height: 20px
-        background: #eeeeff
+        background: $colorLighter
 
     &:after
         content: ''
@@ -434,7 +473,7 @@ label
         transform: translate(-50%, -50%)
         width: 20px
         height: 3px
-        background: #eeeeff
+        background: $colorLighter
 
 
     &:hover
@@ -462,4 +501,15 @@ label
 
   &.cancel
     text-shadow: 0 0 10px #fff, 0 0 20px red, 0 0 30px red, 0 0 40px red
+
+.item-each-row
+  width: 100%
+
+.directions-row
+  display: flex
+  flex-direction: row
+  width: 100%
+
+.direction-input
+  flex-grow: 1
 </style>

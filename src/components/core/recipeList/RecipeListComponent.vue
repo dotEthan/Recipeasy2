@@ -90,7 +90,7 @@ function removedRecipe() {
   <RecipeEditComponent
     v-else-if="selectedRecipe && recipeStore.editSelectedRecipe"
     class="recipe-item-contain"
-    @editing-canceled="editSelectedRecipe = false"
+    @editing-finished="recipeStore.setEditStatusSelectedId(false)"
   />
 </template>
 

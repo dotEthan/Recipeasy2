@@ -10,6 +10,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   const recipes = ref<Recipe[]>([])
   const existingPublicRecipes = ref<Recipe[]>([])
   const newPublicRecipes = ref<Recipe[]>([])
+  const removedPublicRecipes = ref<Recipe[]>([])
   const allTags = ref<string[]>([])
   const selectedRecipeId = ref<string>('')
   const isSelectedRecipePublic = ref(false)
@@ -45,6 +46,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     recipes.value = userData.localUser.recipes || []
     existingPublicRecipes.value = publicRecipeData || []
     newPublicRecipes.value = []
+    removedPublicRecipes.value = []
     // allTags.value = state.allTags || []
     selectedRecipeId.value = ''
     isSelectedRecipePublic.value = false
@@ -119,6 +121,11 @@ export const useRecipeStore = defineStore('recipes', () => {
     }
   }
 
+  function removeFromPublicRecipes(id: string) {
+    const recipe = recipes.value.find((recipe) => recipe.id === id) as Recipe
+    removedPublicRecipes.value.push(recipe)
+  }
+
   function setAllRecipes(newRecipes: Recipe[]) {
     recipes.value = newRecipes
   }
@@ -128,6 +135,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     recipes.value = []
     existingPublicRecipes.value = []
     newPublicRecipes.value = []
+    removedPublicRecipes.value = []
     allTags.value = []
     selectedRecipeId.value = ''
     isSelectedRecipePublic.value = false
@@ -141,6 +149,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     selectedRecipeId,
     existingPublicRecipes,
     newPublicRecipes,
+    removedPublicRecipes,
     isSelectedRecipePublic,
     editSelectedRecipe,
     personalFilters,
@@ -156,6 +165,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     setEditStatusSelectedId,
     removeSelectedRecipe,
     addToPublicRecipes,
+    removeFromPublicRecipes,
     setAllRecipes,
     resetState
   }

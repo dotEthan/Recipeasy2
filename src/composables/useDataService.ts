@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import {
+  deleteDoc,
   doc,
   DocumentData,
   getDoc,
@@ -9,10 +10,12 @@ import type { LocalUser } from '@/types/UserState'
 import dummyData from '../assets/dummyData.json'
 import { publicRecipesRef, usersRef } from '../../firebase'
 import { Recipe } from '@/types/Recipes'
+import { useRecipeStore } from '@/stores/recipe'
 
 export function useDataService() {
 
   const error = ref<string | null>(null)
+  const recipeStore = useRecipeStore()
 
   const saveUserData = async (user: LocalUser) => {
     // const tempUpdateData = user
@@ -26,6 +29,13 @@ export function useDataService() {
       error.value = err
       console.error('Error saving user data:', error.value)
     }
+  }
+
+  const alterPublicRecipesData = async () => {
+    const newPublicRecipes = recipeStore.newPublicRecipes
+    const toBeDeletedPublicRecipes = recipeStore.removedPublicRecipes
+    if(newPublicRecipes) savePublicRecipesData(newPublicRecipes)
+    if (toBeDeletedPublicRecipes) deletePublicRecipesData(toBeDeletedPublicRecipes)
   }
 
   const savePublicRecipesData = async (publicRecipes: Recipe[]) => {
@@ -46,6 +56,25 @@ export function useDataService() {
       error.value = err
       console.error('Error saving public Recipe data:', error.value)
     }
+  }
+
+  const deletePublicRecipesData = async (publicRecipes: Recipe[]) => {
+    error.value = null // Reset error
+    try {
+      for (const recipe of publicRecipes) {    
+        // Create a reference to the specific recipe document
+        const recipeRef = doc(publicRecipesRef, recipe.id)
+        
+        // Delete the document
+        await deleteDoc(recipeRef)
+  
+      }
+
+    } catch (err: any) {
+      error.value = err
+      console.error('Error saving public Recipe data:', error.value)
+    }
+    
   }
 
   
@@ -87,5 +116,5 @@ const loadPublicRecipeData = async (uid: string): Promise<[DocumentData | null]>
   }
 };
 
-  return { saveUserData, loadUserData, loadPublicRecipeData, savePublicRecipesData, error }
+  return { saveUserData, loadUserData, loadPublicRecipeData, savePublicRecipesData, deletePublicRecipesData, alterPublicRecipesData, error }
 }
