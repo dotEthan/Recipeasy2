@@ -33,7 +33,7 @@ console.log('is it on: ', isRegistrationModalOpen.value)
     </div>
   </div>
   <div class="attribute">
-    <a href="https://nick-karvounis.com/" target="_blank">Photo by Nick Karvounis on Unsplash</a>
+    <h4><a href="https://nick-karvounis.com/" target="_blank">Photo by Nick Karvounis on Unsplash</a></h4>
   </div>
 
   <AuthComponent v-if="isRegistrationModalOpen"></AuthComponent>
@@ -93,10 +93,8 @@ console.log('is it on: ', isRegistrationModalOpen.value)
 
 .attribute
   position: absolute
-  bottom: 25
-  right: 25
-  font-size: 0.8rem
-  // z-index: 2
+  bottom: 25px
+  right: 25px
 
   @media (min-width: 768px)
     bottom: 50

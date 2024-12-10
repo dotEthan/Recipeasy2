@@ -16,3 +16,4 @@ export const auth = getAuth()
 
 const db = getFirestore()
 export const usersRef = collection(db, 'users')
+export const publicRecipesRef = collection(db, 'public_recipes')

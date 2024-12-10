@@ -81,17 +81,17 @@ function removedRecipe() {
       />
     </div>
     <RecipesEmptyComponent v-else />
-    <RecipeDetailsComponent
-      v-if="selectedRecipe && !editSelectedRecipe"
-      @closeRecipeDetails="closeRecipeDetails"
-      @edit-selected-recipe="editSelectedRecipe = true"
-    />
-    <RecipeEditComponent
-      v-else-if="selectedRecipe && editSelectedRecipe"
-      class="recipe-item-contain"
-      @editing-canceled="editSelectedRecipe = false"
-    />
   </div>
+  <RecipeDetailsComponent
+    v-if="selectedRecipe && !recipeStore.editSelectedRecipe"
+    @closeRecipeDetails="closeRecipeDetails"
+    @edit-selected-recipe="editSelectedRecipe = true"
+  />
+  <RecipeEditComponent
+    v-else-if="selectedRecipe && recipeStore.editSelectedRecipe"
+    class="recipe-item-contain"
+    @editing-canceled="editSelectedRecipe = false"
+  />
 </template>
 
 <style lang="sass" scoped>
