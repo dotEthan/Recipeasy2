@@ -91,6 +91,8 @@ h2
   width: 90%
   display: flex
 
+  @media (min-width: 768px)
+    width: 50%
 
   .searchbar-input
     line-height: 1em
@@ -104,18 +106,22 @@ h2
     margin-left: 10px
     line-height: 2em
     vertical-align: middle
-    // background-color: $colorMiddle
     width: 24px
     height: 24px
     border-radius: 5px
     cursor: pointer
+    border: 1px solid $colorMiddle
+
+    &:hover
+      background-color: $colorLighter
+
+    &:focus
+      background-color: $colorLighter
+      
 
   .magnifying
     display: flex
     align-items: center
-    // color: white
     width: 100%
 
-  @media (min-width: 768px)
-    width: 80%
 </style>

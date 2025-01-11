@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
 import { computed, ref } from 'vue'
-import { storeToRefs } from 'pinia'
 import { useRecipeStore } from '@/stores/recipe'
 import RecipeListItemComponent from './recipeListItem/RecipeListItemComponent.vue'
 import FilterComponent from './recipeFilter/FilterComponent.vue'
@@ -41,15 +40,6 @@ function openRecipeDetail(id: string) {
 function newRecipeAdded() {
   console.log('adding')
   const newId = uuidv4()
-  const newRecipe = {
-    id: newId,
-    name: 'Default Recipe',
-    ingredients: [{ title: 'Ingedients', steps: [] }],
-    directions: [{ title: 'Directions', steps: [] }],
-    description: '',
-    tags: []
-  }
-  selectedRecipe.value = newRecipe
   recipeStore.setSelectedRecipeId(newId)
   recipeStore.setEditStatusSelectedId(true)
   editSelectedRecipe.value = true

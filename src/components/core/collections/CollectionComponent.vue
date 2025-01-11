@@ -64,4 +64,5 @@ function openRecipeDetails(id: string) {
     grid-template-columns: 19% 19% 19% 19% 19%
     column-gap: 10px
     row-gap: 10px
+    padding: 15px 50px
 </style>

@@ -59,13 +59,11 @@ export function useDataService() {
   }
 
   const deletePublicRecipesData = async (publicRecipes: Recipe[]) => {
-    error.value = null // Reset error
+    error.value = null 
     try {
       for (const recipe of publicRecipes) {    
-        // Create a reference to the specific recipe document
         const recipeRef = doc(publicRecipesRef, recipe.id)
         
-        // Delete the document
         await deleteDoc(recipeRef)
   
       }

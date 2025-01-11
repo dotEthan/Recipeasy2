@@ -9,7 +9,7 @@ import ToolTipComponent from '../../shared/toolTip/ToolTipComponent.vue'
 
 //TODO Refactor into multiple components 'header', 'ingredients', 'directions'
 
-const emit = defineEmits(['editingFinished'])
+const emit = defineEmits(['editingFinished','recipeDeleted'])
 
 let formValid = true
 let formData: Ref<Recipe>
@@ -19,6 +19,7 @@ const recipeStore = useRecipeStore()
 const { deleteImage } = useImageUpload()
 
 const selectedRecipe: Recipe | undefined = recipeStore.getSelectedRecipe
+let isNewRecipe = false
 
 if (selectedRecipe) {
   formData = ref<Recipe>({
@@ -33,7 +34,16 @@ if (selectedRecipe) {
     tags: selectedRecipe.tags ? JSON.parse(JSON.stringify(selectedRecipe.tags)) : []
   })
 } else {
-  formData = ref({ ingredients: [], directions: [], tags: [] })
+  const newRecipe = {
+    id: recipeStore.selectedRecipeId,
+    name: 'Default Recipe',
+    ingredients: [{ title: 'Ingedients', steps: [] }],
+    directions: [{ title: 'Directions', steps: [] }],
+    description: '',
+    tags: []
+  }
+  isNewRecipe = true
+  formData = ref<Recipe>(newRecipe)
 }
 
 function onSubmit() {
@@ -68,7 +78,10 @@ function validateName() {
 }
 
 function onEditingOver() {
-  emit('editingFinished')
+  if (isNewRecipe) {
+    recipeStore.setSelectedRecipeId('')
+  }
+  recipeStore.setEditStatusSelectedId(false)
 }
 
 function onDeleteIngredientType(ingredientTypeIndex: number) {
@@ -117,7 +130,6 @@ async function removeImage() {
 }
 
 function saveImagePath(uploadedImgURL: string) {
-  console.log('saving image path')
   formData.value.imgPath = uploadedImgURL
 }
 </script>
@@ -191,6 +203,7 @@ function saveImagePath(uploadedImgURL: string) {
                       class="form-control item-type-input"
                       id="ingredient-group{{i}}"
                       v-model="formData.ingredients[i].title"
+                      placeholder="Main Dish"
                     />
                     <button
                       type="button"
@@ -211,6 +224,7 @@ function saveImagePath(uploadedImgURL: string) {
                                 class="form-control item-input"
                                 v-model="formData.ingredients[i].steps[j].amount"
                                 id="ingredient-{{j}}"
+                                placeholder="1"
                               />
                             </div>
                           </div>
@@ -222,6 +236,7 @@ function saveImagePath(uploadedImgURL: string) {
                                 class="form-control item-input"
                                 v-model="formData.ingredients[i].steps[j].unit"
                                 id="ingredient-{{j}}"
+                                placeholder="cup"
                               />
                             </div>
                           </div>
@@ -233,6 +248,7 @@ function saveImagePath(uploadedImgURL: string) {
                                 class="form-control item-input"
                                 v-model="formData.ingredients[i].steps[j].name"
                                 id="ingredient-{{j}}"
+                                placeholder="Pepper"
                               />
                             </div>
                           </div>
@@ -272,6 +288,7 @@ function saveImagePath(uploadedImgURL: string) {
                       class="form-control item-type-input"
                       v-model="directionType.title"
                       id="direction-group{{k}}"
+                      placeholder="Main Dish"
                     />
                     <button
                       type="button"
@@ -292,6 +309,7 @@ function saveImagePath(uploadedImgURL: string) {
                               class="form-control direction-input"
                               v-model="directionType.steps[l]"
                               id="direction{{l}}"
+                                placeholder="Cut, Stir, Bake"
                             />
                             <button
                               type="button"
