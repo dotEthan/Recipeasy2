@@ -67,7 +67,9 @@ function removedRecipe() {
 
 <template>
   <div class="recipe-list-container">
-    <div class="floating-configs-right"><FilterComponent @filter="setFilters" :filters="allRecipeTags" /></div>
+    <div class="floating-configs-right">
+      <FilterComponent @filter="setFilters" :filters="allRecipeTags" />
+    </div>
     <div class="recipeRow" v-if="recipeStore.recipesLength">
       <NewRecipeButtonComponent class="recipe-item-contain" icon-size="large" @add-new-recipe="newRecipeAdded" />
       <RecipeListItemComponent
@@ -108,7 +110,11 @@ function removedRecipe() {
 
   @media (min-width: 768px)
     top: -60px
-    right: 40px
+    right: 0px
+
+  @media (min-width: 1200px)
+    top: -100px
+    right: 0px
 
 .recipeRow
   display: grid
