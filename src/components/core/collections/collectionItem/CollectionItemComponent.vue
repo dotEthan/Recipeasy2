@@ -25,6 +25,9 @@ const props = defineProps({
 
 .recipeicon
   padding: 5px
+  
+  @media (min-width: 768px)
+    padding: 15px
 
   img 
     width: 100%

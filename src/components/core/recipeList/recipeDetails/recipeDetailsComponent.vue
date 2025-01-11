@@ -4,15 +4,28 @@ import ListItemComponent from './listItem/ListItemComponent.vue'
 import RecipeDetailHeaderComponent from './recipeDetailHeader/RecipeDetailHeaderComponent.vue';
 import RecipeManageButtonsComponent from './recipeManageButtons/RecipeManageButtonsComponent.vue';
 import XToCloseComponent from '../../shared/xToClose/XToCloseComponent.vue';
+import { useImageUpload } from '@/composables/useImageUpload';
 
 const emit = defineEmits(['closeRecipeDetails', 'removedRecipe', 'editSelectedRecipe'])
 
+const { deleteImage } = useImageUpload()
 const recipeStore = useRecipeStore()
 
 const selectedRecipe = recipeStore.getSelectedRecipe
 
 function onClose() {
   emit('closeRecipeDetails')
+}
+
+async function deleteRemovedRecipeImage() {
+  const imgPath = selectedRecipe?.imgPath
+  if (imgPath) {
+    console.log('removing image: ', imgPath)
+    const success = await deleteImage(imgPath)
+    if (!success) {
+      console.error('Failed to delete image from Cloudinary')
+    }
+  }
 }
 </script>
 
@@ -24,7 +37,7 @@ function onClose() {
       <div class="overlay-contain">
         <div class="recipe-overlay-content">
           <RecipeDetailHeaderComponent :selectedRecipe="selectedRecipe"/>
-          <RecipeManageButtonsComponent />
+          <RecipeManageButtonsComponent @removed-recipe="deleteRemovedRecipeImage"/>
           <div class="ingredients-contain">
             <div class="type-section-title" v-if="selectedRecipe?.ingredients">
               INGREDIENTS: <span class="help-text">(click to add ingredient to shopping list)</span>

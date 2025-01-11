@@ -29,11 +29,6 @@ const recipeStore = useRecipeStore()
   .selectedRecipeOpen
     overflow-y: hidden
 
-  @media (min-width: 768px)
-    max-width: 1366px
-
-
-
 .headline-title
   margin-top: 10px
   font-family: pacifico, sans-serif

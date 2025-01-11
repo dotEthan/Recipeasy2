@@ -37,12 +37,11 @@ function onEditRecipe() {
 function onDeleteRecipe() {
   console.log('removing')
   recipeStore.removeSelectedRecipe()
-  recipeStore.setSelectedRecipeId('-1')
-  emit('closeRecipeDetails')
+  recipeStore.setSelectedRecipeId('')
   emit('removedRecipe')
 }
 
-function onAddPublictoUsers() {
+function addPublicRecipeToPersonal() {
     console.log('adding to users')
 }
 </script>
@@ -68,9 +67,9 @@ function onAddPublictoUsers() {
         <div class="delete-recipe"></div>
         <span class="red-word">Delete</span>&nbsp;Recipe
     </button>
-    <button v-else class="manage-btn-3" @click="onAddPublictoUsers">
+    <button v-else class="manage-btn-3" @click="addPublicRecipeToPersonal">
         <div class="delete-recipe"></div>
-        <span class="red-word">Add To Your</span>&nbsp;Recipes
+        <span class="red-word" >Add To Your</span>&nbsp;Recipes
     </button>
     </div>
 </div>
