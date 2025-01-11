@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, computed, ComputedRef } from 'vue'
-import type { Recipe, RecipeState } from '@/types/Recipes'
 import { useUserStore } from './user'
-import { LocalUser, UserState } from '@/types/UserState'
+import type { Recipe } from '@/types/Recipes'
+import { UserState } from '@/types/UserState'
 
 export const useRecipeStore = defineStore('recipes', () => {
   const userStore = useUserStore()
@@ -12,6 +12,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   const newPublicRecipes = ref<Recipe[]>([])
   const removedPublicRecipes = ref<Recipe[]>([])
   const allTags = ref<string[]>([])
+
   const selectedRecipeId = ref<string>('')
   const isSelectedRecipePublic = ref(false)
   const editSelectedRecipe = ref(false)

@@ -5,12 +5,15 @@ import type { Recipe } from '@/types/Recipes'
 import { useRecipeStore } from '@/stores/recipe'
 import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue'
 import { useImageUpload } from '@/composables/useImageUpload'
+import ToolTipComponent from '../../shared/toolTip/ToolTipComponent.vue'
+
+//TODO Refactor into multiple components 'header', 'ingredients', 'directions'
 
 const emit = defineEmits(['editingFinished'])
 
-let formValid = false
+let formValid = true
 let formData: Ref<Recipe>
-let updatedImageURL = ''
+let formError = ref('')
 
 const recipeStore = useRecipeStore()
 const { deleteImage } = useImageUpload()
@@ -19,6 +22,7 @@ const selectedRecipe: Recipe | undefined = recipeStore.getSelectedRecipe
 
 if (selectedRecipe) {
   formData = ref<Recipe>({
+    // Deep Clones the object
     ...JSON.parse(JSON.stringify(selectedRecipe)),
     ingredients: selectedRecipe.ingredients
       ? JSON.parse(JSON.stringify(selectedRecipe.ingredients))
@@ -37,15 +41,30 @@ function onSubmit() {
   if (formData?.value && selectedRecipe) {
     console.log('Updating existing Recipe')
     recipeStore.updateRecipe(formData.value)
-  } else if (formData) {
+    onEditingOver()
+  } else if (formData?.value && formValid) {
     console.log('Creating New Recipe')
     recipeStore.addRecipe(formData.value)
+    onEditingOver()
+  } else {
+    console.log('not valid?')
   }
   //TODO add new tags
   // const allUserTags: string[] = Array.from(
   //   new Set(userData?.recipes.flatMap((recipe: Recipe) => recipe.tags))
   // )
-  onEditingOver()
+}
+
+// TODO Better validation. 
+function validateName() {
+  console.log('validating Name: ', formData.value.name?.length)
+  if (!formData.value.name || formData.value.name.length < 1) {
+    formError.value = "Recipe Name Required"
+    formValid = false
+  } else {
+    formError.value = ""
+    formValid = true
+  }
 }
 
 function onEditingOver() {
@@ -111,12 +130,21 @@ function saveImagePath(uploadedImgURL: string) {
         <div class="form-contain">
           <form @submit.prevent="onSubmit">
             <div class="save-cancel-btns text-center">
-              <button type="submit" :class="{ valid: formValid }" class="recipe-edit-button save">
-                Save
-              </button>
-              <button type="button" class="recipe-edit-button cancel" @click="onEditingOver">
-                Cancel
-              </button>
+              <div class="submit-btn">
+                <button type="submit" :class="{ valid: formValid }" class="recipe-manage-btn save">
+                  Save
+                </button>
+                <ToolTipComponent
+                  :content="formError"
+                  format="warning"
+                  class="tooltip" 
+                  v-bind:class="{ 'show-tooltip': !formValid }" />
+              </div>
+              <div class="cancel-btn">
+                <button type="button" class="recipe-manage-btn cancel" @click="onEditingOver">
+                  Cancel
+                </button>
+            </div>
             </div>
             <div class="edit-header-contain">
               <div class="edit-header-column">
@@ -136,7 +164,7 @@ function saveImagePath(uploadedImgURL: string) {
               <div class="edit-header-column">
                 <div class="form-group">
                   <label for="name">Recipe Name*</label>
-                  <input type="text" id="name" class="form-control" v-model="formData.name" />
+                  <input type="text" id="name" class="form-control" v-model="formData.name" @blur="validateName" />
                 </div>
                 <div class="form-group">
                   <label for="description">Description</label>
@@ -325,14 +353,9 @@ textarea.ng-invalid.ng-touched
     overflow: auto
 
 .save-cancel-btns
-    // position: absolute
-    // top: -59px
-    // left: 50%
     height: 60px
     display: flex
     justify-content: space-around
-    width: 50%
-    // transform: translate(-50%, 0)
 
 label
   margin-left: 5px
@@ -482,25 +505,45 @@ label
 
             
 
-.recipe-edit-button
+.recipe-manage-btn
   background: $recipe-edit-bg
   height: 100%
-  color: $colorLightest
   width: 100px
   border-radius: 10px 10px 0 0
   border: 0
   
   &.save
+    color: $colorLighter
     margin-right: 110px
+    cursor: not-allowed
 
     @media (min-width: 768px)
       margin-right: 200px
 
     &.valid
-      text-shadow: 0 0 10px #fff, 0 0 20px green, 0 0 30px green, 0 0 40px green
+      cursor: pointer
+      color: $colorDarker
+
+      &:hover
+        text-shadow: 0 0 10px #fff, 0 0 20px green, 0 0 30px green, 0 0 40px green
 
   &.cancel
-    text-shadow: 0 0 10px #fff, 0 0 20px red, 0 0 30px red, 0 0 40px red
+    color: $colorDarker
+    cursor: pointer
+
+    &:hover
+      text-shadow: 0 0 10px #fff, 0 0 20px red, 0 0 30px red, 0 0 40px red
+
+.tooltip
+  display: none
+
+  
+.submit-btn 
+  position: relative
+  
+  &:hover
+    .show-tooltip
+      display: block
 
 .item-each-row
   width: 100%
