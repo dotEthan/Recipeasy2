@@ -21,25 +21,26 @@ export function useformValidation(formData: RecipeFormData) {
     const rules = validationRules[field] || []
     const value = formData[field]
     
-    for (const rule of rules) {
-        if (rule.required && !formData[field]) {
-          errors.value[field] = rule.message
-          return false
-        }
-    }
+    // for (const rule of rules) {
+    //     if (rule.required && !formData[field]) {
+    //       errors.value[field] = rule.message
+    //       return false
+    //     }
+    // }
     
-    errors.value[field] = error
-    return !error
+    // errors.value[field] = error
+    // return !error
   }
   
   const validateForm = () => {
-    let isValid = true
+    // let isValid = true
     Object.keys(validationRules).forEach(field => {
-      if (!validateField(field, validationRules[field])) {
-        isValid = false
-      }
+      // if (!validateField(field, validationRules[field])) {
+      //   isValid = false
+      // }
     })
-    return isValid
+    // return isValid
+    return true
   }
   
   return {
