@@ -49,11 +49,10 @@ function newRecipeAdded() {
     description: '',
     tags: []
   }
-  recipeStore.addRecipe(newRecipe)
   selectedRecipe.value = newRecipe
   recipeStore.setSelectedRecipeId(newId)
+  recipeStore.setEditStatusSelectedId(true)
   editSelectedRecipe.value = true
-  //TODO Remove if empty, Error handling
 }
 
 function setFilters(filters: string[]) {
@@ -83,12 +82,12 @@ function removedRecipe() {
     <RecipesEmptyComponent v-else />
   </div>
   <RecipeDetailsComponent
-    v-if="selectedRecipe && !recipeStore.editSelectedRecipe"
+    v-if="recipeStore.selectedRecipeId && !recipeStore.editSelectedRecipe"
     @closeRecipeDetails="closeRecipeDetails"
-    @edit-selected-recipe="editSelectedRecipe = true"
+    @edit-selected-recipe="recipeStore.setEditStatusSelectedId(true)"
   />
   <RecipeEditComponent
-    v-else-if="selectedRecipe && recipeStore.editSelectedRecipe"
+    v-else-if="recipeStore.selectedRecipeId && recipeStore.editSelectedRecipe"
     class="recipe-item-contain"
     @editing-finished="recipeStore.setEditStatusSelectedId(false)"
   />

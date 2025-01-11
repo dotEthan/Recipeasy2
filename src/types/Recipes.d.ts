@@ -17,7 +17,8 @@ export type Recipe = {
   ingredients: Ingredient[]
   directions: Direction[]
   imgPath?: string
-  rating?: number
+  userRating?: number
+  publicRating?: number
   private?: boolean
   mealType?: string[]
   tags: string[]

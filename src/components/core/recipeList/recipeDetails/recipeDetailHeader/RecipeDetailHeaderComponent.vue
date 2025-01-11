@@ -44,7 +44,15 @@ function handleSwitchChange(newState: boolean) {
               </p>
             </div>
             <div class="ratingbar">
-              <div class="ratingbar-left"><span class="ratingbar-text">Rating: </span>{{ selectedRecipe?.rating }}</div>
+              <div class="ratingbar-left">
+                <div v-if="selectedRecipe?.userRating">
+                  <span v-if="selectedRecipe?.userRating">Your Rating:</span>
+                  {{ selectedRecipe?.userRating }}
+                </div>
+                <div :class="{smallText: selectedRecipe?.userRating}">
+                  <span class="ratingbar-text">Rating: </span>{{ selectedRecipe?.publicRating }}
+                </div>
+              </div>
               <div class="ratingbar-right"><span class="ratingbar-text">Public Recipe: </span>
                 <SwitchRoot
                   class="switch-outer"

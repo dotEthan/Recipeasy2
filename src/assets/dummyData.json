@@ -30,7 +30,7 @@
       ],
       "directions": ["put in blender and blend", "drink"],
       "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090094/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/x3gq5jk5hnnl6vgqmlhx.jpg",
-      "rating": 3.5,
+      "publicRating": 3.5,
       "private": false,
       "mealType": ["snack", "fast food", "junk food"],
       "tags": ["milkshake", "drink", "vegan"]
@@ -68,7 +68,7 @@
         }
       ],
       "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090140/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/yxqha612s1holyscxa5g.webp",
-      "rating": 5,
+      "publicRating": 5,
       "private": false,
       "mealType": ["snack"],
       "cookTime":"25 minutes",
@@ -116,7 +116,7 @@
         }
       ],
       "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090184/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/rw8pnm2cxqptdivilutu.jpg",
-      "rating": 5,
+      "publicRating": 5,
       "private": false,
       "mealType": ["dinner"],
       "tags": ["Seitan", "Chickwheat", "Chickpeas", "Vital Wheat Glute", "Vegan", "Protein"]
@@ -150,7 +150,7 @@
         }
       ],
       "imgPath": "https://picsum.photos/200/300",
-      "rating": 2,
+      "publicRating": 2,
       "private": false,
       "mealType": ["breakfast"],
       "tags": ["pancake", "Oatmeal", "Vegan"]
@@ -240,7 +240,7 @@
         }
       ],
       "imgPath": "",
-      "rating": "",
+      "publicRating": "",
       "private": false,
       "mealType": ["lunch", "dinner"],
       "tags": [
@@ -353,7 +353,7 @@
         }
       ],
       "imgPath": "",
-      "rating": "",
+      "publicRating": "",
       "private": false,
       "mealType": "dinner",
       "tags": [
@@ -450,7 +450,7 @@
         }
       ],
       "imgPath": "",
-      "rating": "",
+      "publicRating": "",
       "private": false,
       "mealType": ["dinner"],
       "tags": [
@@ -560,7 +560,7 @@
         }
       ],
       "imgPath": "",
-      "rating": "",
+      "publicRating": "",
       "private": false,
       "mealType": ["dinner"],
       "tags": [
@@ -669,7 +669,7 @@
       }
     ],
     "imgPath": "",
-    "rating": "",
+    "publicRating": "",
     "private": false,
     "mealType": ["dinner", "lunch"],
     "tags": [
@@ -783,7 +783,7 @@
       }
     ],
     "imgPath": "",
-    "rating": "",
+    "publicRating": "",
     "private": false,
     "mealType": ["lunch", "dinner"],
     "tags": [
@@ -889,7 +889,7 @@
       }
     ],
     "imgPath": "",
-    "rating": "",
+    "publicRating": "",
     "private": false,
     "mealType": ["lunch", "dinner"],
     "tags": [
@@ -986,7 +986,7 @@
       }
     ],
     "imgPath": "",
-    "rating": "",
+    "publicRating": "",
     "private": false,
     "mealType": ["dinner"],
     "tags": [
@@ -1084,7 +1084,7 @@
     }
     ],
     "imgPath": "",
-    "rating": "",
+    "publicRating": "",
     "private": false,
     "mealType": ["lunch", "dinner"],
     "tags": [
@@ -1192,7 +1192,7 @@
     }
     ],
     "imgPath": "",
-    "rating": "",
+    "publicRating": "",
     "private": false,
     "mealType": ["dinner"],
     "tags": [
@@ -1293,7 +1293,7 @@
     }
     ],
     "imgPath": "",
-    "rating": "",
+    "publicRating": "",
     "private": false,
     "mealType": ["dinner"],
     "tags": [
@@ -1396,7 +1396,7 @@
     }
     ],
     "imgPath": "",
-    "rating": "",
+    "publicRating": "",
     "private": false,
     "mealType": ["lunch"],
     "tags": [

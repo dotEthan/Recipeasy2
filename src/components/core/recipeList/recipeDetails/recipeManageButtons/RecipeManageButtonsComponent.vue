@@ -2,6 +2,9 @@
 import { useRecipeStore } from '@/stores/recipe'
 import { useShoppingListStore } from '@/stores/shoppingList'
 
+
+const emit = defineEmits(['closeRecipeDetails', 'removedRecipe'])
+
 const recipeStore = useRecipeStore()
 const shoppingListStore = useShoppingListStore()
 
@@ -35,8 +38,8 @@ function onDeleteRecipe() {
   console.log('removing')
   recipeStore.removeSelectedRecipe()
   recipeStore.setSelectedRecipeId('-1')
-//   emit('closeRecipeDetails')
-  // emit('removedRecipe')
+  emit('closeRecipeDetails')
+  emit('removedRecipe')
 }
 
 function onAddPublictoUsers() {
