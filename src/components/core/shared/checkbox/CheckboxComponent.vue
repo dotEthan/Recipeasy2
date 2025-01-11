@@ -73,6 +73,8 @@ button
 
 .checkboxIndicator
   color: blue
+  border: 1px solid black
+  widht: 50px
 
 
 .label

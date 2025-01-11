@@ -3,7 +3,7 @@ defineEmits(['close'])
 </script>
 
 <template>
-    <button type="button" class="recipe-close" aria-label="Close" @click="$emit('close')">
+    <button type="button" class="close-container" aria-label="Close" @click="$emit('close')">
       <span class="close-x" aria-hidden="true">&times;</span>
     </button>
 </template>
@@ -11,7 +11,7 @@ defineEmits(['close'])
 <style lang="sass">
 @import '@/assets/variables.sass'
 
-.recipe-close
+.close-container
     position: absolute
     top: -5px
     right: -5px
