@@ -48,7 +48,7 @@ I've also been using this as a time to work with ChatGPT to see how much easier 
 - Animations/Testing
 - User Dashboard
 - Error Handling & User feedback (loadin spinners, etc)
-- All //TODO comments
+- All //TODO comments (add "Ignore Recipe")
 - Display newly added Recipe Data (time, nutritional info, etc)
 - Offline Functionality
 - Defaults (images)

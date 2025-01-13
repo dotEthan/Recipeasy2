@@ -10,6 +10,7 @@ export const useUserStore = defineStore('user', () => {
 
   const isAuthorized = computed(() => authorized.value)
   const getCurrentUser = computed(() => localUser.value)
+  const getCurrentUserId = computed(() => localUser.value.uid)
 
   function deauthorize() {
     authorized.value = false
@@ -36,12 +37,6 @@ export const useUserStore = defineStore('user', () => {
     localUser.value = {uid: ''}
   }
 
-  function setTestModeOn(testData: LocalUser) {
-    uid.value = 'testMode'
-    authorized.value = true
-    localUser.value = { ...testData }
-  }
-
   return {
     uid,
     authorized,
@@ -49,11 +44,11 @@ export const useUserStore = defineStore('user', () => {
     personalFilters,
     isAuthorized,
     getCurrentUser,
+    getCurrentUserId,
     deauthorize,
     authorize,
     setLocalUser,
     setInitialUserState,
     resetState,
-    setTestModeOn
   }
 })

@@ -105,30 +105,44 @@ export const useRecipeStore = defineStore('recipes', () => {
     }
   }
 
-  function addToPublicRecipes(id: string) {
-    const fullPublicRecipes = existingPublicRecipes.value.concat(newPublicRecipes.value)
-    let publicRecipeExists = false
-    fullPublicRecipes.forEach((recipe) => {
-      if (recipe.id === id) publicRecipeExists = true
-    })
-
-    if (!publicRecipeExists) {
-      const recipe = recipes.value.find((recipe) => recipe.id === id) as Recipe
-      console.log('new recipe')
-      newPublicRecipes.value.push(recipe)
+  function addToPublicRecipes(newPublicRecipe: Recipe) {
+    const recipeAlreadyAdded = newPublicRecipes.value.some(recipe => recipe.id === newPublicRecipe.id)
+    const previouslyRemoved = removedPublicRecipes.value.some(recipe => recipe.id === newPublicRecipe.id)
+    console.log('was rpevoiusly removed: ', previouslyRemoved)
+    if (previouslyRemoved) {
+      console.log('already removed')
+      removedPublicRecipes.value = removedPublicRecipes.value.filter(recipe => recipe.id !== newPublicRecipe.id);
+    } else if (!recipeAlreadyAdded) {
+      console.log('new public recipe: ', newPublicRecipe)
+      newPublicRecipes.value.push(newPublicRecipe)
     } else {
       // TODO maybe handle? Or just leave it be as it already exists so it's fine
-      console.log('public recipe exists')
+      console.log('public recipe already added')
     }
   }
 
   function removeFromPublicRecipes(id: string) {
-    const recipe = recipes.value.find((recipe) => recipe.id === id) as Recipe
-    removedPublicRecipes.value.push(recipe)
+    // Check if newly added
+    const isNewlyAdded = newPublicRecipes.value.some(recipe => recipe.id === id)
+    if (isNewlyAdded) {
+      newPublicRecipes.value = newPublicRecipes.value.filter(recipe => recipe.id !== id);
+    } else {
+      const recipe = recipes.value.find((recipe) => recipe.id === id) as Recipe
+      removedPublicRecipes.value.push(recipe)
+    }
   }
 
   function setAllRecipes(newRecipes: Recipe[]) {
     recipes.value = newRecipes
+  }
+
+  function resetNewPublicRecipes() {
+    existingPublicRecipes.value = []
+    newPublicRecipes.value = []
+  }
+
+  function resetRemovedPublicRecipes() {
+    removedPublicRecipes.value = []
   }
 
   function resetState() {
@@ -168,6 +182,8 @@ export const useRecipeStore = defineStore('recipes', () => {
     addToPublicRecipes,
     removeFromPublicRecipes,
     setAllRecipes,
+    resetNewPublicRecipes,
+    resetRemovedPublicRecipes,
     resetState
   }
 })
