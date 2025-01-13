@@ -18,8 +18,8 @@ I've also been using this as a time to work with ChatGPT to see how much easier 
 
 ### What isn't working
 
-- On mobile, click and drag, app slides?
-- AI is hit or miss. Can be great, but can also completely lie when it doesn't know or get locked into cyclical changes. 
+- On mobile, click and drag, entire app slides at times?
+- AI is great for tips, but terrible at coding. 
 
 ## Where are we?
 
@@ -34,22 +34,23 @@ I've also been using this as a time to work with ChatGPT to see how much easier 
 - Pinia store Implementation
 - Routing and guards
 - Authenticated User Image uploading (and deleting) to CDN
-- Welcome Page basic Redesign
+- Mobile Design
+- Public Recipes working
 
 ### Working on Now:
 
-- Basic Responsive design - Left to do: Edit Recipes
+- Checking Desktop design
 - "Public" recipe display/search
-- Filter (Functional, but waiting on public Recipes)
-- Improve unsaved data warning (if possible)
+- Testing (Jest, Cypress)
 
 ### To Come:
 
-- Animations/Testing
+- Filter (Functional, but waiting on final schema)
+- Animations
 - User Dashboard
-- Error Handling & User feedback (loadin spinners, etc)
+- Error Handling & User feedback (loadin spinners, unsaved data etc)
 - All //TODO comments (add "Ignore Recipe")
-- Display newly added Recipe Data (time, nutritional info, etc)
+- Display newly added Recipe Data (time, servings, nutritional info, etc)
 - Offline Functionality
 - Defaults (images)
 - Google/Facebook login (maybe)
