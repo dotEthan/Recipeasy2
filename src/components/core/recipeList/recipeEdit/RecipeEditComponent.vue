@@ -20,6 +20,7 @@ const { deleteImage } = useImageUpload()
 
 const selectedRecipe: Recipe | undefined = recipeStore.getSelectedRecipe
 let isNewRecipe = false
+const isPrivate = selectedRecipe?.isPrivate
 
 if (selectedRecipe) {
   formData = ref<Recipe>({
@@ -40,24 +41,38 @@ if (selectedRecipe) {
     ingredients: [{ title: 'Ingedients', steps: [] }],
     directions: [{ title: 'Directions', steps: [] }],
     description: '',
-    tags: []
+    tags: [],
+    isPrivate: false,
   }
   isNewRecipe = true
   formData = ref<Recipe>(newRecipe)
 }
 
 function onSubmit() {
-  console.log('saving: ', formData.value)
+  // If public status changed, udpate accordingly
+  console.log('selected: ', selectedRecipe?.isPrivate)
+  console.log('form: ', formData.value?.isPrivate)
+  const publicStatusChanged = (selectedRecipe?.isPrivate !== formData.value.isPrivate) ? true : false
+  console.log('did public status Change?: ', publicStatusChanged)
+  if (publicStatusChanged && formData.value.isPrivate) {
+    console.log('remove from Public')
+    recipeStore.removeFromPublicRecipes(formData.value.id)
+  } else if (publicStatusChanged && !formData.value.isPrivate) {
+    console.log('add to Public')
+    recipeStore.addToPublicRecipes(formData.value)
+  }
+  console.log('saving locally: ', formData.value)
   if (formData?.value && selectedRecipe) {
     console.log('Updating existing Recipe')
     recipeStore.updateRecipe(formData.value)
     onEditingOver()
   } else if (formData?.value && formValid) {
+
     console.log('Creating New Recipe')
     recipeStore.addRecipe(formData.value)
     onEditingOver()
   } else {
-    console.log('not valid?')
+    console.log('not valid')
   }
   //TODO add new tags
   // const allUserTags: string[] = Array.from(
@@ -101,11 +116,11 @@ function onDeleteDirection(directionTypeIndex: number, directionIndex: number) {
 }
 
 function onAddIngredientType() {
-  console.log('adding')
   formData.value.ingredients.push({ title: '', steps: [{}] })
 }
 
 function onAddIngredient(ingredientIndex: number) {
+  if (!formData.value.ingredients[ingredientIndex].steps) formData.value.ingredients[ingredientIndex].steps = []
   formData.value.ingredients[ingredientIndex].steps.push({})
 }
 
@@ -114,6 +129,7 @@ function onAddDirectionType() {
 }
 
 function onAddDirection(ingredientIndex: number) {
+  if (!formData.value.directions[ingredientIndex].steps) formData.value.directions[ingredientIndex].steps = ['']
   formData.value.directions[ingredientIndex].steps.push('')
 }
 
@@ -187,6 +203,16 @@ function saveImagePath(uploadedImgURL: string) {
                     v-model="formData.description"
                     rows="6"
                   ></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="url">Website URL:</label>
+                  <input type="text" id="url" class="form-control" v-model="formData.url" />
+                  <div class="public-choice">
+                    <input type="radio" id="public" :value=false v-model="formData.isPrivate" />
+                    <label for="public">Public</label>
+                    <input type="radio" id="private" :value=true v-model="formData.isPrivate" />
+                    <label for="private">Private</label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -309,7 +335,7 @@ function saveImagePath(uploadedImgURL: string) {
                               class="form-control direction-input"
                               v-model="directionType.steps[l]"
                               id="direction{{l}}"
-                                placeholder="Cut, Stir, Bake"
+                              placeholder="Cut, Stir, Bake"
                             />
                             <button
                               type="button"

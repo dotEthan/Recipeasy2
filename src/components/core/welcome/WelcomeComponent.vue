@@ -7,7 +7,6 @@ import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
 import UnsavedDataModalComponent from '@/components/core/shared/unsavedDataModal/UnsavedDataModalComponent.vue';
 import RecipeDetailsComponent from '@/components/core/recipeList/recipeDetails/recipeDetailsComponent.vue';
-import type { Recipe } from '@/types/Recipes'
 
 const recipeStore = useRecipeStore()
 const appStore = useAppStore()

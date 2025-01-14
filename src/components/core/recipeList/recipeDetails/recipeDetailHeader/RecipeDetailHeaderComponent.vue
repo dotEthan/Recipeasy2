@@ -1,31 +1,11 @@
 <script setup lang="ts">
-import { PropType, ref, watch} from 'vue';
-import { SwitchRoot, SwitchThumb } from 'radix-vue'
+import { PropType} from 'vue';
 import type { Recipe } from '@/types/Recipes'
-import { useRecipeStore } from '@/stores/recipe';
 
-const props = defineProps({
+defineProps({
   selectedRecipe: Object as PropType<Recipe>
 })
-const recipeStore = useRecipeStore()
-const switchState = ref(false)
 
-watch(switchState, (newState) => {
-  handleSwitchChange(newState);
-});
-
-function handleSwitchChange(newState: boolean) {
-  console.log(newState)
-  const selectedRecipeId = props.selectedRecipe?.id || ''
-  if (newState) {
-    recipeStore.addToPublicRecipes(selectedRecipeId)
-    // copy image to public image repo in cloudinary
-  } else {
-    recipeStore.removeFromPublicRecipes(selectedRecipeId)
-    //remove from public recipes
-    // remove image from public image repo in cloudinary
-  }
-}
 </script>
 
 <template>
@@ -53,15 +33,7 @@ function handleSwitchChange(newState: boolean) {
                   <span class="ratingbar-text">Rating: </span>{{ selectedRecipe?.publicRating }}
                 </div>
               </div>
-              <div class="ratingbar-right"><span class="ratingbar-text">Public Recipe: </span>
-                <SwitchRoot
-                  class="switch-outer"
-                  id="public-recipe-switch"
-                  v-model:checked="switchState"
-                  >
-                  <SwitchThumb class="switchthumb" />
-                </SwitchRoot>
-              </div>
+              <div class="ratingbar-right"><span class="ratingbar-text">{{ selectedRecipe?.isPrivate ? 'Private' : 'public'}} </span> </div>
             </div>
           </div>
         </div>

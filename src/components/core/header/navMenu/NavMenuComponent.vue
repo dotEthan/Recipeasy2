@@ -38,7 +38,7 @@ async function onSave() {
     const updateUser: LocalUser = {...currentUser.value, recipes: recipeStore.recipes, shoppingLists: shoppingListStore.shoppingLists, personalFilters: recipeStore.personalFilters}
     try {
       dataService.saveUserData(updateUser)
-      dataService.alterPublicRecipesData()
+      dataService.updatePublicRecipesData()
     } catch (error: any) {
       // TODO: handle & display errors
       console.log('Error during Saving:', error)

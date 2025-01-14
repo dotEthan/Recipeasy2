@@ -8,8 +8,8 @@ export type RecipeState = {
 }
 
 export type Recipe = {
-  id?: string
-  createdBy?: string
+  id: string
+  creatorId?: string
   name?: string
   url?: string
   rating?: number
@@ -19,7 +19,7 @@ export type Recipe = {
   imgPath?: string
   userRating?: number
   publicRating?: number
-  private?: boolean
+  isPrivate?: boolean
   mealType?: string[]
   tags: string[]
   cookTime?: string
