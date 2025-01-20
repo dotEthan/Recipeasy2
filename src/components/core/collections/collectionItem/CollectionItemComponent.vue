@@ -17,7 +17,6 @@ const props = defineProps({
 </template>
 
 <style lang="sass" scoped>
-// @import '../../../assets/variables.sass'
 .recipeitem-container
   display: flex
   flex-direction: column

@@ -31,7 +31,8 @@ function closeMobileMenu() {
 </template>
 
 <style lang="sass" scoped>
-@import '../../../assets/variables.sass'
+@use '@/assets/variables' as *
+
 .navbar
   margin-bottom: 0
   width: 100%

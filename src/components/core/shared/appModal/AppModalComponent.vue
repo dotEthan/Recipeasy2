@@ -21,7 +21,8 @@ function onClose() {
 </template>
 
 <style lang="sass" scoped>
-@import '../../../../assets/variables.sass'
+@use '@/assets/variables' as *
+
 .modal-contain
     position: absolute
     left: 0

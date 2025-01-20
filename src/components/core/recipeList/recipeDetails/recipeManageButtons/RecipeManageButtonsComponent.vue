@@ -91,7 +91,7 @@ async function addPublicRecipeToPersonal() {
 </template>
 
 <style lang="sass" scoped>
-@import '@/assets/variables.sass'
+@use '@/assets/variables' as *
 
 .recipe-manage-row
     width: 100%

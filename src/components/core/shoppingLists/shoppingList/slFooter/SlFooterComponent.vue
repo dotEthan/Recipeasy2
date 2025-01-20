@@ -36,7 +36,7 @@ const onDeleteList = () => {
 </template>
 
 <style scoped lang="sass">
-@import "../../../../../assets/variables"
+@use '@/assets/variables' as *
 
 .sl-footer
   display: flex

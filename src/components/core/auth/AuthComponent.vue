@@ -96,7 +96,7 @@ function onClose() {
   </AppModalComponent>
 </template>
 <style lang="sass" scoped>
-@import '../../../assets/variables.sass'
+@use '@/assets/variables' as *
 
 .auth__title
     margin-bottom: 25px

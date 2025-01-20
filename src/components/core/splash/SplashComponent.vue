@@ -24,7 +24,6 @@ console.log('is it on: ', isRegistrationModalOpen.value)
             v-if="!isTestModeOn && !isAuthorized"
             @click="appStore.turnTestModeOn"
             class="testmode-btn"
-            :class="{ testmodeOn: isTestModeOn }"
           >
             Toggle Test Mode
           </button>
@@ -40,7 +39,7 @@ console.log('is it on: ', isRegistrationModalOpen.value)
 </template>
 
 <style lang="sass" scoped>
-@import '../../../assets/variables.sass'
+@use '@/assets/variables' as *
 
 .container
   position: relative
@@ -82,15 +81,6 @@ console.log('is it on: ', isRegistrationModalOpen.value)
   @media (min-width: 768px)
     padding: 10px
 
-
-
-.testmode-on
-  // background: #666
-  background: #ddd
-  border-color: #eef #ddd #ddd #eef
-  // color: #f9f9ef
-
-
 .attribute
   position: absolute
   bottom: 25px
@@ -119,12 +109,4 @@ console.log('is it on: ', isRegistrationModalOpen.value)
 
   @media (min-width: 768px)
     padding: 10px
-
-
-
-.testmodeOn
-  // background: #666
-  background: #ddd
-  border-color: #eef #ddd #ddd #eef
-  // color: #f9f9ef
 </style>

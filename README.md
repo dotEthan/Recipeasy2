@@ -35,24 +35,24 @@ I've also been using this as a time to work with ChatGPT to see how much easier 
 - Routing and guards
 - Authenticated User Image uploading (and deleting) to CDN
 - Mobile Design
-- Public Recipes working
+- Public Recipes Displaying and functional
 
 ### Working on Now:
 
 - Checking Desktop design
-- "Public" recipe display/search
-- Testing (Jest, Cypress)
+- Testing (Vitest, Cypress)
 
 ### To Come:
 
+- Search
 - Filter (Functional, but waiting on final schema)
+- Defaults (images)
 - Animations
-- User Dashboard
 - Error Handling & User feedback (loadin spinners, unsaved data etc)
 - All //TODO comments (add "Ignore Recipe")
 - Display newly added Recipe Data (time, servings, nutritional info, etc)
 - Offline Functionality
-- Defaults (images)
+- User Dashboard
 - Google/Facebook login (maybe)
 
 ### Future thoughts:
