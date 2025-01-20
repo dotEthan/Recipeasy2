@@ -59,6 +59,7 @@ function onSubmit() {
     recipeStore.removeFromPublicRecipes(formData.value.id)
   } else if (publicStatusChanged && !formData.value.isPrivate) {
     console.log('add to Public')
+    if (!formData.value.isPublicRecipe) formData.value.isPublicRecipe = true
     recipeStore.addToPublicRecipes(formData.value)
   }
   console.log('saving locally: ', formData.value)

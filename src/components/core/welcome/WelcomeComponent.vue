@@ -42,7 +42,7 @@ function mealTimeRecipes() {
 function recommendedRecipes() {
   let numberOfRecipes = 5
   if(appStore.screenSize === 'sm') numberOfRecipes = 6
-  return recipeStore.getNRandomRecipes(numberOfRecipes)
+  return recipeStore.getNRandomPublicRecipes(numberOfRecipes)
 }
 
 function handleUserResponse(userResponse: string) {

@@ -19,9 +19,20 @@ export const useRecipeStore = defineStore('recipes', () => {
 
   const personalFilters = computed(() => userStore.localUser.personalFilters || [])
   const recipesLength = computed(() => recipes.value.length)
-  const getSelectedRecipe = computed(() =>
-    recipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
-  )
+  const existingPublicRecipesLength = computed(() => existingPublicRecipes.value.length)
+  const getSelectedRecipe = computed(() => {
+    console.log('recipe id: ', selectedRecipeId.value)
+    let recipe: Recipe | undefined
+    if (/^pub-/.test(selectedRecipeId.value)) {
+      console.log("pbulic")
+      recipe = existingPublicRecipes.value.find((recipe) => recipe.id === selectedRecipeId.value)      
+    } else {
+      console.log(" not pbulic")
+      recipe = recipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
+    }
+    console.log(recipe) 
+    return recipe
+  })
   const getAllRecipeTags = computed(() =>
     Array.from(
       new Set(
@@ -45,7 +56,9 @@ export const useRecipeStore = defineStore('recipes', () => {
   function setInitialRecipeState(userData: UserState, publicRecipeData: Recipe[]) {
     userId.value = userData.uid
     recipes.value = userData.localUser.recipes || []
+    addIsPublic(publicRecipeData)
     existingPublicRecipes.value = publicRecipeData || []
+    console.log('setting initial state, public Recipes: ', existingPublicRecipes.value)
     newPublicRecipes.value = []
     removedPublicRecipes.value = []
     // allTags.value = state.allTags || []
@@ -53,9 +66,15 @@ export const useRecipeStore = defineStore('recipes', () => {
     isSelectedRecipePublic.value = false
   }
 
-  function getNRandomRecipes(num: number): Recipe[] {
+  function addIsPublic(recipes: Recipe[]) {
+    for (const  recipe of recipes) {
+      recipe.isPublicRecipe = true;
+    }
+  }
+
+  function getNRandomPublicRecipes(num: number): Recipe[] {
     const randomRecipes: Recipe[] = []
-    const length = recipesLength.value
+    const length = existingPublicRecipesLength.value
     
     if (num > length) {
       num = length
@@ -69,7 +88,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     }
   
     indices.forEach(index => {
-      randomRecipes.push(recipes.value[index])
+      randomRecipes.push(existingPublicRecipes.value[index])
     })
   
     return randomRecipes
@@ -87,7 +106,8 @@ export const useRecipeStore = defineStore('recipes', () => {
 
   function setSelectedRecipeId(id: string) {
     selectedRecipeId.value = id
-    isSelectedRecipePublic.value = /^pub--/.test(id);
+    console.log('selected Recipes id: ', id)
+    isSelectedRecipePublic.value = /^pub-/.test(id);
   }
 
   function setEditStatusSelectedId(status: boolean) {
@@ -169,11 +189,12 @@ export const useRecipeStore = defineStore('recipes', () => {
     editSelectedRecipe,
     personalFilters,
     recipesLength,
+    existingPublicRecipesLength,
     getSelectedRecipe,
     getAllRecipeTags,
     useFilteredRecipes,
     setInitialRecipeState,
-    getNRandomRecipes,
+    getNRandomPublicRecipes,
     updateRecipe,
     addRecipe,
     setSelectedRecipeId,

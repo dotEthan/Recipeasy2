@@ -42,7 +42,7 @@ export function useAuthService() {
           if (currentUser) {
             const userId = currentUser?.uid
             const [userStoredData, uid] = await dataService.loadUserData(userId)
-            const [publicRecipeStoredData] = await dataService.loadPublicRecipeData(userId)
+            const publicRecipeStoredData = await dataService.loadPublicRecipeData()
 
             const userState = {
               uid: currentUser?.uid,
@@ -55,7 +55,7 @@ export function useAuthService() {
            
             // Explicitly set authorized to true
             userStore.authorized = true
-            appStore.initializeApp(userState, publicRecipeStoredData as Recipe[])
+            appStore.initializeApp(userState, publicRecipeStoredData)
             
             resolve(true)
           } else {
@@ -102,7 +102,7 @@ export function useAuthService() {
 
       // Get user data from database
       const [userStoredData, uid] = await dataService.loadUserData(user.uid)
-      const [publicRecipeStoredData] = await dataService.loadPublicRecipeData(user.uid)
+      const publicRecipeStoredData = await dataService.loadPublicRecipeData()
 
       const userState = { uid, authorized: true, localUser: {
         uid,
@@ -111,7 +111,7 @@ export function useAuthService() {
 
       console.log('Store Data set:', userState)
       // trigger full app initialization
-      appStore.initializeApp(userState, publicRecipeStoredData as Recipe[])
+      appStore.initializeApp(userState, publicRecipeStoredData)
 
       return
     } catch (err) {
@@ -139,7 +139,7 @@ export function useAuthService() {
   
       // Save user data to Firestore
       await setDoc(doc(usersRef, user.uid), userStoredData)
-      const [publicRecipeStoredData] = await dataService.loadPublicRecipeData(user.uid)
+      const publicRecipeStoredData = await dataService.loadPublicRecipeData()
   
       // Initialize stores
       const userState = { 
@@ -147,7 +147,8 @@ export function useAuthService() {
         uid: user.uid, 
         authorized: true 
       }
-      appStore.initializeApp(userState, publicRecipeStoredData as Recipe[])
+      const publicRecipeArray = publicRecipeStoredData 
+      appStore.initializeApp(userState, publicRecipeArray)
       return
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Registration failed'

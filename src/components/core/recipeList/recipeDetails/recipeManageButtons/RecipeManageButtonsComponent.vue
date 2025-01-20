@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import router from '@/router/main';
 import { useRecipeStore } from '@/stores/recipe'
 import { useShoppingListStore } from '@/stores/shoppingList'
+import { Recipe } from '@/types/Recipes';
+import { ArrowBigRight } from 'lucide-vue-next';
+import { v4 as uuidv4 } from 'uuid'
 
 
 const emit = defineEmits(['closeRecipeDetails', 'removedRecipe'])
@@ -41,8 +45,15 @@ function onDeleteRecipe() {
   emit('removedRecipe')
 }
 
-function addPublicRecipeToPersonal() {
-    console.log('adding to users')
+async function addPublicRecipeToPersonal() {
+    const updatedRecipe: Recipe = {
+        ...selectedRecipe!,
+        isPublicRecipe: false,
+        isPrivate: false,
+        id: uuidv4()
+    }
+    recipeStore.addRecipe(updatedRecipe!);
+    await router.push('/recipes')
 }
 </script>
 
@@ -60,16 +71,20 @@ function addPublicRecipeToPersonal() {
         <span class="yellow-word">Edit</span>&nbsp;Recipe
     </button>
     <button v-else class="cannot-manage">
-        <span class="">Public Recipes</span>
         <span class="">Cannot Edit</span>
+        <span class="">Public Recipes</span>
     </button>
     <button v-if="!isSelectedRecipePublic" class="manage-btn-3" @click="onDeleteRecipe">
         <div class="delete-recipe"></div>
         <span class="red-word">Delete</span>&nbsp;Recipe
     </button>
-    <button v-else class="manage-btn-3" @click="addPublicRecipeToPersonal">
-        <div class="delete-recipe"></div>
-        <span class="red-word" >Add To Your</span>&nbsp;Recipes
+    <button v-else class="manage-btn-3-public" @click="addPublicRecipeToPersonal">
+        <div class="add-to-text">
+            <div class="green-word" >Add To</div>
+            <div> Your Recipes</div>
+        </div>
+        
+        <div class="add-to-recipe"><ArrowBigRight color="#1EB136"/></div>
     </button>
     </div>
 </div>
@@ -111,7 +126,7 @@ function addPublicRecipeToPersonal() {
             position: relative
 
         .add-to-list
-            background-image: url('/assets/addlist.png')
+            // background-image: url('/assets/addlist.png')
 
             //the big +
             &:after
@@ -212,6 +227,23 @@ function addPublicRecipeToPersonal() {
             &:after
                 transform: translate(-50%, -50%) rotate(-45deg)
 
+        .add-to-recipe
+            width: 5px
+            height: 15px
+            margin-right: 10px
+            position: relative
+            transition: all .3s ease-in-out
+
+            @media (min-width: 768px)
+                width: 25px
+                height: 20px
+                margin-left: 20px
+                transform: scale(0)
+                
+
+            &:hover
+                color:  #1EB136
+
         .green-word
             color: #1EB136
 
@@ -256,8 +288,18 @@ function addPublicRecipeToPersonal() {
                     &:before, &:after
                         background: #A41C1C
 
+                
+                .add-to-recipe
+                    transform: scale(1.7)
+
 .cannot-manage
     display: flex
     flex-direction: column
+
+.manage-btn-3-public
+    display: flex
+    flex-direction: row
+    justify-content: center
+    align-items: center
 
 </style>

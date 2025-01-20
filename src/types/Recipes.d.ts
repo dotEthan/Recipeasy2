@@ -25,6 +25,7 @@ export type Recipe = {
   cookTime?: string
   prepTime?: string
   nutritionalInfo?: NutritionalInfo[]
+  isPublicRecipe?: boolean
 }
 
 export type Ingredient = {

@@ -3,6 +3,7 @@ import {
   deleteDoc,
   doc,
   DocumentData,
+  getDocs,
   getDoc,
   setDoc
 } from 'firebase/firestore'
@@ -55,7 +56,7 @@ export function useDataService() {
         const docSnap = await getDoc(existingRecipeDocRef);
           console.log('check for existing recipe')
         if (docSnap.exists()) {
-          // TODO if recipe exists, display error
+          // TODO if recipe exists, display error modal
           console.log('Public Recipe Already Exists')
         } else {
           await setDoc(existingRecipeDocRef, updatedRecipe);
@@ -95,40 +96,39 @@ export function useDataService() {
 
   
 const loadUserData = async (uid: string): Promise<[DocumentData | null, string]> => {
-  error.value = null;
+  error.value = null
   try {
-    const docSnap = await getDoc(doc(usersRef, uid));
+    const docSnap = await getDoc(doc(usersRef, uid))
 
     if (docSnap.exists()) {
-      console.log('User data retrieved:', docSnap.data());
-      return [docSnap.data(), uid];
+      console.log('User data retrieved:', docSnap.data())
+      return [docSnap.data(), uid]
     } else {
-      console.log('User Data Not Found');
-      return [null, uid];
+      console.log('User Data Not Found')
+      return [null, uid]
     }
   } catch (err: any) {
-    error.value = err;
-    console.error('Error loading user data:', error.value);
-    return [null, uid];
+    error.value = err
+    console.error('Error loading user data:', error.value)
+    return [null, uid]
   }
 };
 
-const loadPublicRecipeData = async (uid: string): Promise<[DocumentData | null]> => {
+const loadPublicRecipeData = async (): Promise<Recipe[]> => {
   error.value = null;
   try {
-    const docSnap = await getDoc(doc(publicRecipesRef, uid));
-
-    if (docSnap.exists()) {
-      console.log('Public Recipe data retrieved:', docSnap.data());
-      return [docSnap.data()];
-    } else {
-      console.log('Public Recipe Data Not Found');
-      return [null];
-    }
+    const docSnaps = await getDocs(publicRecipesRef)
+    const publicRecipes: Recipe[] = []
+    docSnaps.forEach((doc) => {
+      const recipeData = doc.data() as Recipe;
+      publicRecipes.push(recipeData)
+    })
+    console.log('public Recipes Retrieved: ', publicRecipes)
+    return publicRecipes
   } catch (err: any) {
-    error.value = err;
-    console.error('Error loading Public Recipe data:', error.value);
-    return [null];
+    error.value = err
+    console.error('Error loading Public Recipe data:', error.value)
+    return []
   }
 };
 
