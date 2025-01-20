@@ -71,7 +71,8 @@ const onSaveTitle = () => {
 </template>
 
 <style scoped lang="sass">
-@import "../../../../../assets/variables"
+@use '@/assets/variables' as *
+
 .sl-full-header
   display: flex
   align-items: center

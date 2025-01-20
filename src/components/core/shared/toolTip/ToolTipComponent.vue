@@ -16,7 +16,8 @@ defineProps({
 </template>
 
 <style lang="sass" scoped>
-@import '../../../../assets/variables.sass'
+@use '@/assets/variables' as *
+
 .tooltip-container 
   position: relative
 

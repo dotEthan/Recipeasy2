@@ -30,7 +30,7 @@ appService.onResize()
 </template>
 
 <style lang="sass" scoped>
-@import './assets/variables.sass'
+@use '@/assets/variables' as *
 
 .home-container
   width: 100%

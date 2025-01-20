@@ -17,7 +17,7 @@ const recipeStore = useRecipeStore()
 </template>
 
 <style lang="sass" scoped>
-@import '../assets/variables.sass'
+@use '@/assets/variables' as *
 
 .recipe-viewer
   background: white

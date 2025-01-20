@@ -39,7 +39,7 @@ defineProps({
         </div>
 </template>
 <style lang="sass">
-@import '@/assets/variables.sass'
+@use '@/assets/variables' as *
 
 .recipe-header
   width: 100%

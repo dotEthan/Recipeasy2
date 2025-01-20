@@ -67,7 +67,7 @@ async function deleteRemovedRecipeImage() {
 </template>
 
 <style lang="sass" scoped>
-@import '@/assets/variables.sass'
+@use '@/assets/variables' as *
 .recipe-detail-container
   position: absolute
   top: 0

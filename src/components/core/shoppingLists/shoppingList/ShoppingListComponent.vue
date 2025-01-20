@@ -96,7 +96,8 @@ function onMakeDefault() {
 </template>
 
 <style lang="sass" scoped>
-@import "../../../../assets/variables"
+@use '@/assets/variables' as *
+
 .sl-each-contain
   display: flex
   flex-direction: column

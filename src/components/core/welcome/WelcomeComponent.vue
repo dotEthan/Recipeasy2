@@ -64,7 +64,7 @@ function closeRecipeDetails() {
       <input disabled type="text" class="searchbar-input" placeholder="Burritos" />
       <button disabled><Search class="magnifying" :size="15" /></button>
     </div>
-    <span style="font-size: 0.7em;">Public Recipes & Search Coming Soon!</span>
+    <span style="font-size: 0.7em;">Search Coming Soon!</span>
     <div class="base-content-container">
       <CollectionComponent title="Recommended Public Recipes" :recipeData="recommendedRecipes()" />
       <CollectionComponent :title="'Ready for ' + mealTime" :recipeData="mealTimeRecipes()" />
@@ -78,7 +78,7 @@ function closeRecipeDetails() {
 </template>
 
 <style lang="sass" scoped>
-@import '../../../assets/variables.sass'
+@use '@/assets/variables' as *
 
 h1
   margin-bottom: 0

@@ -20,7 +20,7 @@ const btnPadding = props.iconSize === 'small' ? '3px' : '20px'
   </div>
 </template>
 <style lang="sass" scoped>
-@import '@/assets/variables.sass'
+@use '@/assets/variables' as *
 .new-container
   cursor: pointer
   display: flex

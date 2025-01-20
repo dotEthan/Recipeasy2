@@ -9,7 +9,7 @@ defineEmits(['close'])
 </template>
 
 <style lang="sass">
-@import '@/assets/variables.sass'
+@use '@/assets/variables' as *
 
 .close-container
     position: absolute

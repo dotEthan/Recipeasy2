@@ -33,7 +33,8 @@ function openRecipeDetails(id: string) {
 </template>
 
 <style lang="sass" scoped>
-@import '../../../assets/variables.sass'
+@use '@/assets/variables' as *
+
 .collection-container
   display: flex
   flex-direction: column
