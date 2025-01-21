@@ -83,7 +83,7 @@ function updateMealType(type: string, isSelected: boolean) {
 </template>
 
 <style lang="sass" scoped>
-@import '../../../../assets/variables.sass'
+@use '@/assets/variables' as *
 
 .filter-not-working
   text-align: center
@@ -136,7 +136,7 @@ function updateMealType(type: string, isSelected: boolean) {
 .filter-box
   display: none
   padding: 10px
-  width: 75vw
+  width: 50vw
   height: 300px
   border: 1px solid black
 
@@ -145,10 +145,13 @@ function updateMealType(type: string, isSelected: boolean) {
     height: 300px
 
 .floating
-  display: block
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
   position: absolute
   top: calc(50vh - (200px / 2))
-  left: calc(50vw - (75vw / 2))
+  left: calc(50vw - (50vw / 2))
   background-color: white
   border-radius: 5px
 

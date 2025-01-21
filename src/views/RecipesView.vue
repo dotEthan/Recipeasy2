@@ -35,9 +35,6 @@ const recipeStore = useRecipeStore()
   text-align: center
 
   @media (min-width: 768px)
-    margin-top: 25px
-
-  @media (min-width: 1200px)
     margin: 50px 0
 
 </style>

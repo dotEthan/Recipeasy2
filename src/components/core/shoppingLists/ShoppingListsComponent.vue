@@ -37,6 +37,9 @@ function onAddList() {
   padding: 10px
   overflow-y: scroll
 
+  @media (min-width: 768px)
+    padding: 50px
+
 .headline-contain
   position: relative
   width: 100%

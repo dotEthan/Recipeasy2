@@ -2,11 +2,16 @@
 import { Search } from 'lucide-vue-next'
 import CollectionComponent from '../collections/CollectionComponent.vue'
 import { useRecipeStore } from '@/stores/recipe'
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
 import UnsavedDataModalComponent from '@/components/core/shared/unsavedDataModal/UnsavedDataModalComponent.vue';
 import RecipeDetailsComponent from '@/components/core/recipeList/recipeDetails/recipeDetailsComponent.vue';
+import { Recipe } from '@/types/Recipes';
+
+onBeforeUnmount(() => {
+  recipeStore.resetUsedPublicIndices(); // Reset only when the component is destroyed/unmounted
+});
 
 const recipeStore = useRecipeStore()
 const appStore = useAppStore()
@@ -15,7 +20,7 @@ const currentTime = ref(new Date())
 
 let recipeDetailsOpen = ref(false)
 
-const greeting = computed(() => {
+const greeting = computed((): string => {
   const displayName = userStore.localUser.displayName
   if (displayName) {
     return `Welcome, ${displayName}!` 
@@ -35,14 +40,16 @@ const mealTime = computed(() => {
   }
 })
 
-function mealTimeRecipes() {
-  return recipeStore.useFilteredRecipes([mealTime.value]).value.slice(4)
-}
-
-function recommendedRecipes() {
+const recommendedRecipes = computed(() => {
   let numberOfRecipes = 5
   if(appStore.screenSize === 'sm') numberOfRecipes = 6
-  return recipeStore.getNRandomPublicRecipes(numberOfRecipes)
+  const randomRecipes = recipeStore.getNRandomPublicRecipes(numberOfRecipes).value
+  console.log('recipes: ', randomRecipes)
+  return randomRecipes
+})
+
+function mealTimeRecipes(): Recipe[] {
+  return recipeStore.useFilteredRecipes([mealTime.value]).value.slice(4)
 }
 
 function handleUserResponse(userResponse: string) {
@@ -64,13 +71,13 @@ function closeRecipeDetails() {
       <input disabled type="text" class="searchbar-input" placeholder="Burritos" />
       <button disabled><Search class="magnifying" :size="15" /></button>
     </div>
-    <span style="font-size: 0.7em;">Search Coming Soon!</span>
+    <span style="font-size: 0.7em;">Search and Public Recipe Filtering Coming Soon!</span>
     <div class="base-content-container">
-      <CollectionComponent title="Recommended Public Recipes" :recipeData="recommendedRecipes()" />
-      <CollectionComponent :title="'Ready for ' + mealTime" :recipeData="mealTimeRecipes()" />
-      <CollectionComponent title="Snacks" :recipeData="recommendedRecipes()" />
-      <CollectionComponent title="Healthy Foods" :recipeData="recommendedRecipes()" />
-      <CollectionComponent title="Ethan's Favourites" :recipeData="recommendedRecipes()" />
+      <CollectionComponent title="Recommended Public Recipes" :recipeData="recommendedRecipes" />
+      <CollectionComponent :title="'Ready for ' + mealTime" :recipeData="recommendedRecipes" />
+      <CollectionComponent title="Snacks" :recipeData="recommendedRecipes" />
+      <CollectionComponent title="Healthy Foods" :recipeData="recommendedRecipes" />
+      <CollectionComponent title="Ethan's Favourites" :recipeData="recommendedRecipes" />
     </div>
   </div>
   <RecipeDetailsComponent v-if="recipeStore.selectedRecipeId" @closeRecipeDetails="closeRecipeDetails" />
