@@ -31,7 +31,7 @@ let editingListIndex = computed(() => shoppingListStore.editingListIndex)
 let editingItemIndex = computed(() => shoppingListStore.editingItemIndex)
 let defaultListId = computed(() => shoppingListStore.defaultListId)
 
-const hideOrShow = computed(() => (currentList.isOpen ? 'show' : 'hide'))
+const hideOrShow = computed(() => (!currentList.isOpen ? 'show' : 'hide'))
 
 function onAddItem() {
   currentListItems.push('')

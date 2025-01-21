@@ -2,10 +2,8 @@ import { mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { describe, it, expect, vitest } from 'vitest'
 import { useAppStore } from '@/stores/app'
-import { useUserStore } from '@/stores/user'
 import SplashComponent from './SplashComponent.vue'
 import AuthComponent from '../auth/AuthComponent.vue'
-import { nextTick } from 'process'
 
 describe('WelcomeComponent', () => {
   const mountComponent = (initialState = {}) => {

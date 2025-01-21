@@ -99,12 +99,8 @@ function removedRecipe() {
   right: 25px
 
   @media (min-width: 768px)
-    top: -60px
-    right: 0px
-
-  @media (min-width: 1200px)
     top: -100px
-    right: 0px
+    right: 25vw
 
 .recipeRow
   display: grid

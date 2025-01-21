@@ -46,14 +46,18 @@ function onDeleteRecipe() {
 }
 
 async function addPublicRecipeToPersonal() {
+    const id = uuidv4()
+    console.log('id is: ', id)
     const updatedRecipe: Recipe = {
         ...selectedRecipe!,
         isPublicRecipe: false,
         isPrivate: false,
-        id: uuidv4()
+        id
     }
-    recipeStore.addRecipe(updatedRecipe!);
+    recipeStore.addRecipe(updatedRecipe!)
+    console.log(updatedRecipe)
     await router.push('/recipes')
+    recipeStore.setSelectedRecipeId(updatedRecipe.id)
 }
 </script>
 
@@ -70,7 +74,7 @@ async function addPublicRecipeToPersonal() {
         <div class="edit-recipe"></div>
         <span class="yellow-word">Edit</span>&nbsp;Recipe
     </button>
-    <button v-else class="cannot-manage">
+    <button v-else class="manage-btn-2 cannot-manage">
         <span class="">Cannot Edit</span>
         <span class="">Public Recipes</span>
     </button>
@@ -95,7 +99,6 @@ async function addPublicRecipeToPersonal() {
 
 .recipe-manage-row
     width: 100%
-    // height: 10%
 
 .recipe-manage-buttons
     padding: 5px 0
@@ -107,7 +110,7 @@ async function addPublicRecipeToPersonal() {
 
     button
         padding: 3px 5px
-        border: none
+        // border: none
         background: transparent
         // font-weight: 300
         width: 33%
@@ -263,7 +266,7 @@ async function addPublicRecipeToPersonal() {
             &:hover
 
                 .green-word, .yellow-word, .red-word
-                    font-weight: 700
+                    font-weight: 550
 
                 .green-word
                     color: #1EB136
@@ -291,6 +294,10 @@ async function addPublicRecipeToPersonal() {
                 
                 .add-to-recipe
                     transform: scale(1.7)
+
+.manage-btn-2
+    border-left: 1px dashed black
+    border-right: 1px dashed black
 
 .cannot-manage
     display: flex

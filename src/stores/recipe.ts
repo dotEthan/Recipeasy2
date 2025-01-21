@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed, ComputedRef } from 'vue'
+import { ref, computed, ComputedRef, Ref } from 'vue'
 import { useUserStore } from './user'
 import type { Recipe } from '@/types/Recipes'
 import { UserState } from '@/types/UserState'
@@ -12,14 +12,18 @@ export const useRecipeStore = defineStore('recipes', () => {
   const newPublicRecipes = ref<Recipe[]>([])
   const removedPublicRecipes = ref<Recipe[]>([])
   const allTags = ref<string[]>([])
+  const usedPublicRecipeIndices = ref<Set<number>>(new Set())
 
   const selectedRecipeId = ref<string>('')
   const isSelectedRecipePublic = ref(false)
   const editSelectedRecipe = ref(false)
 
   const personalFilters = computed(() => userStore.localUser.personalFilters || [])
+
   const recipesLength = computed(() => recipes.value.length)
+
   const existingPublicRecipesLength = computed(() => existingPublicRecipes.value.length)
+
   const getSelectedRecipe = computed(() => {
     console.log('recipe id: ', selectedRecipeId.value)
     let recipe: Recipe | undefined
@@ -33,6 +37,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     console.log(recipe) 
     return recipe
   })
+  
   const getAllRecipeTags = computed(() =>
     Array.from(
       new Set(
@@ -72,41 +77,34 @@ export const useRecipeStore = defineStore('recipes', () => {
     }
   }
 
-  function getNRandomPublicRecipes(num: number): Recipe[] {
-    const randomRecipes: Recipe[] = []
-    const length = existingPublicRecipesLength.value
-    
-    if (num > length) {
-      num = length
+  function getNRandomPublicRecipes(num: number): Ref<Recipe[]> {
+    const length = existingPublicRecipesLength.value;
+    const availableIndices = length - 1 - usedPublicRecipeIndices.value.size;
+    console.log(usedPublicRecipeIndices)
+    const numToGet = Math.min(num, availableIndices);
+    console.log('here', numToGet)
+    const indices = new Set<number>();
+    while (indices.size < numToGet) {
+      const randomIndex = Math.floor(Math.random() * (length-1));
+      if (!usedPublicRecipeIndices.value.has(randomIndex)) {
+        indices.add(randomIndex);
+        usedPublicRecipeIndices.value.add(randomIndex);
+      }
     }
-  
-    const indices = new Set<number>()
-  
-    while (indices.size < num) {
-      const randomIndex = Math.floor(Math.random() * length)
-      indices.add(randomIndex)
-    }
-  
-    indices.forEach(index => {
-      randomRecipes.push(existingPublicRecipes.value[index])
-    })
-  
-    return randomRecipes
-  }
+    console.log('indices', indices)
+    return ref(Array.from(indices).map(index => existingPublicRecipes.value[index]));
+}
 
   function updateRecipe(recipe: Recipe) {
-    console.log('updating recipe: ', recipe)
     recipes.value = recipes.value.map((r) => (r.id === recipe.id ? recipe : r))
   }
 
   function addRecipe(recipe: Recipe) {
-    console.log('adding recipe')
     recipes.value.push(recipe)
   }
 
   function setSelectedRecipeId(id: string) {
     selectedRecipeId.value = id
-    console.log('selected Recipes id: ', id)
     isSelectedRecipePublic.value = /^pub-/.test(id);
   }
 
@@ -119,7 +117,6 @@ export const useRecipeStore = defineStore('recipes', () => {
     const deletedRecipeIndex = recipeToDelete ? recipes.value.indexOf(recipeToDelete) : -1
     if (deletedRecipeIndex >= 0) {
       recipes.value.splice(deletedRecipeIndex, 1)
-      console.log('Recipe removed')
     } else {
       console.log('Recipe does not exist')
     }
@@ -128,7 +125,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   function addToPublicRecipes(newPublicRecipe: Recipe) {
     const recipeAlreadyAdded = newPublicRecipes.value.some(recipe => recipe.id === newPublicRecipe.id)
     const previouslyRemoved = removedPublicRecipes.value.some(recipe => recipe.id === newPublicRecipe.id)
-    console.log('was rpevoiusly removed: ', previouslyRemoved)
+    console.log('was prevoiusly removed: ', previouslyRemoved)
     if (previouslyRemoved) {
       console.log('already removed')
       removedPublicRecipes.value = removedPublicRecipes.value.filter(recipe => recipe.id !== newPublicRecipe.id);
@@ -165,6 +162,10 @@ export const useRecipeStore = defineStore('recipes', () => {
     removedPublicRecipes.value = []
   }
 
+  function resetUsedPublicIndices() {
+    usedPublicRecipeIndices.value.clear()
+  }
+
   function resetState() {
     userId.value = ''
     recipes.value = []
@@ -184,6 +185,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     selectedRecipeId,
     existingPublicRecipes,
     newPublicRecipes,
+    usedPublicRecipeIndices,
     removedPublicRecipes,
     isSelectedRecipePublic,
     editSelectedRecipe,
@@ -205,6 +207,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     setAllRecipes,
     resetNewPublicRecipes,
     resetRemovedPublicRecipes,
+    resetUsedPublicIndices,
     resetState
   }
 })
