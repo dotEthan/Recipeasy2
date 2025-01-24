@@ -5,7 +5,7 @@ import { useAppStore } from '@/stores/app'
 import SplashComponent from './SplashComponent.vue'
 import AuthComponent from '../auth/AuthComponent.vue'
 
-describe('WelcomeComponent', () => {
+describe('SplashComponent', () => {
   const mountComponent = (initialState = {}) => {
     return mount(SplashComponent, {
       global: {
@@ -84,7 +84,6 @@ describe('WelcomeComponent', () => {
       const wrapper = mountComponent()
       const title = wrapper.find('.app-title')
       
-      // Test mobile view (default)
       expect(getComputedStyle(title.element).fontSize).toBe('2em')
       
       //TODO use window.matchMedia to test Desktop

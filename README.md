@@ -41,8 +41,8 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### Working on Now:
 
-- Checking Desktop design
-- Testing (Vitest, Cypress)
+- Checking Basic Desktop design
+- Testing (Vitest, Cypress) Current Coverage: 28%
 - Form Accessibility (shopping list and recipe edit)
 
 ### To Come:

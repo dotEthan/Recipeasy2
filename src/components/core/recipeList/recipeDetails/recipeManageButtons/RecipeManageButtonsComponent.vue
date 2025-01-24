@@ -40,8 +40,8 @@ function onEditRecipe() {
 
 function onDeleteRecipe() {
   console.log('removing')
-  recipeStore.removeSelectedRecipe()
-  recipeStore.setSelectedRecipeId('')
+  recipeStore.removeRecipeById(selectedRecipe?.id || '');
+  recipeStore.setSelectedRecipeId('');
   emit('removedRecipe')
 }
 

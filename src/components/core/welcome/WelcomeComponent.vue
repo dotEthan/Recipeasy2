@@ -2,7 +2,7 @@
 import { Search } from 'lucide-vue-next'
 import CollectionComponent from '../collections/CollectionComponent.vue'
 import { useRecipeStore } from '@/stores/recipe'
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, Ref, ref, unref } from 'vue'
 import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
 import UnsavedDataModalComponent from '@/components/core/shared/unsavedDataModal/UnsavedDataModalComponent.vue';
@@ -10,13 +10,31 @@ import RecipeDetailsComponent from '@/components/core/recipeList/recipeDetails/r
 import { Recipe } from '@/types/Recipes';
 
 onBeforeUnmount(() => {
-  recipeStore.resetUsedPublicIndices(); // Reset only when the component is destroyed/unmounted
+  recipeStore.resetUsedPublicIndices();
 });
 
+//added as prop for test reactivity
+const props = defineProps({
+  currentTime: {
+    type: [Object],
+    required: false,
+    default: () => new Date(),
+  },
+});
 const recipeStore = useRecipeStore()
 const appStore = useAppStore()
 const userStore = useUserStore()
-const currentTime = ref(new Date())
+
+const currentTime = computed(() => {
+  const rawTime = unref(props.currentTime);
+  if (rawTime instanceof Date) {
+    return rawTime;
+  } else {
+    console.warn('Invalid currentTime prop. Falling back to new Date.');
+    return new Date();
+  }
+});
+
 
 let recipeDetailsOpen = ref(false)
 
@@ -29,8 +47,23 @@ const greeting = computed((): string => {
   }
 })
 
+const recommendedRecipes = computed((): Ref<Recipe[]> => {
+  let numberOfRecipes = 5
+  if(appStore.screenSize === 'sm') numberOfRecipes = 6
+  return recipeStore.getNRandomPublicRecipes(numberOfRecipes)
+});
+// TODO align tests and functions to sort out why ref(ref()) is needed for tests to pass
+const collection1PublicRecipes: Recipe[] = recommendedRecipes.value.value
+const collection2PublicRecipes: Recipe[] = recommendedRecipes.value.value
+const collection3PublicRecipes: Recipe[] = recommendedRecipes.value.value
+const collection4PublicRecipes: Recipe[] = recommendedRecipes.value.value
+const collection5PublicRecipes: Recipe[] = recommendedRecipes.value.value
+
 const mealTime = computed(() => {
-  const hours = currentTime.value.getHours()
+  return determineMealTime(currentTime.value.getHours());
+});
+
+function determineMealTime(hours: number) {
   if (hours >= 2 && hours < 10) {
     return 'Breakfast'
   } else if (hours >= 10 && hours < 16) {
@@ -38,15 +71,7 @@ const mealTime = computed(() => {
   } else {
     return 'Dinner'
   }
-})
-
-const recommendedRecipes = computed(() => {
-  let numberOfRecipes = 5
-  if(appStore.screenSize === 'sm') numberOfRecipes = 6
-  const randomRecipes = recipeStore.getNRandomPublicRecipes(numberOfRecipes).value
-  console.log('recipes: ', randomRecipes)
-  return randomRecipes
-})
+}
 
 function mealTimeRecipes(): Recipe[] {
   return recipeStore.useFilteredRecipes([mealTime.value]).value.slice(4)
@@ -65,7 +90,7 @@ function closeRecipeDetails() {
 
 <template>
   <div class="base-container welcome">
-    <h1>{{greeting}}</h1>
+    <h1 class="greeting">{{greeting}}</h1>
     <h2>What's for Supper?</h2>
     <div class="searchbar">
       <input disabled type="text" class="searchbar-input" placeholder="Burritos" />
@@ -73,11 +98,11 @@ function closeRecipeDetails() {
     </div>
     <span style="font-size: 0.7em;">Search and Public Recipe Filtering Coming Soon!</span>
     <div class="base-content-container">
-      <CollectionComponent title="Recommended Public Recipes" :recipeData="recommendedRecipes" />
-      <CollectionComponent :title="'Ready for ' + mealTime" :recipeData="recommendedRecipes" />
-      <CollectionComponent title="Snacks" :recipeData="recommendedRecipes" />
-      <CollectionComponent title="Healthy Foods" :recipeData="recommendedRecipes" />
-      <CollectionComponent title="Ethan's Favourites" :recipeData="recommendedRecipes" />
+      <CollectionComponent ref="recommended-recipes-collection" title="Recommended Public Recipes" :recipeData="collection1PublicRecipes" />
+      <CollectionComponent ref="mealtime-collection" :title="'Ready for ' + mealTime" :recipeData="collection2PublicRecipes" />
+      <CollectionComponent title="Snacks" :recipeData="collection3PublicRecipes" />
+      <CollectionComponent title="Healthy Foods" :recipeData="collection4PublicRecipes" />
+      <CollectionComponent title="Ethan's Favourites" :recipeData="collection5PublicRecipes" />
     </div>
   </div>
   <RecipeDetailsComponent v-if="recipeStore.selectedRecipeId" @closeRecipeDetails="closeRecipeDetails" />
