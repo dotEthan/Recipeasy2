@@ -48,12 +48,16 @@ const greeting = computed((): string => {
 })
 
 const recommendedRecipes = computed((): Ref<Recipe[]> => {
-  console.log('recommendd choices: ', appStore.screenSize)
   let numberOfRecipes = 5
   if(appStore.screenSize === 'sm') numberOfRecipes = 6
-  const randomRecipesRef = recipeStore.getNRandomPublicRecipes(numberOfRecipes)
-  return randomRecipesRef
+  return recipeStore.getNRandomPublicRecipes(numberOfRecipes)
 });
+// TODO align tests and functions to sort out why ref(ref()) is needed for tests to pass
+const collection1PublicRecipes: Recipe[] = recommendedRecipes.value.value
+const collection2PublicRecipes: Recipe[] = recommendedRecipes.value.value
+const collection3PublicRecipes: Recipe[] = recommendedRecipes.value.value
+const collection4PublicRecipes: Recipe[] = recommendedRecipes.value.value
+const collection5PublicRecipes: Recipe[] = recommendedRecipes.value.value
 
 const mealTime = computed(() => {
   return determineMealTime(currentTime.value.getHours());
@@ -94,11 +98,11 @@ function closeRecipeDetails() {
     </div>
     <span style="font-size: 0.7em;">Search and Public Recipe Filtering Coming Soon!</span>
     <div class="base-content-container">
-      <CollectionComponent ref="recommended-recipes-collection" title="Recommended Public Recipes" :recipeData="recommendedRecipes.value" />
-      <CollectionComponent ref="mealtime-collection" :title="'Ready for ' + mealTime" :recipeData="recommendedRecipes.value" />
-      <CollectionComponent title="Snacks" :recipeData="recommendedRecipes.value" />
-      <CollectionComponent title="Healthy Foods" :recipeData="recommendedRecipes.value" />
-      <CollectionComponent title="Ethan's Favourites" :recipeData="recommendedRecipes.value" />
+      <CollectionComponent ref="recommended-recipes-collection" title="Recommended Public Recipes" :recipeData="collection1PublicRecipes" />
+      <CollectionComponent ref="mealtime-collection" :title="'Ready for ' + mealTime" :recipeData="collection2PublicRecipes" />
+      <CollectionComponent title="Snacks" :recipeData="collection3PublicRecipes" />
+      <CollectionComponent title="Healthy Foods" :recipeData="collection4PublicRecipes" />
+      <CollectionComponent title="Ethan's Favourites" :recipeData="collection5PublicRecipes" />
     </div>
   </div>
   <RecipeDetailsComponent v-if="recipeStore.selectedRecipeId" @closeRecipeDetails="closeRecipeDetails" />
