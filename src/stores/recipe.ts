@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed, ComputedRef, Ref } from 'vue'
 import { useUserStore } from './user'
-import type { Recipe } from '@/types/Recipes'
+import type { Recipe, RecipeStore } from '@/types/Recipes'
 import { UserState } from '@/types/UserState'
 
 export const useRecipeStore = defineStore('recipes', () => {
@@ -15,30 +15,27 @@ export const useRecipeStore = defineStore('recipes', () => {
   const usedPublicRecipeIndices = ref<Set<number>>(new Set())
 
   const selectedRecipeId = ref<string>('')
-  const isSelectedRecipePublic = ref(false)
-  const editSelectedRecipe = ref(false)
+  const isSelectedRecipePublic = ref<boolean>(false)
+  const editSelectedRecipe = ref<boolean>(false)
 
-  const personalFilters = computed(() => userStore.localUser.personalFilters || [])
+  const personalFilters: ComputedRef<string[]> = computed(() => userStore.localUser.personalFilters || [])
 
-  const recipesLength = computed(() => recipes.value.length)
+  const recipesLength: ComputedRef<number> = computed(() => recipes.value.length)
 
-  const existingPublicRecipesLength = computed(() => existingPublicRecipes.value.length)
+  const existingPublicRecipesLength: ComputedRef<number> = computed(() => existingPublicRecipes.value.length)
 
-  const getSelectedRecipe = computed(() => {
-    console.log('recipe id: ', selectedRecipeId.value)
-    let recipe: Recipe | undefined
-    if (/^pub-/.test(selectedRecipeId.value)) {
-      console.log("pbulic")
-      recipe = existingPublicRecipes.value.find((recipe) => recipe.id === selectedRecipeId.value)      
-    } else {
-      console.log(" not pbulic")
-      recipe = recipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
+  const getSelectedRecipe: ComputedRef<Recipe> = computed(() => {
+    const recipe = /^pub-/.test(selectedRecipeId.value)
+      ? existingPublicRecipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
+      : recipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
+
+    if (!recipe) {
+      throw new Error(`Recipe with ID ${selectedRecipeId.value} not found.`)
     }
-    console.log(recipe) 
     return recipe
   })
   
-  const getAllRecipeTags = computed(() =>
+  const getAllRecipeTags: ComputedRef<string[]> = computed(() =>
     Array.from(
       new Set(
         recipes.value.flatMap(
@@ -61,9 +58,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   function setInitialRecipeState(userData: UserState, publicRecipeData: Recipe[]) {
     userId.value = userData.uid
     recipes.value = userData.localUser.recipes || []
-    addIsPublic(publicRecipeData)
     existingPublicRecipes.value = publicRecipeData || []
-    console.log('setting initial state, public Recipes: ', existingPublicRecipes.value)
     newPublicRecipes.value = []
     removedPublicRecipes.value = []
     // allTags.value = state.allTags || []
@@ -71,18 +66,13 @@ export const useRecipeStore = defineStore('recipes', () => {
     isSelectedRecipePublic.value = false
   }
 
-  function addIsPublic(recipes: Recipe[]) {
-    for (const  recipe of recipes) {
-      recipe.isPublicRecipe = true;
-    }
-  }
 
-  function getNRandomPublicRecipes(num: number): Ref<Recipe[]> {
+  function getNRandomPublicRecipes(numberOfRecipes: number): Ref<Recipe[]> {
     const length = existingPublicRecipesLength.value;
     const availableIndices = length - 1 - usedPublicRecipeIndices.value.size;
-    console.log(usedPublicRecipeIndices)
-    const numToGet = Math.min(num, availableIndices);
-    console.log('here', numToGet)
+
+    const numToGet = Math.min(numberOfRecipes, availableIndices);
+
     const indices = new Set<number>();
     while (indices.size < numToGet) {
       const randomIndex = Math.floor(Math.random() * (length-1));
@@ -91,7 +81,6 @@ export const useRecipeStore = defineStore('recipes', () => {
         usedPublicRecipeIndices.value.add(randomIndex);
       }
     }
-    console.log('indices', indices)
     return ref(Array.from(indices).map(index => existingPublicRecipes.value[index]));
 }
 
@@ -112,7 +101,8 @@ export const useRecipeStore = defineStore('recipes', () => {
     editSelectedRecipe.value = status
   }
 
-  function removeSelectedRecipe() {
+  // TODO refactor into removeRecipeById(id)
+  function removeRecipeById(id: string) {
     const recipeToDelete = recipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
     const deletedRecipeIndex = recipeToDelete ? recipes.value.indexOf(recipeToDelete) : -1
     if (deletedRecipeIndex >= 0) {
@@ -147,10 +137,6 @@ export const useRecipeStore = defineStore('recipes', () => {
       const recipe = recipes.value.find((recipe) => recipe.id === id) as Recipe
       removedPublicRecipes.value.push(recipe)
     }
-  }
-
-  function setAllRecipes(newRecipes: Recipe[]) {
-    recipes.value = newRecipes
   }
 
   function resetNewPublicRecipes() {
@@ -201,10 +187,9 @@ export const useRecipeStore = defineStore('recipes', () => {
     addRecipe,
     setSelectedRecipeId,
     setEditStatusSelectedId,
-    removeSelectedRecipe,
+    removeRecipeById,
     addToPublicRecipes,
     removeFromPublicRecipes,
-    setAllRecipes,
     resetNewPublicRecipes,
     resetRemovedPublicRecipes,
     resetUsedPublicIndices,

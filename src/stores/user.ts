@@ -5,7 +5,7 @@ import { computed, ref } from 'vue'
 export const useUserStore = defineStore('user', () => {
   const uid = ref('')
   const authorized = ref<boolean | null>(false)
-  const localUser = ref<LocalUser>({uid: ''})
+  const localUser = ref<LocalUser>({uid: '', displayName: ''})
   const personalFilters = ref<string[]>([])
 
   const isAuthorized = computed(() => authorized.value)
@@ -21,6 +21,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   function setLocalUser(user: LocalUser) {
+    console.log('inside set localUser local user: ', user)
     localUser.value = user
   }
 

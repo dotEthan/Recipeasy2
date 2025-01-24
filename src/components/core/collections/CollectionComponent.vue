@@ -25,7 +25,7 @@ function openRecipeDetails(id: string) {
 
 <template>
   <div class="collection-container">
-    <h3>{{ title }}:</h3>
+    <h3 data-test="mealtime" id="collection-title">{{ title }}:</h3>
     <div class="collection-item-container">
       <CollectionItemComponent v-for="recipe in recipeData" @click="() => openRecipeDetails(recipe.id || '')" :key="recipe.id" :recipeData="recipe" />
     </div>

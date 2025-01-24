@@ -11,7 +11,6 @@ const isAuthorized = userStore.isAuthorized
 
 const isRegistrationModalOpen = computed(() => appStore.isRegistrationModalOpen)
 
-console.log('is it on: ', isRegistrationModalOpen.value)
 </script>
 
 <template>
