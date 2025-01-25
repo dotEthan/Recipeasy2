@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { createTestingPinia } from '@pinia/testing';
 import { useRecipeStore } from '@/stores/recipe';
 import { useAppStore } from '@/stores/app';
@@ -19,15 +19,20 @@ export const getMockedRecipeStore = (overrides: Partial<RecipeStore> = {}) => ({
     isSelectedRecipePublic: ref(false),
     editSelectedRecipe: ref(false),
     
-    personalFilters: vi.fn().mockReturnValue(ref([])),
-    recipesLength: vi.fn(() => ref(0)),
-    existingPublicRecipesLength: vi.fn(() => ref(0)),
-    getSelectedRecipe: vi.fn(() => ref([])),
-    getAllRecipeTags: vi.fn(() => ref([])),
-
+    personalFilters: computed(() => ['testfilter']),
+    recipesLength: computed(() => 1),
+    existingPublicRecipesLength: computed(() => 1),
+    getSelectedRecipe: computed(() => mockRefRecipes.value[0]),
+    getAllRecipeTags: computed(() => ['tasty']),
     useFilteredRecipes: vi.fn(() => ref([])),
     setInitialRecipeState: vi.fn(),
-    getNRandomPublicRecipes: vi.fn((num) => ref(mockRefRecipes.value.slice(0, num))),
+    generatePublicRecipeCollections: vi.fn(() => [
+        ref([mockRefRecipes.value[0]]),
+        ref([mockRefRecipes.value[1]]),
+        ref([mockRefRecipes.value[2]]),
+        ref([mockRefRecipes.value[3]]),
+        ref([mockRefRecipes.value[4]]),
+      ]),
     updateRecipe: vi.fn(),
     addRecipe: vi.fn(),
     setSelectedRecipeId: vi.fn(),
@@ -37,12 +42,12 @@ export const getMockedRecipeStore = (overrides: Partial<RecipeStore> = {}) => ({
     removeFromPublicRecipes: vi.fn(),
     resetNewPublicRecipes: vi.fn(),
     resetRemovedPublicRecipes: vi.fn(),
-    resetUsedPublicIndices: vi.fn(),
     resetState: vi.fn(),
 
     ...overrides,
 });
 
+// TODO Fix Computed properties
 export const getMockedAppStore = (overrides: Partial<ReturnType<typeof useAppStore>> = {}) => ({
     
     testModeOn: false,
@@ -66,6 +71,7 @@ export const getMockedAppStore = (overrides: Partial<ReturnType<typeof useAppSto
     ...overrides,
 });
 
+// TODO Fix Computed properties
 export const getMockedUserStore = (overrides: Partial<ReturnType<typeof useUserStore>> = {}) => ({
     // state
     uid: '',

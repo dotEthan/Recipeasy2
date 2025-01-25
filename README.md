@@ -50,6 +50,7 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 - TODO & Misc Functionality (Search, tags, rating, ignore/report recipe)
 - Filter (Functional, but waiting on final schema)
 - Defaults (images)
+- Tailor Cloudinary Image settings
 - Animations
 - Error Handling & User feedback (loadin spinners, unsaved data etc)
 - Display newly added Recipe Data (time, servings, nutritional info, etc)

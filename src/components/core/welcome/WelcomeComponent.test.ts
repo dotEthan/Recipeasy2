@@ -1,15 +1,14 @@
+
+import { ref } from 'vue';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { mount, shallowMount, VueWrapper } from '@vue/test-utils';
-import { setActivePinia } from 'pinia';
-import { createTestingPinia } from '@pinia/testing';
 import { useAppStore } from '@/stores/app';
 import { useRecipeStore } from '@/stores/recipe';
 import { useUserStore } from '@/stores/user';
 import WelcomeComponent from './WelcomeComponent.vue';
-import { mockComputedRecipes, mockRefRecipes } from '@/testing/mockData';
-import { nextTick } from 'process';
-import { reactive, ref } from 'vue';
-import { createMockedStores, getMockedRecipeStore } from '@/testing/mockStores';
+import { mockRefRecipes } from '@/testing/mockData';
+import { createMockedStores } from '@/testing/mockStores';
+import { Recipe } from '@/types/Recipes';
 
 
 describe('WelcomeComponent', () => {
@@ -20,11 +19,12 @@ describe('WelcomeComponent', () => {
 
   beforeEach(() => {
     const { pinia, recipeStore: mockedRecipeStore, appStore: mockedAppStore, userStore: mockedUserStore } = createMockedStores({
-      recipeStore: {
-        getNRandomPublicRecipes: vi.fn().mockReturnValue([{ id: 1 }, { id: 2 }, { id: 3 }]),
-      },
       appStore: {
         screenSize: 'sm',
+      },
+      recipeStore: {
+        selectedRecipeId: '123',
+        setSelectedRecipeId: vi.fn(),
       },
     });
 
@@ -35,8 +35,12 @@ describe('WelcomeComponent', () => {
     wrapper = mount(WelcomeComponent, {
       global: {
         plugins: [pinia],
-        stubs: {
-          CollectionComponent: false,
+        stubs: {},
+      },
+      mocks: {
+        $expose: {
+          recipeDetailsOpen: ref(false),
+          closeRecipeDetails: vi.fn(), 
         },
       },
     });
@@ -55,7 +59,7 @@ describe('WelcomeComponent', () => {
   it('renders the welcome title with name if there', async () => {
     userStore.localUser.displayName = 'Jim';
 
-    await nextTick(() => {});
+    await wrapper.vm.$nextTick();
 
     expect(wrapper.find('.greeting').text()).toBe('Welcome, Jim!');
   });
@@ -77,27 +81,57 @@ describe('WelcomeComponent', () => {
   
     // 12:00 PM 
     currentTime.value = new Date(2025, 0, 23, 12, 0, 0);
+    
     await wrapper.vm.$nextTick(); 
   
-    console.log('Updated currentTime:', currentTime.value.toLocaleString());
     expect(h3Element.text()).toBe('Ready for Lunch:');
     // 8:00 PM
     currentTime.value = new Date(2025, 0, 23, 20, 0, 0);
+    
     await wrapper.vm.$nextTick();
-  
-    console.log('Updated currentTime:', currentTime.value.toLocaleString());
+
     expect(h3Element.text()).toBe('Ready for Dinner:');
   });
+  
+  // it('resets values needed when "closeRecipeDetails" is emitted', async () => {
 
-  it('calls getNRandomPublicRecipes with the correct number of recipes based on screen size', async () => {
-    const { recipeStore, appStore } = createMockedStores({
-      recipeStore: {
-        getNRandomPublicRecipes: vi.fn(() => ref([])), 
-      },
-      appStore: {
-        screenSize: 'lg',
-      },
-    });
+  //   wrapper = shallowMount(WelcomeComponent, {
+  //     global: {
+  //       stubs: {
+  //         RecipeDetailsComponent: {
+  //           template: '<div></div>', // Stub child component
+  //           emits: ['closeRecipeDetails'],
+  //         },
+  //       },
+  //     },
+  //   });
+    
+  //   const exposed = {
+  //     recipeDetailsOpen: ref(false),
+  //     closeRecipeDetails: vi.fn(() => {
+  //       console.log('closeRecipeDetails mock function called');
+  //     }),
+  //   };
+  //   Object.assign(wrapper.vm, exposed);
+    
+  //   await wrapper.findComponent(RecipeDetailsComponent).vm.$emit('closeRecipeDetails');
+  //   await wrapper.vm.$nextTick();
+    
+  //   console.log('recipeDetailsOpen.value:', exposed.recipeDetailsOpen.value);
+  
+  //   recipeStore.selectedRecipeId = '123'; // Mock initial state
+  //   exposed.recipeDetailsOpen.value = true; // Now this should work
+  //   await wrapper.vm.$nextTick();
+  
+  //   await wrapper.findComponent(RecipeDetailsComponent).vm.$emit('closeRecipeDetails');
+  //   await wrapper.vm.$nextTick();
+  
+  //   // Assertions
+  //   expect(recipeStore.setSelectedRecipeId).toHaveBeenCalledWith('');
+  //   expect(exposed.recipeDetailsOpen.value).toBe(false);
+  // });
+
+  it('calls generatePublicRecipeCollections and assigns properly', async () => {
 
     shallowMount(WelcomeComponent, {
       global: {
@@ -105,16 +139,25 @@ describe('WelcomeComponent', () => {
           recipeStore,
           appStore,
         },
+        stubs: {
+          RecipeDetailHeaderComponent: true,
+          RecipeDetailComponent: true,
+        },
       },
     });
+    const vm = wrapper.vm as unknown as {
+      ethansFavouriteRecipes: Recipe[];
+      recommendedRecipes: Recipe[];
+      mealTimeRecipes: Recipe[];
+      healthyRecipes: Recipe[];
+      snackRecipes: Recipe[];
+    };
+    await wrapper.vm.$nextTick();
 
-    await nextTick(() => {});
-
-    expect(recipeStore.getNRandomPublicRecipes).toHaveBeenCalledWith(5);
-
-    appStore.screenSize = 'sm';
-    await nextTick(() => {});
-
-    expect(recipeStore.getNRandomPublicRecipes).toHaveBeenCalledWith(6);
+    expect(vm.ethansFavouriteRecipes).toEqual([mockRefRecipes.value[0]]);
+    expect(vm.recommendedRecipes).toEqual([mockRefRecipes.value[1]]);
+    expect(vm.mealTimeRecipes).toEqual([mockRefRecipes.value[2]]);
+    expect(vm.healthyRecipes).toEqual([mockRefRecipes.value[4]]);
+    expect(vm.snackRecipes).toEqual([mockRefRecipes.value[3]]);
   });
 });

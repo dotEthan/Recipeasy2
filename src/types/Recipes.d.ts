@@ -31,7 +31,6 @@ export interface RecipeStore {
   removeFromPublicRecipes(id: string): void,
   resetNewPublicRecipes(): void;
   resetRemovedPublicRecipes(): void;
-  resetUsedPublicIndices(): void;
   resetState(): void;
 }
 
