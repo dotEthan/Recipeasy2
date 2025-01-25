@@ -3,16 +3,27 @@ import { ref, computed, ComputedRef, Ref } from 'vue'
 import { useUserStore } from './user'
 import type { Recipe, RecipeStore } from '@/types/Recipes'
 import { UserState } from '@/types/UserState'
+import { useAppStore } from './app'
 
 export const useRecipeStore = defineStore('recipes', () => {
   const userStore = useUserStore()
+  const appStore = useAppStore()
   const userId = ref<string>('')
   const recipes = ref<Recipe[]>([])
   const existingPublicRecipes = ref<Recipe[]>([])
   const newPublicRecipes = ref<Recipe[]>([])
   const removedPublicRecipes = ref<Recipe[]>([])
   const allTags = ref<string[]>([])
-  const usedPublicRecipeIndices = ref<Set<number>>(new Set())
+  // TODO update to look at ethan.id's 5 stars
+  const ethansFavouritePublicIds = ref<string[]>([
+    'pub-8611a75d-cdb3-446c-8716-caecc2ee8f5f',
+    'pub-VR004',
+    'pub-ea6b4bf8-3156-49d6-9e97-a5757ff5b6b2',
+    'pub-test-2',
+    'pub-test-3',
+    'pub-test-4',
+    'pub-test-5'
+  ]);
 
   const selectedRecipeId = ref<string>('')
   const isSelectedRecipePublic = ref<boolean>(false)
@@ -66,23 +77,40 @@ export const useRecipeStore = defineStore('recipes', () => {
     isSelectedRecipePublic.value = false
   }
 
+  function generatePublicRecipeCollections(): Ref<Recipe[]>[] {
+    const numberOfRecipesEach = appStore.screenSize === 'sm' ? 6 : 5;
+    const length = existingPublicRecipes.value.length;
+    const usedIndices = new Set<number>();
 
-  function getNRandomPublicRecipes(numberOfRecipes: number): Ref<Recipe[]> {
-    const length = existingPublicRecipesLength.value;
-    const availableIndices = length - 1 - usedPublicRecipeIndices.value.size;
+    const ethansFavoriteIndices = ethansFavouritePublicIds.value
+        .map((id) => existingPublicRecipes.value.findIndex((recipe) => recipe.id === id))
+        .filter((index) => index !== -1);
 
-    const numToGet = Math.min(numberOfRecipes, availableIndices);
-
-    const indices = new Set<number>();
-    while (indices.size < numToGet) {
-      const randomIndex = Math.floor(Math.random() * (length-1));
-      if (!usedPublicRecipeIndices.value.has(randomIndex)) {
-        indices.add(randomIndex);
-        usedPublicRecipeIndices.value.add(randomIndex);
-      }
+    const ethansCollection: Recipe[] = [];
+    while (ethansCollection.length < numberOfRecipesEach && ethansFavoriteIndices.length > 0) {
+        const randomIndex = Math.floor(Math.random() * ethansFavoriteIndices.length);
+        const recipeIndex = ethansFavoriteIndices.splice(randomIndex, 1)[0];
+        usedIndices.add(recipeIndex);
+        ethansCollection.push(existingPublicRecipes.value[recipeIndex]);
     }
-    return ref(Array.from(indices).map(index => existingPublicRecipes.value[index]));
-}
+    //TODO Generate other arrays based on tags/etc
+    const randomCollections = Array.from({ length: 4 }, () => {
+        const recipesInGroup: Recipe[] = [];
+
+        while (recipesInGroup.length < numberOfRecipesEach && usedIndices.size < length) {
+            const randomIndex = Math.floor(Math.random() * length);
+
+            if (!usedIndices.has(randomIndex)) {
+                usedIndices.add(randomIndex);
+                recipesInGroup.push(existingPublicRecipes.value[randomIndex]);
+            }
+        }
+
+        return ref(recipesInGroup);
+    });
+
+    return [ref(ethansCollection), ...randomCollections];
+  }
 
   function updateRecipe(recipe: Recipe) {
     recipes.value = recipes.value.map((r) => (r.id === recipe.id ? recipe : r))
@@ -148,10 +176,6 @@ export const useRecipeStore = defineStore('recipes', () => {
     removedPublicRecipes.value = []
   }
 
-  function resetUsedPublicIndices() {
-    usedPublicRecipeIndices.value.clear()
-  }
-
   function resetState() {
     userId.value = ''
     recipes.value = []
@@ -171,7 +195,6 @@ export const useRecipeStore = defineStore('recipes', () => {
     selectedRecipeId,
     existingPublicRecipes,
     newPublicRecipes,
-    usedPublicRecipeIndices,
     removedPublicRecipes,
     isSelectedRecipePublic,
     editSelectedRecipe,
@@ -182,7 +205,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     getAllRecipeTags,
     useFilteredRecipes,
     setInitialRecipeState,
-    getNRandomPublicRecipes,
+    generatePublicRecipeCollections,
     updateRecipe,
     addRecipe,
     setSelectedRecipeId,
@@ -192,7 +215,6 @@ export const useRecipeStore = defineStore('recipes', () => {
     removeFromPublicRecipes,
     resetNewPublicRecipes,
     resetRemovedPublicRecipes,
-    resetUsedPublicIndices,
     resetState
   }
 })

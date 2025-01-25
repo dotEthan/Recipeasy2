@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import type { Direction, Ingredient } from '@/types/Recipes'
+import { useShoppingListStore } from '@/stores/shoppingList'
 
 const props = defineProps({
   itemObject: Object as PropType<Ingredient | Direction>,
   itemType: String
 })
+const shoppingListStore = useShoppingListStore();
 console.log(props.itemType === 'ingredient')
 
 const steps = props.itemObject?.steps?.map((step) => {
@@ -25,6 +27,7 @@ const steps = props.itemObject?.steps?.map((step) => {
 function onAddIngredientToList(item: string | undefined) {
   console.log('add ingredient: ', item)
   if (typeof item === 'undefined') return
+  shoppingListStore.addToDefaultList([item])
 }
 </script>
 
