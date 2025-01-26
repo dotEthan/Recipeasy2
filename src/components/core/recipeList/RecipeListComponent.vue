@@ -14,8 +14,8 @@ import { useUserStore } from '@/stores/user'
 const userStore = useUserStore()
 const recipeStore = useRecipeStore()
 let selectedRecipe = ref<Recipe | undefined>(undefined)
-let editSelectedRecipe = ref(false)
 let activeFilters = ref<string[]>([])
+let isAddedRecipeNew = ref(false);
 
 const filteredRecipes = computed(() => {
   return recipeStore.useFilteredRecipes(activeFilters.value)
@@ -42,7 +42,7 @@ function newRecipeAdded() {
   const newId = uuidv4()
   recipeStore.setSelectedRecipeId(newId)
   recipeStore.setEditStatusSelectedId(true)
-  editSelectedRecipe.value = true
+  isAddedRecipeNew.value = true;
 }
 
 function setFilters(filters: string[]) {
@@ -51,6 +51,11 @@ function setFilters(filters: string[]) {
 
 function removedRecipe() {
   console.log('ok, so what?')
+}
+
+function editingFinishedCleanUp() {
+  recipeStore.setEditStatusSelectedId(false);
+  isAddedRecipeNew.value = false;
 }
 //TODO align filter and new recipes look
 </script>
@@ -81,7 +86,8 @@ function removedRecipe() {
   <RecipeEditComponent
     v-else-if="recipeStore.selectedRecipeId && recipeStore.editSelectedRecipe"
     class="recipe-item-contain"
-    @editing-finished="recipeStore.setEditStatusSelectedId(false)"
+    :isNew="isAddedRecipeNew"
+    @editing-finished="editingFinishedCleanUp"
   />
 </template>
 

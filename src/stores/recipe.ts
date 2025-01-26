@@ -40,10 +40,7 @@ export const useRecipeStore = defineStore('recipes', () => {
       ? existingPublicRecipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
       : recipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
 
-    if (!recipe) {
-      throw new Error(`Recipe with ID ${selectedRecipeId.value} not found.`)
-    }
-    return recipe
+    return recipe || {id: selectedRecipeId.value, ingredients: [], directions: [], tags: []}
   })
   
   const getAllRecipeTags: ComputedRef<string[]> = computed(() =>
@@ -168,7 +165,6 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   function resetNewPublicRecipes() {
-    existingPublicRecipes.value = []
     newPublicRecipes.value = []
   }
 

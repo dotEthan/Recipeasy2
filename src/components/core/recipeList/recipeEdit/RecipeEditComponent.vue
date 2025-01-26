@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import type { Ref } from 'vue'
 import type { Recipe } from '@/types/Recipes' 
 import { useRecipeStore } from '@/stores/recipe'
@@ -9,6 +9,9 @@ import ToolTipComponent from '../../shared/toolTip/ToolTipComponent.vue'
 
 //TODO Refactor into multiple components 'header', 'ingredients', 'directions'
 
+const props = defineProps({
+  isNew: Boolean,
+})
 const emit = defineEmits(['editingFinished','recipeDeleted'])
 
 let formValid = true
@@ -19,39 +22,43 @@ const recipeStore = useRecipeStore()
 const { deleteImage } = useImageUpload()
 
 const selectedRecipe: Recipe | undefined = recipeStore.getSelectedRecipe
-let isNewRecipe = false
 const isPrivate = selectedRecipe?.isPrivate
 
-if (selectedRecipe) {
-  formData = ref<Recipe>({
-    // Deep Clones the object
-    ...JSON.parse(JSON.stringify(selectedRecipe)),
-    ingredients: selectedRecipe.ingredients
-      ? JSON.parse(JSON.stringify(selectedRecipe.ingredients))
-      : [],
-    directions: selectedRecipe.directions
-      ? JSON.parse(JSON.stringify(selectedRecipe.directions))
-      : [],
-    tags: selectedRecipe.tags ? JSON.parse(JSON.stringify(selectedRecipe.tags)) : []
-  })
-} else {
-  const newRecipe = {
-    id: recipeStore.selectedRecipeId,
-    name: 'Default Recipe',
-    ingredients: [{ title: 'Ingedients', steps: [] }],
-    directions: [{ title: 'Directions', steps: [] }],
-    description: '',
-    tags: [],
-    isPrivate: false,
+// onMounted(() => {
+//   populateForm();
+// })
+// TODO wont work in onMounted, figure out why
+populateForm();
+
+function populateForm() {
+  console.log('is this new: ', props.isNew)
+  if(!props.isNew) {
+    formData = ref<Recipe>({
+      // Deep Clones the object
+      ...JSON.parse(JSON.stringify(selectedRecipe)),
+      ingredients: selectedRecipe?.ingredients
+        ? JSON.parse(JSON.stringify(selectedRecipe.ingredients))
+        : [],
+      directions: selectedRecipe?.directions
+        ? JSON.parse(JSON.stringify(selectedRecipe.directions))
+        : [],
+      tags: selectedRecipe?.tags ? JSON.parse(JSON.stringify(selectedRecipe.tags)) : []
+    })
+  } else {
+    const newRecipe = {
+      id: recipeStore.selectedRecipeId,
+      name: 'Default Recipe',
+      ingredients: [{ title: 'Ingedients', steps: [] }],
+      directions: [{ title: 'Directions', steps: [] }],
+      description: '',
+      tags: [],
+      isPrivate: false,
+    }
+    formData = ref<Recipe>(newRecipe)
   }
-  isNewRecipe = true
-  formData = ref<Recipe>(newRecipe)
 }
 
 function onSubmit() {
-  // If public status changed, udpate accordingly
-  console.log('selected: ', selectedRecipe?.isPrivate)
-  console.log('form: ', formData.value?.isPrivate)
   const publicStatusChanged = (selectedRecipe?.isPrivate !== formData.value.isPrivate) ? true : false
   console.log('did public status Change?: ', publicStatusChanged)
   if (publicStatusChanged && formData.value.isPrivate) {
@@ -62,7 +69,6 @@ function onSubmit() {
     if (!formData.value.isPublicRecipe) formData.value.isPublicRecipe = true
     recipeStore.addToPublicRecipes(formData.value)
   }
-  console.log('saving locally: ', formData.value)
   if (formData?.value && selectedRecipe) {
     console.log('Updating existing Recipe')
     recipeStore.updateRecipe(formData.value)
@@ -94,10 +100,10 @@ function validateName() {
 }
 
 function onEditingOver() {
-  if (isNewRecipe) {
+  if (props.isNew) {
     recipeStore.setSelectedRecipeId('')
   }
-  recipeStore.setEditStatusSelectedId(false)
+  emit("editingFinished");
 }
 
 function onDeleteIngredientType(ingredientTypeIndex: number) {
