@@ -67,4 +67,7 @@ function onAddIngredientToList(item: string | undefined) {
 
     @media (min-width: 768px)
         padding: 0 10px
+
+.direction-text
+  margin-bottom: 10px
 </style>

@@ -5,6 +5,8 @@ import RecipeDetailHeaderComponent from './recipeDetailHeader/RecipeDetailHeader
 import RecipeManageButtonsComponent from './recipeManageButtons/RecipeManageButtonsComponent.vue';
 import XToCloseComponent from '../../shared/xToClose/XToCloseComponent.vue';
 import { useImageUpload } from '@/composables/useImageUpload';
+import NoteItemComponent from './noteItem/NoteItemComponent.vue';
+import TagItemComponent from './tag-item/TagItemComponent.vue';
 
 const emit = defineEmits(['closeRecipeDetails', 'removedRecipe', 'editSelectedRecipe'])
 
@@ -60,6 +62,20 @@ async function deleteRemovedRecipeImage() {
               itemType="direction"
             />
           </div>
+          <div class="ingredients-contain">
+            <div class="type-section-title">Tags:</div>
+            <div class="tags-wrapper" v-if="selectedRecipe?.tags">
+              <TagItemComponent v-for="(tag, index) of selectedRecipe?.tags" v-bind:key="index" :tag="tag" />
+            </div>
+            <div class="type-section-none" v-else>No tags</div>
+          </div>
+          <div class="ingredients-contain">
+            <div class="type-section-title">Notes:</div>
+            <div class="notes-wrapper" v-if="selectedRecipe?.notes">
+              <NoteItemComponent v-for="(note, index) of selectedRecipe?.notes" v-bind:key="index" :note="note" />
+            </div>
+            <div class="type-section-none" v-else>No Notes</div>
+          </div>
         </div>
       </div>
     </div>
@@ -109,9 +125,18 @@ async function deleteRemovedRecipeImage() {
     margin-bottom: 10px
     font-size: 1.4em
 
+.type-section-none
+    margin-bottom: 10px
+    font-size: 1em
+
 .directions-text, .ingredients-text
     padding: 0 5px
 
     @media (min-width: 768px)
         padding: 0 10px
+
+.tags-wrapper
+  display: flex
+  flex-direction: row
+  flex-wrap: wrap
 </style>

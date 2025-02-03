@@ -41,6 +41,9 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### Working on Now:
 
+- Switch from function to arrow functions & full prettier update
+- Switch to id based routing instead of event based
+- Add Cuisine type & Nutritional Info (Edit and Display)
 - Checking Basic Desktop design
 - Testing (Vitest, Cypress) Current Coverage: 28%
 - Form Accessibility (shopping list and recipe edit, need "focus")
