@@ -23,17 +23,22 @@ defineProps({
                 {{ selectedRecipe?.description }}
               </p>
             </div>
-            <div class="ratingbar">
-              <div class="ratingbar-left">
-                <div v-if="selectedRecipe?.userRating">
-                  <span v-if="selectedRecipe?.userRating">Your Rating:</span>
-                  {{ selectedRecipe?.userRating }}
+            <div class="head-lower-info">
+              <div class="ratingbar">
+                <div class="ratingbar-left">
+                  <div v-if="selectedRecipe?.userRating">
+                    <span v-if="selectedRecipe?.userRating">Your Rating:</span>
+                    {{ selectedRecipe?.userRating }}
+                  </div>
+                  <div :class="{smallText: selectedRecipe?.userRating}">
+                    <span class="ratingbar-text">Rating: </span>{{ selectedRecipe?.publicRating }}
+                  </div>
                 </div>
-                <div :class="{smallText: selectedRecipe?.userRating}">
-                  <span class="ratingbar-text">Rating: </span>{{ selectedRecipe?.publicRating }}
-                </div>
+                <div class="ratingbar-right"><span class="ratingbar-text">{{ selectedRecipe?.isPrivate ? 'Private' : 'public'}} </span> </div>
               </div>
-              <div class="ratingbar-right"><span class="ratingbar-text">{{ selectedRecipe?.isPrivate ? 'Private' : 'public'}} </span> </div>
+              <div class="recipe-url">
+                Recipe Url: <a :href="selectedRecipe?.url" rel="noopener noreferrer" target="_blank">{{ selectedRecipe?.url }}</a>
+              </div>
             </div>
           </div>
         </div>
@@ -104,6 +109,7 @@ defineProps({
 .recipe-description-text
   padding: 0 10px
   margin: 0
+  white-space: pre-wrap
 
   @media (min-width: 768px)
     padding: 0 20px
@@ -123,4 +129,6 @@ defineProps({
   font-size: 15px
   line-height: 1
 
+.recipe-url
+  font-size: clamp(8px, 2vw, 12px)
 </style>

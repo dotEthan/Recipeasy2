@@ -7,14 +7,22 @@ export const mockComputedRecipes = computed<Recipe[]>(() => [
     name: 'Recipe 1', 
     ingredients: [], 
     directions: [], 
-    tags: [] 
+    tags: [],
+    nutritionalInfo: [],
+    notes:[],
+    isPrivate: false,
+    creatorId: '1'
   },
   { 
     id: '2', 
     name: 'Recipe 2', 
     ingredients: [], 
     directions: [], 
-    tags: [] 
+    tags: [],
+    nutritionalInfo: [],
+    notes:[],
+    isPrivate: false,
+    creatorId: '1'
   }
 ]);
 
@@ -24,62 +32,98 @@ export const mockRefRecipes = ref<Recipe[]>([
       name: 'Recipe 1', 
       ingredients: [], 
       directions: [], 
-      tags: [] 
+      tags: [],
+      nutritionalInfo: [],
+      notes:[],
+      isPrivate: false,
+      creatorId: '1'
     },
     { 
       id: '2', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
-      tags: [] 
+      tags: [],
+      nutritionalInfo: [],
+      notes:[],
+      isPrivate: false,
+      creatorId: '1'
     },
     { 
       id: '3', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
-      tags: [] 
+      tags: [],
+      nutritionalInfo: [],
+      notes:[],
+      isPrivate: false,
+      creatorId: '1'
     },
     { 
       id: '4', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
-      tags: [] 
+      tags: [],
+      nutritionalInfo: [],
+      notes:[],
+      isPrivate: false,
+      creatorId: '1'
     },
     { 
       id: '5', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
-      tags: [] 
+      tags: [],
+      nutritionalInfo: [],
+      notes:[],
+      isPrivate: false,
+      creatorId: '1'
     },
     { 
       id: '6', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
-      tags: [] 
+      tags: [],
+    nutritionalInfo: [],
+    notes:[],
+    isPrivate: false,
+    creatorId: '1'
     },
     { 
       id: '7', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
-      tags: [] 
+      tags: [],
+    nutritionalInfo: [],
+    notes:[],
+    isPrivate: false,
+    creatorId: '1'
     },
     { 
       id: '8', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
-      tags: [] 
+      tags: [],
+    nutritionalInfo: [],
+    notes:[],
+    isPrivate: false,
+    creatorId: '1'
     },
     { 
       id: '9', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
-      tags: [] 
+      tags: [],
+    nutritionalInfo: [],
+    notes:[],
+    isPrivate: false,
+    creatorId: '1'
     }
   ]);

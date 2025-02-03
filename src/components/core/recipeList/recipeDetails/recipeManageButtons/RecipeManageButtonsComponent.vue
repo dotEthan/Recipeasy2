@@ -2,18 +2,22 @@
 import router from '@/router/main';
 import { useRecipeStore } from '@/stores/recipe'
 import { useShoppingListStore } from '@/stores/shoppingList'
+import { useUserStore } from '@/stores/user';
 import { Recipe } from '@/types/Recipes';
 import { ArrowBigRight } from 'lucide-vue-next';
 import { v4 as uuidv4 } from 'uuid'
+import { computed } from 'vue';
 
 
 const emit = defineEmits(['closeRecipeDetails', 'removedRecipe'])
 
 const recipeStore = useRecipeStore()
 const shoppingListStore = useShoppingListStore()
+const userStore = useUserStore()
 
 const selectedRecipe = recipeStore.getSelectedRecipe
 const isSelectedRecipePublic = recipeStore.isSelectedRecipePublic
+const userAlreadyHas = computed(() =>  recipeStore.recipes.some(recipe => `pub-${recipe.id}` === selectedRecipe.id) ? true : false)
 
 function onAddToShoppingList() {
   const items = selectedRecipe?.ingredients.reduce((acc, ingredient) => {
@@ -52,12 +56,17 @@ async function addPublicRecipeToPersonal() {
         ...selectedRecipe!,
         isPublicRecipe: false,
         isPrivate: false,
-        id
+        id,
+        creatorId: userStore.getCurrentUserId
     }
     recipeStore.addRecipe(updatedRecipe!)
     console.log(updatedRecipe)
     await router.push('/recipes')
     recipeStore.setSelectedRecipeId(updatedRecipe.id)
+}
+
+const goToUserRecipes = () => {
+    router.push('/recipes');
 }
 </script>
 
@@ -66,9 +75,9 @@ async function addPublicRecipeToPersonal() {
     <div class="recipe-manage-buttons">
     <button class="manage-btn-1" @click="onAddToShoppingList()">
         <i class="add-to-list"></i>
-        <div>
+        <span>
         Add to Shopping List
-        </div>
+        </span>
     </button>
     <button v-if="!isSelectedRecipePublic" class="manage-btn-2" @click="onEditRecipe">
         <div class="edit-recipe"></div>
@@ -82,12 +91,18 @@ async function addPublicRecipeToPersonal() {
         <div class="delete-recipe"></div>
         <span class="red-word">Delete</span>&nbsp;Recipe
     </button>
+    <button v-else-if="userAlreadyHas" class="manage-btn-3-public" @click="goToUserRecipes">
+        <div class="add-to-text">
+            <div class="green-word" >Already in</div>
+            <div> Your Recipes</div>
+        </div>
+        <div class="add-to-recipe"><ArrowBigRight color="#1EB136"/></div>
+    </button>
     <button v-else class="manage-btn-3-public" @click="addPublicRecipeToPersonal">
         <div class="add-to-text">
             <div class="green-word" >Add To</div>
             <div> Your Recipes</div>
         </div>
-        
         <div class="add-to-recipe"><ArrowBigRight color="#1EB136"/></div>
     </button>
     </div>
@@ -104,15 +119,15 @@ async function addPublicRecipeToPersonal() {
     padding: 5px 0
     display: flex
     justify-content: space-around
+    justify-content: center
 
     @media (min-width: 768px)
         padding: 20px 0
 
     button
         padding: 3px 5px
-        // border: none
+        border: none
         background: transparent
-        // font-weight: 300
         width: 33%
         display: flex
         align-items: center
@@ -143,7 +158,7 @@ async function addPublicRecipeToPersonal() {
                 font-style: normal
                 top: 50%
                 left: 50%
-                transform: translate(-30%, -10%) scale(1)
+                transform: translate(-50%, -50%) scale(1)
                 background: #eeeeff
                 border: 2px solid #1EB136
                 width: 18px
@@ -294,6 +309,11 @@ async function addPublicRecipeToPersonal() {
                 
                 .add-to-recipe
                     transform: scale(1.7)
+.manage-btn-1, .manage-btn-2, .manage-btn-3-public, .manage-btn-3
+    font-size: .8em
+
+    @media (min-width: 768px)
+        font-size: 1em
 
 .manage-btn-2
     border-left: 1px dashed black

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DOMPurify from 'dompurify'
 import { onMounted, ref } from 'vue'
 import type { Ref } from 'vue'
 import type { Recipe } from '@/types/Recipes' 
@@ -6,6 +7,7 @@ import { useRecipeStore } from '@/stores/recipe'
 import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue'
 import { useImageUpload } from '@/composables/useImageUpload'
 import ToolTipComponent from '../../shared/toolTip/ToolTipComponent.vue'
+import { useUserStore } from '@/stores/user'
 
 //TODO Refactor into multiple components 'header', 'ingredients', 'directions'
 
@@ -19,10 +21,11 @@ let formData: Ref<Recipe>
 let formError = ref('')
 
 const recipeStore = useRecipeStore()
+const userStore = useUserStore()
 const { deleteImage } = useImageUpload()
 
-const selectedRecipe: Recipe | undefined = recipeStore.getSelectedRecipe
-const isPrivate = selectedRecipe?.isPrivate
+const selectedRecipe: Recipe = recipeStore.getSelectedRecipe
+let tagInput = ref('')
 
 // onMounted(() => {
 //   populateForm();
@@ -52,8 +55,12 @@ function populateForm() {
       directions: [{ title: 'Directions', steps: [] }],
       description: '',
       tags: [],
+      notes: [],
+      nutritionalInfo: [],
+      creatorId: userStore.getCurrentUserId,
       isPrivate: false,
     }
+    console.log('creating new default recipe: ', selectedRecipe)
     formData = ref<Recipe>(newRecipe)
   }
 }
@@ -69,7 +76,11 @@ function onSubmit() {
     if (!formData.value.isPublicRecipe) formData.value.isPublicRecipe = true
     recipeStore.addToPublicRecipes(formData.value)
   }
-  if (formData?.value && selectedRecipe) {
+  if (formData.value.url) {
+    const santizedUrl = DOMPurify.sanitize(formData.value.url)
+    formData.value.url = santizedUrl
+  }
+  if (formData?.value && !props.isNew) {
     console.log('Updating existing Recipe')
     recipeStore.updateRecipe(formData.value)
     onEditingOver()
@@ -99,31 +110,27 @@ function validateName() {
   }
 }
 
-function onEditingOver() {
+const onEditingOver = () => {
   if (props.isNew) {
     recipeStore.setSelectedRecipeId('')
   }
   emit("editingFinished");
 }
 
+function onAddIngredientType() {
+  formData.value.ingredients.push({ title: '', steps: [{}] })
+}
+
 function onDeleteIngredientType(ingredientTypeIndex: number) {
   formData.value.ingredients.splice(ingredientTypeIndex, 1)
 }
 
+function onAddDirectionType() {
+  formData.value.directions.push({ title: '', steps: [''] })
+}
+
 function onDeleteDirectionType(directionTypeIndex: number) {
   formData.value.directions.splice(directionTypeIndex, 1)
-}
-
-function onDeleteIngredient(ingredientTypeIndex: number, ingredientIndex: number) {
-  formData.value.ingredients[ingredientTypeIndex].steps.splice(ingredientIndex, 1)
-}
-
-function onDeleteDirection(directionTypeIndex: number, directionIndex: number) {
-  formData.value.directions[directionTypeIndex].steps.splice(directionIndex, 1)
-}
-
-function onAddIngredientType() {
-  formData.value.ingredients.push({ title: '', steps: [{}] })
 }
 
 function onAddIngredient(ingredientIndex: number) {
@@ -131,13 +138,27 @@ function onAddIngredient(ingredientIndex: number) {
   formData.value.ingredients[ingredientIndex].steps.push({})
 }
 
-function onAddDirectionType() {
-  formData.value.directions.push({ title: '', steps: [''] })
+function onDeleteIngredient(ingredientTypeIndex: number, ingredientIndex: number) {
+  formData.value.ingredients[ingredientTypeIndex].steps.splice(ingredientIndex, 1)
 }
 
 function onAddDirection(ingredientIndex: number) {
   if (!formData.value.directions[ingredientIndex].steps) formData.value.directions[ingredientIndex].steps = ['']
   formData.value.directions[ingredientIndex].steps.push('')
+}
+
+function onDeleteDirection(directionTypeIndex: number, directionIndex: number) {
+  formData.value.directions[directionTypeIndex].steps.splice(directionIndex, 1)
+}
+
+function onAddNote() {
+  if (!formData.value.notes) formData.value.notes = []
+  console.log('notes: ', formData.value.notes)
+  formData.value.notes.push('')
+}
+
+function onDeleteNote(noteIndex: number) {
+  formData.value.notes?.splice(noteIndex, 1)
 }
 
 async function removeImage() {
@@ -154,6 +175,18 @@ async function removeImage() {
 
 function saveImagePath(uploadedImgURL: string) {
   formData.value.imgPath = uploadedImgURL
+}
+
+function addTag() {
+  const tagValue = tagInput.value.trim()
+  if (tagValue) {
+    formData.value.tags.push(tagValue)
+    tagInput.value = ''
+  }
+}
+
+function removeTag(i: number) {
+  formData.value.tags.splice(i, 1)
 }
 </script>
 
@@ -179,7 +212,7 @@ function saveImagePath(uploadedImgURL: string) {
                 <button type="button" class="recipe-manage-btn cancel" @click="onEditingOver">
                   Cancel
                 </button>
-            </div>
+              </div>
             </div>
             <div class="edit-header-contain">
               <div class="edit-header-column">
@@ -223,7 +256,6 @@ function saveImagePath(uploadedImgURL: string) {
                 </div>
               </div>
             </div>
-            <hr />
             <div class="item-group-contain" formGroupName="ingredients">
               <div class="item-contain" v-for="(ingredientType, i) of formData.ingredients" :key="i">
                 <div class="form-group item-type-contain">
@@ -310,7 +342,6 @@ function saveImagePath(uploadedImgURL: string) {
                 </div>
               </div>
             </div>
-            <hr />
             <div class="item-group-contain" formGroupName="directions">
               <div class="item-contain" v-for="(directionType, k) of formData.directions" :key="k">
                 <div class="form-group">
@@ -358,7 +389,6 @@ function saveImagePath(uploadedImgURL: string) {
                         </button>
                       </div>
                     </div>
-                    <hr />
                   </div>
                 </div>
               </div>
@@ -369,7 +399,51 @@ function saveImagePath(uploadedImgURL: string) {
                   </button>
                 </div>
               </div>
-              <hr />
+            </div>
+            <div class="item-group-contain">
+              <div class="section-title">Tags:</div>
+              <div class="tags-contain-list">
+                <div class="existing-tag-grouping" v-for="(tag, m) in formData.tags" :key="m">
+                  <div class="existing-tag">{{ tag }}</div>
+                  <button type="button" class="btn-delete" @click="removeTag(m)"></button>
+                </div>
+              </div>
+              <div class="tags-input">
+                <label for="tagsInput">New Tag:</label>
+                <input type="text" v-model="tagInput" name="tagsInput">   
+                <div class="existing-tag-remove" @click="addTag()">Add Tag</div>             
+              </div>
+            </div>
+            <div class="item-group-contain">
+              <div class="section-title">Notes:</div>
+              <div class="item-each" v-for="(note, n) of formData.notes" :key="n">
+                <div class="item-each-row">
+                  <label style="display: none" for="note{{n}}">NOTE</label>
+
+                  <div class="item-input-row directions-row">
+                    <input
+                      type="text"
+                      class="form-control direction-input"
+                      v-model="formData.notes[n]"
+                      id="note{{n}}"
+                      placeholder="Be sure to wash your hands!"
+                    />
+                    <button
+                      type="button"
+                      class="btn-delete"
+                      @click="onDeleteNote(n)"
+                    ></button>
+                  </div>
+                </div>
+              </div>
+              <div class="item-each">
+                <button type="button" class="btn btn-clear" @click="onAddNote()">
+                  + Add Note
+                </button>
+              </div>
+            </div>
+            <div class="item-group-contain">
+              <div class="section-title">Nutritional Info Coming Soon:</div>
             </div>
             <div style="margin-bottom: 25px"></div>
           </form>
@@ -430,7 +504,7 @@ label
     flex-direction: column
 
 .remove-image
-  font-size: clamp(6px, .7vw, 24px)
+  font-size: clamp(6px, 1.3vw, 24px)
   display: flex
   flex-direction: column
   justify-content: flex-end
@@ -459,6 +533,11 @@ label
 .recipe-description-area
     max-width: 100%
     max-height: 200px
+    white-space: pre-wrap
+
+.item-group-contain
+  border-top: 1px solid black
+  padding: 20px 0
 
 .section-title
     margin-bottom: 10px
@@ -518,44 +597,44 @@ label
   flex-grow: 1
 
 .btn-clear
-    cursor: pointer
+  box-sizing: border-box 
+  cursor: pointer
+  border: 1px dashed transparent
+  
+  &:active, &:focus, &:hover
+    border: 1px dashed black
 
 .btn-delete
-    background: transparent
-    color: #eeeeff
-    border: none
-    width: 35px
-    padding: 0
-    position: relative
-    transform: rotate(45deg)
-    cursor: pointer
+  background: transparent
+  color: #eeeeff
+  border: none
+  width: 30px
+  height: 30px
+  padding: 0
+  position: relative
+  transform: rotate(45deg)
+  cursor: pointer
 
-    &:before
-        content: ''
-        position: absolute
-        top: 50%
-        left: 50%
-        transform: translate(-50%, -50%)
-        width: 3px
-        height: 20px
-        background: $colorLighter
+  &:before, &:after
+    content: ''
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    background: $colorLighter
 
-    &:after
-        content: ''
-        position: absolute
-        top: 50%
-        left: 50%
-        transform: translate(-50%, -50%)
-        width: 20px
-        height: 3px
-        background: $colorLighter
+  &:after
+    width: 20px
+    height: 3px
 
+  &:before
+    width: 3px
+    height: 20px
 
-    &:hover
-        &:before, &:after
-            background: #A41C1C
+  &:hover, &:active, &:focus
 
-            
+    &:before, &:after
+        background: #A41C1C
 
 .recipe-manage-btn
   background: $recipe-edit-bg
@@ -607,4 +686,47 @@ label
 
 .direction-input
   flex-grow: 1
+
+.add-tag-btn 
+  margin-left: 10px
+  font-size: clamp(8px, 3.5vw, 12px)
+
+.tags-contain
+  margin-top: 20px
+
+.tags-contain-list
+  display: flex
+  flex-direction: row
+  flex-wrap: wrap
+
+.existing-tag-grouping
+  display: flex
+  flex-direction: row
+  align-items: center
+  margin-right: 10px
+  margin-bottom: 10px
+
+.existing-tag
+  margin-right: 5px
+  border: 1px dashed $colorDarker
+  padding: 3px
+  border-radius: 3px
+
+.existing-tag-remove
+  cursor: pointer
+  border: 1px solid transparent
+
+  &:active, &:focus, &:hover
+    border: 1px solid black
+  
+.tags-input
+  display: flex
+  flex-direction: row
+  margin-top: 20px
+
+  label
+    margin-right: 5px
+    margin-left: 0
+  
+
 </style>

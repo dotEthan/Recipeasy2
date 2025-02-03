@@ -36,11 +36,12 @@ export const useRecipeStore = defineStore('recipes', () => {
   const existingPublicRecipesLength: ComputedRef<number> = computed(() => existingPublicRecipes.value.length)
 
   const getSelectedRecipe: ComputedRef<Recipe> = computed(() => {
+    console.log('selected ID: ', selectedRecipeId.value)
     const recipe = /^pub-/.test(selectedRecipeId.value)
       ? existingPublicRecipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
       : recipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
 
-    return recipe || {id: selectedRecipeId.value, ingredients: [], directions: [], tags: []}
+    return recipe || {id: selectedRecipeId.value, name: '', ingredients: [], directions: [], tags: [], nutritionalInfo: [], creatorId: userStore.getCurrentUserId, notes: [], isPrivate: false}
   })
   
   const getAllRecipeTags: ComputedRef<string[]> = computed(() =>

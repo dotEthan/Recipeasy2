@@ -1,9 +1,10 @@
+@use '@/assets/variables' as *
 @import url('https://fonts.googleapis.com/css?family=Pacifico|Montserrat:500,600,700,800|Fira+Sans')
-@import './variables.sass'
+
 
 root
   position: relative
-  
+
 body 
   margin: 0
   font-family: 'Montserrat', sans-serif
@@ -11,6 +12,15 @@ body
   line-height: 1.42857143
   color: #333
   overflow: hidden
+
+* 
+  box-sizing: border-box
+
+a 
+  color: inherit
+
+button
+  all: unset
 
 //TODO Once over to be sure
 h1 
@@ -24,16 +34,15 @@ h4
 h5 
   font-size: clamp(12px, 4vw, 15px)
 
-
-* 
-  box-sizing: border-box
-
-
-a 
-  color: inherit
-
 button
-  all: unset
+  border: 1px solid $colorDarker
+  cursor: pointer
+  padding: 3px
+  // font-size: clamp(8px, 3.5vw, 12px)
+  border-radius: 3px
+
+  &:active, &:hover, &:focus
+    background-color: $colorLighter
 
 // used for all Views
 .base-container 

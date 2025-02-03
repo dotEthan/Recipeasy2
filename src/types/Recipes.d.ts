@@ -36,8 +36,8 @@ export interface RecipeStore {
 
 export type Recipe = {
   id: string
-  creatorId?: string
-  name?: string
+  creatorId: string
+  name: string
   url?: string
   rating?: number
   description?: string
@@ -46,13 +46,14 @@ export type Recipe = {
   imgPath?: string
   userRating?: number
   publicRating?: number
-  isPrivate?: boolean
+  isPrivate: boolean
   mealType?: string[]
   tags: string[]
   cookTime?: string
   prepTime?: string
-  nutritionalInfo?: NutritionalInfo[]
+  nutritionalInfo: NutritionalInfo[]
   isPublicRecipe?: boolean
+  notes: string[]
 }
 
 export type Ingredient = {
@@ -72,6 +73,6 @@ export type Direction = {
 }
 
 export type NutritionalInfo = {
-  name?: string
+  type?: string
   amount?: string
 }

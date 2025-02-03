@@ -34,7 +34,7 @@ export function useAuthService() {
       console.error('Auth Initialization Timed Out')
       userStore.authorized = false
       resolve(false)
-    }, 7000)  // Increased timeout to 7 seconds
+    }, 7000)
   
       const unsubscribe = onAuthStateChanged(auth, async(currentUser) => {
         try {
@@ -52,14 +52,12 @@ export function useAuthService() {
                 uid
               }
             }
-           
-            // Explicitly set authorized to true
+
             userStore.authorized = true
             appStore.initializeApp(userState, publicRecipeStoredData)
             
             resolve(true)
           } else {
-            // Explicitly set authorized to false
             userStore.authorized = false
             console.log('No User Found', new Date().toISOString())
             resolve(false)
@@ -82,16 +80,13 @@ export function useAuthService() {
     })
   }
 
-  // Sign in User
   const signIn = async (email: string, password: string) => {
     try {
       isLoading.value = true
       clearError()
 
-      // Maintain auth
       await setPersistence(auth, browserLocalPersistence)
 
-      // Sign in
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
       const {user} = userCredential
       localStorage.setItem('recipeasyUser', JSON.stringify({
@@ -100,7 +95,6 @@ export function useAuthService() {
         lastLogin: new Date().toISOString()
       }))
 
-      // Get user data from database
       const [userStoredData, uid] = await dataService.loadUserData(user.uid)
       const publicRecipeStoredData = await dataService.loadPublicRecipeData()
 
