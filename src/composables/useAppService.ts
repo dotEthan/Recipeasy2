@@ -29,7 +29,7 @@ export function useAppService() {
     }
     appStore.setScreenSize(screenSize)
   }
-
+  // TODO longer debounce? 
   const onResize = debounce(() => {
     screenWidth.value = window.innerWidth
     updatescreenSize()

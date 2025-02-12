@@ -18,11 +18,15 @@ export const useRecipeStore = defineStore('recipes', () => {
   const ethansFavouritePublicIds = ref<string[]>([
     'pub-8611a75d-cdb3-446c-8716-caecc2ee8f5f',
     'pub-VR004',
-    'pub-ea6b4bf8-3156-49d6-9e97-a5757ff5b6b2',
-    'pub-test-2',
     'pub-test-3',
     'pub-test-4',
-    'pub-test-5'
+    'pub-test-5',
+    'pub-38a76907-4849-47a6-aada-5ad00ef68949',
+    'pub-61ef59ae-a560-444a-90b5-0d89d8d481c9',
+    'pub-aa2828a7-0f0d-444b-a264-7a97ec026810',
+    'pub-aa71cc85-7cf8-4927-a862-a020f186625e',
+    'pub-7c4080fc-b1f5-4813-892d-8767d51d9adf',
+    'pub-6f9a1c06-baf0-4ee9-bf96-0ecf7154293d',
   ]);
 
   const selectedRecipeId = ref<string>('')

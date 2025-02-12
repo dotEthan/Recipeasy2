@@ -1,31 +1,35 @@
 <script setup lang="ts">
-import DOMPurify from 'dompurify'
-import { onMounted, ref } from 'vue'
-import type { Ref } from 'vue'
-import type { Recipe } from '@/types/Recipes' 
-import { useRecipeStore } from '@/stores/recipe'
-import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue'
-import { useImageUpload } from '@/composables/useImageUpload'
-import ToolTipComponent from '../../shared/toolTip/ToolTipComponent.vue'
-import { useUserStore } from '@/stores/user'
+import DOMPurify from 'dompurify';
+import { nextTick, onMounted, ref } from 'vue';
+import type { ComponentPublicInstance, Ref } from 'vue';
+import type { Recipe } from '@/types/Recipes' ;
+import { useRecipeStore } from '@/stores/recipe';
+import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue';
+import { useImageUpload } from '@/composables/useImageUpload';
+import ToolTipComponent from '../../shared/toolTip/ToolTipComponent.vue';
+import { useUserStore } from '@/stores/user';
 
 //TODO Refactor into multiple components 'header', 'ingredients', 'directions'
 
 const props = defineProps({
   isNew: Boolean,
-})
-const emit = defineEmits(['editingFinished','recipeDeleted'])
+});
+const emit = defineEmits(['editingFinished','recipeDeleted']);
 
-let formValid = true
-let formData: Ref<Recipe>
-let formError = ref('')
+let formValid = true;
+let formData: Ref<Recipe>;
+let formError = ref('');
 
-const recipeStore = useRecipeStore()
-const userStore = useUserStore()
-const { deleteImage } = useImageUpload()
+const recipeStore = useRecipeStore();
+const userStore = useUserStore();
+const { deleteImage } = useImageUpload();
 
-const selectedRecipe: Recipe = recipeStore.getSelectedRecipe
-let tagInput = ref('')
+const selectedRecipe: Recipe = recipeStore.getSelectedRecipe;
+const amountRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
+const ingredientTypeRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
+const directionRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
+const directionTypeRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
+let tagInput = ref('');
 
 // onMounted(() => {
 //   populateForm();
@@ -71,7 +75,7 @@ function onSubmit() {
   if (publicStatusChanged && formData.value.isPrivate) {
     console.log('remove from Public')
     recipeStore.removeFromPublicRecipes(formData.value.id)
-  } else if (publicStatusChanged && !formData.value.isPrivate) {
+  } else if ((publicStatusChanged || props.isNew) && !formData.value.isPrivate) {
     console.log('add to Public')
     if (!formData.value.isPublicRecipe) formData.value.isPublicRecipe = true
     recipeStore.addToPublicRecipes(formData.value)
@@ -92,7 +96,7 @@ function onSubmit() {
   } else {
     console.log('not valid')
   }
-  //TODO add new tags
+  //TODO add new tags (ingredients, cuisine, meal type)
   // const allUserTags: string[] = Array.from(
   //   new Set(userData?.recipes.flatMap((recipe: Recipe) => recipe.tags))
   // )
@@ -119,6 +123,12 @@ const onEditingOver = () => {
 
 function onAddIngredientType() {
   formData.value.ingredients.push({ title: '', steps: [{}] })
+  nextTick(() => {
+    const newStepIndex = formData.value.ingredients.length - 1;
+    const refKey = `ingredientType-${newStepIndex}`
+    const input = ingredientTypeRefs.value[refKey] as HTMLInputElement
+    input?.focus()  
+  });
 }
 
 function onDeleteIngredientType(ingredientTypeIndex: number) {
@@ -127,6 +137,12 @@ function onDeleteIngredientType(ingredientTypeIndex: number) {
 
 function onAddDirectionType() {
   formData.value.directions.push({ title: '', steps: [''] })
+  nextTick(() => {
+    const newStepIndex = formData.value.directions.length - 1;
+    const refKey = `directionType-${newStepIndex}`;
+    const input = directionTypeRefs.value[refKey] as HTMLInputElement;
+    input?.focus();
+  });
 }
 
 function onDeleteDirectionType(directionTypeIndex: number) {
@@ -134,17 +150,29 @@ function onDeleteDirectionType(directionTypeIndex: number) {
 }
 
 function onAddIngredient(ingredientIndex: number) {
-  if (!formData.value.ingredients[ingredientIndex].steps) formData.value.ingredients[ingredientIndex].steps = []
-  formData.value.ingredients[ingredientIndex].steps.push({})
+  if (!formData.value.ingredients[ingredientIndex].steps) formData.value.ingredients[ingredientIndex].steps = [];
+  formData.value.ingredients[ingredientIndex].steps.push({});
+  nextTick(() => {
+    const newStepIndex = formData.value.ingredients[ingredientIndex].steps.length - 1
+    const refKey = `amount-${ingredientIndex}-${newStepIndex}`
+    const input = amountRefs.value[refKey] as HTMLInputElement
+    input?.focus()  
+  });
 }
 
 function onDeleteIngredient(ingredientTypeIndex: number, ingredientIndex: number) {
   formData.value.ingredients[ingredientTypeIndex].steps.splice(ingredientIndex, 1)
 }
 
-function onAddDirection(ingredientIndex: number) {
-  if (!formData.value.directions[ingredientIndex].steps) formData.value.directions[ingredientIndex].steps = ['']
-  formData.value.directions[ingredientIndex].steps.push('')
+function onAddDirection(directionIndex: number) {
+  if (!formData.value.directions[directionIndex].steps) formData.value.directions[directionIndex].steps = ['']
+  formData.value.directions[directionIndex].steps.push('')
+  nextTick(() => {
+    const newStepIndex = formData.value.directions[directionIndex].steps.length - 1
+    const refKey = `direction-${directionIndex}-${newStepIndex}`
+    const input = directionRefs.value[refKey] as HTMLInputElement
+    input?.focus()  
+  });
 }
 
 function onDeleteDirection(directionTypeIndex: number, directionIndex: number) {
@@ -268,6 +296,7 @@ function removeTag(i: number) {
                       class="form-control item-type-input"
                       id="ingredient-group{{i}}"
                       v-model="formData.ingredients[i].title"
+                      :ref="el => { if (el) ingredientTypeRefs[`ingredientType-${i}`] = el }"
                       placeholder="Main Dish"
                     />
                     <button
@@ -288,7 +317,8 @@ function removeTag(i: number) {
                                 type="text"
                                 class="form-control item-input"
                                 v-model="formData.ingredients[i].steps[j].amount"
-                                id="ingredient-{{j}}"
+                                id="`ingredient-${i}-${j}`"
+                                :ref="el => { if (el) amountRefs[`amount-${i}-${j}`] = el }"
                                 placeholder="1"
                               />
                             </div>
@@ -352,6 +382,7 @@ function removeTag(i: number) {
                       class="form-control item-type-input"
                       v-model="directionType.title"
                       id="direction-group{{k}}"
+                      :ref="el => { if (el) directionTypeRefs[`directionType-${k}`] = el }"
                       placeholder="Main Dish"
                     />
                     <button
@@ -372,6 +403,7 @@ function removeTag(i: number) {
                               type="text"
                               class="form-control direction-input"
                               v-model="directionType.steps[l]"
+                              :ref="el => { if (el) directionRefs[`direction-${k}-${l}`] = el }"
                               id="direction{{l}}"
                               placeholder="Cut, Stir, Bake"
                             />
