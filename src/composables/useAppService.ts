@@ -1,6 +1,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useAppStore } from '@/stores/app'
 import { useShoppingListStore } from '@/stores/shoppingList'
+import axios from '@/axios';
 import type { ScreenSize } from '@/types/ScreenSize'
 
 //TODO test otehr browsers to see if needed. Firefox already throttles
@@ -44,8 +45,21 @@ export function useAppService() {
     }
   } 
 
+  const fetchCsrfToken = async (): Promise<string | null> => {
+    try {
+      const response = await axios.get('/csrf-token', { 
+        withCredentials: true 
+      });
+      console.log('featching response: ', response)
+      return response.data.csrfToken;
+    } catch (error: unknown) {
+      console.error('Failed to fetch CSRF token', error);
+      return null;
+    }
+  }
+
   onMounted(() => window.addEventListener('resize', onResize))
   onUnmounted(() => window.removeEventListener('resize', onResize))
 
-  return { onResize, handleUnsavedChanges }
+  return { onResize, handleUnsavedChanges, fetchCsrfToken }
 }

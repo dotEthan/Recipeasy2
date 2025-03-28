@@ -2,16 +2,16 @@ import { ref } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { defineStore } from 'pinia'
 import type { ShoppingList } from '@/types/ShoppingLists'
+import { useUserStore } from './user'
 
 export const useShoppingListStore = defineStore('shopping-lists', () => {
-  const uid = ref('')
-  const shoppingLists = ref<ShoppingList[]>([])
-  const defaultListId = ref('')
-  const editingListIndex = ref(-1)
-  const editingItemIndex = ref(-1)
+  const userStore = useUserStore();
+  const shoppingLists = ref<ShoppingList[]>([]);
+  const defaultListId = ref('');
+  const editingListIndex = ref(-1);
+  const editingItemIndex = ref(-1);
 
   function setListState(userId: string, lists: ShoppingList[]) {
-    uid.value = userId
     shoppingLists.value = lists
     defaultListId.value = shoppingLists?.value?.find((list) => list.isDefault)?.id || ''
   }
@@ -27,7 +27,9 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
       title: listTitle,
       isDefault: false,
       items: [],
-      isOpen: true
+      isOpen: true,
+      creator: userStore.getCurrentUserId,
+      viewableBy: [userStore.getCurrentUserId],
     } as ShoppingList
     shoppingLists.value.push(newList)
   }
@@ -73,13 +75,11 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
   }
 
   function resetState() {
-    uid.value = ''
     shoppingLists.value = []
     defaultListId.value = ''
   }
 
   return {
-    uid,
     shoppingLists,
     defaultListId,
     editingListIndex,

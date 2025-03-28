@@ -74,14 +74,14 @@ export const getMockedAppStore = (overrides: Partial<ReturnType<typeof useAppSto
 // TODO Fix Computed properties
 export const getMockedUserStore = (overrides: Partial<ReturnType<typeof useUserStore>> = {}) => ({
     // state
-    uid: '',
+    _id: '',
     authorized: false,
-    localUser: { uid: '', displayName: '' },
+    localUser: { _id: '', displayName: '' },
     personalFilters: [],
     
     // Computed
     isAuthorized: vi.fn().mockReturnValue(false),
-    getCurrentUser: vi.fn().mockReturnValue({ uid: '', displayName: '' }),
+    getCurrentUser: vi.fn().mockReturnValue({ _id: '', displayName: '' }),
     getCurrentUserId: vi.fn().mockReturnValue(''),
   
     // functions

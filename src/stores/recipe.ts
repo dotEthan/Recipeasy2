@@ -33,7 +33,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   const isSelectedRecipePublic = ref<boolean>(false)
   const editSelectedRecipe = ref<boolean>(false)
 
-  const personalFilters: ComputedRef<string[]> = computed(() => userStore.localUser.personalFilters || [])
+  const personalFilters: ComputedRef<string[]> = computed(() => userStore.localUser.preferences?.personalFilters || [])
 
   const recipesLength: ComputedRef<number> = computed(() => recipes.value.length)
 
@@ -69,7 +69,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   function setInitialRecipeState(userData: UserState, publicRecipeData: Recipe[]) {
-    userId.value = userData.uid
+    userId.value = userData._id
     recipes.value = userData.localUser.recipes || []
     existingPublicRecipes.value = publicRecipeData || []
     newPublicRecipes.value = []

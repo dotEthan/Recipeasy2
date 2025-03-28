@@ -2,6 +2,8 @@
 
 [Landing Rebuild is Here!](https://stupefied-morse-5e1233.netlify.com/)
 
+[Backend Here!](https://github.com/dotEthan/Recipeasy-backend)
+
 ### Status
 
 Rebuild Underway with Vue. Functionality is caught up, creating tests and adding new functionality. Redesign, using a proper design system required as prevoius CSS and HTML is not properly structured. 
@@ -20,7 +22,7 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### What isn't working
 
-- On mobile, click and drag, entire app slides at times? (not sure if still happening with Vue)
+- Session Cookies not autosaving to localstorage. 
 - AI is great for tips, but terrible at coding. 
 
 ## Where are we?
@@ -41,12 +43,13 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### Working on Now:
 
+- Custom Backend Functionality using Expressjs, Nodejs, and MongoDB.
 - Switch from function to arrow functions & full prettier update
 - Switch to id based routing instead of event based
 - Add Cuisine type & Nutritional Info (Edit and Display)
 - Checking Basic Desktop design
 - Testing (Vitest, Cypress) Current Coverage: 28%
-- Form Accessibility (shopping list and recipe edit, need "focus")
+- Form Accessibility (shopping list need "focus")
 
 ### To Come:
 
@@ -64,7 +67,6 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 ### Future thoughts:
 
 - Redesign
-- bespoke Backend Functionality (Learning node.js and postgres now)
 - Meal Planning & Calendar
 - Website Parsing to allow importing recipes
 - Calorie counter

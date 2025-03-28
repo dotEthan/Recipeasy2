@@ -3,7 +3,7 @@ import type { Recipe } from '@/types/Recipes'
 
 export const mockComputedRecipes = computed<Recipe[]>(() => [
   { 
-    id: '1', 
+   _id: '1', 
     name: 'Recipe 1', 
     ingredients: [], 
     directions: [], 
@@ -14,7 +14,7 @@ export const mockComputedRecipes = computed<Recipe[]>(() => [
     creatorId: '1'
   },
   { 
-    id: '2', 
+   _id: '2', 
     name: 'Recipe 2', 
     ingredients: [], 
     directions: [], 
@@ -28,7 +28,7 @@ export const mockComputedRecipes = computed<Recipe[]>(() => [
 
 export const mockRefRecipes = ref<Recipe[]>([
     { 
-      id: '1', 
+     _id: '1', 
       name: 'Recipe 1', 
       ingredients: [], 
       directions: [], 
@@ -39,7 +39,7 @@ export const mockRefRecipes = ref<Recipe[]>([
       creatorId: '1'
     },
     { 
-      id: '2', 
+     _id: '2', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
@@ -50,7 +50,7 @@ export const mockRefRecipes = ref<Recipe[]>([
       creatorId: '1'
     },
     { 
-      id: '3', 
+     _id: '3', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
@@ -61,7 +61,7 @@ export const mockRefRecipes = ref<Recipe[]>([
       creatorId: '1'
     },
     { 
-      id: '4', 
+     _id: '4', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
@@ -72,7 +72,7 @@ export const mockRefRecipes = ref<Recipe[]>([
       creatorId: '1'
     },
     { 
-      id: '5', 
+     _id: '5', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
@@ -83,7 +83,7 @@ export const mockRefRecipes = ref<Recipe[]>([
       creatorId: '1'
     },
     { 
-      id: '6', 
+     _id: '6', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
@@ -94,7 +94,7 @@ export const mockRefRecipes = ref<Recipe[]>([
     creatorId: '1'
     },
     { 
-      id: '7', 
+     _id: '7', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
@@ -105,7 +105,7 @@ export const mockRefRecipes = ref<Recipe[]>([
     creatorId: '1'
     },
     { 
-      id: '8', 
+     _id: '8', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 
@@ -116,7 +116,7 @@ export const mockRefRecipes = ref<Recipe[]>([
     creatorId: '1'
     },
     { 
-      id: '9', 
+     _id: '9', 
       name: 'Recipe 2', 
       ingredients: [], 
       directions: [], 

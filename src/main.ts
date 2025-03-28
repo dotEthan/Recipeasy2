@@ -6,6 +6,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router/main'
 import { useAuthService } from './composables/useAuthService'
+import { useAppStore } from './stores/app'
 
 async function initializeApp() {
   const app = createApp(App)
@@ -23,7 +24,10 @@ async function initializeApp() {
     ])
  
     app.use(router)
-    app.mount('#app')
+    const appStore = useAppStore();
+    appStore.fetchCsrfToken().then(() => {
+      app.mount('#app');
+    });
   } catch (error) {
     console.error('App Initialization Failed', error)
     // Fallback strategy: mount anyway

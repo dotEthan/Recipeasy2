@@ -3,14 +3,14 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
-  const uid = ref('')
+  const _id = ref('')
   const authorized = ref<boolean | null>(false)
-  const localUser = ref<LocalUser>({uid: '', displayName: ''})
+  const localUser = ref<LocalUser>({_id: '', displayName: ''})
   const personalFilters = ref<string[]>([])
 
   const isAuthorized = computed(() => authorized.value)
   const getCurrentUser = computed(() => localUser.value)
-  const getCurrentUserId = computed(() => localUser.value.uid)
+  const getCurrentUserId = computed(() => localUser.value._id)
 
   function deauthorize() {
     authorized.value = false
@@ -26,20 +26,20 @@ export const useUserStore = defineStore('user', () => {
   }
 
   function setInitialUserState(userState: UserState) {
-    uid.value = userState.uid
+    _id.value = userState._id
     authorized.value = userState.authorized
     localUser.value = userState.localUser
-    personalFilters.value = userState.localUser.personalFilters || []
+    personalFilters.value = userState.localUser.preferences?.personalFilters || []
   }
 
   function resetState() {
-    uid.value = ''
+    _id.value = ''
     authorized.value = false
-    localUser.value = {uid: ''}
+    localUser.value = {_id: ''}
   }
 
   return {
-    uid,
+    _id,
     authorized,
     localUser,
     personalFilters,

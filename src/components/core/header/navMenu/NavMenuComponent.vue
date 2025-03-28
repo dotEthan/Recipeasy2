@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { getAuth, signOut } from 'firebase/auth'
 import { useAppStore } from '@/stores/app'
 import { useUserStore } from '@/stores/user'
 import router from '@/router/main'
@@ -8,12 +7,14 @@ import { useDataService } from '@/composables/useDataService'
 import { useRecipeStore } from '@/stores/recipe'
 import { useShoppingListStore } from '@/stores/shoppingList'
 import { LocalUser } from '@/types/UserState'
+import { useAuthService } from '@/composables/useAuthService'
 
 const appStore = useAppStore()
 const userStore = useUserStore()
 const recipeStore = useRecipeStore()
 const shoppingListStore = useShoppingListStore()
 const dataService = useDataService()
+const authService = useAuthService()
 const isTestModeOn = computed(() => appStore.isTestModeOn)
 const isAuthorized = computed(() => userStore.isAuthorized)
 const currentUser = computed(() => userStore.getCurrentUser)
@@ -35,7 +36,13 @@ async function onSave() {
   closeMobileMenu()
   // Public Data Saving. 
   if (currentUser.value) {
-    const updateUser: LocalUser = {...currentUser.value, recipes: recipeStore.recipes, shoppingLists: shoppingListStore.shoppingLists, personalFilters: recipeStore.personalFilters}
+    const updateUser: LocalUser = {
+      ...currentUser.value, 
+      recipes: recipeStore.recipes, 
+      shoppingLists: shoppingListStore.shoppingLists, 
+      preferences: {
+        personalFilters: recipeStore.personalFilters
+    }}
     try {
       dataService.saveUserData(updateUser)
       dataService.updatePublicRecipesData()
@@ -53,11 +60,10 @@ function onReset() {
 async function onSignOut() {
   closeMobileMenu()
   if (!appStore.isTestModeOn) {
-    const auth = getAuth()
 
     try {
-      await signOut(auth)
-      console.log('signed out of firebase')
+      authService.logOut();
+      console.log('Logged Out')
     } catch (error) {
       console.error('Error signing out:', error)
     }

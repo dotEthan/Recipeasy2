@@ -13,8 +13,10 @@ interface UploadError {
   details?: any;
 }
 
+// AI generated Code to Test AI usability in IDE. Usability = BAD
+
 /**
- * Composable for handling image uploads to Cloudinary
+ * Handles image uploads to Cloudinary
  * Manages upload state, preview URLs, and provides error handling
  */
 export function useImageUpload() {

@@ -2,13 +2,13 @@ import type { Recipe } from '@/types/Recipes'
 import type { ShoppingList } from './ShoppingLists'
 
 export type UserState = {
-  uid: string
+  _id: string
   localUser: LocalUser
   authorized: boolean | null
 }
 
 export type LocalUser = {
-  uid: string
+  _id: string
   firstName?: string
   lastName?: string
   displayName?: string
@@ -16,5 +16,10 @@ export type LocalUser = {
   email?: string
   createdAt?: date
   shoppingLists?: ShoppingList[]
+  preferences? : UserPreferences
+}
+
+export type UserPreferences = {
   personalFilters?: string[]
+  lightMode?: boolean
 }

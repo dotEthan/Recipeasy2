@@ -4,6 +4,8 @@ import { v2 as cloudinary } from "cloudinary"
 import { defineSecret } from "firebase-functions/params"
 import * as crypto from "crypto"
 
+// AI generated Code to Test AI usability in IDE. Usability = BAD
+
 interface SignatureResponse {
   signature: string
   timestamp: number

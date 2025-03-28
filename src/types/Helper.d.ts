@@ -3,7 +3,7 @@ type BooleanObject = { [key: string]: boolean }
 interface RegisterResult {
   user: User;
   userData: {
-    uid: string;
+    _id: string;
     email: string | undefined;
     displayName: string;
     createdAt: Date;

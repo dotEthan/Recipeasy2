@@ -35,44 +35,57 @@ export interface RecipeStore {
 }
 
 export type Recipe = {
-  id: string
-  creatorId: string
-  name: string
-  url?: string
-  rating?: number
-  description?: string
-  ingredients: Ingredient[]
-  directions: Direction[]
-  imgPath?: string
-  userRating?: number
-  publicRating?: number
-  isPrivate: boolean
-  mealType?: string[]
-  tags: string[]
-  cookTime?: string
-  prepTime?: string
-  nutritionalInfo: NutritionalInfo[]
-  isPublicRecipe?: boolean
-  notes: string[]
+  _id: string;
+  creatorId: string;
+  name: string;
+  url?: string;
+  description?: string;
+  ingredients: Ingredient[];
+  directions: Direction[];
+  imgPath?: string;
+  ratings?: RecipeRatings[];
+  isPrivate: boolean;
+  mealType?: string[];
+  cuisineType?: string;
+  tags: string[];
+  cookTime?: string;
+  prepTime?: string;
+  servingSize?: string;
+  nutritionalInfo: NutritionalInfo[];
+  isPublicRecipe?: boolean;
+  notes: string[];
 }
 
 export type Ingredient = {
-  title?: string
-  steps: IngredientStep[]
+  title?: string;
+  steps: IngredientStep[];
 }
 
 export type IngredientStep = {
-  name?: string
-  amount?: string
-  unit?: string
+  name?: string;
+  amount?: string;
+  unit?: string;
 }
 
 export type Direction = {
-  title?: string
-  steps: string[]
+  title?: string;
+  steps: string[];
 }
 
 export type NutritionalInfo = {
-  type?: string
-  amount?: string
+  type?: string;
+  amount?: string;
+}
+
+export type RecipeRatings = { 
+  ratings: RatingItem[];
+  averageRating: number;
+  totalRatings: number;
+  ratingsSum: number;
+}
+
+export type RatingItem = {
+  userId: string; 
+  rating: number; 
+  timestamp: Date; 
 }

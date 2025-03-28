@@ -23,30 +23,30 @@ const filteredRecipes = computed(() => {
 
 let allRecipeTags = ref<string[] | undefined>(undefined)
 
-allRecipeTags.value = recipeStore.getAllRecipeTags
+allRecipeTags.value = recipeStore.getAllRecipeTags;
 
 
 function closeRecipeDetails() {
-  selectedRecipe.value = undefined
-  recipeStore.setSelectedRecipeId('')
+  selectedRecipe.value = undefined;
+  recipeStore.setSelectedRecipeId('');
 }
 
 function openRecipeDetail(id: string) {
-  selectedRecipe.value = recipeStore.recipes.find((recipe) => recipe.id === id)
-  console.log(selectedRecipe.value?.name)
-  recipeStore.setSelectedRecipeId(id)
+  selectedRecipe.value = recipeStore.recipes.find((recipe) => recipe._id === id);
+  console.log(selectedRecipe.value?.name);
+  recipeStore.setSelectedRecipeId(id);
 }
 
 function newRecipeAdded() {
-  console.log('adding')
-  const newId = uuidv4()
-  recipeStore.setSelectedRecipeId(newId)
-  recipeStore.setEditStatusSelectedId(true)
+  console.log('adding');
+  const tempId = uuidv4();
+  recipeStore.setSelectedRecipeId(tempId);
+  recipeStore.setEditStatusSelectedId(true);
   isAddedRecipeNew.value = true;
 }
 
 function setFilters(filters: string[]) {
-  activeFilters.value = filters
+  activeFilters.value = filters;
 }
 
 function removedRecipe() {
@@ -70,7 +70,7 @@ function editingFinishedCleanUp() {
       <RecipeListItemComponent
         class="recipe-item-contain"
         v-for="recipe in filteredRecipes.value"
-        :key="recipe.id"
+        :key="recipe._id"
         :recipeData="recipe"
         @openRecipe="openRecipeDetail"
         @removedRecipe="removedRecipe" 

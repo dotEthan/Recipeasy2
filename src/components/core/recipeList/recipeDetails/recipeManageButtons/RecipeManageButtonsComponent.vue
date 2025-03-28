@@ -5,7 +5,6 @@ import { useShoppingListStore } from '@/stores/shoppingList'
 import { useUserStore } from '@/stores/user';
 import { Recipe } from '@/types/Recipes';
 import { ArrowBigRight } from 'lucide-vue-next';
-import { v4 as uuidv4 } from 'uuid'
 import { computed } from 'vue';
 
 
@@ -17,7 +16,7 @@ const userStore = useUserStore()
 
 const selectedRecipe = recipeStore.getSelectedRecipe
 const isSelectedRecipePublic = recipeStore.isSelectedRecipePublic
-const userAlreadyHas = computed(() =>  recipeStore.recipes.some(recipe => `pub-${recipe.id}` === selectedRecipe.id) ? true : false)
+const userAlreadyHas = computed(() =>  recipeStore.recipes.some(recipe => `pub-${recipe._id}` === selectedRecipe._id) ? true : false)
 
 function onAddToShoppingList() {
   const items = selectedRecipe?.ingredients.reduce((acc, ingredient) => {
@@ -44,25 +43,23 @@ function onEditRecipe() {
 
 function onDeleteRecipe() {
   console.log('removing')
-  recipeStore.removeRecipeById(selectedRecipe?.id || '');
+  recipeStore.removeRecipeById(selectedRecipe?._id || '');
   recipeStore.setSelectedRecipeId('');
   emit('removedRecipe')
 }
 
 async function addPublicRecipeToPersonal() {
-    const id = uuidv4()
-    console.log('id is: ', id)
     const updatedRecipe: Recipe = {
         ...selectedRecipe!,
-        isPublicRecipe: false,
+        isPublicRecipe: true,
         isPrivate: false,
-        id,
+        _id: selectedRecipe._id,
         creatorId: userStore.getCurrentUserId
     }
     recipeStore.addRecipe(updatedRecipe!)
     console.log(updatedRecipe)
     await router.push('/recipes')
-    recipeStore.setSelectedRecipeId(updatedRecipe.id)
+    recipeStore.setSelectedRecipeId(updatedRecipe._id)
 }
 
 const goToUserRecipes = () => {

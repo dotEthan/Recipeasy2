@@ -13,7 +13,7 @@ const {registerUser, signIn} = useAuthService()
 let thisType = ref(appStore.registrationOrSigninModal)
 
 async function onSubmit(e: any) {
-  const { email, password } = e.target.elements
+  const { displayName, email, password } = e.target.elements
 
   authError.value = false
 
@@ -21,7 +21,7 @@ async function onSubmit(e: any) {
     try {
       authError.value = false
       const { email, password } = e.target.elements
-      registerUser(email.value, password.value)
+      registerUser(displayName.value, email.value, password.value)
     } catch (error) {
       authError.value = true
       // TODO handle registration error
@@ -58,6 +58,11 @@ function onClose() {
         </div>
         <div class="auth__warning" v-if="authError">{{ authError }}</div>
         <form @submit.prevent="onSubmit">
+          <div class="form-group" v-if="thisType === 'register'">
+            <label class="signin-label" for="displayName">Display Name:</label>
+            <input type="string" id="displayName" name="displayName" class="form-control" />
+            <div class="email-warning">Must be longer than 3 characters</div>
+          </div>
           <div class="form-group">
             <label class="signin-label" for="email">Email:</label>
             <input type="email" id="email" name="email" class="form-control" />

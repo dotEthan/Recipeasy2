@@ -1,14 +1,15 @@
 export type ShoppingListState = {
-  uid: string
-  shoppingLists: ShoppingList[]
-  viewableShoppingListIds: string[]
-  defaultListId: string
+  shoppingLists: ShoppingList[];
+  viewableShoppingListIds: string[];
+  defaultListId: string;
 }
 
 export type ShoppingList = {
-  id: string
-  title?: string
-  items: string[]
-  isDefault: boolean
-  isOpen: boolean
+  id: string;
+  title?: string;
+  items: string[];
+  isDefault: boolean;
+  isOpen: boolean;
+  creator: string;
+  viewableBy: string[];
 }
