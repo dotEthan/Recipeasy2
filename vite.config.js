@@ -11,10 +11,23 @@ export default defineConfig({
             cert: fs.readFileSync('./certs/cert.pem'),
         },
         proxy: {
-          '/api': {
-            target: 'http://localhost:8080',
-            changeOrigin: true,
-          },
+            '/api': {
+                target: 'http://localhost:8080',
+                changeOrigin: true,
+                cookieDomainRewrite: {
+                // Rewrite domain if needed
+                '*': ''
+                },
+                onProxyRes(proxyRes) {
+                    // Ensure cookies are properly forwarded
+                    const cookies = proxyRes.headers['set-cookie'];
+                    if (cookies) {
+                        proxyRes.headers['set-cookie'] = cookies.map(cookie => 
+                            cookie
+                        );
+                    } 
+                },
+            },
         },
     },
     resolve: {

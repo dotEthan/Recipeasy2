@@ -27,6 +27,11 @@ async function initializeApp() {
     const appStore = useAppStore();
     appStore.fetchCsrfToken().then(() => {
       app.mount('#app');
+    })
+    .catch((error) => {
+      app.mount('#app')
+      console.error('csrfToken not fetched')
+      // TODO Global Error handling with 2-3x retry. 
     });
   } catch (error) {
     console.error('App Initialization Failed', error)

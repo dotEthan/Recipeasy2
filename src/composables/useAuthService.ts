@@ -6,6 +6,7 @@ import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
 import { Recipe } from '@/types/Recipes';
 import axios from '@/axios';
+import { UserState } from '@/types/UserState';
 
 export function useAuthService() {
   const error = ref<string | null>(null)
@@ -76,7 +77,6 @@ export function useAuthService() {
   const registerUser = async (displayName: string, email: string, password: string)=> {
     try {
         clearError()
-      console.log('registering User')
         const response = await axios.post('/register', {
           displayName,
           email,
@@ -88,7 +88,7 @@ export function useAuthService() {
           }
         });
       
-        console.log('saved user: ', response.data);
+        console.log('Registered user: ', response.data);
   
         // Initialize stores
         const userState = { 
@@ -117,38 +117,30 @@ export function useAuthService() {
     try {
       clearError()
 
-      const response = await fetch('http://localhost:8080/api/login', {
+      const userResponse = await axios.post('/login', {
+        email,
+        password
+      },
+      {
         headers: {
           'Content-Type': 'application/json',
-          // Authorization: 'Bearer ' + this.props.token,
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          email,
-          password
-        }),
+        }
       });
-      if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Logout failed');
-      }
-      const responseJson = await response.json();
-      console.log('login response', responseJson);
-
+      const userData = userResponse.data;
       // const [userStoredData, uid] = await dataService.loadUserData(user.uid);
       // const publicRecipeStoredData = await dataService.loadPublicRecipeData();
       const publicRecipeStoredData: Array<Recipe> = [];
-      const userState = { _id: responseJson._id, authorized: true, localUser: {
-        ...responseJson
+      const userState = { _id: userData._id, authorized: true, localUser: {
+        ...userData.data
       }};
 
-      // console.log('Store Data set:', userState)
       // // trigger full app initialization
       appStore.initializeApp(userState, publicRecipeStoredData)
 
       return;
     } catch (err) {
       //TODO error handling
+      console.log('signin failed: ', JSON.stringify(err))
       error.value = err instanceof Error ? err.message : 'Sign in failed'
       throw err
     }
@@ -157,20 +149,12 @@ export function useAuthService() {
   const logOut = async () => {
     try {
       clearError()
-      const response = await fetch('http://localhost:8080/api/logout', {
-        method: 'POST',
-        credentials: 'include',
+      const response = await axios.post('/logout', {
         headers: {
           'Content-Type': 'application/json',
-          // Authorization: 'Bearer ' + this.props.token,
         },
       });
-      if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Logout failed');
-      }
-      const data = await response.json();
-      console.log('logged out: ', data);
+      console.log('logged out: ', response);
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Logout failed'
       throw err

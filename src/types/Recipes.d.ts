@@ -36,24 +36,25 @@ export interface RecipeStore {
 
 export type Recipe = {
   _id: string;
-  creatorId: string;
   name: string;
-  url?: string;
   description?: string;
-  ingredients: Ingredient[];
-  directions: Direction[];
   imgPath?: string;
-  ratings?: RecipeRatings[];
-  isPrivate: boolean;
   mealType?: string[];
   cuisineType?: string;
-  tags: string[];
   cookTime?: string;
   prepTime?: string;
   servingSize?: string;
-  nutritionalInfo: NutritionalInfo[];
-  isPublicRecipe?: boolean;
+  ratings?: RecipeRatings[];
+  url?: string;
+  ingredients: Ingredient[];
+  directions: Direction[];
+  visibility: 'public' | 'private';
+  tags: string[];
   notes: string[];
+  nutritionalInfo: NutritionalInfo[];
+  userId: ObjectId;
+  originalCreatorId?: ObjectId,
+  copyDetails?: CopyDetails
 }
 
 export type Ingredient = {
@@ -88,4 +89,10 @@ export type RatingItem = {
   userId: string; 
   rating: number; 
   timestamp: Date; 
+}
+
+export type CopyDetails = {
+  originalRecipeId?: ObjectId,
+  copiedAt?: Date,
+  modifications?: String
 }
