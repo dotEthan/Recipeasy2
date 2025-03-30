@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppModalComponent from '../appModal/AppModalComponent.vue';
+import AppModalComponent from '../../shared/appModal/AppModalComponent.vue';
 
 </script>
 

@@ -3,19 +3,23 @@ import { onMounted, onUnmounted } from 'vue'
 import { RouterView } from 'vue-router'
 import HeaderComponent from './components/core/header/HeaderComponent.vue'
 import { useAppService } from '@/composables/useAppService'
+import { useAuthService } from './composables/useAuthService'
 
 
-const appService = useAppService()
+const appService = useAppService();
+const authService = useAuthService();
 
+authService.hydrateStores();
 
+// TODO changes coming with Express update
 onMounted(() => {
-  window.addEventListener('beforeunload', appService.handleUnsavedChanges)
+  window.addEventListener('beforeunload', appService.handleUnsavedChanges);
 })
 onUnmounted(() => {
-  window.removeEventListener('beforeunload', appService.handleUnsavedChanges)
+  window.removeEventListener('beforeunload', appService.handleUnsavedChanges);
 })
 
-// Once at start
+// TODO Once at start (better way?)
 appService.onResize()
 
 </script>

@@ -2,6 +2,18 @@
 import { useAppStore } from '@/stores/app'
 import XToCloseComponent from '../../shared/xToClose/XToCloseComponent.vue';
 
+
+defineProps({
+    xToClose: {
+        type: Boolean,
+        default: false
+    },
+    backdrop: {
+        type: Boolean,
+        default: false
+    }
+})
+
 const appStore = useAppStore()
 const emit = defineEmits(['close'])
 
@@ -13,10 +25,13 @@ function onClose() {
 
 <template>
     <div class="modal-contain">
-        <div class="modal">
-            <XToCloseComponent @close="onClose" />
-            <slot></slot>
+        <div class="backdrop" v-if="backdrop">
         </div>
+        <dialog open class="modal">
+            <XToCloseComponent @close="onClose" v-if="xToClose"/>
+            <slot></slot>
+        </dialog>
+
     </div>
 </template>
 
@@ -47,7 +62,14 @@ function onClose() {
     @media (min-width: 1024px)
       width: 350px
       height: 400px
-    
+
+.backdrop
+    position: absolute
+    width: 100vw
+    height: 100vh
+    z-index: -10
+    background-color: rgba(0,0,0,0.8)
+
 .close
     position: absolute
     top: 15px

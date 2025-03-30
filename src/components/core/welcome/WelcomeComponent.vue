@@ -5,10 +5,11 @@ import { useRecipeStore } from '@/stores/recipe'
 import { computed, onMounted, Ref, ref, unref } from 'vue'
 import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
-import UnsavedDataModalComponent from '@/components/core/shared/unsavedDataModal/UnsavedDataModalComponent.vue';
+import UnsavedDataModalComponent from '@/components/core/welcome/unsavedDataModal/UnsavedDataModalComponent.vue';
 import RecipeDetailsComponent from '@/components/core/recipeList/recipeDetails/recipeDetailsComponent.vue';
 import { Recipe } from '@/types/Recipes';
 import { ExposedInWelcomeComponent } from '@/types/componentExposedValues';
+import VerificationModalComponent from './verificationModal/VerificationModalComponent.vue';
 
 
 // Testing required more reactivity
@@ -41,6 +42,7 @@ onMounted(() => {
   snackRecipes.value = snack.value;
 });
 let recipeDetailsOpen = ref(false)
+let verifiedUser = userStore.isUserVerified;
 
 const currentTime = computed(() => {
   const rawTime = unref(props.currentTime);
@@ -120,7 +122,9 @@ defineExpose<ExposedInWelcomeComponent>({
     v-if="recipeStore.selectedRecipeId" 
     @closeRecipeDetails="() => { console.log('Event received'); closeRecipeDetails(); }" 
   />
-  <UnsavedDataModalComponent v-if="appStore.showUnsavedChangesModal" :close="handleUserResponse('save')"/>
+  <UnsavedDataModalComponent v-if="appStore.showUnsavedChangesModal" :close="handleUserResponse('save')" />
+  <VerificationModalComponent v-if="!verifiedUser" :permanent="true" />
+
 </template>
 
 <style lang="sass" scoped>

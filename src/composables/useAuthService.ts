@@ -6,7 +6,7 @@ import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
 import { Recipe } from '@/types/Recipes';
 import axios from '@/axios';
-import { UserState } from '@/types/UserState';
+import { LocalUser } from '@/types/UserState';
 
 export function useAuthService() {
   const error = ref<string | null>(null)
@@ -19,58 +19,30 @@ export function useAuthService() {
     error.value = null
   }
 
-  const initializeAuth = async () => {
-    // return new Promise((resolve) => {
-    //   userStore.authorized = false
-     
-    //   const timeoutId = setTimeout(() => {
-    //     console.error('Auth Initialization Timed Out')
-    //     userStore.authorized = false
-    //     resolve(false)
-    //   }, 7000)
-  
-    //   const unsubscribe = onAuthStateChanged(auth, async(currentUser) => {
-    //     try {
-    //       clearTimeout(timeoutId)
-    //       if (currentUser) {
-    //         const userId = currentUser?.uid
-    //         const [userStoredData, uid] = await dataService.loadUserData(userId)
-    //         const publicRecipeStoredData = await dataService.loadPublicRecipeData()
+  /**
+   * When the page loads, if available
+   * @param {} - None
+   * @returns {Promise<void>} - The dark void.
+   * @example
+  * const { updatescreenSize } = useAppService();
+   * updatescreenSize();
+   */
+  const hydrateStores = async () => {
+    // Hydrate stores 
+    // call in app.vue
+    const cachedData = sessionStorage.getItem('cachedStores');
 
-    //         const userState = {
-    //           _id: currentUser?.uid,
-    //           authorized: true,
-    //           localUser: {
-    //             _id: 'FIXME'
-    //             // ...userStoredData
-    //           }
-    //         }
+    const { user, recipes, timestamp } = (cachedData) ? JSON.parse(cachedData) : {};
 
-    //         userStore.authorized = true
-    //         appStore.initializeApp(userState, publicRecipeStoredData)
-            
-    //         resolve(true)
-    //       } else {
-    //         userStore.authorized = false
-    //         console.log('No User Found', new Date().toISOString())
-    //         resolve(false)
-    //       }
-                   
-    //       // Important: Unsubscribe immediately
-    //       unsubscribe()
-    //     } catch (error) {
-    //       console.error('Auth Initialization Error', error)
-    //       userStore.authorized = false
-    //       unsubscribe()
-    //       resolve(false)
-    //     }
-    //   }, (error) => {
-    //     console.error('Firebase Auth State Change Error', error)
-    //     userStore.authorized = false
-    //     clearTimeout(timeoutId)
-    //     resolve(false)
-    //   })
-    // })
+    const isFresh = timestamp && (Date.now() - timestamp < SESSION_STORAGE_EXPIRY);
+
+    if (isFresh) {
+      appStore.initializeApp(user, recipes)
+    } else {
+      // TODO Make API calls for fresh data
+      console.log('call API Please');
+    }
+
   }
 
   // TODO - Auto Login after register? Email verification? 
@@ -87,8 +59,6 @@ export function useAuthService() {
             'Content-Type': 'application/json',
           }
         });
-      
-        console.log('Registered user: ', response.data);
   
         // Initialize stores
         const userState = { 
@@ -126,12 +96,15 @@ export function useAuthService() {
           'Content-Type': 'application/json',
         }
       });
-      const userData = userResponse.data;
+      const userData: LocalUser = {
+        _id: userResponse.data._id,
+        verified: userResponse.data.verified        
+      }
       // const [userStoredData, uid] = await dataService.loadUserData(user.uid);
       // const publicRecipeStoredData = await dataService.loadPublicRecipeData();
       const publicRecipeStoredData: Array<Recipe> = [];
       const userState = { _id: userData._id, authorized: true, localUser: {
-        ...userData.data
+        ...userResponse.data.user
       }};
 
       // // trigger full app initialization
@@ -140,15 +113,15 @@ export function useAuthService() {
       return;
     } catch (err) {
       //TODO error handling
-      console.log('signin failed: ', JSON.stringify(err))
-      error.value = err instanceof Error ? err.message : 'Sign in failed'
-      throw err
+      console.log('signin failed: ', JSON.stringify(err));
+      error.value = err instanceof Error ? err.message : 'Sign in failed';
+      throw err;
     }
   }
   // TODO Implement logout with passport
   const logOut = async () => {
     try {
-      clearError()
+      clearError();
       const response = await axios.post('/logout', {
         headers: {
           'Content-Type': 'application/json',
@@ -156,12 +129,35 @@ export function useAuthService() {
       });
       console.log('logged out: ', response);
     } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Logout failed'
-      throw err
+      error.value = err instanceof Error ? err.message : 'Logout failed';
+      throw err;
     }
   }
 
-  return { signIn, registerUser, logOut, initializeAuth }
+  const verifyUser = async (enteredCode: string) => {
+    try {
+      await axios.post('/verification-code', {
+        code: enteredCode
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      userStore.verifyUser();
+    } catch(err) {
+      console.log('verify User err: ', err);
+    }
+
+  }
+
+  return {
+    signIn,
+    registerUser,
+    logOut,
+    hydrateStores,
+    verifyUser
+  };
 }
 
 

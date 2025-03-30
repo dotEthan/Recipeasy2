@@ -16,7 +16,8 @@ export type LocalUser = {
   email?: string
   createdAt?: date
   shoppingLists?: ShoppingList[]
-  preferences? : UserPreferences
+  preferences? : UserPreferences,
+  verified: boolean
 }
 
 export type UserPreferences = {

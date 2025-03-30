@@ -1,52 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import router from '@/router/main'
 import { useAppStore } from '@/stores/app'
-import { useAuthService } from '@/composables/useAuthService'
-import XToCloseComponent from '../shared/xToClose/XToCloseComponent.vue';
 import AppModalComponent from '../shared/appModal/AppModalComponent.vue';
 
-const appStore = useAppStore()
+// TODO Should be in Splash Component, but rework of splash component coming. 
+const appStore = useAppStore();
 
-let authError = ref(false)
-const {registerUser, signIn} = useAuthService()
-let thisType = ref(appStore.registrationOrSigninModal)
-
-async function onSubmit(e: any) {
-  const { displayName, email, password } = e.target.elements
-
-  authError.value = false
-
-  if (thisType.value === 'register') {
-    try {
-      authError.value = false
-      const { email, password } = e.target.elements
-      registerUser(displayName.value, email.value, password.value)
-    } catch (error) {
-      authError.value = true
-      // TODO handle registration error
-      console.error(error)
-    }
-  } else if (thisType.value === 'signin') {
-    try {
-      signIn(email.value, password.value)
-    } catch(error) {
-      //TODO Handle Errors
-      console.error(error)
-    }
-  }
-  console.log('user signed in, initializing store')
-
-  router.push('/')
-  appStore.toggleRegistrationModal()
-}
+let authError = ref(false);
+let thisType = ref(appStore.registrationOrSigninModal);
 
 function onSwitchTypeHandler(type: string) {
-  appStore.toggleRegistrationModal(type)
+  appStore.toggleRegistrationModal(type);
 }
 
 function onClose() {
-  appStore.toggleRegistrationModal()
+  appStore.toggleRegistrationModal();
 }
 </script>
 <template>
@@ -57,34 +25,6 @@ function onClose() {
           <h1>{{ thisType }}</h1>
         </div>
         <div class="auth__warning" v-if="authError">{{ authError }}</div>
-        <form @submit.prevent="onSubmit">
-          <div class="form-group" v-if="thisType === 'register'">
-            <label class="signin-label" for="displayName">Display Name:</label>
-            <input type="string" id="displayName" name="displayName" class="form-control" />
-            <div class="email-warning">Must be longer than 3 characters</div>
-          </div>
-          <div class="form-group">
-            <label class="signin-label" for="email">Email:</label>
-            <input type="email" id="email" name="email" class="form-control" />
-            <div class="email-warning">Not a valid Email</div>
-          </div>
-          <div class="form-group">
-            <label class="signin-label" for="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              class="form-control"
-              ngModel
-            />
-          </div>
-          <button class="btn btn-primary" type="submit" v-if="thisType === 'signin'">
-            Sign In
-          </button>
-          <button class="btn btn-primary" type="submit" v-if="thisType === 'register'">
-            Register
-          </button>
-        </form>
         <hr />
         <div class="auth-mistake" v-if="thisType === 'register'">
           Already Registered?

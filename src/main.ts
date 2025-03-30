@@ -5,40 +5,37 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router/main'
-import { useAuthService } from './composables/useAuthService'
 import { useAppStore } from './stores/app'
 
 async function initializeApp() {
-  const app = createApp(App)
-  app.use(createPinia())
+  const app = createApp(App);
+
+  app.use(createPinia());
  
-  const {initializeAuth} = useAuthService()
  
   try {
-    // Increase timeout and add error handling
-    await Promise.race([
-      initializeAuth(),
-      new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Auth init timeout')), 8000)
-      )
-    ])
+    // TODO Increase timeout and add error handling
  
-    app.use(router)
+    app.use(router);
     const appStore = useAppStore();
-    appStore.fetchCsrfToken().then(() => {
+    
+    await appStore.fetchCsrfToken().then(() => {
       app.mount('#app');
     })
     .catch((error) => {
-      app.mount('#app')
-      console.error('csrfToken not fetched')
+      app.mount('#app');
+      console.error('csrfToken not fetched');
       // TODO Global Error handling with 2-3x retry. 
     });
+
   } catch (error) {
-    console.error('App Initialization Failed', error)
-    // Fallback strategy: mount anyway
-    app.use(router)
-    app.mount('#app')
+
+    console.error('App Initialization Failed', error);
+    // TODO Fallback strategy: mount anyway (add better)
+    app.use(router);
+    app.mount('#app');
+
   }
 }
 
-initializeApp().catch(console.error)
+initializeApp().catch(console.error);

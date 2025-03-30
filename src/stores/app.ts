@@ -11,17 +11,17 @@ import { useAppService } from '@/composables/useAppService'
 type ScreenSize = 'sm' | 'md' | 'lg'
 
 export const useAppStore = defineStore('app', () => {
-  const recipeStore = useRecipeStore()
-  const userStore = useUserStore()
-  const shoppingListStore = useShoppingListStore()
-  const authService = useAuthService()
+  const recipeStore = useRecipeStore();
+  const userStore = useUserStore();
+  const shoppingListStore = useShoppingListStore();
+  const authService = useAuthService();
   const appService = useAppService();
 
-  const testModeOn = ref(false)
-  const registrationOrSigninModal = ref('')
-  const screenSize = ref<ScreenSize>('lg')
-  const isMobileMenuOpen = ref(false)
-  const appHasUnsavedChanges = ref(true)
+  const testModeOn = ref(false);
+  const registrationOrSigninModal = ref('');
+  const screenSize = ref<ScreenSize>('lg');
+  const isMobileMenuOpen = ref(false);
+  const appHasUnsavedChanges = ref(true);
   const showUnsavedChangesModal = ref(false);
   const userCsrfToken = ref('');
 

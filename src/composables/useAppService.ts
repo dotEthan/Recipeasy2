@@ -1,22 +1,27 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useAppStore } from '@/stores/app'
-import { useShoppingListStore } from '@/stores/shoppingList'
 import axios from '@/axios';
 import type { ScreenSize } from '@/types/ScreenSize'
-
-//TODO test otehr browsers to see if needed. Firefox already throttles
-function debounce(fn: Function, delay: number) {
-  let timeoutId: number
-  return (...args: any[]) => {
-    clearTimeout(timeoutId)
-    timeoutId = window.setTimeout(() => fn(...args), delay)
-  }
-}
+import { debounce } from '@/utilities';
+/**
+ * Handles all methods to help bootstrap the App: CSRF tokens, screen size tracking.
+ * @returns {Object} - onResize, handleUnsavedChanges, fetchCsrfToken.
+ */
 
 export function useAppService() {
   const appStore = useAppStore()
   const screenWidth = ref(window.innerWidth)
 
+  /**
+   * Updates the screensize variable in the appStore for business rules
+   * @param {} - None
+   * @returns {Promise<void>} - The dark void.
+   * @example
+  * const { updatescreenSize } = useAppService();
+   * updatescreenSize();
+   */
+
+  // TODO better practice
   const updatescreenSize = () => {
     const width = screenWidth.value
     let screenSize: ScreenSize
@@ -36,15 +41,31 @@ export function useAppService() {
     updatescreenSize()
   }, 10)
 
+  /**
+   * Lookig to ensure users can't leave without saving.
+   * @param {e} - Event object
+   * @returns {Promise<void>} - The dark void.
+   * @example
+  * const { handleUnsavedChanges } = useAppService();
+   * handleUnsavedChanges();
+   */
+  // TODO REmove once pesistence and immediate saving reworked
   const handleUnsavedChanges = (e: BeforeUnloadEvent) => {
     const appStore = useAppStore()
     if (appStore.appHasUnsavedChanges) {
       appStore.showUnsavedChangesModal = true
       e.preventDefault()
-      
     }
   } 
 
+  /**
+   * Get the CSRF token on page reload
+   * @param {} - Nothing!
+   * @returns {Promise<string>} - The precious csrfToken. My precious... 
+   * @example
+  * const { fetchCsrfToken } = useAppService();
+  * const token = await fetchCsrfToken();
+   */
   const fetchCsrfToken = async (): Promise<string | null> => {
     try {
       const response = await axios.get('/csrf-token', { 
