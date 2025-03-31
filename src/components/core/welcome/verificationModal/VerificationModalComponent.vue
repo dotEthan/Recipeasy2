@@ -11,6 +11,7 @@ const codes = ref(Array(6).fill(''));
 const handleSubmit = async () => {
     authService.verifyUser(codes.value.join(""));
 }
+// TODO Style and make work properly
 </script>
 
 <template>

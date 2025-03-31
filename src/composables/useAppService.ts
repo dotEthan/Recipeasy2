@@ -79,8 +79,39 @@ export function useAppService() {
     }
   }
 
+  /**
+   * When the page loads, if available
+   * @param {} - None
+   * @returns {Promise<void>} - The dark void.
+   * @example
+  * const { updatescreenSize } = useAppService();
+   * updatescreenSize();
+   */
+  const hydrateStores = async () => {
+    // Hydrate stores 
+    // call in app.vue
+    const cachedData = sessionStorage.getItem('cachedStores');
+
+    const { user, recipes, timestamp } = (cachedData) ? JSON.parse(cachedData) : {};
+
+    const isFresh = timestamp && (Date.now() - timestamp < SESSION_STORAGE_EXPIRY);
+
+    if (isFresh) {
+      appStore.initializeApp(user, recipes)
+    } else {
+      // TODO Make API calls for fresh data
+      console.log('call API Please');
+    }
+
+  }
+
   onMounted(() => window.addEventListener('resize', onResize))
   onUnmounted(() => window.removeEventListener('resize', onResize))
 
-  return { onResize, handleUnsavedChanges, fetchCsrfToken }
+  return {
+    onResize,
+    handleUnsavedChanges,
+    fetchCsrfToken,
+    hydrateStores, 
+  }
 }

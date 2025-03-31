@@ -3,13 +3,11 @@ import { onMounted, onUnmounted } from 'vue'
 import { RouterView } from 'vue-router'
 import HeaderComponent from './components/core/header/HeaderComponent.vue'
 import { useAppService } from '@/composables/useAppService'
-import { useAuthService } from './composables/useAuthService'
 
 
 const appService = useAppService();
-const authService = useAuthService();
 
-authService.hydrateStores();
+appService.hydrateStores();
 
 // TODO changes coming with Express update
 onMounted(() => {

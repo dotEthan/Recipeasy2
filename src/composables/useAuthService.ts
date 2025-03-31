@@ -19,32 +19,6 @@ export function useAuthService() {
     error.value = null
   }
 
-  /**
-   * When the page loads, if available
-   * @param {} - None
-   * @returns {Promise<void>} - The dark void.
-   * @example
-  * const { updatescreenSize } = useAppService();
-   * updatescreenSize();
-   */
-  const hydrateStores = async () => {
-    // Hydrate stores 
-    // call in app.vue
-    const cachedData = sessionStorage.getItem('cachedStores');
-
-    const { user, recipes, timestamp } = (cachedData) ? JSON.parse(cachedData) : {};
-
-    const isFresh = timestamp && (Date.now() - timestamp < SESSION_STORAGE_EXPIRY);
-
-    if (isFresh) {
-      appStore.initializeApp(user, recipes)
-    } else {
-      // TODO Make API calls for fresh data
-      console.log('call API Please');
-    }
-
-  }
-
   // TODO - Auto Login after register? Email verification? 
   const registerUser = async (displayName: string, email: string, password: string)=> {
     try {
@@ -96,6 +70,7 @@ export function useAuthService() {
           'Content-Type': 'application/json',
         }
       });
+      
       const userData: LocalUser = {
         _id: userResponse.data._id,
         verified: userResponse.data.verified        
@@ -155,7 +130,6 @@ export function useAuthService() {
     signIn,
     registerUser,
     logOut,
-    hydrateStores,
     verifyUser
   };
 }

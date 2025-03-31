@@ -38,12 +38,16 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 - Pinia store Implementation
 - Routing and guards
 - Authenticated User Image uploading (and deleting) to CDN
-- Mobile Design
+- Functional Mobile Design
 - Public Recipes Displaying and functional
 
 ### Working on Now:
 
-- Custom Backend Functionality using Expressjs, Nodejs, and MongoDB.
+- Custom Backend Functionality using Expressjs, Nodejs, and MongoDB. (App up and running, auth working and fully secure, working. Schema creation/Validation and Recipe CRUD to come)
+- Style Verification and login modals for new data and system to match backend
+
+### In Progress (on hold as Backend Work On-Going)
+
 - Switch from function to arrow functions & full prettier update
 - Switch to id based routing instead of event based
 - Add Cuisine type & Nutritional Info (Edit and Display)
@@ -53,12 +57,14 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### To Come:
 
+- Tailor Cloudinary Image settings (refactor for new ExpressJS app)
+- Route Guards
 - TODO & Misc Functionality (Search, tags, rating, ignore/report recipe)
 - Filter (Functional, but waiting on final schema)
-- Defaults (images)
-- Tailor Cloudinary Image settings
-- Animations
 - Error Handling & User feedback (loadin spinners, unsaved data etc)
+- Defaults (images)
+- TailwindCSS redesign
+- Animations
 - Display newly added Recipe Data (time, servings, nutritional info, etc)
 - Offline Functionality
 - User Dashboard
