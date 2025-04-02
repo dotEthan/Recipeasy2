@@ -22,8 +22,7 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### What isn't working
 
-- Session Cookies not autosaving to localstorage. 
-- AI is great for tips, but terrible at coding. 
+- paramquery parsing in WelcomeComponent needs better error checks
 
 ## Where are we?
 
@@ -44,12 +43,12 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 ### Working on Now:
 
 - Custom Backend Functionality using Expressjs, Nodejs, and MongoDB. (App up and running, auth working and fully secure, working. Schema creation/Validation and Recipe CRUD to come)
-- Style Verification and login modals for new data and system to match backend
+- reimplement verification code, same modal?
 
 ### In Progress (on hold as Backend Work On-Going)
 
 - Switch from function to arrow functions & full prettier update
-- Switch to id based routing instead of event based
+- Switch to id based routing instead of event based (recipe url slugs for sharing)
 - Add Cuisine type & Nutritional Info (Edit and Display)
 - Checking Basic Desktop design
 - Testing (Vitest, Cypress) Current Coverage: 28%
@@ -57,6 +56,7 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### To Come:
 
+- Documentation (JSDocs)
 - Tailor Cloudinary Image settings (refactor for new ExpressJS app)
 - Route Guards
 - TODO & Misc Functionality (Search, tags, rating, ignore/report recipe)

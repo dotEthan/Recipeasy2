@@ -2,7 +2,6 @@
 import { useAppStore } from '@/stores/app'
 import XToCloseComponent from '../../shared/xToClose/XToCloseComponent.vue';
 
-
 defineProps({
     xToClose: {
         type: Boolean,
@@ -18,14 +17,14 @@ const appStore = useAppStore()
 const emit = defineEmits(['close'])
 
 function onClose() {
-  appStore.toggleRegistrationModal()
+  appStore.setAuthModalType('')
   emit('close')
 }
 </script>
 
 <template>
     <div class="modal-contain">
-        <div class="backdrop" v-if="backdrop">
+        <div class="backdrop" v-if="backdrop" @click="onClose">
         </div>
         <dialog open class="modal">
             <XToCloseComponent @close="onClose" v-if="xToClose"/>

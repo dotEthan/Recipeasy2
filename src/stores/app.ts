@@ -18,7 +18,7 @@ export const useAppStore = defineStore('app', () => {
   const appService = useAppService();
 
   const testModeOn = ref(false);
-  const registrationOrSigninModal = ref('');
+  const authModalType = ref('');
   const screenSize = ref<ScreenSize>('lg');
   const isMobileMenuOpen = ref(false);
   const appHasUnsavedChanges = ref(true);
@@ -26,9 +26,10 @@ export const useAppStore = defineStore('app', () => {
   const userCsrfToken = ref('');
 
   const isTestModeOn = computed(() => testModeOn.value)
-  const isRegistrationModalOpen = computed(() => registrationOrSigninModal.value.length > 0)
+  const isAuthModalOpen = computed(() => authModalType.value.length > 0)
 
-  function initializeApp(userData: UserState, publicRecipeData: Recipe[]) {
+  // TODO rename to "initializeAppData"
+  function initializeAppData(userData: UserState, publicRecipeData: Recipe[]) {
     console.log('initializing App with user Data: ', userData)
     console.log('initializing App with public Recipes Data: ', publicRecipeData)
     const userId = userData._id
@@ -59,11 +60,12 @@ export const useAppStore = defineStore('app', () => {
     resetAppStates()
   }
 
-  function toggleRegistrationModal(type?: string) {
-    registrationOrSigninModal.value = ''
-
+  function setAuthModalType(type?: string) {
+    authModalType.value = ''
+    console.log('toggling: ', type)
+    // TODO Work work without, figure out why.
     setTimeout(() => {
-      registrationOrSigninModal.value = type || ''
+      authModalType.value = type || ''
     }, 10)
   }
 
@@ -88,7 +90,7 @@ export const useAppStore = defineStore('app', () => {
 
   function resetState() {
     testModeOn.value = false
-    registrationOrSigninModal.value = ''
+    authModalType.value = ''
   }
 
   return {
@@ -98,14 +100,14 @@ export const useAppStore = defineStore('app', () => {
     appHasUnsavedChanges,
     showUnsavedChangesModal,
     userCsrfToken,
-    registrationOrSigninModal,
+    authModalType,
     isTestModeOn,
-    isRegistrationModalOpen,
-    initializeApp,
+    isAuthModalOpen,
+    initializeAppData,
     resetAppStates,
     turnTestModeOn,
     turnTestModeOff,
-    toggleRegistrationModal,
+    setAuthModalType,
     setScreenSize,
     fetchCsrfToken,
     resetState

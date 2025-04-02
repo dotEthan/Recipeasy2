@@ -14,6 +14,7 @@ export function useAppService() {
 
   /**
    * Updates the screensize variable in the appStore for business rules
+   * @todo Refactor for app's new structure if needed
    * @param {} - None
    * @returns {Promise<void>} - The dark void.
    * @example
@@ -21,7 +22,6 @@ export function useAppService() {
    * updatescreenSize();
    */
 
-  // TODO better practice
   const updatescreenSize = () => {
     const width = screenWidth.value
     let screenSize: ScreenSize
@@ -42,14 +42,15 @@ export function useAppService() {
   }, 10)
 
   /**
-   * Lookig to ensure users can't leave without saving.
+   * Was Temporarily used to ensure users can't leave without saving.
+   * @todo Remove once pesistence and immediate saving reworked
    * @param {e} - Event object
    * @returns {Promise<void>} - The dark void.
    * @example
   * const { handleUnsavedChanges } = useAppService();
    * handleUnsavedChanges();
    */
-  // TODO REmove once pesistence and immediate saving reworked
+
   const handleUnsavedChanges = (e: BeforeUnloadEvent) => {
     const appStore = useAppStore()
     if (appStore.appHasUnsavedChanges) {
@@ -80,7 +81,8 @@ export function useAppService() {
   }
 
   /**
-   * When the page loads, if available
+   * When the page reloads, if available
+   * @todo Bulit for persistence
    * @param {} - None
    * @returns {Promise<void>} - The dark void.
    * @example
@@ -97,7 +99,7 @@ export function useAppService() {
     const isFresh = timestamp && (Date.now() - timestamp < SESSION_STORAGE_EXPIRY);
 
     if (isFresh) {
-      appStore.initializeApp(user, recipes)
+      appStore.initializeAppData(user, recipes)
     } else {
       // TODO Make API calls for fresh data
       console.log('call API Please');

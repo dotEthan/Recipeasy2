@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useAppStore } from '@/stores/app'
-import { useUserStore } from '@/stores/user'
-import router from '@/router/main'
-import { useDataService } from '@/composables/useDataService'
-import { useRecipeStore } from '@/stores/recipe'
-import { useShoppingListStore } from '@/stores/shoppingList'
-import { LocalUser } from '@/types/UserState'
-import { useAuthService } from '@/composables/useAuthService'
+import { computed } from 'vue';
+import { useAppStore } from '@/stores/app';
+import { useUserStore } from '@/stores/user';
+import router from '@/router/main';
+import { useDataService } from '@/composables/useDataService';
+import { useRecipeStore } from '@/stores/recipe';
+import { useShoppingListStore } from '@/stores/shoppingList';
+import { LocalUser } from '@/types/UserState';
+import { useAuthService } from '@/composables/useAuthService';
 
-const appStore = useAppStore()
-const userStore = useUserStore()
-const recipeStore = useRecipeStore()
-const shoppingListStore = useShoppingListStore()
-const dataService = useDataService()
-const authService = useAuthService()
-const isTestModeOn = computed(() => appStore.isTestModeOn)
-const isAuthorized = computed(() => userStore.isAuthorized)
-const currentUser = computed(() => userStore.getCurrentUser)
+const appStore = useAppStore();
+const userStore = useUserStore();
+const recipeStore = useRecipeStore();
+const shoppingListStore = useShoppingListStore();
+const dataService = useDataService();
+const authService = useAuthService();
+const isTestModeOn = computed(() => appStore.isTestModeOn);
+const isAuthorized = computed(() => userStore.isAuthorized);
+const currentUser = computed(() => userStore.getCurrentUser);
 
 //TODO needed or just call resetApp?
 function testModeOff() {
-  closeMobileMenu()
-  appStore.turnTestModeOff()
-  userStore.deauthorize()
-  router.push('/')
+  closeMobileMenu();
+  appStore.turnTestModeOff();
+  userStore.deauthorize();
+  router.push('/');
 }
 
 function onClickRegisterSigning(type: string) {
-  closeMobileMenu()
-  appStore.toggleRegistrationModal(type)
+  closeMobileMenu();
+  appStore.setAuthModalType(type);
 }
 
 async function onSave() {
@@ -42,19 +42,19 @@ async function onSave() {
       shoppingLists: shoppingListStore.shoppingLists, 
       preferences: {
         personalFilters: recipeStore.personalFilters
-    }}
+    }};
     try {
-      dataService.saveUserData(updateUser)
-      dataService.updatePublicRecipesData()
+      await dataService.saveUserData(updateUser);
+      dataService.updatePublicRecipesData();
     } catch (error: any) {
       // TODO: handle & display errors
-      console.log('Error during Saving:', error)
+      console.log('Error during Saving:', error);
     }
   }
 }
 
 function onReset() {
-  console.log('fetched')
+  console.log('fetched');
 }
 
 async function onSignOut() {
@@ -62,20 +62,20 @@ async function onSignOut() {
   if (!appStore.isTestModeOn) {
 
     try {
-      authService.logOut();
-      console.log('Logged Out')
+      await authService.logOut();
+      console.log('Logged Out');
     } catch (error) {
-      console.error('Error signing out:', error)
+      console.error('Error signing out:', error);
     }
   } else {
-    testModeOff()
+    testModeOff();
   }
-  appStore.resetAppStates()
-  router.push('/')
-}
+  appStore.resetAppStates();
+  router.push('/');
+};
 
 function closeMobileMenu() {
-  appStore.isMobileMenuOpen = false
+  appStore.isMobileMenuOpen = false;
 }
 </script>
 

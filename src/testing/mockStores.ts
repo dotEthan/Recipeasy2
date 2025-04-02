@@ -55,16 +55,16 @@ export const getMockedAppStore = (overrides: Partial<ReturnType<typeof useAppSto
     isMobileMenuOpen: false,
     appHasUnsavedChanges: false,
     showUnsavedChangesModal: false,
-    registrationOrSigninModal: '',
+    authModalType: '',
 
     isTestModeOn: vi.fn().mockReturnValue(false),
-    isRegistrationModalOpen: vi.fn().mockReturnValue(false),
+    isAuthModalOpen: vi.fn().mockReturnValue(false),
 
     initializeApp: vi.fn(),
     resetAppStates: vi.fn(),
     turnTestModeOn: vi.fn(),
     turnTestModeOff: vi.fn(),
-    toggleRegistrationModal: vi.fn(),
+    setAuthModalType: vi.fn(),
     setScreenSize: vi.fn(),
     resetState: vi.fn(),
 

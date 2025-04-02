@@ -42,7 +42,7 @@ export function useAuthService() {
         }
         const publicRecipeArray: [] = [];
         // const publicRecipeArray = publicRecipeStoredData 
-        appStore.initializeApp(userState, publicRecipeArray)
+        appStore.initializeAppData(userState, publicRecipeArray)
         return;
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
@@ -83,7 +83,7 @@ export function useAuthService() {
       }};
 
       // // trigger full app initialization
-      appStore.initializeApp(userState, publicRecipeStoredData)
+      appStore.initializeAppData(userState, publicRecipeStoredData)
 
       return;
     } catch (err) {
@@ -123,14 +123,55 @@ export function useAuthService() {
     } catch(err) {
       console.log('verify User err: ', err);
     }
-
   }
+
+  const passwordReset = async (email: string) => {
+    console.log('password reset api call')
+    await axios.post('/reset-password', {
+      email
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+  }
+
+  
+  const setNewPassword = async (password: string, token: string) => {
+    console.log('set new Password api call')
+    await axios.post('/update-password', {
+      password,
+      token
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+  }
+
+  const validatePasswordToken = async (token: String) => {
+    console.log('validate password token: ', token);
+    await axios.post('/validate-password-token', {
+      token
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+  }
+
 
   return {
     signIn,
     registerUser,
     logOut,
-    verifyUser
+    verifyUser,
+    passwordReset,
+    setNewPassword,
+    validatePasswordToken
   };
 }
 

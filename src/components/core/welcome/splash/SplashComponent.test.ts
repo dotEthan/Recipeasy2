@@ -13,7 +13,7 @@ describe('SplashComponent', () => {
           createTestingPinia({
             createSpy: vitest.fn,
             initialState: {
-              app: { testModeOn: false, isRegistrationModalOpen: false },
+              app: { testModeOn: false, isAuthModalOpen: false },
               user: { isAuthorized: false },
               ...initialState
             }
@@ -60,14 +60,14 @@ describe('SplashComponent', () => {
 
   it('shows AuthComponent when registration modal is open', () => {
     const wrapper = mountComponent({
-      app: { registrationOrSigninModal: 'registration' }
+      app: { authModalType: 'registration' }
     })
     expect(wrapper.findComponent(AuthComponent).exists()).toBe(true)
   })
 
   it('hides AuthComponent when registration modal is closed', () => {
     const wrapper = mountComponent({
-      app: { isRegistrationModalOpen: false }
+      app: { isAuthModalOpen: false }
     })
     expect(wrapper.findComponent(AuthComponent).exists()).toBe(false)
   })

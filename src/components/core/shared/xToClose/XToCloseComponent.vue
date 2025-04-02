@@ -13,8 +13,8 @@ defineEmits(['close'])
 
 .close-container
     position: absolute
-    top: -5px
-    right: -5px
+    top: -10px
+    right: -10px
     display: flex
     align-items: center
     justify-content: center
@@ -30,6 +30,7 @@ defineEmits(['close'])
 
     &:hover
         background-color: #ccc
+        border: 2px solid $colorHighlightBorderHover
 
 .close-x
   font-size: 28px

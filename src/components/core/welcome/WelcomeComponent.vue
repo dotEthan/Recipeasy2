@@ -2,14 +2,16 @@
 import { Search } from 'lucide-vue-next'
 import CollectionComponent from '../collections/CollectionComponent.vue'
 import { useRecipeStore } from '@/stores/recipe'
-import { computed, onMounted, Ref, ref, unref } from 'vue'
+import { computed, onMounted, Ref, ref, unref, watch } from 'vue'
 import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
-import UnsavedDataModalComponent from '@/components/core/welcome/unsavedDataModal/UnsavedDataModalComponent.vue';
 import RecipeDetailsComponent from '@/components/core/recipeList/recipeDetails/recipeDetailsComponent.vue';
 import { Recipe } from '@/types/Recipes';
 import { ExposedInWelcomeComponent } from '@/types/componentExposedValues';
-import VerificationModalComponent from './verificationModal/VerificationModalComponent.vue';
+import AuthComponent from '../auth/AuthComponent.vue';
+import SplashComponent from './splash/SplashComponent.vue';
+import { useRoute } from 'vue-router';
+import { useAuthService } from '@/composables/useAuthService';
 
 
 // Testing required more reactivity
@@ -21,11 +23,14 @@ const props = defineProps({
   },
 });
 
-const recipeStore = useRecipeStore()
-const appStore = useAppStore()
-const userStore = useUserStore()
+const appStore = useAppStore();
+const userStore = useUserStore();
+const recipeStore = useRecipeStore();
+const authService = useAuthService();
 
-
+const route = useRoute();
+const validToken = ref(false);
+const isLoading = ref(true);
 let ethansFavouriteRecipes = ref<Recipe[]>([]);
 let recommendedRecipes = ref<Recipe[]>([]);
 let mealTimeRecipes = ref<Recipe[]>([]);
@@ -42,7 +47,7 @@ onMounted(() => {
   snackRecipes.value = snack.value;
 });
 let recipeDetailsOpen = ref(false)
-let verifiedUser = userStore.isUserVerified;
+const isAuthModalOpen = computed(() => appStore.isAuthModalOpen)
 
 const currentTime = computed(() => {
   const rawTime = unref(props.currentTime);
@@ -78,12 +83,6 @@ function determineMealTime(hours: number) {
   }
 }
 
-
-function handleUserResponse(userResponse: string) {
-  console.log(userResponse)
-  appStore.showUnsavedChangesModal = false
-}
-
 function closeRecipeDetails() {
   console.log('closeRecipeDetails called'); // Debugging
   recipeDetailsOpen.value = false
@@ -99,42 +98,94 @@ defineExpose<ExposedInWelcomeComponent>({
   recipeDetailsOpen,
   closeRecipeDetails,
 });
+
+onMounted(async () => {
+  console.log('mounting')
+  const token = route.query.token as string;
+  if (token) {
+    try {
+      await authService.validatePasswordToken(token);
+      validToken.value = true;
+      appStore.setAuthModalType('set-password');
+    } catch (error) {
+      console.log('passwrod reset token verification error: ', error);
+      // TODO Pop up to say failed and allow resend? Modal?
+    } finally {
+      isLoading.value = false;
+    }
+  }
+})
 </script>
 
 <template>
-  <div class="base-container welcome">
-    <h1 class="greeting">{{greeting}}</h1>
-    <h2>What's for Supper?</h2>
-    <div class="searchbar">
-      <input disabled type="text" class="searchbar-input" placeholder="Burritos" />
-      <button disabled><Search class="magnifying" :size="15" /></button>
+  <div class="welcome-container">
+    <div v-if="isLoading">... Page is loading</div>
+    <div class="guest-welcome" v-if="!userStore.authorized">
+      <SplashComponent />
     </div>
-    <span style="font-size: 0.7em;">Search and Public Recipe Filtering Coming Soon!</span>
-    <div class="base-content-container">
-      <CollectionComponent ref="recommended-recipes-collection" title="Recommended Public Recipes" :recipeData="recommendedRecipes" />
-      <CollectionComponent title="Ethan's Favourites" :recipeData="ethansFavouriteRecipes" />
-      <CollectionComponent ref="mealtime-collection" :title="'Ready for ' + mealTime" :recipeData="mealTimeRecipes" />
-      <CollectionComponent title="Snacks" :recipeData="snackRecipes" />
-      <CollectionComponent title="Healthy Foods" :recipeData="healthyRecipes" />
+    <div class="welcome">
+      <h1 class="greeting">{{greeting}}</h1>
+      <h2>What's for Supper?</h2>
+      <div class="searchbar">
+        <input disabled type="text" class="searchbar-input" placeholder="Burritos" />
+        <button disabled><Search class="magnifying" :size="15" /></button>
+      </div>
+      <span style="font-size: 0.7em;">Search and Public Recipe Filtering Coming Soon!</span>
+      <div class="base-content-container">
+        <CollectionComponent ref="recommended-recipes-collection" title="Recommended Public Recipes" :recipeData="recommendedRecipes" />
+        <CollectionComponent title="Ethan's Favourites" :recipeData="ethansFavouriteRecipes" />
+        <CollectionComponent ref="mealtime-collection" :title="'Ready for ' + mealTime" :recipeData="mealTimeRecipes" />
+        <CollectionComponent title="Snacks" :recipeData="snackRecipes" />
+        <CollectionComponent title="Healthy Foods" :recipeData="healthyRecipes" />
+      </div>
+    </div>
+    <div class="attribute">
+      <a href="https://nick-karvounis.com/" target="_blank">Photo by Nick Karvounis on Unsplash</a>
     </div>
   </div>
+
   <RecipeDetailsComponent 
     v-if="recipeStore.selectedRecipeId" 
     @closeRecipeDetails="() => { console.log('Event received'); closeRecipeDetails(); }" 
   />
-  <UnsavedDataModalComponent v-if="appStore.showUnsavedChangesModal" :close="handleUserResponse('save')" />
-  <VerificationModalComponent v-if="!verifiedUser" :permanent="true" />
+  <AuthComponent v-if="isAuthModalOpen"></AuthComponent>
 
 </template>
 
 <style lang="sass" scoped>
 @use '@/assets/variables' as *
 
-h1
-  margin-bottom: 0
+.welcome-container
+  display: flex
+  align-items: center
+  flex-direction: column
+  height: calc(95vh - $navbar-height)
+  width: 95vw
+  
+  @media (min-width: 768px)
+    max-width: 1366px
 
-h2
-  margin: 5px 0
+.guest-welcome
+  height: 480px
+  margin-bottom: 20px
+  
+  @media (min-width: 768px)
+    margin-bottom: 50px
+
+.welcome, .guest-welcome
+  display: flex
+  align-items: center
+  flex-direction: column
+  background-color: white
+  border-radius: 5px
+  overflow-y: auto
+  width: 100%
+
+  h1
+    margin-bottom: 0
+
+  h2
+    margin: 5px 0
 
 .searchbar
   width: 90%
@@ -172,5 +223,20 @@ h2
     display: flex
     align-items: center
     width: 100%
+
+.attribute
+  position: absolute
+  bottom: 0px
+  right: 25px
+  font-size: .6rem
+
+  @media (min-width: 768px)
+    bottom: 50
+    right: 50
+    font-size: .8rem
+
+
+  a
+    color: white
 
 </style>

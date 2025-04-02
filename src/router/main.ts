@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, RouteLocationNormalized } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useUserStore } from '@/stores/user'
 import { useAppStore } from '@/stores/app'
@@ -24,6 +24,15 @@ const routes = [
     name: 'recipes',
     component: () => import('../views/RecipesView.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/reset-password',
+    name: 'reset-password',
+    component: HomeView,
+    props: (route: RouteLocationNormalized) => ({
+      token: route.query.token,
+      authMode: 'set-password'
+    })
   },
 ]
 
@@ -51,6 +60,7 @@ router.beforeEach(async (to, from, next) => {
   })
 
   if (userIsAuth === null) {
+    // TODO why allowing? routing refactor will check
     console.log('Auth state still initializing, allowing navigation')
     next()
     return
