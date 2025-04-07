@@ -1,3 +1,5 @@
+import { ObjectId } from "bson";
+
 export type ShoppingListState = {
   shoppingLists: ShoppingList[];
   viewableShoppingListIds: string[];
@@ -10,6 +12,6 @@ export type ShoppingList = {
   items: string[];
   isDefault: boolean;
   isOpen: boolean;
-  creator: string;
-  viewableBy: string[];
+  creator: ObjectId;
+  viewableBy: ObjectId[];
 }

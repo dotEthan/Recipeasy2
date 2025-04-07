@@ -99,7 +99,8 @@ export function useAppService() {
     const isFresh = timestamp && (Date.now() - timestamp < SESSION_STORAGE_EXPIRY);
 
     if (isFresh) {
-      appStore.initializeAppData(user, recipes)
+      // appStore.initializeAppData(user, recipes)
+      console.log('add the data')
     } else {
       // TODO Make API calls for fresh data
       console.log('call API Please');

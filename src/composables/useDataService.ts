@@ -1,23 +1,52 @@
-import { ref } from 'vue'
+import { ref } from 'vue';
 import {
   deleteDoc,
   doc,
-  DocumentData,
-  getDocs,
   getDoc,
   setDoc
-} from 'firebase/firestore'
-import type { LocalUser } from '@/types/UserState'
-import { publicRecipesRef, usersRef } from '../../firebase'
-import { Recipe } from '@/types/Recipes'
-import { useRecipeStore } from '@/stores/recipe'
-import { useUserStore } from '@/stores/user'
-import { getAuth } from 'firebase/auth'
+} from 'firebase/firestore';
+import type { LocalUser } from '@/types/UserState';
+import { publicRecipesRef } from '../../firebase';
+import { Recipe } from '@/types/Recipes';
+import { useRecipeStore } from '@/stores/recipe';
+import { useUserStore } from '@/stores/user';
+import { getAuth } from 'firebase/auth';
+import axios from '@/axios';;
+import { setRecipeStructure } from '@/utilities';
+import { ObjectId } from 'bson';
 
 export function useDataService() {
 
-  const error = ref<string | null>(null)
-  const recipeStore = useRecipeStore()
+  const error = ref<string | null>(null);
+  const recipeStore = useRecipeStore();
+  const userStore = useUserStore();
+
+  const saveNewRecipes = async () => {
+    try{
+      const responseData = await fetch('/userStatepart2.json');
+      const data = await responseData.json();
+      console.log(data);
+      const recipes = data.recipes;
+      const userId = userStore.getCurrentUserId;
+
+      const alteredRecipes = setRecipeStructure(recipes, new ObjectId(userId));
+      console.log('altered recipes: ', alteredRecipes);
+      
+
+      const saveNewResponse = axios.post('/new-recipes', {
+        recipes: alteredRecipes
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      console.log('saved response: ', saveNewResponse)
+    } catch(error) {
+      console.log('altering error: ', error)
+    }
+
+  };
 
   // const loadUserData = async (_id: string): Promise<[DocumentData | null, string]> => {
   const loadUserData = async (_id: string): Promise<[null, string]> => {
@@ -73,21 +102,22 @@ export function useDataService() {
       console.error('Error saving user data:', error.value)
     }
   }
-  const loadPublicRecipeData = async (): Promise<Recipe[]> => {
+
+  const initialLoadPublicRecipeData = async (): Promise<void> => {
+    console.log('loading public recipes');
     error.value = null;
     try {
-      const docSnaps = await getDocs(publicRecipesRef)
-      const publicRecipes: Recipe[] = []
-      docSnaps.forEach((doc) => {
-        const recipeData = doc.data() as Recipe;
-        publicRecipes.push(recipeData)
-      })
-      console.log('public Recipes Retrieved: ', publicRecipes)
-      return publicRecipes
+      const publicRecipeResponse = await axios.get('/public-recipes',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+      console.log(publicRecipeResponse);
+      recipeStore.setInitialPublicRecipeState(publicRecipeResponse.data);
     } catch (err: any) {
       error.value = err
       console.error('Error loading Public Recipe data:', error.value)
-      return []
     }
   };
 
@@ -152,5 +182,5 @@ export function useDataService() {
     
   }
 
-  return { saveUserData, loadUserData, loadPublicRecipeData, savePublicRecipesData, deletePublicRecipesData, updatePublicRecipesData, error }
+  return { saveNewRecipes, saveUserData, loadUserData, initialLoadPublicRecipeData, savePublicRecipesData, deletePublicRecipesData, updatePublicRecipesData, error }
 }

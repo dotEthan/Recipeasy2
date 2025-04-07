@@ -1,17 +1,22 @@
 <script setup lang="ts">
-import { Search } from 'lucide-vue-next'
-import CollectionComponent from '../collections/CollectionComponent.vue'
-import { useRecipeStore } from '@/stores/recipe'
 import { computed, onMounted, Ref, ref, unref, watch } from 'vue'
+import { useRoute } from 'vue-router';
+import { Search } from 'lucide-vue-next'
+
+import { useRecipeStore } from '@/stores/recipe'
 import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
+
 import RecipeDetailsComponent from '@/components/core/recipeList/recipeDetails/recipeDetailsComponent.vue';
+import AuthComponent from '../auth/AuthComponent.vue';
+import CollectionComponent from '../collections/CollectionComponent.vue'
+import SplashComponent from './splash/SplashComponent.vue';
+
+import { useAuthService } from '@/composables/useAuthService';
+import { useDataService } from '@/composables/useDataService';
+
 import { Recipe } from '@/types/Recipes';
 import { ExposedInWelcomeComponent } from '@/types/componentExposedValues';
-import AuthComponent from '../auth/AuthComponent.vue';
-import SplashComponent from './splash/SplashComponent.vue';
-import { useRoute } from 'vue-router';
-import { useAuthService } from '@/composables/useAuthService';
 
 
 // Testing required more reactivity
@@ -27,24 +32,30 @@ const appStore = useAppStore();
 const userStore = useUserStore();
 const recipeStore = useRecipeStore();
 const authService = useAuthService();
+const dataService = useDataService();
 
 const route = useRoute();
 const validToken = ref(false);
-const isLoading = ref(true);
+const isLoading = ref(false);
 let ethansFavouriteRecipes = ref<Recipe[]>([]);
 let recommendedRecipes = ref<Recipe[]>([]);
 let mealTimeRecipes = ref<Recipe[]>([]);
 let healthyRecipes = ref<Recipe[]>([]);
 let snackRecipes = ref<Recipe[]>([]);
 
-onMounted(() => {
-  const [ethanFavs, recommended, mealTime, snack, healthy] = recipeStore.generatePublicRecipeCollections();
-
-  ethansFavouriteRecipes.value = ethanFavs.value;
-  recommendedRecipes.value = recommended.value;
-  mealTimeRecipes.value = mealTime.value;
-  healthyRecipes.value = healthy.value;
-  snackRecipes.value = snack.value;
+onMounted(async () => {
+  try {
+    await dataService.initialLoadPublicRecipeData();
+    const [ethanFavs, recommended, mealTime, snack, healthy] = recipeStore.generatePublicRecipeCollections();
+    console.log('public recipe setting')
+    ethansFavouriteRecipes.value = ethanFavs.value;
+    recommendedRecipes.value = recommended.value;
+    mealTimeRecipes.value = mealTime.value;
+    healthyRecipes.value = healthy.value;
+    snackRecipes.value = snack.value;
+  } catch (error) {
+    console.log('Welcome Component error: ', error);
+  }
 });
 let recipeDetailsOpen = ref(false)
 const isAuthModalOpen = computed(() => appStore.isAuthModalOpen)
@@ -60,7 +71,7 @@ const currentTime = computed(() => {
 });
 
 const greeting = computed((): string => {
-  const displayName = userStore.localUser.displayName
+  const displayName = userStore.localUser?.displayName
   if (displayName) {
     return `Welcome, ${displayName}!` 
   } else {
@@ -76,7 +87,7 @@ const mealTime = computed(() => {
 function determineMealTime(hours: number) {
   if (hours >= 2 && hours < 10) {
     return 'Breakfast'
-  } else if (hours >= 10 && hours < 16) {
+  } else if (hours >= 10 && hours < 15) {
     return 'Lunch'
   } else {
     return 'Dinner'
@@ -86,7 +97,7 @@ function determineMealTime(hours: number) {
 function closeRecipeDetails() {
   console.log('closeRecipeDetails called'); // Debugging
   recipeDetailsOpen.value = false
-  recipeStore.setSelectedRecipeId('')
+  recipeStore.setSelectedRecipeId('', false)
 }
 
 defineExpose<ExposedInWelcomeComponent>({

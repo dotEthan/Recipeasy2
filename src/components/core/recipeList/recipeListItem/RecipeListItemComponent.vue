@@ -7,7 +7,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="recipeItem" @click="$emit('openRecipe', recipeData?.id)">
+  <div class="recipeItem" @click="$emit('openRecipe', recipeData?._id)">
     <a style="cursor: pointer" class="recipeItem-contain">
       <img class="recipe-image" :src="recipeData?.imgPath" />
       <span class="recipe-title">

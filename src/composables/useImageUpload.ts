@@ -20,7 +20,7 @@ interface UploadError {
  * Manages upload state, preview URLs, and provides error handling
  */
 export function useImageUpload() {
-  const { generateSignature, isLoading: isGeneratingSignature } = useCloudinarySignature();
+  // const { generateSignature, isLoading: isGeneratingSignature } = useCloudinarySignature();
   
   const isUploading = ref(false);
   const isDeleting = ref(false);

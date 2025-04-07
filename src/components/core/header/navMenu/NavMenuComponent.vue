@@ -33,28 +33,12 @@ function onClickRegisterSigning(type: string) {
 }
 
 async function onSave() {
-  closeMobileMenu()
-  // Public Data Saving. 
-  if (currentUser.value) {
-    const updateUser: LocalUser = {
-      ...currentUser.value, 
-      recipes: recipeStore.recipes, 
-      shoppingLists: shoppingListStore.shoppingLists, 
-      preferences: {
-        personalFilters: recipeStore.personalFilters
-    }};
-    try {
-      await dataService.saveUserData(updateUser);
-      dataService.updatePublicRecipesData();
-    } catch (error: any) {
-      // TODO: handle & display errors
-      console.log('Error during Saving:', error);
-    }
-  }
+  closeMobileMenu();
+  dataService.saveNewRecipes();
 }
 
 function onReset() {
-  console.log('fetched');
+  console.log("reset");
 }
 
 async function onSignOut() {

@@ -1,6 +1,8 @@
 import { ref } from 'vue'
+import { ObjectId } from 'bson'
 import { v4 as uuidv4 } from 'uuid'
 import { defineStore } from 'pinia'
+
 import type { ShoppingList } from '@/types/ShoppingLists'
 import { useUserStore } from './user'
 
@@ -11,7 +13,7 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
   const editingListIndex = ref(-1);
   const editingItemIndex = ref(-1);
 
-  function setListState(userId: string, lists: ShoppingList[]) {
+  function setListState(userId: ObjectId, lists: ShoppingList[]) {
     shoppingLists.value = lists
     defaultListId.value = shoppingLists?.value?.find((list) => list.isDefault)?.id || ''
   }

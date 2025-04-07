@@ -18,7 +18,9 @@ let activeFilters = ref<string[]>([])
 let isAddedRecipeNew = ref(false);
 
 const filteredRecipes = computed(() => {
-  return recipeStore.useFilteredRecipes(activeFilters.value)
+  const recipes = recipeStore.useFilteredRecipes(activeFilters.value);
+  console.log('recipes: ', recipes)
+  return recipes
 })
 
 let allRecipeTags = ref<string[] | undefined>(undefined)
@@ -28,19 +30,19 @@ allRecipeTags.value = recipeStore.getAllRecipeTags;
 
 function closeRecipeDetails() {
   selectedRecipe.value = undefined;
-  recipeStore.setSelectedRecipeId('');
+  recipeStore.setSelectedRecipeId('', false);
 }
 
 function openRecipeDetail(id: string) {
   selectedRecipe.value = recipeStore.recipes.find((recipe) => recipe._id === id);
-  console.log(selectedRecipe.value?.name);
-  recipeStore.setSelectedRecipeId(id);
+  console.log('selected: ', selectedRecipe.value?.visibility);
+  recipeStore.setSelectedRecipeId(id, selectedRecipe.value?.visibility === 'public');
 }
 
 function newRecipeAdded() {
   console.log('adding');
   const tempId = uuidv4();
-  recipeStore.setSelectedRecipeId(tempId);
+  recipeStore.setSelectedRecipeId(tempId, true);
   recipeStore.setEditStatusSelectedId(true);
   isAddedRecipeNew.value = true;
 }

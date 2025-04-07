@@ -26,15 +26,15 @@ defineProps({
             <div class="head-lower-info">
               <div class="ratingbar">
                 <div class="ratingbar-left">
-                  <div v-if="selectedRecipe?.userRating">
-                    <span v-if="selectedRecipe?.userRating">Your Rating:</span>
-                    {{ selectedRecipe?.userRating }}
+                  <div v-if="selectedRecipe?.ratings?.averageRating">
+                    <span v-if="selectedRecipe?.ratings?.averageRating">Your Rating:</span>
+                    {{ selectedRecipe?.ratings?.averageRating }}
                   </div>
-                  <div :class="{smallText: selectedRecipe?.userRating}">
-                    <span class="ratingbar-text">Rating: </span>{{ selectedRecipe?.publicRating }}
+                  <div :class="{smallText: selectedRecipe?.ratings?.averageRating}">
+                    <span class="ratingbar-text">Rating: </span>{{ selectedRecipe?.ratings?.averageRating }}
                   </div>
                 </div>
-                <div class="ratingbar-right"><span class="ratingbar-text">{{ selectedRecipe?.isPrivate ? 'Private' : 'public'}} </span> </div>
+                <div class="ratingbar-right"><span class="ratingbar-text">{{ selectedRecipe?.visibility}} </span> </div>
               </div>
               <div class="recipe-url">
                 Recipe Url: <a :href="selectedRecipe?.url" rel="noopener noreferrer" target="_blank">{{ selectedRecipe?.url }}</a>

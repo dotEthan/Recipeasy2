@@ -42,8 +42,7 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### Working on Now:
 
-- Custom Backend Functionality using Expressjs, Nodejs, and MongoDB. (App up and running, auth working and fully secure, working. Schema creation/Validation and Recipe CRUD to come)
-- reimplement verification code, same modal?
+- Custom Backend Functionality using Expressjs, Nodejs, and MongoDB. - App up and running, auth working and fully secure, working. Auth validation working. Recipe CRUD next. 
 
 ### In Progress (on hold as Backend Work On-Going)
 

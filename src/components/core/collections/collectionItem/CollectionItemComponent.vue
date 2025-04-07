@@ -12,7 +12,7 @@ const props = defineProps({
       <img :src="recipeData?.imgPath" alt="Logo" />
     </div>
     <span :title="recipeData?.name" class="recipe-title">{{ recipeData?.name }}</span>
-    <span class="rating-text">rating: {{ recipeData?.publicRating }}</span>
+    <span class="rating-text">rating: {{ recipeData?.ratings?.averageRating }}</span>
   </div>
 </template>
 

@@ -4,13 +4,13 @@ import ListItemComponent from './listItem/ListItemComponent.vue'
 import RecipeDetailHeaderComponent from './recipeDetailHeader/RecipeDetailHeaderComponent.vue';
 import RecipeManageButtonsComponent from './recipeManageButtons/RecipeManageButtonsComponent.vue';
 import XToCloseComponent from '../../shared/xToClose/XToCloseComponent.vue';
-import { useImageUpload } from '@/composables/useImageUpload';
+// import { useImageUpload } from '@/composables/useImageUpload';
 import NoteItemComponent from './noteItem/NoteItemComponent.vue';
 import TagItemComponent from './tag-item/TagItemComponent.vue';
 
 const emit = defineEmits(['closeRecipeDetails', 'removedRecipe', 'editSelectedRecipe'])
 
-const { deleteImage } = useImageUpload()
+// const { deleteImage } = useImageUpload()
 const recipeStore = useRecipeStore()
 
 const selectedRecipe = recipeStore.getSelectedRecipe
@@ -23,10 +23,10 @@ async function deleteRemovedRecipeImage() {
   const imgPath = selectedRecipe?.imgPath
   if (imgPath) {
     console.log('removing image: ', imgPath)
-    const success = await deleteImage(imgPath)
-    if (!success) {
-      console.error('Failed to delete image from Cloudinary')
-    }
+    // const success = await deleteImage(imgPath)
+    // if (!success) {
+    //   console.error('Failed to delete image from Cloudinary')
+    // }
   }
 }
 </script>

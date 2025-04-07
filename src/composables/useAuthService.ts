@@ -6,7 +6,7 @@ import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
 import { Recipe } from '@/types/Recipes';
 import axios from '@/axios';
-import { LocalUser } from '@/types/UserState';
+import { LocalUser, UserState } from '@/types/UserState';
 
 export function useAuthService() {
   const error = ref<string | null>(null)
@@ -19,7 +19,6 @@ export function useAuthService() {
     error.value = null
   }
 
-  // TODO - Auto Login after register? Email verification? 
   const registerUser = async (displayName: string, email: string, password: string)=> {
     try {
         clearError()
@@ -37,12 +36,11 @@ export function useAuthService() {
         // Initialize stores
         const userState = { 
           localUser: response.data, 
-          _id: response.data._id, 
           authorized: true 
         }
-        const publicRecipeArray: [] = [];
         // const publicRecipeArray = publicRecipeStoredData 
-        appStore.initializeAppData(userState, publicRecipeArray)
+        appStore.setAuthorizedUserData(userState, []);
+        
         return;
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
@@ -57,7 +55,7 @@ export function useAuthService() {
       }
   }
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string): Promise<boolean> => {
     try {
       clearError()
 
@@ -70,22 +68,18 @@ export function useAuthService() {
           'Content-Type': 'application/json',
         }
       });
-      
-      const userData: LocalUser = {
-        _id: userResponse.data._id,
-        verified: userResponse.data.verified        
-      }
-      // const [userStoredData, uid] = await dataService.loadUserData(user.uid);
-      // const publicRecipeStoredData = await dataService.loadPublicRecipeData();
-      const publicRecipeStoredData: Array<Recipe> = [];
-      const userState = { _id: userData._id, authorized: true, localUser: {
+      console.log('signed in: ', userResponse);
+    
+      const localUser = userResponse.data.user as LocalUser;
+      const userRecipesData: Recipe[] = userResponse.data.recipeResponse;
+      const userState = { _id: localUser._id, authorized: true, localUser: {
         ...userResponse.data.user
       }};
+      console.log('trigger App Store Initialization, data: ', userRecipesData)
 
-      // // trigger full app initialization
-      appStore.initializeAppData(userState, publicRecipeStoredData)
+      appStore.setAuthorizedUserData(userState, userRecipesData)
 
-      return;
+      return localUser.verified;
     } catch (err) {
       //TODO error handling
       console.log('signin failed: ', JSON.stringify(err));
@@ -142,7 +136,7 @@ export function useAuthService() {
     console.log('set new Password api call')
     await axios.post('/update-password', {
       password,
-      token
+      code: token
     },
     {
       headers: {
@@ -154,7 +148,7 @@ export function useAuthService() {
   const validatePasswordToken = async (token: String) => {
     console.log('validate password token: ', token);
     await axios.post('/validate-password-token', {
-      token
+      code: token
     },
     {
       headers: {

@@ -1,4 +1,4 @@
-import { LocalUser } from "@/types/UserState";
+import { ObjectId } from "bson";
 
 export const createSlug = (title: string, id: string, isPublic: boolean) => {
 
@@ -14,17 +14,6 @@ export const createSlug = (title: string, id: string, isPublic: boolean) => {
     return (isPublic) ? `${urlSlug}-${shortId}--pub` : `${urlSlug}-${shortId}`;
 }
 
-export function createUser(userData: Partial<LocalUser>): LocalUser {
-  const defaultValues: LocalUser = {
-    _id: '',
-    verified: false,
-  };
-  return {
-    ...defaultValues,
-    ...userData
-  }
-}
-
 //TODO test other browsers to see if needed. Firefox already throttles
 export function debounce(fn: Function, delay: number) {
   let timeoutId: number
@@ -32,4 +21,59 @@ export function debounce(fn: Function, delay: number) {
     clearTimeout(timeoutId)
     timeoutId = window.setTimeout(() => fn(...args), delay)
   }
+}
+
+export function setRecipeStructure(recipes: any[], userId: ObjectId) {
+  const newRecipeArray: any[] = [];
+  console.log('starting alterer: ', recipes)
+  for (const recipe of recipes) {
+    let mealType;
+    if (Array.isArray(recipe.mealType)) {
+      mealType = recipe.mealType
+    } else if (!recipe.mealType) {
+      mealType = [];
+    } else {
+      mealType = [recipe.mealType];
+    }
+    const newRecipe = {
+      name: recipe.name,
+      description: recipe.description || '',
+      imgPath: recipe.imgPath || '',
+      info: {
+        mealType: mealType,
+        cuisineType: recipe.cuisineType,
+        cookTime: {
+          value: recipe.cookTime || '30',
+          unit: 'minutes'
+        },
+        prepTime: {
+          value: recipe.prepTime || '30',
+          unit: 'minutes'
+        },
+        servingSize: recipe.servingSize,
+        nutritionalInfo: recipe.nutritionalInformation
+      },
+      ratings: {
+          ratings: [],
+          averageRating: 0,
+          totalRatings: 0,
+          ratingsSum: 0
+      },
+      url: recipe.url,
+      ingredients: recipe.ingredients || [],
+      directions: recipe.directions || [],
+      visibility: 'public',
+      tags: recipe.tags || [],
+      notes: recipe.notes || [],
+      userId: new ObjectId(userId),
+      metaData: {
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    }
+    newRecipeArray.push(newRecipe);
+    console.log('in alterer: ', newRecipeArray)
+  }
+  
+  return newRecipeArray;
 }

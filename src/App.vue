@@ -4,7 +4,7 @@ import { RouterView } from 'vue-router'
 import HeaderComponent from './components/core/header/HeaderComponent.vue'
 import { useAppService } from '@/composables/useAppService'
 
-
+console.log('app loading')
 const appService = useAppService();
 
 appService.hydrateStores();

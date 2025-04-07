@@ -28,13 +28,21 @@ export const useAppStore = defineStore('app', () => {
   const isTestModeOn = computed(() => testModeOn.value)
   const isAuthModalOpen = computed(() => authModalType.value.length > 0)
 
-  // TODO rename to "initializeAppData"
-  function initializeAppData(userData: UserState, publicRecipeData: Recipe[]) {
-    console.log('initializing App with user Data: ', userData)
-    console.log('initializing App with public Recipes Data: ', publicRecipeData)
-    const userId = userData._id
+
+  function setAuthorizedUserData(userData: UserState, userRecipeData: Recipe[]) {
+    console.log('set App with user Data: ', userData)
+    console.log('set App with user Data: ', userRecipeData)
+    const userId = userData.localUser._id
     userStore.setInitialUserState(userData)
-    recipeStore.setInitialRecipeState(userData, publicRecipeData)
+    // TODO add user Recipe initialization
+    recipeStore.setInitialUserRecipeState(userRecipeData)
+    shoppingListStore.setListState(userId, userData.localUser.shoppingLists || [])
+  }
+
+  function initializePublicRecipeData(userData: UserState, publicRecipeData: Recipe[]) {
+    const userId = userData.localUser._id
+    userStore.setInitialUserState(userData)
+    recipeStore.setInitialPublicRecipeState(publicRecipeData)
     shoppingListStore.setListState(userId, userData.localUser.shoppingLists || [])
   }
 
@@ -103,7 +111,8 @@ export const useAppStore = defineStore('app', () => {
     authModalType,
     isTestModeOn,
     isAuthModalOpen,
-    initializeAppData,
+    setAuthorizedUserData,
+    initializePublicRecipeData,
     resetAppStates,
     turnTestModeOn,
     turnTestModeOff,

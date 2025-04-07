@@ -15,8 +15,9 @@ const recipeStore = useRecipeStore()
 
 
 function openRecipeDetails(id: string) {
+  console.log('id: ', id)
   if (id !== '') {
-    recipeStore.setSelectedRecipeId(id)
+    recipeStore.setSelectedRecipeId(id, true);
   }
 }
 
@@ -27,7 +28,7 @@ function openRecipeDetails(id: string) {
   <div class="collection-container">
     <h3 data-test="mealtime" id="collection-title">{{ title }}:</h3>
     <div class="collection-item-container">
-      <CollectionItemComponent v-for="recipe in recipeData" @click="() => openRecipeDetails(recipe.id || '')" :key="recipe.id" :recipeData="recipe" />
+      <CollectionItemComponent v-for="recipe in recipeData" @click="() => openRecipeDetails(recipe._id || '')" :key="recipe._id" :recipeData="recipe" />
     </div>
   </div>
 </template>

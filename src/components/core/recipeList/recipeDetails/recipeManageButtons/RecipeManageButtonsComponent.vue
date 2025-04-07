@@ -17,6 +17,7 @@ const userStore = useUserStore()
 const selectedRecipe = recipeStore.getSelectedRecipe
 const isSelectedRecipePublic = recipeStore.isSelectedRecipePublic
 const userAlreadyHas = computed(() =>  recipeStore.recipes.some(recipe => `pub-${recipe._id}` === selectedRecipe._id) ? true : false)
+const userAuthorized = userStore.authorized
 
 function onAddToShoppingList() {
   const items = selectedRecipe?.ingredients.reduce((acc, ingredient) => {
@@ -44,22 +45,26 @@ function onEditRecipe() {
 function onDeleteRecipe() {
   console.log('removing')
   recipeStore.removeRecipeById(selectedRecipe?._id || '');
-  recipeStore.setSelectedRecipeId('');
+  recipeStore.setSelectedRecipeId('', false);
   emit('removedRecipe')
 }
 
 async function addPublicRecipeToPersonal() {
     const updatedRecipe: Recipe = {
         ...selectedRecipe!,
-        isPublicRecipe: true,
-        isPrivate: false,
+        visibility: 'public',
         _id: selectedRecipe._id,
-        creatorId: userStore.getCurrentUserId
+        copyDetails: {
+            copiedAt: new Date(),
+            originalCreatorId: selectedRecipe.userId,
+            originalRecipeId: selectedRecipe._id,
+            modifications: false
+        }
     }
     recipeStore.addRecipe(updatedRecipe!)
     console.log(updatedRecipe)
     await router.push('/recipes')
-    recipeStore.setSelectedRecipeId(updatedRecipe._id)
+    recipeStore.setSelectedRecipeId(updatedRecipe._id, false)
 }
 
 const goToUserRecipes = () => {
@@ -70,37 +75,49 @@ const goToUserRecipes = () => {
 <template>
 <div class="recipe-manage-row">
     <div class="recipe-manage-buttons">
-    <button class="manage-btn-1" @click="onAddToShoppingList()">
+    <button class="manage-btn-1" v-if="userAuthorized" @click="onAddToShoppingList()">
         <i class="add-to-list"></i>
         <span>
         Add to Shopping List
         </span>
     </button>
-    <button v-if="!isSelectedRecipePublic" class="manage-btn-2" @click="onEditRecipe">
+    <button class="manage-btn-1 not-authorized" v-if="!userAuthorized">
+        <div class="add-to-text">
+            <div >Register To</div>
+            <div> use Shopping Lists</div>
+        </div>
+    </button>
+    <button v-if="isSelectedRecipePublic" class="manage-btn-2" @click="onEditRecipe">
         <div class="edit-recipe"></div>
         <span class="yellow-word">Edit</span>&nbsp;Recipe
     </button>
-    <button v-else class="manage-btn-2 cannot-manage">
+    <button v-else class="manage-btn-2 cannot-manage not-authorized">
         <span class="">Cannot Edit</span>
         <span class="">Public Recipes</span>
     </button>
-    <button v-if="!isSelectedRecipePublic" class="manage-btn-3" @click="onDeleteRecipe">
+    <button v-if=" userAuthorized && !isSelectedRecipePublic" class="manage-btn-3" @click="onDeleteRecipe">
         <div class="delete-recipe"></div>
         <span class="red-word">Delete</span>&nbsp;Recipe
     </button>
-    <button v-else-if="userAlreadyHas" class="manage-btn-3-public" @click="goToUserRecipes">
+    <button v-else-if=" userAuthorized && userAlreadyHas" class="manage-btn-3-public" @click="goToUserRecipes">
         <div class="add-to-text">
             <div class="green-word" >Already in</div>
             <div> Your Recipes</div>
         </div>
         <div class="add-to-recipe"><ArrowBigRight color="#1EB136"/></div>
     </button>
-    <button v-else class="manage-btn-3-public" @click="addPublicRecipeToPersonal">
+    <button v-else-if="userAuthorized" class="manage-btn-3-public" @click="addPublicRecipeToPersonal">
         <div class="add-to-text">
             <div class="green-word" >Add To</div>
             <div> Your Recipes</div>
         </div>
         <div class="add-to-recipe"><ArrowBigRight color="#1EB136"/></div>
+    </button>
+    <button v-else-if="!userAuthorized" class="manage-btn-3-public not-authorized" @click="addPublicRecipeToPersonal">
+        <div class="add-to-text">
+            <div >Register To</div>
+            <div> add to your Recipes</div>
+        </div>
     </button>
     </div>
 </div>
@@ -131,6 +148,9 @@ const goToUserRecipes = () => {
         justify-content: center
         color: $recipe-text-color
         cursor: pointer
+
+        &.not-authorized
+            cursor: not-allowed
 
         .add-to-list, .edit-recipe, .delete-recipe
             background-repeat: no-repeat

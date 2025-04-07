@@ -1,14 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref, computed, ComputedRef, Ref } from 'vue'
 import { useUserStore } from './user'
-import type { Recipe, RecipeStore } from '@/types/Recipes'
+import type { Recipe } from '@/types/Recipes'
 import { UserState } from '@/types/UserState'
 import { useAppStore } from './app'
 
 export const useRecipeStore = defineStore('recipes', () => {
   const userStore = useUserStore()
   const appStore = useAppStore()
-  const userId = ref<string>('')
   const recipes = ref<Recipe[]>([])
   const existingPublicRecipes = ref<Recipe[]>([])
   const newPublicRecipes = ref<Recipe[]>([])
@@ -33,7 +32,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   const isSelectedRecipePublic = ref<boolean>(false)
   const editSelectedRecipe = ref<boolean>(false)
 
-  const personalFilters: ComputedRef<string[]> = computed(() => userStore.localUser.preferences?.personalFilters || [])
+  const personalFilters: ComputedRef<string[]> = computed(() => userStore.getUserPersonalPreferences || [])
 
   const recipesLength: ComputedRef<number> = computed(() => recipes.value.length)
 
@@ -41,11 +40,11 @@ export const useRecipeStore = defineStore('recipes', () => {
 
   const getSelectedRecipe: ComputedRef<Recipe> = computed(() => {
     console.log('selected ID: ', selectedRecipeId.value)
-    const recipe = /^pub-/.test(selectedRecipeId.value)
-      ? existingPublicRecipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
-      : recipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
-
-    return recipe || {id: selectedRecipeId.value, name: '', ingredients: [], directions: [], tags: [], nutritionalInfo: [], creatorId: userStore.getCurrentUserId, notes: [], isPrivate: false}
+    const recipe = isSelectedRecipePublic.value
+      ? existingPublicRecipes.value.find((recipe) => recipe._id.toString() === selectedRecipeId.value)
+      : recipes.value.find((recipe) => recipe._id.toString() === selectedRecipeId.value)
+    if (!recipe) throw new Error('No Selected Recipe');
+    return recipe
   })
   
   const getAllRecipeTags: ComputedRef<string[]> = computed(() =>
@@ -68,10 +67,14 @@ export const useRecipeStore = defineStore('recipes', () => {
     })
   }
 
-  function setInitialRecipeState(userData: UserState, publicRecipeData: Recipe[]) {
-    userId.value = userData._id
-    recipes.value = userData.localUser.recipes || []
-    existingPublicRecipes.value = publicRecipeData || []
+  function setInitialPublicRecipeState(publicRecipeData: Recipe[]) {
+    existingPublicRecipes.value = publicRecipeData || [];
+    selectedRecipeId.value = '';
+    isSelectedRecipePublic.value = false;
+  }
+
+  function setInitialUserRecipeState(userRecipeData: Recipe[]) {
+    recipes.value = userRecipeData || []
     newPublicRecipes.value = []
     removedPublicRecipes.value = []
     // allTags.value = state.allTags || []
@@ -85,7 +88,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     const usedIndices = new Set<number>();
 
     const ethansFavoriteIndices = ethansFavouritePublicIds.value
-        .map((id) => existingPublicRecipes.value.findIndex((recipe) => recipe.id === id))
+        .map((id) => existingPublicRecipes.value.findIndex((recipe) => recipe._id === id))
         .filter((index) => index !== -1);
 
     const ethansCollection: Recipe[] = [];
@@ -115,16 +118,16 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   function updateRecipe(recipe: Recipe) {
-    recipes.value = recipes.value.map((r) => (r.id === recipe.id ? recipe : r))
+    recipes.value = recipes.value.map((r) => (r._id === recipe._id ? recipe : r))
   }
 
   function addRecipe(recipe: Recipe) {
     recipes.value.push(recipe)
   }
 
-  function setSelectedRecipeId(id: string) {
+  function setSelectedRecipeId(id: string, isPublic: boolean) {
     selectedRecipeId.value = id
-    isSelectedRecipePublic.value = /^pub-/.test(id);
+    isSelectedRecipePublic.value = isPublic;
   }
 
   function setEditStatusSelectedId(status: boolean) {
@@ -133,7 +136,7 @@ export const useRecipeStore = defineStore('recipes', () => {
 
   // TODO refactor into removeRecipeById(id)
   function removeRecipeById(id: string) {
-    const recipeToDelete = recipes.value.find((recipe) => recipe.id === selectedRecipeId.value)
+    const recipeToDelete = recipes.value.find((recipe) => recipe._id === selectedRecipeId.value)
     const deletedRecipeIndex = recipeToDelete ? recipes.value.indexOf(recipeToDelete) : -1
     if (deletedRecipeIndex >= 0) {
       recipes.value.splice(deletedRecipeIndex, 1)
@@ -143,12 +146,12 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   function addToPublicRecipes(newPublicRecipe: Recipe) {
-    const recipeAlreadyAdded = newPublicRecipes.value.some(recipe => recipe.id === newPublicRecipe.id)
-    const previouslyRemoved = removedPublicRecipes.value.some(recipe => recipe.id === newPublicRecipe.id)
+    const recipeAlreadyAdded = newPublicRecipes.value.some(recipe => recipe._id === newPublicRecipe._id)
+    const previouslyRemoved = removedPublicRecipes.value.some(recipe => recipe._id === newPublicRecipe._id)
     console.log('was prevoiusly removed: ', previouslyRemoved)
     if (previouslyRemoved) {
       console.log('already removed')
-      removedPublicRecipes.value = removedPublicRecipes.value.filter(recipe => recipe.id !== newPublicRecipe.id);
+      removedPublicRecipes.value = removedPublicRecipes.value.filter(recipe => recipe._id !== newPublicRecipe._id);
     } else if (!recipeAlreadyAdded) {
       console.log('new public recipe: ', newPublicRecipe)
       newPublicRecipes.value.push(newPublicRecipe)
@@ -160,11 +163,11 @@ export const useRecipeStore = defineStore('recipes', () => {
 
   function removeFromPublicRecipes(id: string) {
     // Check if newly added
-    const isNewlyAdded = newPublicRecipes.value.some(recipe => recipe.id === id)
+    const isNewlyAdded = newPublicRecipes.value.some(recipe => recipe._id === id)
     if (isNewlyAdded) {
-      newPublicRecipes.value = newPublicRecipes.value.filter(recipe => recipe.id !== id);
+      newPublicRecipes.value = newPublicRecipes.value.filter(recipe => recipe._id !== id);
     } else {
-      const recipe = recipes.value.find((recipe) => recipe.id === id) as Recipe
+      const recipe = recipes.value.find((recipe) => recipe._id === id) as Recipe
       removedPublicRecipes.value.push(recipe)
     }
   }
@@ -178,7 +181,6 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   function resetState() {
-    userId.value = ''
     recipes.value = []
     existingPublicRecipes.value = []
     newPublicRecipes.value = []
@@ -190,7 +192,6 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   return {
-    userId,
     recipes,
     allTags,
     selectedRecipeId,
@@ -205,7 +206,8 @@ export const useRecipeStore = defineStore('recipes', () => {
     getSelectedRecipe,
     getAllRecipeTags,
     useFilteredRecipes,
-    setInitialRecipeState,
+    setInitialUserRecipeState,
+    setInitialPublicRecipeState,
     generatePublicRecipeCollections,
     updateRecipe,
     addRecipe,

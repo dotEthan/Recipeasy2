@@ -4,8 +4,8 @@ import { nextTick, onMounted, ref } from 'vue';
 import type { ComponentPublicInstance, Ref } from 'vue';
 import type { Recipe } from '@/types/Recipes' ;
 import { useRecipeStore } from '@/stores/recipe';
-import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue';
-import { useImageUpload } from '@/composables/useImageUpload';
+// import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue';
+// import { useImageUpload } from '@/composables/useImageUpload';
 import ToolTipComponent from '../../shared/toolTip/ToolTipComponent.vue';
 import { useUserStore } from '@/stores/user';
 
@@ -22,7 +22,7 @@ let formError = ref('');
 
 const recipeStore = useRecipeStore();
 const userStore = useUserStore();
-const { deleteImage } = useImageUpload();
+// const { deleteImage } = useImageUpload();
 
 const selectedRecipe: Recipe = recipeStore.getSelectedRecipe;
 const amountRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
@@ -53,31 +53,31 @@ function populateForm() {
     })
   } else {
     const newRecipe = {
-      id: recipeStore.selectedRecipeId,
+      _id: recipeStore.selectedRecipeId,
       name: 'Default Recipe',
       ingredients: [{ title: 'Ingedients', steps: [] }],
       directions: [{ title: 'Directions', steps: [] }],
       description: '',
       tags: [],
       notes: [],
-      nutritionalInfo: [],
-      creatorId: userStore.getCurrentUserId,
-      isPrivate: false,
-    }
+      info: {},
+      userId: userStore.getCurrentUserId,
+      visibility: 'public',
+    } as Recipe
     console.log('creating new default recipe: ', selectedRecipe)
-    formData = ref<Recipe>(newRecipe)
+    formData = ref(newRecipe)
   }
 }
 
 function onSubmit() {
-  const publicStatusChanged = (selectedRecipe?.isPrivate !== formData.value.isPrivate) ? true : false
+  const publicStatusChanged = (selectedRecipe?.visibility !== formData.value.visibility) ? true : false
   console.log('did public status Change?: ', publicStatusChanged)
-  if (publicStatusChanged && formData.value.isPrivate) {
+  if (publicStatusChanged && formData.value.visibility === 'private') {
     console.log('remove from Public')
-    recipeStore.removeFromPublicRecipes(formData.value.id)
-  } else if ((publicStatusChanged || props.isNew) && !formData.value.isPrivate) {
+    recipeStore.removeFromPublicRecipes(formData.value._id)
+  } else if ((publicStatusChanged || props.isNew) && formData.value.visibility === 'public') {
     console.log('add to Public')
-    if (!formData.value.isPublicRecipe) formData.value.isPublicRecipe = true
+    if (!formData.value.visibility) formData.value.visibility = 'public'
     recipeStore.addToPublicRecipes(formData.value)
   }
   if (formData.value.url) {
@@ -116,7 +116,7 @@ function validateName() {
 
 const onEditingOver = () => {
   if (props.isNew) {
-    recipeStore.setSelectedRecipeId('')
+    recipeStore.setSelectedRecipeId('', false)
   }
   emit("editingFinished");
 }
@@ -193,10 +193,10 @@ async function removeImage() {
   if (formData.value.imgPath) {
     const imgPath = formData.value.imgPath
     formData.value.imgPath = ""
-    const success = await deleteImage(imgPath)
-    if (!success) {
-      console.error('Failed to delete image from Cloudinary')
-    }
+    // const success = await deleteImage(imgPath)
+    // if (!success) {
+    //   console.error('Failed to delete image from Cloudinary')
+    // }
     console.log('removing image path')
   }
 }
@@ -276,9 +276,9 @@ function removeTag(i: number) {
                   <label for="url">Website URL:</label>
                   <input type="text" id="url" class="form-control" v-model="formData.url" />
                   <div class="public-choice">
-                    <input type="radio" id="public" :value=false v-model="formData.isPrivate" />
+                    <input type="radio" id="public" value='public' v-model="formData.visibility" />
                     <label for="public">Public</label>
-                    <input type="radio" id="private" :value=true v-model="formData.isPrivate" />
+                    <input type="radio" id="private" value='private' v-model="formData.visibility" />
                     <label for="private">Private</label>
                   </div>
                 </div>

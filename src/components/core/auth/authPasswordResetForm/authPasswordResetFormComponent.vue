@@ -17,7 +17,7 @@ const signinFields = [
         type: 'email',
         warning: ''
     }
-] as FormField[]
+] as FormField[];
 
 async function handleSubmit(formData: FormData) {
   try {

@@ -39,23 +39,32 @@ export type Recipe = {
   name: string;
   description?: string;
   imgPath?: string;
-  mealType?: string[];
-  cuisineType?: string;
-  cookTime?: string;
-  prepTime?: string;
-  servingSize?: string;
-  ratings?: RecipeRatings[];
+  info: RecipeInfo;
+  ratings?: RecipeRatings;
   url?: string;
   ingredients: Ingredient[];
   directions: Direction[];
   visibility: 'public' | 'private';
   tags: string[];
   notes: string[];
-  nutritionalInfo: NutritionalInfo[];
   userId: ObjectId;
-  originalCreatorId?: ObjectId,
-  copyDetails?: CopyDetails
+  copyDetails?: CopyDetails,
+  metaData?: MetaData
 }
+
+export type RecipeInfo = {
+  mealType?: string[];
+  cuisineType?: string;
+  cookTime?: Duration;
+  prepTime?: Duration;
+  servingSize?: number;
+  nutritionalInfo?: NutritionalInfo[];
+}
+
+type Duration = {
+  value: number;
+  unit: 'minutes' | 'hours' | 'days';
+};
 
 export type Ingredient = {
   title?: string;
@@ -66,6 +75,7 @@ export type IngredientStep = {
   name?: string;
   amount?: string;
   unit?: string;
+  process?: string
 }
 
 export type Direction = {
@@ -74,7 +84,7 @@ export type Direction = {
 }
 
 export type NutritionalInfo = {
-  type?: string;
+  name?: string;
   amount?: string;
 }
 
@@ -92,7 +102,12 @@ export type RatingItem = {
 }
 
 export type CopyDetails = {
+  originalCreatorId?: ObjectId,
   originalRecipeId?: ObjectId,
   copiedAt?: Date,
-  modifications?: String
+  modifications?: boolean
+}
+export type MetaData = {
+  createdAt: Date;
+  updatedAt: Date;
 }
