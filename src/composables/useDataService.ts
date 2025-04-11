@@ -11,39 +11,37 @@ import { Recipe } from '@/types/Recipes';
 import { useRecipeStore } from '@/stores/recipe';
 import { useUserStore } from '@/stores/user';
 import { getAuth } from 'firebase/auth';
-import axios from '@/axios';;
-import { setRecipeStructure } from '@/utilities';
-import { ObjectId } from 'bson';
+import axios from '@/axios';
+import { SaveRecipeResponse } from '@/types/ApiResponse';
 
 export function useDataService() {
 
   const error = ref<string | null>(null);
   const recipeStore = useRecipeStore();
-  const userStore = useUserStore();
 
-  const saveNewRecipes = async () => {
+  const saveNewRecipe = async (recipe: Recipe) => {
     try{
-      const responseData = await fetch('/userStatepart2.json');
-      const data = await responseData.json();
-      console.log(data);
-      const recipes = data.recipes;
-      const userId = userStore.getCurrentUserId;
-
-      const alteredRecipes = setRecipeStructure(recipes, new ObjectId(userId));
-      console.log('altered recipes: ', alteredRecipes);
-      
-
-      const saveNewResponse = axios.post('/new-recipes', {
-        recipes: alteredRecipes
+      console.log('trying to save recipe: ', recipe);
+      const saveNewRecipeResponse = await axios.post<SaveRecipeResponse>('/new-recipe', {
+        recipe
       },
       {
         headers: {
           'Content-Type': 'application/json',
         }
       });
-      console.log('saved response: ', saveNewResponse)
+      const returnedData = saveNewRecipeResponse.data.response
+      console.log('save recipe response: ', returnedData)
+
+      if (!returnedData.success) throw new Error(`recipe save not successful: ${returnedData.message}`);
+
+      const returnRecipe = returnedData.data;
+      if (!returnRecipe) throw new Error('Recipe Returned Blank. Retry?')
+
+      recipeStore.addRecipe(returnRecipe);
     } catch(error) {
-      console.log('altering error: ', error)
+      console.log('Saving Recipe error: ', error);
+      
     }
 
   };
@@ -182,5 +180,5 @@ export function useDataService() {
     
   }
 
-  return { saveNewRecipes, saveUserData, loadUserData, initialLoadPublicRecipeData, savePublicRecipesData, deletePublicRecipesData, updatePublicRecipesData, error }
+  return { saveNewRecipe, saveUserData, loadUserData, initialLoadPublicRecipeData, savePublicRecipesData, deletePublicRecipesData, updatePublicRecipesData, error }
 }

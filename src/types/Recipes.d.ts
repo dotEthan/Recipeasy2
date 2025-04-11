@@ -1,3 +1,4 @@
+import { DurationUnits, Visibility } from "./RecipesEnums";
 
 export interface RecipeStore {
   userId: Ref<string>;
@@ -34,22 +35,23 @@ export interface RecipeStore {
   resetState(): void;
 }
 
+export type NewRecipe = Omit<Recipe, '_id'>;
+
 export type Recipe = {
   _id: string;
   name: string;
-  description?: string;
-  imgPath?: string;
+  description: string;
+  imgPath: string;
   info: RecipeInfo;
-  ratings?: RecipeRatings;
-  url?: string;
+  ratings: RecipeRatings;
+  url: string;
   ingredients: Ingredient[];
   directions: Direction[];
-  visibility: 'public' | 'private';
+  visibility: Visibility;
   tags: string[];
   notes: string[];
   userId: ObjectId;
-  copyDetails?: CopyDetails,
-  metaData?: MetaData
+  copyDetails?: CopyDetails
 }
 
 export type RecipeInfo = {
@@ -62,8 +64,8 @@ export type RecipeInfo = {
 }
 
 type Duration = {
-  value: number;
-  unit: 'minutes' | 'hours' | 'days';
+  value?: number;
+  unit?: DurationUnits;
 };
 
 export type Ingredient = {
@@ -96,9 +98,9 @@ export type RecipeRatings = {
 }
 
 export type RatingItem = {
-  userId: string; 
-  rating: number; 
-  timestamp: Date; 
+  userId?: string; 
+  rating?: number; 
+  timestamp?: Date; 
 }
 
 export type CopyDetails = {
@@ -106,8 +108,4 @@ export type CopyDetails = {
   originalRecipeId?: ObjectId,
   copiedAt?: Date,
   modifications?: boolean
-}
-export type MetaData = {
-  createdAt: Date;
-  updatedAt: Date;
 }

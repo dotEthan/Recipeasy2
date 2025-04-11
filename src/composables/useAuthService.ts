@@ -168,6 +168,3 @@ export function useAuthService() {
     validatePasswordToken
   };
 }
-
-
-/// TODO SIGN IN AND LOGOUT AS AXIOS. SEE ABOUT SESSIONS an dwhy the cookie isn't working. Maybe switch to 0Auth? 

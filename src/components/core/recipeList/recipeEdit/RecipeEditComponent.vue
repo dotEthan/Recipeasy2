@@ -2,12 +2,15 @@
 import DOMPurify from 'dompurify';
 import { nextTick, onMounted, ref } from 'vue';
 import type { ComponentPublicInstance, Ref } from 'vue';
-import type { Recipe } from '@/types/Recipes' ;
+import { NewRecipe, Recipe } from '@/types/Recipes' ;
 import { useRecipeStore } from '@/stores/recipe';
 // import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue';
 // import { useImageUpload } from '@/composables/useImageUpload';
 import ToolTipComponent from '../../shared/toolTip/ToolTipComponent.vue';
 import { useUserStore } from '@/stores/user';
+import { createNewRecipe } from '@/utilities';
+import { Visibility } from '@/types/RecipesEnums';
+import { useDataService } from '@/composables/useDataService';
 
 //TODO Refactor into multiple components 'header', 'ingredients', 'directions'
 
@@ -21,15 +24,14 @@ let formData: Ref<Recipe>;
 let formError = ref('');
 
 const recipeStore = useRecipeStore();
-const userStore = useUserStore();
-// const { deleteImage } = useImageUpload();
+const dataService = useDataService();
 
-const selectedRecipe: Recipe = recipeStore.getSelectedRecipe;
+const selectedRecipe: Recipe | NewRecipe = props.isNew ? createNewRecipe() : recipeStore.getSelectedRecipe;
 const amountRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
 const ingredientTypeRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
 const directionRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
 const directionTypeRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
-let tagInput = ref('');
+let tagsInput = ref('');
 
 // onMounted(() => {
 //   populateForm();
@@ -38,63 +40,37 @@ let tagInput = ref('');
 populateForm();
 
 function populateForm() {
-  console.log('is this new: ', props.isNew)
-  if(!props.isNew) {
-    formData = ref<Recipe>({
-      // Deep Clones the object
-      ...JSON.parse(JSON.stringify(selectedRecipe)),
-      ingredients: selectedRecipe?.ingredients
-        ? JSON.parse(JSON.stringify(selectedRecipe.ingredients))
-        : [],
-      directions: selectedRecipe?.directions
-        ? JSON.parse(JSON.stringify(selectedRecipe.directions))
-        : [],
-      tags: selectedRecipe?.tags ? JSON.parse(JSON.stringify(selectedRecipe.tags)) : []
-    })
-  } else {
-    const newRecipe = {
-      _id: recipeStore.selectedRecipeId,
-      name: 'Default Recipe',
-      ingredients: [{ title: 'Ingedients', steps: [] }],
-      directions: [{ title: 'Directions', steps: [] }],
-      description: '',
-      tags: [],
-      notes: [],
-      info: {},
-      userId: userStore.getCurrentUserId,
-      visibility: 'public',
-    } as Recipe
-    console.log('creating new default recipe: ', selectedRecipe)
-    formData = ref(newRecipe)
-  }
+  formData = ref<Recipe>({
+    // Deep Clones the object
+    ...JSON.parse(JSON.stringify(selectedRecipe)),
+    ingredients: selectedRecipe?.ingredients
+      ? JSON.parse(JSON.stringify(selectedRecipe.ingredients))
+      : [],
+    directions: selectedRecipe?.directions
+      ? JSON.parse(JSON.stringify(selectedRecipe.directions))
+      : [],
+    tags: selectedRecipe?.tags ? JSON.parse(JSON.stringify(selectedRecipe.tags)) : []
+  })
 }
 
 function onSubmit() {
-  const publicStatusChanged = (selectedRecipe?.visibility !== formData.value.visibility) ? true : false
-  console.log('did public status Change?: ', publicStatusChanged)
-  if (publicStatusChanged && formData.value.visibility === 'private') {
-    console.log('remove from Public')
-    recipeStore.removeFromPublicRecipes(formData.value._id)
-  } else if ((publicStatusChanged || props.isNew) && formData.value.visibility === 'public') {
-    console.log('add to Public')
-    if (!formData.value.visibility) formData.value.visibility = 'public'
-    recipeStore.addToPublicRecipes(formData.value)
-  }
   if (formData.value.url) {
-    const santizedUrl = DOMPurify.sanitize(formData.value.url)
-    formData.value.url = santizedUrl
+    const santizedUrl = DOMPurify.sanitize(formData.value.url);
+    formData.value.url = santizedUrl;
   }
   if (formData?.value && !props.isNew) {
-    console.log('Updating existing Recipe')
-    recipeStore.updateRecipe(formData.value)
-    onEditingOver()
+    // TODO For "Update Recipe" If 'userId' !=== user's Id, then compared to original recipe and add alterations to User.recipe[id].alterations
+    console.log('Updating existing Recipe');
+    recipeStore.updateRecipe(formData.value);
+    onEditingOver();
   } else if (formData?.value && formValid) {
 
-    console.log('Creating New Recipe')
-    recipeStore.addRecipe(formData.value)
-    onEditingOver()
+    console.log('Creating New Recipe');
+    dataService.saveNewRecipe(formData.value);
+    
+    onEditingOver();
   } else {
-    console.log('not valid')
+    console.log('not valid');
   }
   //TODO add new tags (ingredients, cuisine, meal type)
   // const allUserTags: string[] = Array.from(
@@ -206,10 +182,10 @@ function saveImagePath(uploadedImgURL: string) {
 }
 
 function addTag() {
-  const tagValue = tagInput.value.trim()
+  const tagValue = tagsInput.value.trim()
   if (tagValue) {
     formData.value.tags.push(tagValue)
-    tagInput.value = ''
+    tagsInput.value = ''
   }
 }
 
@@ -442,8 +418,11 @@ function removeTag(i: number) {
               </div>
               <div class="tags-input">
                 <label for="tagsInput">New Tag:</label>
-                <input type="text" v-model="tagInput" name="tagsInput">   
-                <div class="existing-tag-remove" @click="addTag()">Add Tag</div>             
+                <input type="text"
+                  v-model="tagsInput"
+                  name="tagsInput" 
+                  @keydown.enter.prevent="addTag">   
+                <button class="existing-tag-remove" @click="addTag()">Add Tag</button>             
               </div>
             </div>
             <div class="item-group-contain">

@@ -1,3 +1,6 @@
+import { useUserStore } from "@/stores/user";
+import { NewRecipe } from "@/types/Recipes";
+import { Visibility } from "@/types/RecipesEnums";
 import { ObjectId } from "bson";
 
 export const createSlug = (title: string, id: string, isPublic: boolean) => {
@@ -23,57 +26,28 @@ export function debounce(fn: Function, delay: number) {
   }
 }
 
-export function setRecipeStructure(recipes: any[], userId: ObjectId) {
-  const newRecipeArray: any[] = [];
-  console.log('starting alterer: ', recipes)
-  for (const recipe of recipes) {
-    let mealType;
-    if (Array.isArray(recipe.mealType)) {
-      mealType = recipe.mealType
-    } else if (!recipe.mealType) {
-      mealType = [];
-    } else {
-      mealType = [recipe.mealType];
-    }
-    const newRecipe = {
-      name: recipe.name,
-      description: recipe.description || '',
-      imgPath: recipe.imgPath || '',
-      info: {
-        mealType: mealType,
-        cuisineType: recipe.cuisineType,
-        cookTime: {
-          value: recipe.cookTime || '30',
-          unit: 'minutes'
-        },
-        prepTime: {
-          value: recipe.prepTime || '30',
-          unit: 'minutes'
-        },
-        servingSize: recipe.servingSize,
-        nutritionalInfo: recipe.nutritionalInformation
-      },
-      ratings: {
-          ratings: [],
-          averageRating: 0,
-          totalRatings: 0,
-          ratingsSum: 0
-      },
-      url: recipe.url,
-      ingredients: recipe.ingredients || [],
-      directions: recipe.directions || [],
-      visibility: 'public',
-      tags: recipe.tags || [],
-      notes: recipe.notes || [],
-      userId: new ObjectId(userId),
-      metaData: {
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }
-    }
-    newRecipeArray.push(newRecipe);
-    console.log('in alterer: ', newRecipeArray)
+export function createNewRecipe(): NewRecipe {
+  const userStore = useUserStore();
+  const userId = userStore.getCurrentUserId;
+  const newRecipe = {
+    name: '',
+    description: '',
+    imgPath: '',
+    url: '',
+    ratings: {
+        ratings: [],
+        averageRating: 0,
+        totalRatings: 0,
+        ratingsSum: 0
+    },
+    ingredients: [],
+    directions:  [],
+    info: {},
+    notes: [],
+    visibility: Visibility.Public,
+    tags: [],
+    userId: new ObjectId(userId)
   }
   
-  return newRecipeArray;
+  return newRecipe;
 }

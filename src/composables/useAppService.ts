@@ -3,6 +3,7 @@ import { useAppStore } from '@/stores/app'
 import axios from '@/axios';
 import type { ScreenSize } from '@/types/ScreenSize'
 import { debounce } from '@/utilities';
+import { SESSION_STORAGE_EXPIRY } from '@/constants';
 /**
  * Handles all methods to help bootstrap the App: CSRF tokens, screen size tracking.
  * @returns {Object} - onResize, handleUnsavedChanges, fetchCsrfToken.

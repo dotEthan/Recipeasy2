@@ -24,6 +24,7 @@ export const useAppStore = defineStore('app', () => {
   const appHasUnsavedChanges = ref(true);
   const showUnsavedChangesModal = ref(false);
   const userCsrfToken = ref('');
+  const isLoading = ref(false);
 
   const isTestModeOn = computed(() => testModeOn.value)
   const isAuthModalOpen = computed(() => authModalType.value.length > 0)
@@ -96,6 +97,10 @@ export const useAppStore = defineStore('app', () => {
     return true;
   }
 
+  function isLoadingToggle() {
+    isLoading.value = !isLoading.value;
+  }
+
   function resetState() {
     testModeOn.value = false
     authModalType.value = ''
@@ -108,6 +113,7 @@ export const useAppStore = defineStore('app', () => {
     appHasUnsavedChanges,
     showUnsavedChangesModal,
     userCsrfToken,
+    isLoading,
     authModalType,
     isTestModeOn,
     isAuthModalOpen,
@@ -119,6 +125,7 @@ export const useAppStore = defineStore('app', () => {
     setAuthModalType,
     setScreenSize,
     fetchCsrfToken,
+    isLoadingToggle,
     resetState
   }
 })

@@ -44,18 +44,21 @@ let healthyRecipes = ref<Recipe[]>([]);
 let snackRecipes = ref<Recipe[]>([]);
 
 onMounted(async () => {
-  try {
-    await dataService.initialLoadPublicRecipeData();
-    const [ethanFavs, recommended, mealTime, snack, healthy] = recipeStore.generatePublicRecipeCollections();
-    console.log('public recipe setting')
-    ethansFavouriteRecipes.value = ethanFavs.value;
-    recommendedRecipes.value = recommended.value;
-    mealTimeRecipes.value = mealTime.value;
-    healthyRecipes.value = healthy.value;
-    snackRecipes.value = snack.value;
-  } catch (error) {
-    console.log('Welcome Component error: ', error);
+  if (recipeStore.existingPublicRecipesLength === 0) {
+    try {
+      console.log('public recipes are empty, getting from API')
+      await dataService.initialLoadPublicRecipeData();
+    } catch (error) {
+      console.log('loading public recipes error: ', error)
+    }
   }
+  const [ethanFavs, recommended, mealTime, snack, healthy] = recipeStore.generatePublicRecipeCollections();
+  console.log('public recipe setting')
+  ethansFavouriteRecipes.value = ethanFavs.value;
+  recommendedRecipes.value = recommended.value;
+  mealTimeRecipes.value = mealTime.value;
+  healthyRecipes.value = healthy.value;
+  snackRecipes.value = snack.value;
 });
 let recipeDetailsOpen = ref(false)
 const isAuthModalOpen = computed(() => appStore.isAuthModalOpen)

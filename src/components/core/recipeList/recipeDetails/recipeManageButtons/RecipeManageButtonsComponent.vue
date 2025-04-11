@@ -4,6 +4,7 @@ import { useRecipeStore } from '@/stores/recipe'
 import { useShoppingListStore } from '@/stores/shoppingList'
 import { useUserStore } from '@/stores/user';
 import { Recipe } from '@/types/Recipes';
+import { Visibility } from '@/types/RecipesEnums';
 import { ArrowBigRight } from 'lucide-vue-next';
 import { computed } from 'vue';
 
@@ -52,7 +53,7 @@ function onDeleteRecipe() {
 async function addPublicRecipeToPersonal() {
     const updatedRecipe: Recipe = {
         ...selectedRecipe!,
-        visibility: 'public',
+        visibility: Visibility.Public,
         _id: selectedRecipe._id,
         copyDetails: {
             copiedAt: new Date(),

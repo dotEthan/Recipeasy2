@@ -2,17 +2,19 @@ import { defineStore } from 'pinia'
 import { ref, computed, ComputedRef, Ref } from 'vue'
 import { useUserStore } from './user'
 import type { Recipe } from '@/types/Recipes'
-import { UserState } from '@/types/UserState'
 import { useAppStore } from './app'
+import { useDataService } from '@/composables/useDataService'
 
 export const useRecipeStore = defineStore('recipes', () => {
-  const userStore = useUserStore()
-  const appStore = useAppStore()
-  const recipes = ref<Recipe[]>([])
-  const existingPublicRecipes = ref<Recipe[]>([])
-  const newPublicRecipes = ref<Recipe[]>([])
-  const removedPublicRecipes = ref<Recipe[]>([])
-  const allTags = ref<string[]>([])
+  const userStore = useUserStore();
+  const appStore = useAppStore();
+  const dataService = useDataService();
+
+  const recipes = ref<Recipe[]>([]);
+  const existingPublicRecipes = ref<Recipe[]>([]);
+  const newPublicRecipes = ref<Recipe[]>([]);
+  const removedPublicRecipes = ref<Recipe[]>([]);
+  const allTags = ref<string[]>([]);
   // TODO update to look at ethan.id's 5 stars
   const ethansFavouritePublicIds = ref<string[]>([
     'pub-8611a75d-cdb3-446c-8716-caecc2ee8f5f',
@@ -28,23 +30,23 @@ export const useRecipeStore = defineStore('recipes', () => {
     'pub-6f9a1c06-baf0-4ee9-bf96-0ecf7154293d',
   ]);
 
-  const selectedRecipeId = ref<string>('')
-  const isSelectedRecipePublic = ref<boolean>(false)
-  const editSelectedRecipe = ref<boolean>(false)
+  const selectedRecipeId = ref<string>('');
+  const isSelectedRecipePublic = ref<boolean>(false);
+  const editSelectedRecipe = ref<boolean>(false);
 
-  const personalFilters: ComputedRef<string[]> = computed(() => userStore.getUserPersonalPreferences || [])
+  const personalFilters: ComputedRef<string[]> = computed(() => userStore.getUserPersonalPreferences || []);
 
-  const recipesLength: ComputedRef<number> = computed(() => recipes.value.length)
+  const recipesLength: ComputedRef<number> = computed(() => recipes.value.length);
 
-  const existingPublicRecipesLength: ComputedRef<number> = computed(() => existingPublicRecipes.value.length)
+  const existingPublicRecipesLength: ComputedRef<number> = computed(() => existingPublicRecipes.value.length);
 
   const getSelectedRecipe: ComputedRef<Recipe> = computed(() => {
-    console.log('selected ID: ', selectedRecipeId.value)
+    console.log('selected ID: ', selectedRecipeId.value);
     const recipe = isSelectedRecipePublic.value
       ? existingPublicRecipes.value.find((recipe) => recipe._id.toString() === selectedRecipeId.value)
-      : recipes.value.find((recipe) => recipe._id.toString() === selectedRecipeId.value)
+      : recipes.value.find((recipe) => recipe._id.toString() === selectedRecipeId.value);
     if (!recipe) throw new Error('No Selected Recipe');
-    return recipe
+    return recipe;
   })
   
   const getAllRecipeTags: ComputedRef<string[]> = computed(() =>
@@ -58,12 +60,12 @@ export const useRecipeStore = defineStore('recipes', () => {
   )
 
   function useFilteredRecipes(activeFilters: string[]): ComputedRef<Recipe[]> {
-    const allFilters = new Set([...personalFilters.value, ...activeFilters])
+    const allFilters = new Set([...personalFilters.value, ...activeFilters]);
     return computed(() => {
-      if (allFilters.size === 0) return recipes.value
+      if (allFilters.size === 0) return recipes.value;
       return recipes.value.filter((recipe) => {
-        return recipe.tags.some((tag) => allFilters.has(tag))
-      })
+        return recipe.tags.some((tag) => allFilters.has(tag));
+      });
     })
   }
 
@@ -74,12 +76,12 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   function setInitialUserRecipeState(userRecipeData: Recipe[]) {
-    recipes.value = userRecipeData || []
-    newPublicRecipes.value = []
-    removedPublicRecipes.value = []
+    recipes.value = userRecipeData || [];
+    newPublicRecipes.value = [];
+    removedPublicRecipes.value = [];
     // allTags.value = state.allTags || []
-    selectedRecipeId.value = ''
-    isSelectedRecipePublic.value = false
+    selectedRecipeId.value = '';
+    isSelectedRecipePublic.value = false;
   }
 
   function generatePublicRecipeCollections(): Ref<Recipe[]>[] {
@@ -122,6 +124,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   function addRecipe(recipe: Recipe) {
+    dataService.saveNewRecipe(recipe);
     recipes.value.push(recipe)
   }
 

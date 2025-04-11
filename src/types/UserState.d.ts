@@ -12,7 +12,7 @@ export type LocalUser = {
   firstName?: string
   lastName?: string
   displayName?: string
-  recipes?: Recipe[]
+  recipes?: UserRecipes[]
   email?: string
   createdAt?: date
   shoppingLists?: ShoppingList[]
@@ -30,4 +30,9 @@ export type UserRatings = {
   recipeId: ObjectId,
   rating: number,
   timestamp: date
+}
+
+export type UserRecipes = {
+  _id: ObjectId,
+  alterations?: Partial<Recipe>
 }
