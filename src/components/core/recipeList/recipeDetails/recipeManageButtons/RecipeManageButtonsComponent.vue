@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDataService } from '@/composables/useDataService';
 import router from '@/router/main';
 import { useRecipeStore } from '@/stores/recipe'
 import { useShoppingListStore } from '@/stores/shoppingList'
@@ -7,35 +8,45 @@ import { Recipe } from '@/types/Recipes';
 import { Visibility } from '@/types/RecipesEnums';
 import { ArrowBigRight } from 'lucide-vue-next';
 import { computed } from 'vue';
-
-
+// define buttons by props, default all false, unless instance wants
+defineProps({
+    canEdit: {
+        type: Boolean,
+        default: true
+    },
+    canDelete: {
+        type: Boolean,
+        default: true
+    },
+})
 const emit = defineEmits(['closeRecipeDetails', 'removedRecipe'])
 
-const recipeStore = useRecipeStore()
-const shoppingListStore = useShoppingListStore()
-const userStore = useUserStore()
+const recipeStore = useRecipeStore();
+const shoppingListStore = useShoppingListStore();
+const userStore = useUserStore();
+const dataService = useDataService();
 
-const selectedRecipe = recipeStore.getSelectedRecipe
-const isSelectedRecipePublic = recipeStore.isSelectedRecipePublic
-const userAlreadyHas = computed(() =>  recipeStore.recipes.some(recipe => `pub-${recipe._id}` === selectedRecipe._id) ? true : false)
+const selectedRecipe = recipeStore.selectedRecipe;
+const userAlreadyHas = computed(() =>  recipeStore.recipes.some(recipe => recipe._id === selectedRecipe?._id) ? true : false)
 const userAuthorized = userStore.authorized
 
 function onAddToShoppingList() {
-  const items = selectedRecipe?.ingredients.reduce((acc, ingredient) => {
-    if (!Array.isArray(ingredient.steps)) {
-      console.warn(`Ingredient ${ingredient.title || 'unknown'} has no valid steps`)
-      return acc
-    }
+    if(!selectedRecipe) throw new Error('Selected REcipe data missing, refresh?');
+    const items = selectedRecipe.ingredients.reduce((acc, ingredient) => {
+        if (!Array.isArray(ingredient.steps)) {
+        console.warn(`Ingredient ${ingredient.title || 'unknown'} has no valid steps`)
+        return acc
+        }
 
-    ingredient.steps.forEach((step) => {
-      const parts = [step.amount, step.unit, step.name].filter(Boolean)
-      acc.push(parts.join(' '))
-    })
+        ingredient.steps.forEach((step) => {
+        const parts = [step.amount, step.unit, step.name].filter(Boolean)
+        acc.push(parts.join(' '))
+        })
 
-    return acc
-  }, [] as string[])
-  if (items) shoppingListStore.addToDefaultList(items)
-  console.log('adding')
+        return acc
+    }, [] as string[])
+    if (items) shoppingListStore.addToDefaultList(items)
+    console.log('adding')
 }
 
 function onEditRecipe() {
@@ -45,81 +56,94 @@ function onEditRecipe() {
 
 function onDeleteRecipe() {
   console.log('removing')
-  recipeStore.removeRecipeById(selectedRecipe?._id || '');
-  recipeStore.setSelectedRecipeId('', false);
+
+  recipeStore.removeRecipeById(selectedRecipe!._id);
+  recipeStore.clearSelectedRecipeId();
   emit('removedRecipe')
 }
 
 async function addPublicRecipeToPersonal() {
+    if (!selectedRecipe) throw new Error('selected Recipe data does not exist, refresh page?')
     const updatedRecipe: Recipe = {
         ...selectedRecipe!,
-        visibility: Visibility.Public,
-        _id: selectedRecipe._id,
         copyDetails: {
             copiedAt: new Date(),
             originalCreatorId: selectedRecipe.userId,
             originalRecipeId: selectedRecipe._id,
             modifications: false
         }
-    }
-    recipeStore.addRecipe(updatedRecipe!)
-    console.log(updatedRecipe)
-    await router.push('/recipes')
-    recipeStore.setSelectedRecipeId(updatedRecipe._id, false)
+    };
+    recipeStore.addRecipe(updatedRecipe!);
+    userStore.updateLocalUserRecipeArray(updatedRecipe._id)
+    console.log(updatedRecipe);
+    await router.push('/recipes');
+    recipeStore.setSelectedRecipeId(updatedRecipe._id);
+    const user = await dataService.updateUserRecipes(selectedRecipe);
+    // userStore.setLocalUser(user!)
 }
 
-const goToUserRecipes = () => {
-    router.push('/recipes');
+const goToUserRecipes = async () => {
+    console.log('go')
+    // TODO keep selectedRecipeId
+    await router.push('/recipes');
+    recipeStore.setSelectedRecipeId(selectedRecipe!._id)
+}
+
+const openRegistration = () => {
+    console.log('opening')
 }
 </script>
 
 <template>
 <div class="recipe-manage-row">
     <div class="recipe-manage-buttons">
-    <button class="manage-btn-1" v-if="userAuthorized" @click="onAddToShoppingList()">
-        <i class="add-to-list"></i>
-        <span>
-        Add to Shopping List
-        </span>
-    </button>
-    <button class="manage-btn-1 not-authorized" v-if="!userAuthorized">
-        <div class="add-to-text">
-            <div >Register To</div>
-            <div> use Shopping Lists</div>
-        </div>
-    </button>
-    <button v-if="isSelectedRecipePublic" class="manage-btn-2" @click="onEditRecipe">
-        <div class="edit-recipe"></div>
-        <span class="yellow-word">Edit</span>&nbsp;Recipe
-    </button>
-    <button v-else class="manage-btn-2 cannot-manage not-authorized">
-        <span class="">Cannot Edit</span>
-        <span class="">Public Recipes</span>
-    </button>
-    <button v-if=" userAuthorized && !isSelectedRecipePublic" class="manage-btn-3" @click="onDeleteRecipe">
-        <div class="delete-recipe"></div>
-        <span class="red-word">Delete</span>&nbsp;Recipe
-    </button>
-    <button v-else-if=" userAuthorized && userAlreadyHas" class="manage-btn-3-public" @click="goToUserRecipes">
-        <div class="add-to-text">
-            <div class="green-word" >Already in</div>
-            <div> Your Recipes</div>
-        </div>
-        <div class="add-to-recipe"><ArrowBigRight color="#1EB136"/></div>
-    </button>
-    <button v-else-if="userAuthorized" class="manage-btn-3-public" @click="addPublicRecipeToPersonal">
-        <div class="add-to-text">
-            <div class="green-word" >Add To</div>
-            <div> Your Recipes</div>
-        </div>
-        <div class="add-to-recipe"><ArrowBigRight color="#1EB136"/></div>
-    </button>
-    <button v-else-if="!userAuthorized" class="manage-btn-3-public not-authorized" @click="addPublicRecipeToPersonal">
-        <div class="add-to-text">
-            <div >Register To</div>
-            <div> add to your Recipes</div>
-        </div>
-    </button>
+        <!--- left Button -->
+        <button class="manage-btn-1" v-if="userAuthorized" @click="onAddToShoppingList()">
+            <i class="add-to-list"></i>
+            <span>
+            Add to Shopping List
+            </span>
+        </button>
+        <button class="manage-btn-1" v-if="!userAuthorized" @click="openRegistration">
+            <div class="add-to-text">
+                <div class="green-word" >Register To</div>
+                <div> add to your Recipes</div>
+            </div>
+        </button>
+        <!--- center Button -->
+        <button v-if="canEdit" class="manage-btn-2" @click="onEditRecipe">
+            <div class="edit-recipe"></div>
+            <span class="yellow-word">Edit</span>&nbsp;Recipe
+        </button>
+        <button v-else class="manage-btn-2 cannot-manage not-authorized">
+            <span class="">Cannot Edit</span>
+            <span class="">Public Recipes</span>
+        </button>
+        <!--- Right Button -->
+        <button v-if="canDelete && userAuthorized && recipeStore.isSelectedRecipeLocalUsers" class="manage-btn-3" @click="onDeleteRecipe">
+            <div class="delete-recipe"></div>
+            <span class="red-word">Delete</span>&nbsp;Recipe
+        </button>
+        <button v-else-if=" userAuthorized && userAlreadyHas" class="manage-btn-3-public" @click="goToUserRecipes">
+            <div class="add-to-text">
+                <div class="green-word" >Already in</div>
+                <div> Your Recipes</div>
+            </div>
+            <div class="add-to-recipe"><ArrowBigRight color="#1EB136"/></div>
+        </button>
+        <button v-else-if="userAuthorized" class="manage-btn-3-public" @click="addPublicRecipeToPersonal">
+            <div class="add-to-text">
+                <div class="green-word" >Add To</div>
+                <div> Your Recipes</div>
+            </div>
+            <div class="add-to-recipe"><ArrowBigRight color="#1EB136"/></div>
+        </button>
+        <button v-else-if="!userAuthorized" class="manage-btn-3-public" @click="openRegistration">
+            <div class="add-to-text">
+                <div class="green-word" >Register To</div>
+                <div> add to your Recipes</div>
+            </div>
+        </button>
     </div>
 </div>
 </template>

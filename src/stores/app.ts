@@ -7,6 +7,8 @@ import { useAuthService } from '@/composables/useAuthService'
 import { UserState } from '@/types/UserState'
 import { Recipe } from '@/types/Recipes'
 import { useAppService } from '@/composables/useAppService'
+import { useDataService } from '@/composables/useDataService'
+import axios from 'axios'
 
 type ScreenSize = 'sm' | 'md' | 'lg'
 
@@ -16,7 +18,9 @@ export const useAppStore = defineStore('app', () => {
   const shoppingListStore = useShoppingListStore();
   const authService = useAuthService();
   const appService = useAppService();
+  const dataService = useDataService();
 
+  // Variables
   const testModeOn = ref(false);
   const authModalType = ref('');
   const screenSize = ref<ScreenSize>('lg');
@@ -26,16 +30,61 @@ export const useAppStore = defineStore('app', () => {
   const userCsrfToken = ref('');
   const isLoading = ref(false);
 
+  // Computed
   const isTestModeOn = computed(() => testModeOn.value)
   const isAuthModalOpen = computed(() => authModalType.value.length > 0)
 
+
+  // Functions 
+  async function initializeApp() {
+    try {
+      
+      const cachedUser = sessionStorage.getItem('user');
+      const cachedUserRecipes = sessionStorage.getItem('userRecipes');
+      const cachedPublicRecipes = sessionStorage.getItem('publicRecipes');
+
+      // Check session
+      console.log('checking Sesesion: ', )
+      const sessionActiveresponse = await appService.checkSession();
+      console.log('checking Sesesion: ', sessionActiveresponse)
+      const sessionIsActive = sessionActiveresponse.success
+      const activeUser = sessionActiveresponse.data
+
+
+
+      // TEST IT AND THEN TEST BELOW - User Session is NOT active always
+      if (sessionIsActive) {
+        if(!activeUser) throw new Error('session active but no active user. relogin')
+        console.log('user session still active')
+        
+        if (!cachedUser || !cachedUserRecipes || !cachedPublicRecipes) {
+
+          const publicRecipes = await dataService.getPublicRecipes();
+          const {userData, userRecipes} = await dataService.getUserData();
+
+          recipeStore.setInitialPublicRecipeState(publicRecipes);
+          recipeStore.setInitialUserRecipeState(userRecipes);
+          userStore.setInitialUserState({authorized: true, localUser: userData});
+        } else {
+          recipeStore.setInitialPublicRecipeState(JSON.parse(cachedPublicRecipes));
+          recipeStore.setInitialUserRecipeState(JSON.parse(cachedUserRecipes));
+          userStore.setInitialUserState(JSON.parse(cachedUser));
+          // If data is older than X, make call to refresh, set TTL when saving
+        }
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        // TODO make sure logged out and all stores/saved Data is reset
+        resetAppStates();
+      }
+    }
+  }
 
   function setAuthorizedUserData(userData: UserState, userRecipeData: Recipe[]) {
     console.log('set App with user Data: ', userData)
     console.log('set App with user Data: ', userRecipeData)
     const userId = userData.localUser._id
     userStore.setInitialUserState(userData)
-    // TODO add user Recipe initialization
     recipeStore.setInitialUserRecipeState(userRecipeData)
     shoppingListStore.setListState(userId, userData.localUser.shoppingLists || [])
   }
@@ -49,9 +98,15 @@ export const useAppStore = defineStore('app', () => {
 
   function resetAppStates() {
     userStore.resetState()
-    recipeStore.resetState()
+    recipeStore.resetUserRecipeState()
     shoppingListStore.resetState()
     resetState()
+    
+    // Pesistent Data Stored in Browser
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('userRecipes');
+    sessionStorage.removeItem('publicRecipes');
+
     console.log('all stores reset')
   }
 
@@ -84,14 +139,11 @@ export const useAppStore = defineStore('app', () => {
   }
 
   async function fetchCsrfToken() {
-    console.log('fetching token');
     const csrfToken = await appService.fetchCsrfToken();
     if (csrfToken) {
-      console.log('found token: ', csrfToken)
       userCsrfToken.value = csrfToken;
     } else {
-      console.log('get from token');
-      // csrfToken.value = this.getTokenFromCookie();
+      throw new Error('CsrfToken Not Updated, Retry?')
     }
     
     return true;
@@ -117,6 +169,7 @@ export const useAppStore = defineStore('app', () => {
     authModalType,
     isTestModeOn,
     isAuthModalOpen,
+    initializeApp,
     setAuthorizedUserData,
     initializePublicRecipeData,
     resetAppStates,

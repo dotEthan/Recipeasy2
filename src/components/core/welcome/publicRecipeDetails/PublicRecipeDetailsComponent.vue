@@ -1,28 +1,24 @@
 <script setup lang="ts">
 // TODO DRY this and Welcome's publicRecipeDetailsComponent. componentize shared pieces.
-import ListItemComponent from './listItem/ListItemComponent.vue'
-import RecipeDetailHeaderComponent from './recipeDetailHeader/RecipeDetailHeaderComponent.vue';
-import RecipeManageButtonsComponent from './recipeManageButtons/RecipeManageButtonsComponent.vue';
-import XToCloseComponent from '../../shared/xToClose/XToCloseComponent.vue';
 // import { useImageUpload } from '@/composables/useImageUpload';
-import NoteItemComponent from './noteItem/NoteItemComponent.vue';
-import TagItemComponent from './tag-item/TagItemComponent.vue';
-import { Recipe } from '@/types/Recipes';
-import { PropType } from 'vue';
+import XToCloseComponent from '../../shared/xToClose/XToCloseComponent.vue';
+import RecipeDetailHeaderComponent from '../../recipeList/recipeDetails/recipeDetailHeader/RecipeDetailHeaderComponent.vue';
+import RecipeManageButtonsComponent from '../../recipeList/recipeDetails/recipeManageButtons/RecipeManageButtonsComponent.vue';
+import ListItemComponent from '../../recipeList/recipeDetails/listItem/ListItemComponent.vue';
+import TagItemComponent from '../../recipeList/recipeDetails/tag-item/TagItemComponent.vue';
+import NoteItemComponent from '../../recipeList/recipeDetails/noteItem/NoteItemComponent.vue';
+import { useRecipeStore } from '@/stores/recipe';
 
-const props = defineProps({
-  selectedRecipe: Object as PropType<Recipe>
-})
 const emit = defineEmits(['closeRecipeDetails', 'removedRecipe', 'editSelectedRecipe']);
-console.log('recipe details selected: ', props.selectedRecipe)
 // const { deleteImage } = useImageUpload();
-
+const recipeStore = useRecipeStore();
+const selectedRecipe = recipeStore.selectedRecipe;
 function onClose() {
   emit('closeRecipeDetails');
 }
 
 async function deleteRemovedRecipeImage() {
-  const imgPath = props.selectedRecipe?.imgPath;
+  const imgPath = selectedRecipe?.imgPath;
   if (imgPath) {
     console.log('removing image: ', imgPath);
     // const success = await deleteImage(imgPath)
@@ -41,7 +37,7 @@ async function deleteRemovedRecipeImage() {
       <div class="overlay-contain">
         <div class="recipe-overlay-content">
           <RecipeDetailHeaderComponent :selectedRecipe="selectedRecipe"/>
-          <RecipeManageButtonsComponent @removed-recipe="deleteRemovedRecipeImage"/>
+          <RecipeManageButtonsComponent :can-edit="false" :can-delete="false" @removed-recipe="deleteRemovedRecipeImage"/>
           <div class="ingredients-contain">
             <div class="type-section-title" v-if="selectedRecipe?.ingredients">
               INGREDIENTS: <span class="help-text">(click to add ingredient to shopping list)</span>

@@ -17,6 +17,7 @@ import { useDataService } from '@/composables/useDataService';
 
 import { Recipe } from '@/types/Recipes';
 import { ExposedInWelcomeComponent } from '@/types/componentExposedValues';
+import PublicRecipeDetailsComponent from './publicRecipeDetails/PublicRecipeDetailsComponent.vue';
 
 
 // Testing required more reactivity
@@ -44,10 +45,13 @@ let healthyRecipes = ref<Recipe[]>([]);
 let snackRecipes = ref<Recipe[]>([]);
 
 onMounted(async () => {
+  // TODO needed? Loading when sorting out persistence?
   if (recipeStore.existingPublicRecipesLength === 0) {
     try {
       console.log('public recipes are empty, getting from API')
-      await dataService.initialLoadPublicRecipeData();
+      const publicRecipes = await dataService.getPublicRecipes();
+      if(!publicRecipes) throw new Error('No Public Recipes Found');
+      recipeStore.setInitialPublicRecipeState(publicRecipes);
     } catch (error) {
       console.log('loading public recipes error: ', error)
     }
@@ -99,8 +103,8 @@ function determineMealTime(hours: number) {
 
 function closeRecipeDetails() {
   console.log('closeRecipeDetails called'); // Debugging
-  recipeDetailsOpen.value = false
-  recipeStore.setSelectedRecipeId('', false)
+  recipeDetailsOpen.value = false;
+  recipeStore.setSelectedRecipeId('');
 }
 
 defineExpose<ExposedInWelcomeComponent>({
@@ -158,8 +162,8 @@ onMounted(async () => {
     </div>
   </div>
 
-  <RecipeDetailsComponent 
-    v-if="recipeStore.selectedRecipeId" 
+  <PublicRecipeDetailsComponent
+    v-if="recipeStore.selectedRecipeId"
     @closeRecipeDetails="() => { console.log('Event received'); closeRecipeDetails(); }" 
   />
   <AuthComponent v-if="isAuthModalOpen"></AuthComponent>

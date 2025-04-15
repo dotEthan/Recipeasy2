@@ -4,6 +4,7 @@ import axios from '@/axios';
 import type { ScreenSize } from '@/types/ScreenSize'
 import { debounce } from '@/utilities';
 import { SESSION_STORAGE_EXPIRY } from '@/constants';
+import { StandardRecipeApiResponse } from '@/types/ApiResponse';
 /**
  * Handles all methods to help bootstrap the App: CSRF tokens, screen size tracking.
  * @returns {Object} - onResize, handleUnsavedChanges, fetchCsrfToken.
@@ -81,6 +82,23 @@ export function useAppService() {
     }
   }
 
+  
+  /**
+   * Check that backend session is still valid during app initialization
+   * @param {} - Nothing!
+   * @returns {Promise<boolean>} - whether the session is still active (true/false)
+   * @example
+  * const { checkSession } = useAppService();
+  * const isSessionActive = await checkSession();
+   */
+  const checkSession = async (): Promise<StandardRecipeApiResponse> => {
+    const response = await axios.get('/check-session', { 
+      withCredentials: true 
+    });
+    console.log('cehckigng sessions res: ', response)
+    return response.data;
+  }
+
   /**
    * When the page reloads, if available
    * @todo Bulit for persistence
@@ -116,6 +134,7 @@ export function useAppService() {
     onResize,
     handleUnsavedChanges,
     fetchCsrfToken,
+    checkSession,
     hydrateStores, 
   }
 }

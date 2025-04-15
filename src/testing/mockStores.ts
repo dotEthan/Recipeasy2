@@ -22,7 +22,7 @@ export const getMockedRecipeStore = (overrides: Partial<RecipeStore> = {}) => ({
     personalFilters: computed(() => ['testfilter']),
     recipesLength: computed(() => 1),
     existingPublicRecipesLength: computed(() => 1),
-    getSelectedRecipe: computed(() => mockRefRecipes.value[0]),
+    selectedRecipe: computed(() => mockRefRecipes.value[0]),
     getAllRecipeTags: computed(() => ['tasty']),
     useFilteredRecipes: vi.fn(() => ref([])),
     setInitialRecipeState: vi.fn(),

@@ -4,17 +4,15 @@ import { computed, ref } from 'vue'
 import { useRecipeStore } from '@/stores/recipe'
 import RecipeListItemComponent from './recipeListItem/RecipeListItemComponent.vue'
 import FilterComponent from './recipeFilter/FilterComponent.vue'
-import type { Recipe } from '@/types/Recipes'
 import RecipeDetailsComponent from './recipeDetails/recipeDetailsComponent.vue'
 import RecipeEditComponent from './recipeEdit/RecipeEditComponent.vue'
 import RecipesEmptyComponent from './recipesEmpty/recipesEmptyComponent.vue'
 import NewRecipeButtonComponent from './newRecipeButton/newRecipeButtonComponent.vue'
-import { useUserStore } from '@/stores/user'
+import { ObjectId } from 'bson'
 
-const userStore = useUserStore()
-const recipeStore = useRecipeStore()
-let selectedRecipe = ref<Recipe | undefined>(undefined)
-let activeFilters = ref<string[]>([])
+const recipeStore = useRecipeStore();
+let selectedRecipe = computed(() => recipeStore.selectedRecipe);
+let activeFilters = ref<string[]>([]);
 let isAddedRecipeNew = ref(false);
 
 const filteredRecipes = computed(() => {
@@ -29,20 +27,17 @@ allRecipeTags.value = recipeStore.getAllRecipeTags;
 
 
 function closeRecipeDetails() {
-  selectedRecipe.value = undefined;
-  recipeStore.setSelectedRecipeId('', false);
+  recipeStore.clearSelectedRecipeId();
 }
 
 function openRecipeDetail(id: string) {
-  selectedRecipe.value = recipeStore.recipes.find((recipe) => recipe._id === id);
-  console.log('selected: ', selectedRecipe.value?.visibility);
-  recipeStore.setSelectedRecipeId(id, selectedRecipe.value?.visibility === 'public');
+  recipeStore.setSelectedRecipeId(new ObjectId(id));
 }
 
 function newRecipeAdded() {
   console.log('adding');
   const tempId = uuidv4();
-  recipeStore.setSelectedRecipeId(tempId, true);
+  recipeStore.setSelectedRecipeId(new ObjectId(tempId));
   recipeStore.setEditStatusSelectedId(true);
   isAddedRecipeNew.value = true;
 }
@@ -72,7 +67,7 @@ function editingFinishedCleanUp() {
       <RecipeListItemComponent
         class="recipe-item-contain"
         v-for="recipe in filteredRecipes.value"
-        :key="recipe._id"
+        :key="recipe._id.toString()"
         :recipeData="recipe"
         @openRecipe="openRecipeDetail"
         @removedRecipe="removedRecipe" 
@@ -82,12 +77,14 @@ function editingFinishedCleanUp() {
   </div>
   <RecipeDetailsComponent
     v-if="recipeStore.selectedRecipeId && !recipeStore.editSelectedRecipe"
+    :selected-recipe="selectedRecipe"
     @closeRecipeDetails="closeRecipeDetails"
     @edit-selected-recipe="recipeStore.setEditStatusSelectedId(true)"
   />
   <RecipeEditComponent
     v-else-if="recipeStore.selectedRecipeId && recipeStore.editSelectedRecipe"
     class="recipe-item-contain"
+    :selected-recipe="selectedRecipe"
     :isNew="isAddedRecipeNew"
     @editing-finished="editingFinishedCleanUp"
   />

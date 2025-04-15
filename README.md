@@ -42,7 +42,9 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### Working on Now:
 
-- Custom Backend Functionality using Expressjs, Nodejs, and MongoDB. - App up and running, auth working and fully secure, working. Auth validation working. Recipe CRUD next. 
+- Custom Backend Functionality using Expressjs, Nodejs, and MongoDB.
+- - Working: security & all auth flows. user Recipe Creation, and updating.User persistence public Recipe flow
+- - To come: data persistence, deletion.
 
 ### In Progress (on hold as Backend Work On-Going)
 
@@ -55,6 +57,8 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### To Come:
 
+- Shopping List divider titles (add recipe, recipe name is title)
+- Optimistic UI changes with reverts on errors (provide link to selected REcipe if fails)
 - Documentation (JSDocs)
 - Tailor Cloudinary Image settings (refactor for new ExpressJS app)
 - Route Guards

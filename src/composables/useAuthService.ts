@@ -1,17 +1,15 @@
 // src/composables/useDataService.ts
 import { ref } from 'vue';
 import { AxiosError } from 'axios';
-import { useDataService } from './useDataService';
 import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
 import { Recipe } from '@/types/Recipes';
 import axios from '@/axios';
-import { LocalUser, UserState } from '@/types/UserState';
+import { LocalUser } from '@/types/UserState';
 
 export function useAuthService() {
   const error = ref<string | null>(null)
   const isLoading = ref(false) // TODO User Feedback
-  const dataService = useDataService()
   const appStore = useAppStore()
   const userStore = useUserStore()
 

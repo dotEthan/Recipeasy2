@@ -9,12 +9,19 @@ import { useAppStore } from './stores/app'
 
 async function initializeApp() {
   const app = createApp(App);
-
+  app.config.errorHandler = (err, vm, info) => {
+    // err: The error object
+    // vm: The Vue instance where it occurred
+    // info: Vue-specific error info (e.g., 'render function', 'handler')
+    console.log('error object: ', err);
+    console.log('Vue Instance: ', vm);
+    console.log('info : ', info);
+  };
   app.use(createPinia());
  
  
   try {
-    // TODO Increase timeout and add error handling
+    // TODO Increase timeout
  
     app.use(router);
     const appStore = useAppStore();

@@ -1,3 +1,4 @@
+import { ObjectId } from "bson";
 import { DurationUnits, Visibility } from "./RecipesEnums";
 
 export interface RecipeStore {
@@ -18,7 +19,7 @@ export interface RecipeStore {
   personalFilters(): Ref<string[]>;
   recipesLength(): Ref<number>;
   existingPublicRecipesLength(): Ref<number>;
-  getSelectedRecipe(): Ref<Recipe>;
+  selectedRecipe(): Ref<Recipe>;
   getAllRecipeTags(): Ref<string[]>
   useFilteredRecipes(activeFilters: string[]): Ref<Recipe[]>;
   setInitialRecipeState(userData: UserState, publicRecipeData: Recipe[]): void;
@@ -38,7 +39,7 @@ export interface RecipeStore {
 export type NewRecipe = Omit<Recipe, '_id'>;
 
 export type Recipe = {
-  _id: string;
+  _id: ObjectId;
   name: string;
   description: string;
   imgPath: string;

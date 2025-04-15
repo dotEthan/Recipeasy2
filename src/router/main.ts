@@ -72,7 +72,7 @@ router.beforeEach(async (to, from, next) => {
     return
   }
   // TODO add recipe ID to url query so no need to reset as each navigation will reset when id not there. 
-  recipeStore.setSelectedRecipeId('', false);
+  recipeStore.clearSelectedRecipeId();
   recipeStore.setEditStatusSelectedId(false);
   next()
 })

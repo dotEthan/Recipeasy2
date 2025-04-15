@@ -1,18 +1,13 @@
 import { ref } from 'vue';
-import {
-  deleteDoc,
-  doc,
-  getDoc,
-  setDoc
-} from 'firebase/firestore';
 import type { LocalUser } from '@/types/UserState';
-import { publicRecipesRef } from '../../firebase';
 import { Recipe } from '@/types/Recipes';
 import { useRecipeStore } from '@/stores/recipe';
-import { useUserStore } from '@/stores/user';
-import { getAuth } from 'firebase/auth';
 import axios from '@/axios';
-import { SaveRecipeResponse } from '@/types/ApiResponse';
+import {
+  GetUserDataResponse,
+  StandardRecipeApiResponse,
+  StandardUserApiResponse
+} from '@/types/ApiResponse';
 
 export function useDataService() {
 
@@ -22,7 +17,7 @@ export function useDataService() {
   const saveNewRecipe = async (recipe: Recipe) => {
     try{
       console.log('trying to save recipe: ', recipe);
-      const saveNewRecipeResponse = await axios.post<SaveRecipeResponse>('/new-recipe', {
+      const saveNewRecipeResponse = await axios.post<StandardRecipeApiResponse>('/new-recipe', {
         recipe
       },
       {
@@ -30,7 +25,7 @@ export function useDataService() {
           'Content-Type': 'application/json',
         }
       });
-      const returnedData = saveNewRecipeResponse.data.response
+      const returnedData = saveNewRecipeResponse.data
       console.log('save recipe response: ', returnedData)
 
       if (!returnedData.success) throw new Error(`recipe save not successful: ${returnedData.message}`);
@@ -39,40 +34,58 @@ export function useDataService() {
       if (!returnRecipe) throw new Error('Recipe Returned Blank. Retry?')
 
       recipeStore.addRecipe(returnRecipe);
+      recipeStore.deleteTempRecipe(recipe);
     } catch(error) {
-      console.log('Saving Recipe error: ', error);
-      
+      console.log('Saving Recipe error: ', error); 
     }
-
   };
 
-  // const loadUserData = async (_id: string): Promise<[DocumentData | null, string]> => {
-  const loadUserData = async (_id: string): Promise<[null, string]> => {
-    // error.value = null
+  const updateUserRecipes = async (recipe: Recipe): Promise<LocalUser | undefined> => {
     try {
-    return [null, ''];
-    } catch (err: any) {
-      error.value = err
-      console.error('Error loading user data:', error.value)
-      return [null, _id]
+      const addUserRecipesResponse = await axios.patch<StandardUserApiResponse>('/user-recipes', {
+        id: recipe._id,
+        originalUserId: recipe.userId
+      },{
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const user = addUserRecipesResponse.data.data;
+      if (!user) throw new Error('Updated Data not found, retry, reset FE changes?')
+      console.log('recipe:', recipe)
+      return user;
+    }catch (error) {
+      console.log('upset user recipe error: ', error);
+    }
+  }
+
+  const updateRecipe = async (recipe: Recipe) => {
+    try{
+      console.log('trying to save recipe: ', recipe);
+      // TODO change endpoint name, remove update
+      const saveNewRecipeResponse = await axios.put<StandardRecipeApiResponse>('/update-recipe', {
+        recipe
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      const returnedData = saveNewRecipeResponse.data
+      console.log('save recipe response: ', returnedData)
+
+      if (!returnedData.success) throw new Error(`recipe upate not successful: ${returnedData.message}`);
+
+      const returnedRecipe = returnedData.data;
+      if (!returnedRecipe) throw new Error('Recipe Returned Blank. Retry?')
+
+      recipeStore.updateRecipe(returnedRecipe);
+      recipeStore.deleteTempRecipe(returnedRecipe);
+    } catch(error) {
+      console.log('Updating Recipe error: ', error);
+      
     }
   };
-  
-  // const loadUserData = async (uid: string): Promise<[DocumentData | null, string]> => {
-  //   error.value = null
-  //   try {
-  //     const res = await fetch('http://localhost:8080/user')
-  //     if (!res.ok) throw new Error('failed to fetch user data');
-      
-  //     const data = res.json();
-  //     console.log('data: ', data)
-  //     return [data, uid];
-  //   } catch (err: any) {
-  //     error.value = err
-  //     console.error('Error loading user data:', error.value)
-  //     return [null, uid]
-  //   }
-  // };
 
   const saveUserData = async (user: LocalUser) => {
     // const tempUpdateData = user
@@ -80,20 +93,20 @@ export function useDataService() {
     error.value = null // Reset error
     try {
       console.log('saving user data: ', user)
-      const res =  await fetch('http://localhost:8080/api/user', {
-        headers: {
-          'Content-Type': 'application/json',
-          // Authorization: 'Bearer ' + this.props.token,
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          data: user,
-        }),
-      })
+      // const res =  await fetch('http://localhost:8080/api/user', {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     // Authorization: 'Bearer ' + this.props.token,
+      //   },
+      //   method: 'POST',
+      //   body: JSON.stringify({
+      //     data: user,
+      //   }),
+      // })
       // await setDoc(doc(usersRef, user.uid), user)
       
-      if (!res.ok) throw new Error('failed to save user data');
-      return res;
+      // if (!res.ok) throw new Error('failed to save user data');
+      return ;
       // return;
     } catch (err: any) {
       error.value = err
@@ -101,84 +114,45 @@ export function useDataService() {
     }
   }
 
-  const initialLoadPublicRecipeData = async (): Promise<void> => {
+  const getPublicRecipes = async (): Promise<Recipe[]> => {
     console.log('loading public recipes');
-    error.value = null;
-    try {
-      const publicRecipeResponse = await axios.get('/public-recipes',
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });
-      console.log(publicRecipeResponse);
-      recipeStore.setInitialPublicRecipeState(publicRecipeResponse.data);
-    } catch (err: any) {
-      error.value = err
-      console.error('Error loading Public Recipe data:', error.value)
-    }
+    const publicRecipeResponse = await axios.get('/public-recipes',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+    console.log(publicRecipeResponse.data);
+    const publicRecipes = publicRecipeResponse.data;
+    return publicRecipes;
   };
 
-  const savePublicRecipesData = async (publicRecipes: Recipe[]) => {
-    error.value = null // Reset error
-    const userStore = useUserStore()
-    try {
-      console.log('Saving public recipe data: ', publicRecipes)
-      for (const recipe of publicRecipes) {
-        const prefixedRecipeId = `pub-${recipe._id}`
-        const userId = userStore.getCurrentUserId
-        const updatedRecipe =  {...recipe, id: prefixedRecipeId, creatorId: userId}
-        console.log('updatedRecipe: ', updatedRecipe)
-        console.log('current User Id: ', userStore.getCurrentUserId)
-        // Check if recipe id exists
-        const existingRecipeDocRef = doc(publicRecipesRef, prefixedRecipeId);
-        const docSnap = await getDoc(existingRecipeDocRef);
-          console.log('check for existing recipe')
-        if (docSnap.exists()) {
-          // TODO if recipe exists, display error modal
-          console.log('Public Recipe Already Exists')
-        } else {
-          await setDoc(existingRecipeDocRef, updatedRecipe);
+  const getUserData = async (): Promise<GetUserDataResponse> => {
+    console.log('Load Authorized User Data')
+    const userDataResponse = await axios.get('/user-data',
+      {
+        headers: {
+          'Content-Type': 'application/json',
         }
-      }
-      recipeStore.resetNewPublicRecipes()
-    } catch (err: any) {
-      error.value = err
-      console.error('Error saving public Recipe data:', error.value)
-    }
+      });
+      const userData = userDataResponse.data.user;
+      const userRecipes = userDataResponse.data.userRecipes;
+      return {userData, userRecipes};
+  }
+
+  const savePublicRecipesData = async (publicRecipes: Recipe[]) => {
+    console.log('not needed, remove flow fully', publicRecipes)
+
   }
 
   const updatePublicRecipesData = async () => {
-    const newPublicRecipes = recipeStore.newPublicRecipes
-    const toBeDeletedPublicRecipes = recipeStore.removedPublicRecipes
-    if(newPublicRecipes.length > 0) savePublicRecipesData(newPublicRecipes)
-    if (toBeDeletedPublicRecipes.length > 0) deletePublicRecipesData(toBeDeletedPublicRecipes)
+    console.log('not needed, remove flow fully')
   }
 
   const deletePublicRecipesData = async (publicRecipes: Recipe[]) => {
-    error.value = null 
-    try {
-      for (const recipe of publicRecipes) {   
-        // check it existss
-        console.log('auth: ', getAuth())
-        const recipeRef = doc(publicRecipesRef, `pub-${recipe._id}`)
-        const recipeSnapshot = await getDoc(recipeRef);
-
-        if (recipeSnapshot.exists()) {
-          console.log('recipe exists in db')
-          await deleteDoc(recipeRef)
-        } else {
-          console.log('Recipes not there')
-        }
-  
-      }
-      recipeStore.resetRemovedPublicRecipes()
-    } catch (err: any) {
-      error.value = err
-      console.error('Error deleting public Recipe data:', error.value)
-    }
+    console.log('not needed, remove flow fully', publicRecipes)
     
   }
 
-  return { saveNewRecipe, saveUserData, loadUserData, initialLoadPublicRecipeData, savePublicRecipesData, deletePublicRecipesData, updatePublicRecipesData, error }
+  return { saveNewRecipe, updateUserRecipes, updateRecipe, saveUserData, getPublicRecipes, savePublicRecipesData, deletePublicRecipesData, updatePublicRecipesData, getUserData, error }
 }

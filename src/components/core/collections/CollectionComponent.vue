@@ -4,6 +4,7 @@ import CollectionItemComponent from './collectionItem/CollectionItemComponent.vu
 import type { PropType } from 'vue'
 import type { Recipe } from '@/types/Recipes'
 import { useRecipeStore } from '@/stores/recipe';
+import { ObjectId } from 'bson';
 
 defineProps({
   title: String,
@@ -14,11 +15,9 @@ const recipeStore = useRecipeStore()
 
 
 
-function openRecipeDetails(id: string) {
+function openRecipeDetails(id: ObjectId) {
   console.log('id: ', id)
-  if (id !== '') {
-    recipeStore.setSelectedRecipeId(id, true);
-  }
+  recipeStore.setSelectedRecipeId(id);
 }
 
 
@@ -28,7 +27,7 @@ function openRecipeDetails(id: string) {
   <div class="collection-container">
     <h3 data-test="mealtime" id="collection-title">{{ title }}:</h3>
     <div class="collection-item-container">
-      <CollectionItemComponent v-for="recipe in recipeData" @click="() => openRecipeDetails(recipe._id || '')" :key="recipe._id" :recipeData="recipe" />
+      <CollectionItemComponent v-for="recipe in recipeData" @click="() => openRecipeDetails(recipe._id)" :key="recipe._id.toString()" :recipeData="recipe" />
     </div>
   </div>
 </template>

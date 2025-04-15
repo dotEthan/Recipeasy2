@@ -37,6 +37,10 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  function updateLocalUserRecipeArray(recipeId: ObjectId) {
+    localUser.value?.recipes?.push({_id: recipeId});
+  }
+
   function resetState() {
     authorized.value = false;
     localUser.value = undefined;
@@ -55,6 +59,7 @@ export const useUserStore = defineStore('user', () => {
     setLocalUser,
     setInitialUserState,
     verifyUser,
+    updateLocalUserRecipeArray,
     resetState,
   };
 })

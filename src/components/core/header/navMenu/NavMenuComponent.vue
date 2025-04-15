@@ -33,8 +33,8 @@ function onClickRegisterSigning(type: string) {
 }
 
 async function onSave() {
+  // TODO manuals aving removed till offline functionality
   closeMobileMenu();
-  dataService.saveNewRecipes();
 }
 
 function onReset() {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DOMPurify from 'dompurify';
 import { nextTick, onMounted, ref } from 'vue';
-import type { ComponentPublicInstance, Ref } from 'vue';
+import type { ComponentPublicInstance, PropType, Ref } from 'vue';
 import { NewRecipe, Recipe } from '@/types/Recipes' ;
 import { useRecipeStore } from '@/stores/recipe';
 // import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue';
@@ -16,6 +16,7 @@ import { useDataService } from '@/composables/useDataService';
 
 const props = defineProps({
   isNew: Boolean,
+  selectedRecipe: Object as PropType<Recipe>
 });
 const emit = defineEmits(['editingFinished','recipeDeleted']);
 
@@ -25,8 +26,8 @@ let formError = ref('');
 
 const recipeStore = useRecipeStore();
 const dataService = useDataService();
-
-const selectedRecipe: Recipe | NewRecipe = props.isNew ? createNewRecipe() : recipeStore.getSelectedRecipe;
+console.log(props.selectedRecipe)
+const selectedRecipeToEdit: Recipe | NewRecipe = (!props.selectedRecipe) ? createNewRecipe() : props.selectedRecipe;
 const amountRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
 const ingredientTypeRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
 const directionRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
@@ -42,14 +43,14 @@ populateForm();
 function populateForm() {
   formData = ref<Recipe>({
     // Deep Clones the object
-    ...JSON.parse(JSON.stringify(selectedRecipe)),
-    ingredients: selectedRecipe?.ingredients
-      ? JSON.parse(JSON.stringify(selectedRecipe.ingredients))
+    ...JSON.parse(JSON.stringify(selectedRecipeToEdit)),
+    ingredients: selectedRecipeToEdit?.ingredients
+      ? JSON.parse(JSON.stringify(selectedRecipeToEdit.ingredients))
       : [],
-    directions: selectedRecipe?.directions
-      ? JSON.parse(JSON.stringify(selectedRecipe.directions))
+    directions: selectedRecipeToEdit?.directions
+      ? JSON.parse(JSON.stringify(selectedRecipeToEdit.directions))
       : [],
-    tags: selectedRecipe?.tags ? JSON.parse(JSON.stringify(selectedRecipe.tags)) : []
+    tags: selectedRecipeToEdit?.tags ? JSON.parse(JSON.stringify(selectedRecipeToEdit.tags)) : []
   })
 }
 
@@ -61,11 +62,14 @@ function onSubmit() {
   if (formData?.value && !props.isNew) {
     // TODO For "Update Recipe" If 'userId' !=== user's Id, then compared to original recipe and add alterations to User.recipe[id].alterations
     console.log('Updating existing Recipe');
-    recipeStore.updateRecipe(formData.value);
+    recipeStore.addNewTempRecipe(formData.value);
+    dataService.updateRecipe(formData.value);
+    
     onEditingOver();
   } else if (formData?.value && formValid) {
 
     console.log('Creating New Recipe');
+    recipeStore.addNewTempRecipe(formData.value);
     dataService.saveNewRecipe(formData.value);
     
     onEditingOver();
@@ -92,7 +96,7 @@ function validateName() {
 
 const onEditingOver = () => {
   if (props.isNew) {
-    recipeStore.setSelectedRecipeId('', false)
+    recipeStore.clearSelectedRecipeId();
   }
   emit("editingFinished");
 }
