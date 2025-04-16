@@ -4,6 +4,7 @@ import { useUserStore } from '@/stores/user'
 import { useAppStore } from '@/stores/app'
 import { useRecipeStore } from '@/stores/recipe'
 
+// TODO Verified and AUthorized user requires
 const routes = [
   {
     path: '/',

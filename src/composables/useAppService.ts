@@ -1,18 +1,27 @@
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useAppStore } from '@/stores/app'
 import axios from '@/axios';
-import type { ScreenSize } from '@/types/ScreenSize'
+import { useAppStore } from '@/stores/app'
+import { useRecipeStore } from '@/stores/recipe';
+import { useUserStore } from '@/stores/user';
 import { debounce } from '@/utilities';
-import { SESSION_STORAGE_EXPIRY } from '@/constants';
 import { StandardRecipeApiResponse } from '@/types/ApiResponse';
+import { Recipe, RecipeStore } from '@/types/Recipes';
+import type { ScreenSize } from '@/types/ScreenSize'
+import { UserState } from '@/types/UserState';
+import { useShoppingListStore } from '@/stores/shoppingList';
+import { ShoppingList, ShoppingListState } from '@/types/ShoppingLists';
+
 /**
  * Handles all methods to help bootstrap the App: CSRF tokens, screen size tracking.
- * @returns {Object} - onResize, handleUnsavedChanges, fetchCsrfToken.
+ * @returns {Object} - onResize, handleUnsavedChanges, fetchCsrfToken, checkSession, hydrateStores
  */
 
 export function useAppService() {
-  const appStore = useAppStore()
-  const screenWidth = ref(window.innerWidth)
+  const appStore = useAppStore();
+  const recipeStore = useRecipeStore();
+  const userStore = useUserStore();
+  const shoppingListStore = useShoppingListStore();
+  const screenWidth = ref(window.innerWidth);
 
   /**
    * Updates the screensize variable in the appStore for business rules
@@ -99,34 +108,6 @@ export function useAppService() {
     return response.data;
   }
 
-  /**
-   * When the page reloads, if available
-   * @todo Bulit for persistence
-   * @param {} - None
-   * @returns {Promise<void>} - The dark void.
-   * @example
-  * const { updatescreenSize } = useAppService();
-   * updatescreenSize();
-   */
-  const hydrateStores = async () => {
-    // Hydrate stores 
-    // call in app.vue
-    const cachedData = sessionStorage.getItem('cachedStores');
-
-    const { user, recipes, timestamp } = (cachedData) ? JSON.parse(cachedData) : {};
-
-    const isFresh = timestamp && (Date.now() - timestamp < SESSION_STORAGE_EXPIRY);
-
-    if (isFresh) {
-      // appStore.initializeAppData(user, recipes)
-      console.log('add the data')
-    } else {
-      // TODO Make API calls for fresh data
-      console.log('call API Please');
-    }
-
-  }
-
   onMounted(() => window.addEventListener('resize', onResize))
   onUnmounted(() => window.removeEventListener('resize', onResize))
 
@@ -135,6 +116,5 @@ export function useAppService() {
     handleUnsavedChanges,
     fetchCsrfToken,
     checkSession,
-    hydrateStores, 
   }
 }

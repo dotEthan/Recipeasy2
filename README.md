@@ -22,21 +22,21 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### What isn't working
 
-- paramquery parsing in WelcomeComponent needs better error checks
+- paramquery parsing in WelcomeComponent needs better error checks (what?)
 
 ## Where are we?
 
-### Working (not feature complete, full design still in progress):
+### Working (not feature complete as Error handling and UX to come, redesign with tailwindcss after):
 
 - Learn Vue/Router/Store functionality through docs
-- persistent authentication and Data storage(through firebase)
-- Recipe Book Functionality (display, edit, crud with firebase)
+- persistent authentication and Data storage(through firebase) (removed)
+- Recipe Book Functionality (display, edit, crud with firebase) (removed)
 - Auto deploy to netlify
 - Shopping List Functionality
-- Firebase image upload Signature
+- Firebase image upload Signature (removed)
 - Pinia store Implementation
 - Routing and guards
-- Authenticated User Image uploading (and deleting) to CDN
+- Authenticated User Image uploading (and deleting) to CDN (removed)
 - Functional Mobile Design
 - Public Recipes Displaying and functional
 
@@ -44,31 +44,33 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 - Custom Backend Functionality using Expressjs, Nodejs, and MongoDB.
 - - Working: security & all auth flows. user Recipe Creation, and updating.User persistence public Recipe flow
-- - To come: data persistence
+- - Error Handling & deploy
+- - To come: data persistence, url and routing (persistence) 
+- - test DELETE Fully working (all gets taged and ready for Cron job)
 
 ### In Progress (on hold as Backend Work On-Going)
 
 - Switch from function to arrow functions & full prettier update
+- Verified User Flow
 - Switch to id based routing instead of event based (recipe url slugs for sharing)
-- Add Cuisine type & Nutritional Info (Edit and Display)
+- Display newly added Recipe Data (time, servings, nutritional info, etc) & Add Cuisine type & Nutritional Info (Edit and Display)
 - Checking Basic Desktop design
 - Testing (Vitest, Cypress) Current Coverage: 28%
 - Form Accessibility (shopping list need "focus")
 
 ### To Come:
 
-- Shopping List divider titles (add recipe, recipe name is title)
-- Optimistic UI changes with reverts on errors (provide link to selected REcipe if fails)
 - Tailor Cloudinary Image settings (refactor for new ExpressJS app)
 - Route Guards
+- Optimistic UI changes with reverts on errors (provide link to selected REcipe if fails)
 - TODO & Misc Functionality (Search, tags, rating, ignore/report recipe)
 - Filter (Functional, but waiting on final schema)
 - Error Handling & User feedback (loadin spinners, unsaved data etc)
+- Shopping List divider titles (add recipe, recipe name is title)
 - Documentation (JSDocs)
 - Defaults (images)
 - TailwindCSS redesign
 - Animations
-- Display newly added Recipe Data (time, servings, nutritional info, etc)
 - Offline Functionality
 - User Dashboard
 - Google/Facebook login (maybe)

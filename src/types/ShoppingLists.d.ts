@@ -2,8 +2,8 @@ import { ObjectId } from "bson";
 
 export type ShoppingListState = {
   shoppingLists: ShoppingList[];
-  viewableShoppingListIds: string[];
-  defaultListId: string;
+  editingListIndex: number;
+  editingItemIndex: number;
 }
 
 export type ShoppingList = {
@@ -14,4 +14,9 @@ export type ShoppingList = {
   isOpen: boolean;
   creator: ObjectId;
   viewableBy: ObjectId[];
+}
+
+export type CachedShoppingListState = {
+  shoppingLists: ShoppingList[];
+  expiresAt: Date;
 }

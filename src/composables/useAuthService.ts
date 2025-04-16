@@ -6,17 +6,42 @@ import { useUserStore } from '@/stores/user';
 import { Recipe } from '@/types/Recipes';
 import axios from '@/axios';
 import { LocalUser } from '@/types/UserState';
+import { StandardRecipeApiResponse } from '@/types/ApiResponse';
+import { useRecipeStore } from '@/stores/recipe';
+import { useShoppingListStore } from '@/stores/shoppingList';
+import { clearSessionData, setSessionData } from '@/utilities';
+
+/**
+ * Handles Authorization related API calls and initilizations
+ * @returns - signIn, registerUser, logOut, verifyUser, passwordReset, setNewPassword, validatePasswordToken
+ * @example
+ * const authService = useAuthService();
+ * const authRes = await authService.registerUser('name', 'email@email.com', '1234abcd')
+ */
 
 export function useAuthService() {
+  const appStore = useAppStore();
+  const userStore = useUserStore();
+  const recipeStore = useRecipeStore();
+  const shoppingListStore = useShoppingListStore();
+
   const error = ref<string | null>(null)
   const isLoading = ref(false) // TODO User Feedback
-  const appStore = useAppStore()
-  const userStore = useUserStore()
 
   const clearError = () => {
     error.value = null
   }
 
+  /**
+   * Calls API to register user and then set user's data in store
+   * @param {string} displayName - The user's chosen display name
+   * @param {string} email - The user's email
+   * @param {string} password - the user's password
+   * @returns {Promise<void>} 
+   * @example
+   * const authService = useAuthService();
+   * await authService.registerUser('name', 'email@email.com', '1234abcd')
+   */
   const registerUser = async (displayName: string, email: string, password: string)=> {
     try {
         clearError()
@@ -37,8 +62,8 @@ export function useAuthService() {
           authorized: true 
         }
         // const publicRecipeArray = publicRecipeStoredData 
-        appStore.setAuthorizedUserData(userState, []);
-        
+        userStore.setInitialUserState(userState);
+        userStore.cacheUserState();
         return;
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
@@ -53,6 +78,15 @@ export function useAuthService() {
       }
   }
 
+  /**
+   * Calls API to login user and then set user's data in store
+   * @param {string} email - The user's email
+   * @param {string} password - the user's password
+   * @returns {Promise<boolean>} - A boolean to show if the user is verified or not
+   * @example
+   * const authService = useAuthService();
+   * const isVerified = await authService.signIn('email@email.com', '1234abcd')
+   */
   const signIn = async (email: string, password: string): Promise<boolean> => {
     try {
       clearError()
@@ -70,12 +104,29 @@ export function useAuthService() {
     
       const localUser = userResponse.data.user as LocalUser;
       const userRecipesData: Recipe[] = userResponse.data.recipeResponse;
-      const userState = { _id: localUser._id, authorized: true, localUser: {
+      const userState = { authorized: true, localUser: {
         ...userResponse.data.user
       }};
       console.log('trigger App Store Initialization, data: ', userRecipesData)
 
-      appStore.setAuthorizedUserData(userState, userRecipesData)
+      // Store Initializations
+      userStore.setInitialUserState(userState);
+      recipeStore.setInitialUserRecipeState(userRecipesData);
+      shoppingListStore.setInitialListState(userState.localUser.shoppingLists || []);
+      // TODO Update with ful App State updates
+      const appState = { 
+        lightMode: userState.localUser.preferences.lightMode
+      };
+      appStore.setInitialAppState(appState);
+      console.log('caching')
+      userStore.cacheUserState();
+      console.log('finished all')
+      recipeStore.cacheRecipeState();
+      console.log('finished all')
+      shoppingListStore.cacheListState();
+      console.log('finished all')
+      appStore.cacheAppState();
+      console.log('finished all')
 
       return localUser.verified;
     } catch (err) {
@@ -85,7 +136,15 @@ export function useAuthService() {
       throw err;
     }
   }
-  // TODO Implement logout with passport
+  
+  /**
+   * Calls API to logout user from the backend
+   * @param {void} - None
+   * @returns {Promise<void>} - None
+   * @example
+   * const authService = useAuthService();
+   * await authService.logOut();
+   */
   const logOut = async () => {
     try {
       clearError();
@@ -94,6 +153,13 @@ export function useAuthService() {
           'Content-Type': 'application/json',
         },
       });
+
+      // Clear cached data
+      clearSessionData('userData');
+      clearSessionData('appState');
+      clearSessionData('shoppingLists');
+      recipeStore.resetUserRecipeState();
+      recipeStore.cacheRecipeState();
       console.log('logged out: ', response);
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Logout failed';
@@ -101,6 +167,14 @@ export function useAuthService() {
     }
   }
 
+  /**
+   * Calls API to verify user based on code emailed to them and set user.verified if correct
+   * @param {string} - code emailed to user
+   * @returns {Promise<void>} - None
+   * @example
+   * const authService = useAuthService();
+   * await authService.verifyUser('1234abcd');
+   */
   const verifyUser = async (enteredCode: string) => {
     try {
       await axios.post('/verification-code', {
@@ -112,11 +186,20 @@ export function useAuthService() {
         }
       });
       userStore.verifyUser();
+      userStore.cacheUserState();
     } catch(err) {
       console.log('verify User err: ', err);
     }
   }
 
+  /**
+   * Calls API to start user password reset flow
+   * @param {string} - email of user asking for reset
+   * @returns {Promise<void>} - None
+   * @example
+   * const authService = useAuthService();
+   * await authService.passwordReset('email@email.com');
+   */
   const passwordReset = async (email: string) => {
     console.log('password reset api call')
     await axios.post('/reset-password', {
@@ -129,7 +212,16 @@ export function useAuthService() {
     });
   }
 
-  
+  /**
+   * Calls API to finish User password reset flow and reset users password
+   * @todo token in body or in url?
+   * @param {string} - new password
+   * @param {string} - password reset token
+   * @returns {Promise<void>} - None
+   * @example
+   * const authService = useAuthService();
+   * await authService.setNewPassword('newpassword1234!', '1234abcd');
+   */  
   const setNewPassword = async (password: string, token: string) => {
     console.log('set new Password api call')
     await axios.post('/update-password', {
@@ -143,9 +235,18 @@ export function useAuthService() {
     });
   }
 
+  /**
+   * Calls API to check if the password reset token is valid
+   * @todo token in body or in url?
+   * @param {string} - password reset token
+   * @returns {boolean} - boolean to say if token is still valid
+   * @example
+   * const authService = useAuthService();
+   * await authService.v('1234abcd');
+   */  
   const validatePasswordToken = async (token: String) => {
     console.log('validate password token: ', token);
-    await axios.post('/validate-password-token', {
+    const validateRes = await axios.post<StandardRecipeApiResponse>('/validate-password-token', {
       code: token
     },
     {
@@ -153,6 +254,8 @@ export function useAuthService() {
         'Content-Type': 'application/json',
       }
     });
+    const isTokenValid = validateRes.data.success;
+    return isTokenValid
   }
 
 

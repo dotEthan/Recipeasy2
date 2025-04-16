@@ -1,9 +1,22 @@
 import { useUserStore } from "@/stores/user";
-import { NewRecipe } from "@/types/Recipes";
+import { CachedAppState } from "@/types/AppState";
+import { NewRecipe, RecipeState, RecipeStore } from "@/types/Recipes";
 import { Visibility } from "@/types/RecipesEnums";
+import { ShoppingList } from "@/types/ShoppingLists";
+import { UserState } from "@/types/UserState";
 import { ObjectId } from "bson";
 
-export const createSlug = (title: string, id: string, isPublic: boolean) => {
+/**
+ * Create URL slug out of recipe's title and id slice
+ * TODO for use when recipe routing by URL enabled
+ * @param {string} - recipe title
+ * @param {string} - recipe id
+ * @returns {string} - URL slug for that recipe - eg. 'baked-potato-1234'
+ * @example
+* import { createSlug } from '/utilities';
+  * createSlug('baked potatoe', '1234');
+  */
+export const createSlug = (title: string, id: string) => {
 
     const urlSlug = title
       .toLowerCase()
@@ -14,10 +27,17 @@ export const createSlug = (title: string, id: string, isPublic: boolean) => {
   
     const shortId = id.slice(-5);
   
-    return (isPublic) ? `${urlSlug}-${shortId}--pub` : `${urlSlug}-${shortId}`;
+    return `${urlSlug}-${shortId}`;
 }
 
-//TODO test other browsers to see if needed. Firefox already throttles
+/**
+ * Debounce calls by *delay*
+ * @param {Function} - function to call 
+ * @returns {number} - delay between calls
+ * @example
+* import { debounce } from '/utilities';
+  * debounce(saveUserData(), 500);
+  */
 export function debounce(fn: Function, delay: number) {
   let timeoutId: number
   return (...args: any[]) => {
@@ -26,6 +46,14 @@ export function debounce(fn: Function, delay: number) {
   }
 }
 
+/**
+ * Creates new Recipe structure to ensure consistency
+ * @param {} - None
+ * @returns {<NewRecipe>} - type Recipe without _id
+ * @example
+* import { createNewRecipe } from '/utilities';
+  * createNewRecipe();
+  */
 export function createNewRecipe(): NewRecipe {
   const userStore = useUserStore();
   const userId = userStore.getCurrentUserId;
@@ -51,3 +79,59 @@ export function createNewRecipe(): NewRecipe {
   
   return newRecipe;
 }
+
+/**
+ * Get sessionStorage values by key - Data Persistence
+ * @param {string} - key name to get value of
+ * @returns {<T>} - The object you asked for
+ * @example
+* import { getSessionData } from '/utilities';
+  * getSessionData<UserCachedData>('userData');
+  */
+export const getSessionData = <T>(key: string): T | null => {  
+  const data = sessionStorage.getItem(key);  
+  return data ? JSON.parse(data) : null;  
+};  
+
+/**
+ * Set sessionStorage values - Data Persistence
+ * @param {string} - key name to get value of
+ * @param {unknown} - Data to be saved
+ * @returns {} - Nothing
+ * @example
+* import { setSessionData } from '/utilities';
+ * setSessionData('userData', userDataObject);
+ */
+export const setSessionData = (key: string, data: unknown) => {  
+  sessionStorage.setItem(key, JSON.stringify(data));  
+};  
+
+/**
+ * Clear sessionStorage values - Data Persistence
+ * @param {string} - key name to get value of
+ * @returns {} - Nothing
+ * @example
+* import { clearSessionData } from '/utilities';
+ * clearSessionData('userData';
+ */
+export const clearSessionData = (key: string) => { 
+  console.log('clearing:', key) 
+  sessionStorage.removeItem(key);  
+};  
+
+/**
+ * Checks Data expiration
+ * @param {number} - Maximum age the data can be (miliseconds)
+ * @param {data to check} - Maximum age the data can be (miliseconds)
+ * @returns {boolean} - A boolean representing whether the data is expired
+ * @example
+* import { isDataExpired } from '/utilities';
+ * isDataExpired('userData';
+ */
+export const isCacheExpired = (expiresAt: Date) => { 
+  const now = new Date();
+  console.log('checking expired:', expiresAt) 
+  console.log('checking now:', now) 
+  console.log('comparing now:', now <= expiresAt) 
+  return now <= expiresAt;
+};  

@@ -1,4 +1,6 @@
+import { CACHED_DATA_TTL } from '@/constants';
 import type { LocalUser, UserState } from '@/types/UserState';
+import { setSessionData } from '@/utilities';
 import { ObjectId } from 'bson';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
@@ -41,6 +43,19 @@ export const useUserStore = defineStore('user', () => {
     localUser.value?.recipes?.push({_id: recipeId});
   }
 
+  function hydratestore(userState: UserState) {
+    authorized.value = userState.authorized;
+    localUser.value = userState.localUser;
+  }
+
+  function cacheUserState() {
+    setSessionData('userData', {
+      authorized: authorized.value,
+      localUser: localUser.value,
+      expiresAt: new Date().getTime() + (CACHED_DATA_TTL)
+    })
+  }
+
   function resetState() {
     authorized.value = false;
     localUser.value = undefined;
@@ -60,6 +75,8 @@ export const useUserStore = defineStore('user', () => {
     setInitialUserState,
     verifyUser,
     updateLocalUserRecipeArray,
+    hydratestore,
+    cacheUserState,
     resetState,
   };
 })

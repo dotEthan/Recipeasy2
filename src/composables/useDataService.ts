@@ -9,15 +9,35 @@ import {
   StandardUserApiResponse
 } from '@/types/ApiResponse';
 import { ObjectId } from 'bson';
+import { useUserStore } from '@/stores/user';
+
+  
+
+/**
+ * Handles all Data related API calls and initilizations
+ * @todo split into user/recipe?
+ * @returns - saveNewRecipe, updateUserRecipes, updateRecipe, getPublicRecipes, deleteRecipe,  getUserData, error
+ * @example
+ * const dataService = useDataService();
+ * await dataService.saveNewRecipe(recipe);  
+ */
 
 export function useDataService() {
 
   const error = ref<string | null>(null);
   const recipeStore = useRecipeStore();
-
+  const userStore = useUserStore();
+  
+  /**
+   * Calls API to save newly created recipes
+   * @param {Recipe} - The newly created recipe
+   * @returns {Promise<void>} - None
+   * @example
+   * const dataService = useDataService();
+   * await dataService.saveNewRecipe(recipe);
+   */
   const saveNewRecipe = async (recipe: Recipe) => {
     try{
-      console.log('trying to save recipe: ', recipe);
       const saveNewRecipeResponse = await axios.post<StandardRecipeApiResponse>('/new-recipe', {
         recipe
       },
@@ -36,11 +56,20 @@ export function useDataService() {
 
       recipeStore.addRecipe(returnRecipe);
       recipeStore.removeTempLocalRecipe(recipe);
+      recipeStore.cacheRecipeState();
     } catch(error) {
       console.log('Saving Recipe error: ', error); 
     }
   };
 
+  /**
+   * Calls API to update User Object's 'recipes' array after adding public recipe to personal list
+   * @param {Recipe} - The newly created recipe
+   * @returns {Promise<LocalUser | undefined>} - After update made, the local User data is returned to ensure data consistency
+   * @example
+   * const dataService = useDataService();
+   * await dataService.updateUserRecipes(recipe);
+   */
   const updateUserRecipes = async (recipe: Recipe): Promise<LocalUser | undefined> => {
     try {
       const addUserRecipesResponse = await axios.patch<StandardUserApiResponse>('/user-recipes', {
@@ -54,12 +83,23 @@ export function useDataService() {
       const user = addUserRecipesResponse.data.data;
       if (!user) throw new Error('Updated Data not found, retry, reset FE changes?')
       console.log('recipe:', recipe)
+      recipeStore.cacheRecipeState();
+      userStore.cacheUserState();
       return user;
     }catch (error) {
       console.log('upset user recipe error: ', error);
     }
   }
 
+  /**
+   * Calls API to update user's recipe data
+   * @todo pass recipe Id in url. RESTapi
+   * @param {Recipe} - The newly created recipe
+   * @returns {Promise<void>} - None
+   * @example
+   * const dataService = useDataService();
+   * await dataService.updateRecipe(recipe);
+   */
   const updateRecipe = async (recipe: Recipe) => {
     try{
       console.log('trying to save recipe: ', recipe);
@@ -82,39 +122,23 @@ export function useDataService() {
 
       recipeStore.updateRecipe(returnedRecipe);
       recipeStore.removeTempLocalRecipe(returnedRecipe);
+      recipeStore.cacheRecipeState();
+      userStore.cacheUserState();
     } catch(error) {
       console.log('Updating Recipe error: ', error);
       
     }
   };
 
-  const saveUserData = async (user: LocalUser) => {
-    // const tempUpdateData = user
-    // tempUpdateData.recipes = dummyData.recipeState.recipes as any
-    error.value = null // Reset error
-    try {
-      console.log('saving user data: ', user)
-      // const res =  await fetch('http://localhost:8080/api/user', {
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     // Authorization: 'Bearer ' + this.props.token,
-      //   },
-      //   method: 'POST',
-      //   body: JSON.stringify({
-      //     data: user,
-      //   }),
-      // })
-      // await setDoc(doc(usersRef, user.uid), user)
-      
-      // if (!res.ok) throw new Error('failed to save user data');
-      return ;
-      // return;
-    } catch (err: any) {
-      error.value = err
-      console.error('Error saving user data:', error.value)
-    }
-  }
-
+  /**
+   * Calls API to get various public recipes to populate front page
+   * @todo implement proper fetching using tags
+   * @param {} - None
+   * @returns {Promise<Recipe[]>} - An array of public recipes to use
+   * @example
+   * const dataService = useDataService();
+   * await dataService.getPublicRecipes();
+   */
   const getPublicRecipes = async (): Promise<Recipe[]> => {
     console.log('loading public recipes');
     const publicRecipeResponse = await axios.get('/public-recipes',
@@ -128,6 +152,14 @@ export function useDataService() {
     return publicRecipes;
   };
 
+  /**
+   * Calls API to get User Data for logged in user
+   * @param {} - None
+   * @returns {Promise<GetUserDataResponse>} - An object that includes userData and userRecipes
+   * @example
+   * const dataService = useDataService();
+   * const { userData, userRecipes } = await dataService.getUserData();
+   */
   const getUserData = async (): Promise<GetUserDataResponse> => {
     console.log('Load Authorized User Data')
     const userDataResponse = await axios.get('/user-data',
@@ -141,18 +173,17 @@ export function useDataService() {
       return {userData, userRecipes};
   }
 
-  const savePublicRecipesData = async (publicRecipes: Recipe[]) => {
-    console.log('not needed, remove flow fully', publicRecipes)
-
-  }
-
-  const updatePublicRecipesData = async () => {
-    console.log('not needed, remove flow fully')
-  }
-
+  /**
+   * Calls API to get delete a recipe
+   * @param {ObjectId} - Recipe to be deleted's id
+   * @returns {StandardRecipeApiResponse} - An res object htat includes 'success', 'message', and error data is success: false
+   * @example
+   * const dataService = useDataService();
+   * const res = await dataService.deleteRecipe('1234abcd);
+   */
   const deleteRecipe = async (id: ObjectId) => {
     try {
-      const deletionResponse = await axios.delete('/recipe/' + id,
+      const deletionResponse = await axios.delete<StandardRecipeApiResponse>('/recipe/' + id,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -160,14 +191,16 @@ export function useDataService() {
         });   
         console.log('DeletionResponse: ', deletionResponse);
         if (deletionResponse.data.success) recipeStore.finishRecipeDeletion();
+        recipeStore.cacheRecipeState();
         return deletionResponse;
     } catch (error: unknown) {
       // check all Roll back Optimistic UI 
       console.log('error');
       recipeStore.revertRecipeDeletion(id);
+      recipeStore.cacheRecipeState();
       throw new Error('deleting recipe Error: ');
     }
   }
 
-  return { saveNewRecipe, updateUserRecipes, updateRecipe, saveUserData, getPublicRecipes, savePublicRecipesData, deleteRecipe, updatePublicRecipesData, getUserData, error }
+  return { saveNewRecipe, updateUserRecipes, updateRecipe, getPublicRecipes, deleteRecipe,  getUserData, error }
 }

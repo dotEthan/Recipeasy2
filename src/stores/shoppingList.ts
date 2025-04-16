@@ -5,17 +5,24 @@ import { defineStore } from 'pinia'
 
 import type { ShoppingList } from '@/types/ShoppingLists'
 import { useUserStore } from './user'
+import { setSessionData } from '@/utilities'
+import { CACHED_DATA_TTL } from '@/constants'
 
 export const useShoppingListStore = defineStore('shopping-lists', () => {
   const userStore = useUserStore();
+
+  // Variables
   const shoppingLists = ref<ShoppingList[]>([]);
   const editingListIndex = ref(-1);
   const editingItemIndex = ref(-1);
 
+  // Computed
   const defaultList = computed((): ShoppingList | undefined => {
     return shoppingLists.value.filter((sl) => sl.isDefault )[0];
   })
-  function setListState(userId: ObjectId, lists: ShoppingList[]) {
+
+  // Functions
+  function setInitialListState(lists: ShoppingList[]) {
     shoppingLists.value = lists;
   }
 
@@ -71,6 +78,17 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
     if (listIndex >= 0 && itemIndex >= 0) shoppingLists.value[listIndex].items.splice(itemIndex, 1)
   }
 
+  function hydrateStore(cachedShoppingLists: ShoppingList[]) {
+    shoppingLists.value = cachedShoppingLists;
+  }
+
+  function cacheListState() {
+    setSessionData('shoppingLists', {
+      list: shoppingLists.value,
+      expiresAt: new Date().getTime() + (CACHED_DATA_TTL)
+    });
+  }
+
   function resetState() {
     shoppingLists.value = []
   }
@@ -79,7 +97,7 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
     shoppingLists,
     editingListIndex,
     editingItemIndex,
-    setListState,
+    setInitialListState,
     setEditingListIndex,
     setEditingItemIndex,
     getItemValue,
@@ -88,6 +106,8 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
     deleteList,
     setDefaultList,
     deleteListItem,
+    hydrateStore,
+    cacheListState,
     resetState
   }
 })

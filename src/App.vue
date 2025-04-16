@@ -19,7 +19,7 @@ onUnmounted(() => {
   window.removeEventListener('beforeunload', appService.handleUnsavedChanges);
 })
 
-// TODO Once at start (better way?)
+// TODO Once at start (needed?)
 appService.onResize()
 
 </script>

@@ -1,5 +1,22 @@
 export type AppState = {
-  testModeOn: boolean
-  authModalType: string
+  testModeOn: boolean;
+  authModalType: string;
+  screenSize: string;
+  isMobileMenuOpen: boolean;
+  appHasUnsavedChanges: boolean;
+  showUnsavedChangesModal: boolean;
+  userCsrfToken: string;
+  isLoading: boolean;
+  lightMode: boolean;
 }
-// TODO seems lacking...
+
+export type CachedAppState = {
+  testModeOn: boolean;
+  authModalType: string;
+  isMobileMenuOpen: boolean;
+  route: string;
+  lightMode: boolean;
+  expiresAt: Date;
+}
+
+export type InitialAppState = Partial<AppState>;

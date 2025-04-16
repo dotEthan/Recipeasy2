@@ -2,24 +2,21 @@ import { ObjectId } from "bson";
 import { DurationUnits, Visibility } from "./RecipesEnums";
 
 export interface RecipeStore {
-  userId: Ref<string>;
   recipes?: Ref<Recipe[]>;
-  publicRecipes?: Ref<Recipe[]>;
+  existingPublicRecipes?: Ref<Recipe[]>;
   allTags?: Ref<Recipe[]>;
+  ethansFavouritePublicIds: Ref<ObjectId>;
   selectedRecipeId: Ref<string>;
-  personalFilters: Ref<string[]>;
   existingPublicRecipes: Ref<Recipe[]>;
-  newPublicRecipes: Ref<Recipe[]>;
-  removedPublicRecipes: Ref<Recipe[]>;
-  allTags: Ref<string[]>;
-  usedPublicRecipeIndices: Ref<number[]>;
-  selectedRecipeId: Ref<string>;
-  isSelectedRecipePublic: Ref<boolean>;
   editSelectedRecipe: Ref<boolean>;
+  tempRecipeDeleteArray: Ref<Recipe[]>;
+  tempRecipeSaveArray: Ref<Recipe[]>;
+  selectedRecipe(): Ref<Recipe>;
+  isSelectedRecipePublic(): Ref<boolean>;
+  isSelectedRecipeLocalUsers(): Ref<boolean>;
   personalFilters(): Ref<string[]>;
   recipesLength(): Ref<number>;
   existingPublicRecipesLength(): Ref<number>;
-  selectedRecipe(): Ref<Recipe>;
   getAllRecipeTags(): Ref<string[]>
   useFilteredRecipes(activeFilters: string[]): Ref<Recipe[]>;
   setInitialRecipeState(userData: UserState, publicRecipeData: Recipe[]): void;
@@ -38,6 +35,20 @@ export interface RecipeStore {
 
 export type NewRecipe = Omit<Recipe, '_id'>;
 
+export type CachedRecipeState = RecipeState & { expiresAt: Date };
+
+export type RecipeState = {
+  recipes: Recipe[];
+  existingPublicRecipes?: Recipe[];
+  allTags: string[];
+  ethansFavouritePublicIds: ObjectId[];
+  selectedRecipeId: ObjectId;
+  existingPublicRecipes: Recipe[];
+  editSelectedRecipe: boolean;
+  tempRecipeDeleteArray: Recipe[];
+  tempRecipeSaveArray: Recipe[];
+}
+
 export type Recipe = {
   _id: ObjectId;
   name: string;
@@ -52,7 +63,6 @@ export type Recipe = {
   tags: string[];
   notes: string[];
   userId: ObjectId;
-  copyDetails?: CopyDetails
 }
 
 export type RecipeInfo = {
@@ -102,11 +112,4 @@ export type RatingItem = {
   userId?: string; 
   rating?: number; 
   timestamp?: Date; 
-}
-
-export type CopyDetails = {
-  originalCreatorId?: ObjectId,
-  originalRecipeId?: ObjectId,
-  copiedAt?: Date,
-  modifications?: boolean
 }

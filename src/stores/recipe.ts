@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref, computed, ComputedRef, Ref } from 'vue'
 import { useUserStore } from './user'
-import type { Recipe } from '@/types/Recipes'
+import type { Recipe, RecipeState, RecipeStore } from '@/types/Recipes'
 import { useAppStore } from './app'
 import { useDataService } from '@/composables/useDataService'
 import { Visibility } from '@/types/RecipesEnums'
 import { ObjectId } from 'bson'
+import { setSessionData } from '@/utilities'
+import { CACHED_DATA_TTL } from '@/constants'
 
 export const useRecipeStore = defineStore('recipes', () => {
   const userStore = useUserStore();
@@ -32,7 +34,6 @@ export const useRecipeStore = defineStore('recipes', () => {
   ]);
 
   const selectedRecipeId = ref<ObjectId | undefined>();
-  // const isSelectedRecipePublic = ref<boolean>(false);
   const editSelectedRecipe = ref<boolean>(false);
   const tempRecipeSaveArray = ref<Recipe[]>([]);
   const tempRecipeDeleteArray = ref<Recipe[]>([]);
@@ -43,7 +44,8 @@ export const useRecipeStore = defineStore('recipes', () => {
     return allCurrentRecipes.find(r => r._id === selectedRecipeId.value);
   });
 
-  const isSelectedRecipePublic: ComputedRef<boolean> = computed(() => selectedRecipe.value?.visibility === Visibility.Public)
+  const isSelectedRecipePublic: ComputedRef<boolean> = computed(() => selectedRecipe.value?.visibility === Visibility.Public);
+
   const isSelectedRecipeLocalUsers: ComputedRef<boolean> = computed(() => recipes.value.some(recipe => recipe._id === selectedRecipe.value?._id))
 
   const personalFilters: ComputedRef<string[]> = computed(() => userStore.getUserPersonalPreferences || []);
@@ -199,6 +201,34 @@ export const useRecipeStore = defineStore('recipes', () => {
     selectedRecipeId.value = undefined;
   }
 
+  function hydrateStore(RecipeState: RecipeState) {
+    recipes.value = RecipeState.recipes || [];
+    existingPublicRecipes.value = RecipeState.existingPublicRecipes || [];
+    allTags.value = RecipeState.allTags || []
+    ethansFavouritePublicIds.value = RecipeState.ethansFavouritePublicIds || [];
+    selectedRecipeId.value = RecipeState.selectedRecipeId;
+    editSelectedRecipe.value = RecipeState.editSelectedRecipe;
+    tempRecipeSaveArray.value = RecipeState.tempRecipeSaveArray;
+    tempRecipeDeleteArray.value = RecipeState.tempRecipeDeleteArray;
+
+  }
+  
+  function cacheRecipeState() {
+    console.log('caching recipes')
+    setSessionData('recipes', {
+      recipes: recipes.value,
+      existingPublicRecipes: existingPublicRecipes.value,
+      allTags: allTags.value,
+      ethansFavouritePublicIds: ethansFavouritePublicIds.value,
+      selectedRecipeId: selectedRecipeId.value,
+      editSelectedRecipe: editSelectedRecipe.value,
+      tempRecipeSaveArray: tempRecipeSaveArray.value,
+      tempRecipeDeleteArray: tempRecipeDeleteArray.value,
+      expiresAt: new Date().getTime() + (CACHED_DATA_TTL)
+    });
+    console.log('finished recipes')
+  }
+
   function resetState() {
     recipes.value = [];
     existingPublicRecipes.value = [];
@@ -209,6 +239,9 @@ export const useRecipeStore = defineStore('recipes', () => {
   function resetUserRecipeState() {
     recipes.value = [];
     allTags.value = [];
+    editSelectedRecipe.value = false;
+    tempRecipeSaveArray.value = [];
+    tempRecipeDeleteArray.value = [] ;
     clearSelectedRecipeId();
   }
 
@@ -245,6 +278,8 @@ export const useRecipeStore = defineStore('recipes', () => {
     addNewTempRecipe,
     removeTempLocalRecipe,
     clearSelectedRecipeId,
+    hydrateStore,
+    cacheRecipeState,
     resetState,
     resetUserRecipeState
   }

@@ -52,6 +52,7 @@ onMounted(async () => {
       const publicRecipes = await dataService.getPublicRecipes();
       if(!publicRecipes) throw new Error('No Public Recipes Found');
       recipeStore.setInitialPublicRecipeState(publicRecipes);
+      recipeStore.cacheRecipeState();
     } catch (error) {
       console.log('loading public recipes error: ', error)
     }
@@ -122,7 +123,8 @@ onMounted(async () => {
   const token = route.query.token as string;
   if (token) {
     try {
-      await authService.validatePasswordToken(token);
+      const isValid = await authService.validatePasswordToken(token);
+      if (!isValid) throw new Error('Validation Token no longer Valid')
       validToken.value = true;
       appStore.setAuthModalType('set-password');
     } catch (error) {
