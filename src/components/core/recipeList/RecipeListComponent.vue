@@ -30,14 +30,14 @@ function closeRecipeDetails() {
   recipeStore.clearSelectedRecipeId();
 }
 
-function openRecipeDetail(id: string) {
-  recipeStore.setSelectedRecipeId(new ObjectId(id));
+function openRecipeDetail(id: ObjectId) {
+  console.log('opening: ', id)
+  recipeStore.setSelectedRecipeId(id);
 }
 
 function newRecipeAdded() {
   console.log('adding');
-  const tempId = uuidv4();
-  recipeStore.setSelectedRecipeId(new ObjectId(tempId));
+  recipeStore.setSelectedRecipeId(new ObjectId());
   recipeStore.setEditStatusSelectedId(true);
   isAddedRecipeNew.value = true;
 }

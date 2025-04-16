@@ -56,8 +56,8 @@ function onEditRecipe() {
 
 function onDeleteRecipe() {
   console.log('removing')
-
-  recipeStore.removeRecipeById(selectedRecipe!._id);
+  recipeStore.prepareRecipeDeletion(selectedRecipe!._id);
+  dataService.deleteRecipe(selectedRecipe!._id);
   recipeStore.clearSelectedRecipeId();
   emit('removedRecipe')
 }

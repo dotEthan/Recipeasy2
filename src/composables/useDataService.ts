@@ -8,6 +8,7 @@ import {
   StandardRecipeApiResponse,
   StandardUserApiResponse
 } from '@/types/ApiResponse';
+import { ObjectId } from 'bson';
 
 export function useDataService() {
 
@@ -34,7 +35,7 @@ export function useDataService() {
       if (!returnRecipe) throw new Error('Recipe Returned Blank. Retry?')
 
       recipeStore.addRecipe(returnRecipe);
-      recipeStore.deleteTempRecipe(recipe);
+      recipeStore.removeTempLocalRecipe(recipe);
     } catch(error) {
       console.log('Saving Recipe error: ', error); 
     }
@@ -43,7 +44,7 @@ export function useDataService() {
   const updateUserRecipes = async (recipe: Recipe): Promise<LocalUser | undefined> => {
     try {
       const addUserRecipesResponse = await axios.patch<StandardUserApiResponse>('/user-recipes', {
-        id: recipe._id,
+        id: recipe._id.toString(),
         originalUserId: recipe.userId
       },{
         headers: {
@@ -80,7 +81,7 @@ export function useDataService() {
       if (!returnedRecipe) throw new Error('Recipe Returned Blank. Retry?')
 
       recipeStore.updateRecipe(returnedRecipe);
-      recipeStore.deleteTempRecipe(returnedRecipe);
+      recipeStore.removeTempLocalRecipe(returnedRecipe);
     } catch(error) {
       console.log('Updating Recipe error: ', error);
       
@@ -149,10 +150,24 @@ export function useDataService() {
     console.log('not needed, remove flow fully')
   }
 
-  const deletePublicRecipesData = async (publicRecipes: Recipe[]) => {
-    console.log('not needed, remove flow fully', publicRecipes)
-    
+  const deleteRecipe = async (id: ObjectId) => {
+    try {
+      const deletionResponse = await axios.delete('/recipe/' + id,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });   
+        console.log('DeletionResponse: ', deletionResponse);
+        if (deletionResponse.data.success) recipeStore.finishRecipeDeletion();
+        return deletionResponse;
+    } catch (error: unknown) {
+      // check all Roll back Optimistic UI 
+      console.log('error');
+      recipeStore.revertRecipeDeletion(id);
+      throw new Error('deleting recipe Error: ');
+    }
   }
 
-  return { saveNewRecipe, updateUserRecipes, updateRecipe, saveUserData, getPublicRecipes, savePublicRecipesData, deletePublicRecipesData, updatePublicRecipesData, getUserData, error }
+  return { saveNewRecipe, updateUserRecipes, updateRecipe, saveUserData, getPublicRecipes, savePublicRecipesData, deleteRecipe, updatePublicRecipesData, getUserData, error }
 }

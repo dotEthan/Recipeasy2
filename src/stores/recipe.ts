@@ -35,6 +35,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   // const isSelectedRecipePublic = ref<boolean>(false);
   const editSelectedRecipe = ref<boolean>(false);
   const tempRecipeSaveArray = ref<Recipe[]>([]);
+  const tempRecipeDeleteArray = ref<Recipe[]>([]);
 
   // Computed
   const selectedRecipe: ComputedRef<Recipe | undefined> = computed(() => {
@@ -120,7 +121,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     return [ref(ethansCollection), ...randomCollections];
   }
 
-  function getRecipeById(id: ObjectId) {
+  function getRecipeById(id: ObjectId): Recipe | undefined {
     return recipes.value.find((recipe) => recipe._id === id);
   }
   
@@ -133,11 +134,35 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   function setSelectedRecipeId(id: ObjectId) {
+    console.log('setting: ', id)
     selectedRecipeId.value = id;
   }
 
   function setEditStatusSelectedId(status: boolean) {
     editSelectedRecipe.value = status
+  }
+
+  function revertRecipeDeletion(id: ObjectId) {
+    console.log('delete failed')
+    if (tempRecipeDeleteArray.value.length > 0) {
+      const recipe = tempRecipeDeleteArray.value.find(recipe => recipe._id === id) as Recipe;
+      console.log('recipe has temps: ', recipe)
+      recipes.value.push(recipe);
+    } else {
+      console.log('no recipes waiting to be deleted')
+    }
+  }
+
+  function finishRecipeDeletion() {
+    tempRecipeDeleteArray.value = [];
+  }
+
+  function prepareRecipeDeletion(id: ObjectId) {
+    const recipe = getRecipeById(id);
+    console.log('has recipe:', recipe)
+    if (recipe) tempRecipeDeleteArray.value.push(recipe);
+    console.log('temp recipe:', tempRecipeDeleteArray)
+    removeRecipeById(id);
   }
 
   // TODO refactor into removeRecipeById(id)
@@ -165,7 +190,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     tempRecipeSaveArray.value.push(recipe);
   }
 
-  function deleteTempRecipe(recipeToDelete: Recipe) {
+  function removeTempLocalRecipe(recipeToDelete: Recipe) {
     const newArray = tempRecipeSaveArray.value.filter(recipe => recipe._id.toString() !== recipeToDelete._id.toString())
     tempRecipeSaveArray.value = newArray;
   }
@@ -198,6 +223,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     isSelectedRecipeLocalUsers,
     personalFilters,
     tempRecipeSaveArray,
+    tempRecipeDeleteArray,
     recipesLength,
     existingPublicRecipesLength,
     getAllRecipeTags,
@@ -210,11 +236,14 @@ export const useRecipeStore = defineStore('recipes', () => {
     addRecipe,
     setSelectedRecipeId,
     setEditStatusSelectedId,
+    finishRecipeDeletion,
+    revertRecipeDeletion,
+    prepareRecipeDeletion,
     removeRecipeById,
     addToPublicRecipes,
     removeFromPublicRecipes,
     addNewTempRecipe,
-    deleteTempRecipe,
+    removeTempLocalRecipe,
     clearSelectedRecipeId,
     resetState,
     resetUserRecipeState

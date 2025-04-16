@@ -104,7 +104,7 @@ function determineMealTime(hours: number) {
 function closeRecipeDetails() {
   console.log('closeRecipeDetails called'); // Debugging
   recipeDetailsOpen.value = false;
-  recipeStore.setSelectedRecipeId('');
+  recipeStore.clearSelectedRecipeId();
 }
 
 defineExpose<ExposedInWelcomeComponent>({
