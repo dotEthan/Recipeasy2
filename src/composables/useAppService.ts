@@ -4,7 +4,7 @@ import { useAppStore } from '@/stores/app'
 import { useRecipeStore } from '@/stores/recipe';
 import { useUserStore } from '@/stores/user';
 import { debounce } from '@/utilities';
-import { StandardRecipeApiResponse } from '@/types/ApiResponse';
+import { StandardRecipeApiResponse, StandardUserApiResponse } from '@/types/ApiResponse';
 import { Recipe, RecipeStore } from '@/types/Recipes';
 import type { ScreenSize } from '@/types/ScreenSize'
 import { UserState } from '@/types/UserState';
@@ -80,9 +80,7 @@ export function useAppService() {
    */
   const fetchCsrfToken = async (): Promise<string | null> => {
     try {
-      const response = await axios.get('/csrf-token', { 
-        withCredentials: true 
-      });
+      const response = await axios.get('/admin/csrf-token');
       console.log('featching response: ', response)
       return response.data.csrfToken;
     } catch (error: unknown) {
@@ -100,14 +98,12 @@ export function useAppService() {
   * const { checkSession } = useAppService();
   * const isSessionActive = await checkSession();
    */
-  const checkSession = async (): Promise<StandardRecipeApiResponse> => {
-    const response = await axios.get('/check-session', { 
-      withCredentials: true 
-    });
+  const checkSession = async (): Promise<StandardUserApiResponse> => {
+    const response = await axios.get('/auth/session');
     console.log('cehckigng sessions res: ', response)
     return response.data;
   }
-
+// TODO check if still needed or better route
   onMounted(() => window.addEventListener('resize', onResize))
   onUnmounted(() => window.removeEventListener('resize', onResize))
 

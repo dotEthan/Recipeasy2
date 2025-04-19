@@ -6,7 +6,7 @@ export type UserState = {
   localUser: LocalUser;
   authorized: boolean | null;
 }
-export type CachedUserState = UserState & { expiresAt: Date }
+export type CachedUserState = UserState & { expiresAt: number }
 
 export type LocalUser = {
   _id: ObjectId;

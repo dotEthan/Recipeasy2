@@ -16,7 +16,7 @@ export type CachedAppState = {
   isMobileMenuOpen: boolean;
   route: string;
   lightMode: boolean;
-  expiresAt: Date;
+  expiresAt: number;
 }
 
 export type InitialAppState = Partial<AppState>;

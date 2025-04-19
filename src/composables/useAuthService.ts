@@ -45,15 +45,10 @@ export function useAuthService() {
   const registerUser = async (displayName: string, email: string, password: string)=> {
     try {
         clearError()
-        const response = await axios.post('/register', {
+        const response = await axios.post('/auth/register', {
           displayName,
           email,
           password
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          }
         });
   
         // Initialize stores
@@ -91,15 +86,7 @@ export function useAuthService() {
     try {
       clearError()
 
-      const userResponse = await axios.post('/login', {
-        email,
-        password
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
+      const userResponse = await axios.post('/auth/login', { email, password });
       console.log('signed in: ', userResponse);
     
       const localUser = userResponse.data.user as LocalUser;
@@ -117,10 +104,10 @@ export function useAuthService() {
       const appState = { 
         lightMode: userState.localUser.preferences.lightMode
       };
+      // TODO wasnt working, check
       appStore.setInitialAppState(appState);
       console.log('caching')
       userStore.cacheUserState();
-      console.log('finished all')
       recipeStore.cacheRecipeState();
       console.log('finished all')
       shoppingListStore.cacheListState();
@@ -148,11 +135,7 @@ export function useAuthService() {
   const logOut = async () => {
     try {
       clearError();
-      const response = await axios.post('/logout', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axios.delete('/auth/session');
 
       // Clear cached data
       clearSessionData('userData');
@@ -177,14 +160,10 @@ export function useAuthService() {
    */
   const verifyUser = async (enteredCode: string) => {
     try {
-      await axios.post('/verification-code', {
+      const response = await axios.post('/admin/verification-codes/verify', {
         code: enteredCode
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        }
       });
+      if (!response.data.success) throw new Error('User Verifcation Unsuccessful. Retry?');
       userStore.verifyUser();
       userStore.cacheUserState();
     } catch(err) {
@@ -202,13 +181,8 @@ export function useAuthService() {
    */
   const passwordReset = async (email: string) => {
     console.log('password reset api call')
-    await axios.post('/reset-password', {
+    await axios.post('/admin/password-reset-requests', {
       email
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
     });
   }
 
@@ -224,14 +198,9 @@ export function useAuthService() {
    */  
   const setNewPassword = async (password: string, token: string) => {
     console.log('set new Password api call')
-    await axios.post('/update-password', {
+    await axios.patch('/users/password', {
       password,
       code: token
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
     });
   }
 
@@ -246,13 +215,8 @@ export function useAuthService() {
    */  
   const validatePasswordToken = async (token: String) => {
     console.log('validate password token: ', token);
-    const validateRes = await axios.post<StandardRecipeApiResponse>('/validate-password-token', {
+    const validateRes = await axios.post<StandardRecipeApiResponse>('/admin/password-reset/validate', {
       code: token
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      }
     });
     const isTokenValid = validateRes.data.success;
     return isTokenValid

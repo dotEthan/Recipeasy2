@@ -43,10 +43,11 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 ### Working on Now:
 
 - Custom Backend Functionality using Expressjs, Nodejs, and MongoDB.
-- - Working: security & all auth flows. user Recipe Creation, and updating.User persistence public Recipe flow
-- - Error Handling & deploy
-- - To come: data persistence, url and routing (persistence) 
+- - Working: security & all auth flows. user Recipe Creation, and updating.User persistence public Recipe flow, Data Persistence - User, Recipes
+- - Error Handling
+- - test Data persistence and implement URL persistence
 - - test DELETE Fully working (all gets taged and ready for Cron job)
+- - Deploy
 
 ### In Progress (on hold as Backend Work On-Going)
 

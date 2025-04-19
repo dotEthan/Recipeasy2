@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import { useAppStore } from './stores/app';
 
 const instance: AxiosInstance = axios.create({
-  baseURL: '/api',
+  baseURL: '/api/v1',
   withCredentials: true,
 });
 

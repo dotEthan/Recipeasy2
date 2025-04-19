@@ -7,7 +7,7 @@ import { computed, ref } from 'vue';
 
 export const useUserStore = defineStore('user', () => {
   const authorized = ref<boolean | null>(false);
-  const localUser = ref<LocalUser|undefined>({_id: new ObjectId(), displayName: '', verified: false});
+  const localUser = ref<LocalUser|undefined>();
 
   const isAuthorized = computed(() => authorized.value);
   const isUserVerified = computed(() => localUser.value?.verified);

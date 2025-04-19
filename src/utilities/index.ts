@@ -128,10 +128,8 @@ export const clearSessionData = (key: string) => {
 * import { isDataExpired } from '/utilities';
  * isDataExpired('userData';
  */
-export const isCacheExpired = (expiresAt: Date) => { 
+export const isCacheExpired = (expiresAt: number) => { 
   const now = new Date();
-  console.log('checking expired:', expiresAt) 
-  console.log('checking now:', now) 
-  console.log('comparing now:', now <= expiresAt) 
-  return now <= expiresAt;
+  const expiryDate = new Date(expiresAt);
+  return now >= expiryDate;
 };  

@@ -11,7 +11,6 @@ import {
 import { ObjectId } from 'bson';
 import { useUserStore } from '@/stores/user';
 
-  
 
 /**
  * Handles all Data related API calls and initilizations
@@ -38,14 +37,7 @@ export function useDataService() {
    */
   const saveNewRecipe = async (recipe: Recipe) => {
     try{
-      const saveNewRecipeResponse = await axios.post<StandardRecipeApiResponse>('/new-recipe', {
-        recipe
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
+      const saveNewRecipeResponse = await axios.post<StandardRecipeApiResponse>('/recipes', { recipe });
       const returnedData = saveNewRecipeResponse.data
       console.log('save recipe response: ', returnedData)
 
@@ -71,18 +63,16 @@ export function useDataService() {
    * await dataService.updateUserRecipes(recipe);
    */
   const updateUserRecipes = async (recipe: Recipe): Promise<LocalUser | undefined> => {
+    const userId = userStore.getCurrentUserId;
     try {
-      const addUserRecipesResponse = await axios.patch<StandardUserApiResponse>('/user-recipes', {
-        id: recipe._id.toString(),
+      const addUserRecipesResponse = await axios.patch<StandardUserApiResponse>(`/users/${userId}/recipes`, {
+        recipeId: recipe._id.toString(),
         originalUserId: recipe.userId
-      },{
-        headers: {
-          'Content-Type': 'application/json'
-        }
       });
       const user = addUserRecipesResponse.data.data;
       if (!user) throw new Error('Updated Data not found, retry, reset FE changes?')
       console.log('recipe:', recipe)
+      userStore.setLocalUser(user)
       recipeStore.cacheRecipeState();
       userStore.cacheUserState();
       return user;
@@ -104,13 +94,8 @@ export function useDataService() {
     try{
       console.log('trying to save recipe: ', recipe);
       // TODO change endpoint name, remove update
-      const saveNewRecipeResponse = await axios.put<StandardRecipeApiResponse>('/update-recipe', {
+      const saveNewRecipeResponse = await axios.put<StandardRecipeApiResponse>(`/recipes/${recipe._id}`, {
         recipe
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        }
       });
       const returnedData = saveNewRecipeResponse.data
       console.log('save recipe response: ', returnedData)
@@ -141,12 +126,8 @@ export function useDataService() {
    */
   const getPublicRecipes = async (): Promise<Recipe[]> => {
     console.log('loading public recipes');
-    const publicRecipeResponse = await axios.get('/public-recipes',
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
+    // TODO add ?page=0?limit=50
+    const publicRecipeResponse = await axios.get('/recipes?visibility=public&page=0&limit=50');
     console.log(publicRecipeResponse.data);
     const publicRecipes = publicRecipeResponse.data;
     return publicRecipes;
@@ -161,13 +142,10 @@ export function useDataService() {
    * const { userData, userRecipes } = await dataService.getUserData();
    */
   const getUserData = async (): Promise<GetUserDataResponse> => {
-    console.log('Load Authorized User Data')
-    const userDataResponse = await axios.get('/user-data',
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
+    const userId = userStore.getCurrentUserId;
+    if (!userId) throw new Error('No userid to get, relogin')
+    console.log('Load Authorized User Data: ', userId)
+    const userDataResponse = await axios.get(`/users/${userId.toString()}`);
       const userData = userDataResponse.data.user;
       const userRecipes = userDataResponse.data.userRecipes;
       return {userData, userRecipes};
@@ -183,12 +161,7 @@ export function useDataService() {
    */
   const deleteRecipe = async (id: ObjectId) => {
     try {
-      const deletionResponse = await axios.delete<StandardRecipeApiResponse>('/recipe/' + id,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        });   
+      const deletionResponse = await axios.delete<StandardRecipeApiResponse>(`/recipes/${id}`);   
         console.log('DeletionResponse: ', deletionResponse);
         if (deletionResponse.data.success) recipeStore.finishRecipeDeletion();
         recipeStore.cacheRecipeState();

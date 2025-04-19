@@ -18,5 +18,5 @@ export type ShoppingList = {
 
 export type CachedShoppingListState = {
   shoppingLists: ShoppingList[];
-  expiresAt: Date;
+  expiresAt: number;
 }

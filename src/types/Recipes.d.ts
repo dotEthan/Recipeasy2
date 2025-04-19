@@ -35,7 +35,7 @@ export interface RecipeStore {
 
 export type NewRecipe = Omit<Recipe, '_id'>;
 
-export type CachedRecipeState = RecipeState & { expiresAt: Date };
+export type CachedRecipeState = RecipeState & { expiresAt: number };
 
 export type RecipeState = {
   recipes: Recipe[];

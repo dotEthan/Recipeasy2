@@ -51,10 +51,13 @@ export const useAppStore = defineStore('app', () => {
       // Check session
       const sessionActiveresponse = await appService.checkSession();
       console.log('checking Sesesion: ', sessionActiveresponse)
+
       const sessionIsActive = sessionActiveresponse.success
       const activeUser = sessionActiveresponse.data
+      if (!activeUser) throw new Error('No active user, relog in - toast display, no breaking');
+      userStore.setLocalUser(activeUser)
 
-      console.log('cached Data: User: ', cachedUserStore)
+      console.log('cached Data: User: ', isCacheExpired(cachedUserStore.expiresAt))
       console.log('cached Data: recipes: ', cachedRecipeStore)
       console.log('cached Data: app: ', cachedAppStore)
       console.log('cached Data: SL: ', cachedShoppingListStore)
