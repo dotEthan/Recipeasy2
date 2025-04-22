@@ -53,7 +53,7 @@ export const useAppStore = defineStore('app', () => {
       console.log('checking Sesesion: ', sessionActiveresponse)
 
       const sessionIsActive = sessionActiveresponse.success
-      const activeUser = sessionActiveresponse.data
+      const activeUser = sessionActiveresponse.user
       if (!activeUser) throw new Error('No active user, relog in - toast display, no breaking');
       userStore.setLocalUser(activeUser)
 
@@ -154,14 +154,7 @@ export const useAppStore = defineStore('app', () => {
   }
 
   async function fetchCsrfToken() {
-    const csrfToken = await appService.fetchCsrfToken();
-    if (csrfToken) {
-      userCsrfToken.value = csrfToken;
-    } else {
-      throw new Error('CsrfToken Not Updated, Retry?')
-    }
-    
-    return true;
+    await appService.fetchCsrfToken();
   }
 
   function isLoadingToggle() {

@@ -61,6 +61,7 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### To Come:
 
+- On Fresh load, 'get/session' called unecessarily
 - Tailor Cloudinary Image settings (refactor for new ExpressJS app)
 - Route Guards
 - Optimistic UI changes with reverts on errors (provide link to selected REcipe if fails)

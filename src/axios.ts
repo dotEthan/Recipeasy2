@@ -6,23 +6,29 @@ const instance: AxiosInstance = axios.create({
   withCredentials: true,
 });
 
-
 instance.interceptors.request.use((config) => {
   const appStore = useAppStore();
   const csrfToken = appStore.userCsrfToken;
+  console.log('csrftoken: ', csrfToken)
   if (csrfToken) {
     console.log('csrftoken: ', csrfToken)
     config.headers['X-CSRF-Token'] = csrfToken;
   }
   
   return config;
-}, (error: Error) => {
+}, 
+(error: Error) => {
   return Promise.reject(error);
 });
 
 // TODO Global Error Handler for API calls
 instance.interceptors.response.use(
-  (response) => response,
+  (response) => { 
+    const appStore = useAppStore();
+    const token = response.headers['x-csrf-token'];
+    if (token) appStore.userCsrfToken = token;
+    return response 
+  },
   (error) => {
     if (error.response?.status === 401) {
       // Handle unauthorized access

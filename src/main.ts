@@ -32,7 +32,9 @@ async function initializeApp() {
     .catch((error) => {
       app.mount('#app');
       console.error('csrfToken not fetched');
-      // TODO Global Error handling with 2-3x retry. 
+      // TODO Global Error handling 
+      // throw new Error(add retry with exponential backoff);
+      // const thisDelay = Math.min(1000 * Math.pow(startingdelay, attempt), 30000);
     });
 
   } catch (error) {

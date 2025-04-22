@@ -10,7 +10,7 @@ export type StandardRecipeApiResponse = {
 export type StandardUserApiResponse = {
     success: boolean;
     message?: string;
-    data?: LocalUser;
+    user: LocalUser;
 }
 
 export type GetUserDataResponse = {

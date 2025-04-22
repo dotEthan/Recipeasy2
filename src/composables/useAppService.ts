@@ -73,19 +73,16 @@ export function useAppService() {
   /**
    * Get the CSRF token on page reload
    * @param {} - Nothing!
-   * @returns {Promise<string>} - The precious csrfToken. My precious... 
+   * @returns {Promise<void>} - Nothing
    * @example
   * const { fetchCsrfToken } = useAppService();
   * const token = await fetchCsrfToken();
    */
-  const fetchCsrfToken = async (): Promise<string | null> => {
+  const fetchCsrfToken = async (): Promise<void> => {
     try {
-      const response = await axios.get('/admin/csrf-token');
-      console.log('featching response: ', response)
-      return response.data.csrfToken;
+      await axios.get('/admin/csrf-token');
     } catch (error: unknown) {
       console.error('Failed to fetch CSRF token', error);
-      return null;
     }
   }
 

@@ -34,6 +34,6 @@ export type UserRatings = {
 }
 
 export type UserRecipes = {
-  _id: ObjectId;
+  id: ObjectId;
   alterations?: Partial<Recipe>;
 }

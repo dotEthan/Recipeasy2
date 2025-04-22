@@ -48,7 +48,9 @@ export function useDataService() {
 
       recipeStore.addRecipe(returnRecipe);
       recipeStore.removeTempLocalRecipe(recipe);
+      userStore.addIdToLocalUserRecipes(recipe._id);
       recipeStore.cacheRecipeState();
+      userStore.cacheUserState();
     } catch(error) {
       console.log('Saving Recipe error: ', error); 
     }
@@ -69,9 +71,8 @@ export function useDataService() {
         recipeId: recipe._id.toString(),
         originalUserId: recipe.userId
       });
-      const user = addUserRecipesResponse.data.data;
-      if (!user) throw new Error('Updated Data not found, retry, reset FE changes?')
-      console.log('recipe:', recipe)
+      const user = addUserRecipesResponse.data.user;
+      if (!user) throw new Error('Updated Data not found, retry, reset FE changes?');
       userStore.setLocalUser(user)
       recipeStore.cacheRecipeState();
       userStore.cacheUserState();
@@ -82,8 +83,7 @@ export function useDataService() {
   }
 
   /**
-   * Calls API to update user's recipe data
-   * @todo pass recipe Id in url. RESTapi
+   * Calls API to update recipe data
    * @param {Recipe} - The newly created recipe
    * @returns {Promise<void>} - None
    * @example
@@ -108,9 +108,10 @@ export function useDataService() {
       recipeStore.updateRecipe(returnedRecipe);
       recipeStore.removeTempLocalRecipe(returnedRecipe);
       recipeStore.cacheRecipeState();
-      userStore.cacheUserState();
     } catch(error) {
       console.log('Updating Recipe error: ', error);
+      // recipeStore.recipesav(recipe._id);
+      recipeStore.cacheRecipeState();
       
     }
   };
@@ -153,6 +154,7 @@ export function useDataService() {
 
   /**
    * Calls API to get delete a recipe
+   * @todo error handling
    * @param {ObjectId} - Recipe to be deleted's id
    * @returns {StandardRecipeApiResponse} - An res object htat includes 'success', 'message', and error data is success: false
    * @example
@@ -161,16 +163,18 @@ export function useDataService() {
    */
   const deleteRecipe = async (id: ObjectId) => {
     try {
-      const deletionResponse = await axios.delete<StandardRecipeApiResponse>(`/recipes/${id}`);   
-        console.log('DeletionResponse: ', deletionResponse);
-        if (deletionResponse.data.success) recipeStore.finishRecipeDeletion();
-        recipeStore.cacheRecipeState();
-        return deletionResponse;
+      await axios.delete(`/recipes/${id}`);   
+      console.log('Deletion successful');
+      recipeStore.finishRecipeDeletion();
+      userStore.removeIdFromLocalUserRecipes(id);
+      userStore.cacheUserState();
+      recipeStore.cacheRecipeState();
     } catch (error: unknown) {
       // check all Roll back Optimistic UI 
       console.log('error');
       recipeStore.revertRecipeDeletion(id);
       recipeStore.cacheRecipeState();
+
       throw new Error('deleting recipe Error: ');
     }
   }

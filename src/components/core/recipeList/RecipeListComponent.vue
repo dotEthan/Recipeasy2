@@ -35,7 +35,7 @@ function openRecipeDetail(id: ObjectId) {
   recipeStore.setSelectedRecipeId(id);
 }
 
-function newRecipeAdded() {
+function addNewRecipe() {
   console.log('adding');
   recipeStore.setSelectedRecipeId(new ObjectId());
   recipeStore.setEditStatusSelectedId(true);
@@ -63,11 +63,11 @@ function editingFinishedCleanUp() {
       <FilterComponent @filter="setFilters" :filters="allRecipeTags" />
     </div>
     <div class="recipeRow" v-if="recipeStore.recipesLength">
-      <NewRecipeButtonComponent class="recipe-item-contain" icon-size="large" @add-new-recipe="newRecipeAdded" />
+      <NewRecipeButtonComponent class="recipe-item-contain" icon-size="large" @add-new-recipe="addNewRecipe" />
       <RecipeListItemComponent
         class="recipe-item-contain"
         v-for="recipe in filteredRecipes.value"
-        :key="recipe._id.toString()"
+        :key="recipe._id?.toString() ?? uuidv4()"
         :recipeData="recipe"
         @openRecipe="openRecipeDetail"
         @removedRecipe="removedRecipe" 

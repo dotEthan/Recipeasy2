@@ -39,6 +39,10 @@ export const useRecipeStore = defineStore('recipes', () => {
   const tempRecipeDeleteArray = ref<Recipe[]>([]);
 
   // Computed
+  const getAllUserRecipes: ComputedRef<Recipe[]> = computed(() => {
+    return recipes.value.concat(tempRecipeSaveArray.value);
+  });
+
   const selectedRecipe: ComputedRef<Recipe | undefined> = computed(() => {
     const allCurrentRecipes = recipes.value.concat(existingPublicRecipes.value);
     return allCurrentRecipes.find(r => r._id === selectedRecipeId.value);
@@ -68,8 +72,8 @@ export const useRecipeStore = defineStore('recipes', () => {
   function useFilteredRecipes(activeFilters: string[]): ComputedRef<Recipe[]> {
     const allFilters = new Set([...personalFilters.value, ...activeFilters]);
     return computed(() => {
-      if (allFilters.size === 0) return recipes.value;
-      return recipes.value.filter((recipe) => {
+      if (allFilters.size === 0) return getAllUserRecipes.value;
+      return getAllUserRecipes.value.filter((recipe) => {
         return recipe.tags.some((tag) => allFilters.has(tag));
       });
     })
@@ -193,8 +197,12 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   function removeTempLocalRecipe(recipeToDelete: Recipe) {
-    const newArray = tempRecipeSaveArray.value.filter(recipe => recipe._id.toString() !== recipeToDelete._id.toString())
+    const newArray = tempRecipeSaveArray.value.filter(recipe => recipe.name !== recipeToDelete.name)
     tempRecipeSaveArray.value = newArray;
+  }
+
+  function revertFailedSave(recipeToDelete: Recipe) { 
+  
   }
 
   function clearSelectedRecipeId() {
@@ -251,6 +259,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     selectedRecipeId,
     existingPublicRecipes,
     editSelectedRecipe,
+    getAllUserRecipes,
     selectedRecipe,
     isSelectedRecipePublic,
     isSelectedRecipeLocalUsers,

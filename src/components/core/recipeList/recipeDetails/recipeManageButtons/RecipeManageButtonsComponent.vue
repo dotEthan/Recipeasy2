@@ -63,9 +63,9 @@ function onDeleteRecipe() {
 }
 
 async function addPublicRecipeToPersonal() {
-    if (!selectedRecipe) throw new Error('selected Recipe data does not exist, refresh page?')
+    if (!selectedRecipe) throw new Error('selected Recipe data does not exist, refresh page?');
     recipeStore.addRecipe(selectedRecipe);
-    userStore.updateLocalUserRecipeArray(selectedRecipe._id)
+    userStore.addIdToLocalUserRecipes(selectedRecipe._id);
     console.log(selectedRecipe);
     await router.push('/recipes');
     recipeStore.setSelectedRecipeId(selectedRecipe._id);

@@ -7,7 +7,6 @@ import { useRecipeStore } from '@/stores/recipe';
 // import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue';
 // import { useImageUpload } from '@/composables/useImageUpload';
 import ToolTipComponent from '../../shared/toolTip/ToolTipComponent.vue';
-import { useUserStore } from '@/stores/user';
 import { createNewRecipe } from '@/utilities';
 import { Visibility } from '@/types/RecipesEnums';
 import { useDataService } from '@/composables/useDataService';
@@ -16,7 +15,7 @@ import { useDataService } from '@/composables/useDataService';
 
 const props = defineProps({
   isNew: Boolean,
-  selectedRecipe: Object as PropType<Recipe>
+  selectedRecipe: Object as PropType<Recipe | undefined>
 });
 const emit = defineEmits(['editingFinished','recipeDeleted']);
 
@@ -74,7 +73,8 @@ function onSubmit() {
     
     onEditingOver();
   } else {
-    console.log('not valid');
+    // TODO Handle error state locally 
+    console.log('not valid, handle locally');
   }
   //TODO add new tags (ingredients, cuisine, meal type)
   // const allUserTags: string[] = Array.from(

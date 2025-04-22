@@ -39,8 +39,16 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  function updateLocalUserRecipeArray(recipeId: ObjectId) {
-    localUser.value?.recipes?.push({_id: recipeId});
+  function addIdToLocalUserRecipes(recipeId: ObjectId) {
+    localUser.value?.recipes?.push({id: recipeId});
+  }
+
+  function removeIdFromLocalUserRecipes(recipeId: ObjectId) {
+    if (!localUser.value) return;
+
+    localUser.value.recipes = localUser.value.recipes?.filter((recipe) => {
+      return recipe.id !== recipeId
+    }) ?? [];
   }
 
   function hydratestore(userState: UserState) {
@@ -74,7 +82,8 @@ export const useUserStore = defineStore('user', () => {
     setLocalUser,
     setInitialUserState,
     verifyUser,
-    updateLocalUserRecipeArray,
+    addIdToLocalUserRecipes,
+    removeIdFromLocalUserRecipes,
     hydratestore,
     cacheUserState,
     resetState,
