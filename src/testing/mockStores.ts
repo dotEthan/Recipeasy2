@@ -38,8 +38,6 @@ export const getMockedRecipeStore = (overrides: Partial<RecipeStore> = {}) => ({
     setSelectedRecipeId: vi.fn(),
     setEditStatusSelectedId: vi.fn(),
     removeRecipeById: vi.fn(),
-    addToPublicRecipes: vi.fn(),
-    removeFromPublicRecipes: vi.fn(),
     resetNewPublicRecipes: vi.fn(),
     resetRemovedPublicRecipes: vi.fn(),
     resetState: vi.fn(),

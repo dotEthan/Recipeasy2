@@ -2,6 +2,14 @@ import { RecipeFormData } from '@/types/form'
 import { Recipe } from '@/types/Recipes'
 import { ref, computed } from 'vue'
 
+/**
+ * Validation service to monitor the webform
+ * @todo Still needed? Link into global handler store or replaced by?
+//  * @returns - errors, validateField, validateForm
+ * @example
+ * validateForm(form);  
+ */
+
 type ValidationRules = typeof validationRules;
 
 const validationRules = {

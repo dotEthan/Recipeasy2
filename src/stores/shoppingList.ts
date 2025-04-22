@@ -8,6 +8,11 @@ import { useUserStore } from './user'
 import { setSessionData } from '@/utilities'
 import { CACHED_DATA_TTL } from '@/constants'
 
+/**
+ * Store for all Shopping list Related Data
+ * @todo Update Mock Store and Apply store types
+ * @returns {Object} -  shoppingLists, editingListIndex, editingItemIndex, setInitialListState, setEditingListIndex, setEditingItemIndex, getItemValue, addNewList, addToDefaultList, deleteList, setDefaultList, deleteListItem, hydrateStore, cacheListState, resetState
+ */
 export const useShoppingListStore = defineStore('shopping-lists', () => {
   const userStore = useUserStore();
 

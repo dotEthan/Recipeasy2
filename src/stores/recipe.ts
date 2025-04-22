@@ -1,18 +1,22 @@
 import { defineStore } from 'pinia'
 import { ref, computed, ComputedRef, Ref } from 'vue'
 import { useUserStore } from './user'
-import type { Recipe, RecipeState, RecipeStore } from '@/types/Recipes'
+import type { Recipe, RecipeState } from '@/types/Recipes'
 import { useAppStore } from './app'
-import { useDataService } from '@/composables/useDataService'
 import { Visibility } from '@/types/RecipesEnums'
 import { ObjectId } from 'bson'
 import { setSessionData } from '@/utilities'
 import { CACHED_DATA_TTL } from '@/constants'
 
+/**
+ * Store for all Recipe Related Data
+ * @todo Update Mock Store and Apply store types
+ * @returns {Object} - recipes, allTags, selectedRecipeId, existingPublicRecipes, editSelectedRecipe, getAllUserRecipes, selectedRecipe, isSelectedRecipePublic, isSelectedRecipeLocalUsers, personalFilters, tempRecipeSaveArray, tempRecipeDeleteArray, recipesLength, existingPublicRecipesLength, getAllRecipeTags, useFilteredRecipes, setInitialUserRecipeState, setInitialPublicRecipeState, generatePublicRecipeCollections, updatePublicRecipe, getRecipeById, updateRecipe, addRecipe, setSelectedRecipeId, setEditStatusSelectedId, finishRecipeDeletion, revertRecipeDeletion, prepareRecipeDeletion, removeRecipeById, addNewTempRecipe, removeTempLocalRecipe, clearSelectedRecipeId, hydrateStore, cacheRecipeState, resetState, resetUserRecipeState
+ */
+
 export const useRecipeStore = defineStore('recipes', () => {
   const userStore = useUserStore();
   const appStore = useAppStore();
-  const dataService = useDataService();
 
   // Variables
   const recipes = ref<Recipe[]>([]);
@@ -127,6 +131,20 @@ export const useRecipeStore = defineStore('recipes', () => {
     return [ref(ethansCollection), ...randomCollections];
   }
 
+  function updatePublicRecipe(recipe: Recipe) {
+    console.log('updating public recipe as well')
+    const index = existingPublicRecipes.value.findIndex((publicRecipe) => publicRecipe._id === recipe._id);
+    if (index === -1) {
+      console.log('Not found in public recipe array');
+      return;
+    }
+    existingPublicRecipes.value = [
+      ...existingPublicRecipes.value.slice(0, index),
+      recipe,
+      ...existingPublicRecipes.value.slice(index+1)
+    ]
+  }
+
   function getRecipeById(id: ObjectId): Recipe | undefined {
     return recipes.value.find((recipe) => recipe._id === id);
   }
@@ -136,7 +154,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   function addRecipe(recipe: Recipe) {
-    recipes.value.push(recipe)
+    recipes.value = [...recipes.value, recipe];
   }
 
   function setSelectedRecipeId(id: ObjectId) {
@@ -153,7 +171,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     if (tempRecipeDeleteArray.value.length > 0) {
       const recipe = tempRecipeDeleteArray.value.find(recipe => recipe._id === id) as Recipe;
       console.log('recipe has temps: ', recipe)
-      recipes.value.push(recipe);
+      addRecipe(recipe);
     } else {
       console.log('no recipes waiting to be deleted')
     }
@@ -166,30 +184,18 @@ export const useRecipeStore = defineStore('recipes', () => {
   function prepareRecipeDeletion(id: ObjectId) {
     const recipe = getRecipeById(id);
     console.log('has recipe:', recipe)
-    if (recipe) tempRecipeDeleteArray.value.push(recipe);
+    if (recipe) {
+      tempRecipeDeleteArray.value = [...tempRecipeDeleteArray.value, recipe]
+    }
     console.log('temp recipe:', tempRecipeDeleteArray)
     removeRecipeById(id);
   }
 
-  // TODO refactor into removeRecipeById(id)
   function removeRecipeById(id: ObjectId) {
-    const recipeToDelete = recipes.value.find((recipe) => recipe._id === id)
-    const deletedRecipeIndex = recipeToDelete ? recipes.value.indexOf(recipeToDelete) : -1
-    if (deletedRecipeIndex >= 0) {
-      recipes.value.splice(deletedRecipeIndex, 1)
-    } else {
-      console.log('Recipe does not exist')
-    }
-  }
-
-  function addToPublicRecipes(newPublicRecipe: Recipe) {
-    // TODO remve this function from everywhere if not already
-    console.log('not needed to add: ', newPublicRecipe);
-  }
-
-  function removeFromPublicRecipes(id: string) {
-    // TODO remve this function from everywhere if not already
-    console.log('not needed to remove: ', id);
+    const index = recipes.value.findIndex(recipe => recipe._id === id);
+    if (index === -1) throw new Error('Recipe for deletion does not exist');
+    
+    recipes.value = recipes.value.filter(recipe => recipe._id !== id);
   }
 
   function addNewTempRecipe(recipe: Recipe) {
@@ -201,8 +207,8 @@ export const useRecipeStore = defineStore('recipes', () => {
     tempRecipeSaveArray.value = newArray;
   }
 
-  function revertFailedSave(recipeToDelete: Recipe) { 
-  
+  function revertFailedUpdate(recipeToDelete: Recipe) { 
+    // TODO Ruh Roh!
   }
 
   function clearSelectedRecipeId() {
@@ -273,6 +279,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     setInitialUserRecipeState,
     setInitialPublicRecipeState,
     generatePublicRecipeCollections,
+    updatePublicRecipe,
     getRecipeById,
     updateRecipe,
     addRecipe,
@@ -282,10 +289,9 @@ export const useRecipeStore = defineStore('recipes', () => {
     revertRecipeDeletion,
     prepareRecipeDeletion,
     removeRecipeById,
-    addToPublicRecipes,
-    removeFromPublicRecipes,
     addNewTempRecipe,
     removeTempLocalRecipe,
+    revertFailedUpdate,
     clearSelectedRecipeId,
     hydrateStore,
     cacheRecipeState,

@@ -14,6 +14,13 @@ import { CachedAppState, InitialAppState } from '@/types/AppState'
 import { CachedShoppingListState } from '@/types/ShoppingLists'
 import { CACHED_DATA_TTL } from '@/constants'
 
+/**
+ * Store for all App State
+ * @todo Update Mock Store and Apply store types
+ * @todo ScreenSize to enum
+ * @returns {Object} - testModeOn, screenSize, isMobileMenuOpen, appHasUnsavedChanges, showUnsavedChangesModal, userCsrfToken, isLoading, lightMode, authModalType, isTestModeOn, isAuthModalOpen, initializeApp, setInitialAppState, resetAppStates, turnTestModeOn, turnTestModeOff, setAuthModalType, setScreenSize, fetchCsrfToken, isLoadingToggle, hydrateStore, cacheAppState, resetState
+ */
+
 type ScreenSize = 'sm' | 'md' | 'lg'
 
 export const useAppStore = defineStore('app', () => {

@@ -2,6 +2,14 @@ import { ref } from 'vue';
 import type { Ref } from 'vue';
 import { useCloudinarySignature } from './useCloudinarySignature';
 
+/**
+ * Signed image uploading using Cloudinary and Firebase
+ * @todo Replaced soon
+ * @returns - errors, validateField, validateForm
+ * @example
+ * validateForm(form);  
+ */
+
 interface UploadResponse {
   secure_url: string;
   public_id: string;

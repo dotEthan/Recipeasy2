@@ -26,8 +26,6 @@ export interface RecipeStore {
   setSelectedRecipeId(id: string): void;
   setEditStatusSelectedId(status: boolean): void;
   removeRecipeById(id: string):void
-  addToPublicRecipes(newPublicRecipe: Recipe): void,
-  removeFromPublicRecipes(id: string): void,
   resetNewPublicRecipes(): void;
   resetRemovedPublicRecipes(): void;
   resetState(): void;

@@ -68,6 +68,7 @@ async function addPublicRecipeToPersonal() {
     userStore.addIdToLocalUserRecipes(selectedRecipe._id);
     console.log(selectedRecipe);
     await router.push('/recipes');
+    // TODO: Do we open it? Hides the route movement
     recipeStore.setSelectedRecipeId(selectedRecipe._id);
     await dataService.updateUserRecipes(selectedRecipe);
 }

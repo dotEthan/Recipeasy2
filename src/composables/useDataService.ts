@@ -43,7 +43,7 @@ export function useDataService() {
 
       if (!returnedData.success) throw new Error(`recipe save not successful: ${returnedData.message}`);
 
-      const returnRecipe = returnedData.data;
+      const returnRecipe = returnedData.recipe;
       if (!returnRecipe) throw new Error('Recipe Returned Blank. Retry?')
 
       recipeStore.addRecipe(returnRecipe);
@@ -53,6 +53,7 @@ export function useDataService() {
       userStore.cacheUserState();
     } catch(error) {
       console.log('Saving Recipe error: ', error); 
+      throw new Error(`Save New Recipe Fail: ${error}`)
     }
   };
 
@@ -84,6 +85,7 @@ export function useDataService() {
 
   /**
    * Calls API to update recipe data
+   * @todo Figure out revertFailedUpdate properly
    * @param {Recipe} - The newly created recipe
    * @returns {Promise<void>} - None
    * @example
@@ -93,7 +95,6 @@ export function useDataService() {
   const updateRecipe = async (recipe: Recipe) => {
     try{
       console.log('trying to save recipe: ', recipe);
-      // TODO change endpoint name, remove update
       const saveNewRecipeResponse = await axios.put<StandardRecipeApiResponse>(`/recipes/${recipe._id}`, {
         recipe
       });
@@ -102,15 +103,18 @@ export function useDataService() {
 
       if (!returnedData.success) throw new Error(`recipe upate not successful: ${returnedData.message}`);
 
-      const returnedRecipe = returnedData.data;
-      if (!returnedRecipe) throw new Error('Recipe Returned Blank. Retry?')
+      const returnedRecipe = returnedData.recipe;
+      if (!returnedRecipe) throw new Error('Recipe Returned Blank. Possible?');
 
+      if (returnedRecipe.userId === userStore.getCurrentUserId) {
+        recipeStore.updatePublicRecipe(returnedRecipe);
+      }
       recipeStore.updateRecipe(returnedRecipe);
       recipeStore.removeTempLocalRecipe(returnedRecipe);
       recipeStore.cacheRecipeState();
     } catch(error) {
       console.log('Updating Recipe error: ', error);
-      // recipeStore.recipesav(recipe._id);
+      recipeStore.revertFailedUpdate(recipe);
       recipeStore.cacheRecipeState();
       
     }
@@ -128,7 +132,7 @@ export function useDataService() {
   const getPublicRecipes = async (): Promise<Recipe[]> => {
     console.log('loading public recipes');
     // TODO add ?page=0?limit=50
-    const publicRecipeResponse = await axios.get('/recipes?visibility=public&page=0&limit=50');
+    const publicRecipeResponse = await axios.get('/recipes?visibility=public&page=1&limit=25');
     console.log(publicRecipeResponse.data);
     const publicRecipes = publicRecipeResponse.data;
     return publicRecipes;

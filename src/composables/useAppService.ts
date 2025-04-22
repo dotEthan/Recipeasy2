@@ -1,15 +1,9 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import axios from '@/axios';
 import { useAppStore } from '@/stores/app'
-import { useRecipeStore } from '@/stores/recipe';
-import { useUserStore } from '@/stores/user';
 import { debounce } from '@/utilities';
-import { StandardRecipeApiResponse, StandardUserApiResponse } from '@/types/ApiResponse';
-import { Recipe, RecipeStore } from '@/types/Recipes';
+import { StandardUserApiResponse } from '@/types/ApiResponse';
 import type { ScreenSize } from '@/types/ScreenSize'
-import { UserState } from '@/types/UserState';
-import { useShoppingListStore } from '@/stores/shoppingList';
-import { ShoppingList, ShoppingListState } from '@/types/ShoppingLists';
 
 /**
  * Handles all methods to help bootstrap the App: CSRF tokens, screen size tracking.
@@ -18,9 +12,6 @@ import { ShoppingList, ShoppingListState } from '@/types/ShoppingLists';
 
 export function useAppService() {
   const appStore = useAppStore();
-  const recipeStore = useRecipeStore();
-  const userStore = useUserStore();
-  const shoppingListStore = useShoppingListStore();
   const screenWidth = ref(window.innerWidth);
 
   /**
