@@ -72,9 +72,11 @@ router.beforeEach(async (to, from, next) => {
     next('/')
     return
   }
+  console.log('router guard')
   // TODO add recipe ID to url query so no need to reset as each navigation will reset when id not there. 
   recipeStore.clearSelectedRecipeId();
   recipeStore.setEditStatusSelectedId(false);
+  console.log('router guard')
   next()
 })
 

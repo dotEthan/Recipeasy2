@@ -11,6 +11,7 @@ import { CACHED_DATA_TTL } from '@/constants'
 /**
  * Store for all Recipe Related Data
  * @todo Update Mock Store and Apply store types
+ * @todo refactor to multiple stores?
  * @returns {Object} - recipes, allTags, selectedRecipeId, existingPublicRecipes, editSelectedRecipe, getAllUserRecipes, selectedRecipe, isSelectedRecipePublic, isSelectedRecipeLocalUsers, personalFilters, tempRecipeSaveArray, tempRecipeDeleteArray, recipesLength, existingPublicRecipesLength, getAllRecipeTags, useFilteredRecipes, setInitialUserRecipeState, setInitialPublicRecipeState, generatePublicRecipeCollections, updatePublicRecipe, getRecipeById, updateRecipe, addRecipe, setSelectedRecipeId, setEditStatusSelectedId, finishRecipeDeletion, revertRecipeDeletion, prepareRecipeDeletion, removeRecipeById, addNewTempRecipe, removeTempLocalRecipe, clearSelectedRecipeId, hydrateStore, cacheRecipeState, resetState, resetUserRecipeState
  */
 
@@ -51,10 +52,12 @@ export const useRecipeStore = defineStore('recipes', () => {
     const allCurrentRecipes = recipes.value.concat(existingPublicRecipes.value);
     return allCurrentRecipes.find(r => r._id === selectedRecipeId.value);
   });
-
+  
   const isSelectedRecipePublic: ComputedRef<boolean> = computed(() => selectedRecipe.value?.visibility === Visibility.Public);
 
-  const isSelectedRecipeLocalUsers: ComputedRef<boolean> = computed(() => recipes.value.some(recipe => recipe._id === selectedRecipe.value?._id))
+  const isSelectedRecipeInLocalUsersRecipes: ComputedRef<boolean> = computed(() => recipes.value.some(recipe => recipe._id === selectedRecipe.value?._id))
+
+  const isSelectedRecipeLocalUsers: ComputedRef<boolean> = computed(() => selectedRecipe.value?.userId === userStore.getCurrentUserId);
 
   const personalFilters: ComputedRef<string[]> = computed(() => userStore.getUserPersonalPreferences || []);
 
@@ -268,6 +271,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     getAllUserRecipes,
     selectedRecipe,
     isSelectedRecipePublic,
+    isSelectedRecipeInLocalUsersRecipes,
     isSelectedRecipeLocalUsers,
     personalFilters,
     tempRecipeSaveArray,

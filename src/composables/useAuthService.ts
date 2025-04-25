@@ -75,6 +75,7 @@ export function useAuthService() {
 
   /**
    * Calls API to login user and then set user's data in store
+   * @todo if password reset flow initialized?
    * @param {string} email - The user's email
    * @param {string} password - the user's password
    * @returns {Promise<boolean>} - A boolean to show if the user is verified or not
@@ -198,7 +199,7 @@ export function useAuthService() {
    */  
   const setNewPassword = async (password: string, token: string) => {
     console.log('set new Password api call')
-    await axios.patch('/users/password', {
+    await axios.patch('/admin/user-password', {
       password,
       code: token
     });

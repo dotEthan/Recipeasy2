@@ -21,6 +21,7 @@ const filteredRecipes = computed(() => {
   return recipes
 })
 
+console.log('recipes: ')
 let allRecipeTags = ref<string[] | undefined>(undefined)
 
 allRecipeTags.value = recipeStore.getAllRecipeTags;

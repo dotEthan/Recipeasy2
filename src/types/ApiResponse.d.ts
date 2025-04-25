@@ -25,3 +25,9 @@ export type GetUserDataResponse = {
     userData: LocalUser;
     userRecipes: Recipe[];
 }
+
+export interface ImageUploadResponse {
+  success: boolean;
+  url: string;
+  message?: string;
+}

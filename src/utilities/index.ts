@@ -133,3 +133,13 @@ export const isCacheExpired = (expiresAt: number) => {
   const expiryDate = new Date(expiresAt);
   return now >= expiryDate;
 };  
+
+  /**
+   * Extracts public_id from Cloudinary URL
+   * @param url - The Cloudinary URL
+   * @returns string - The public_id of the image
+   */
+  export const getPublicIdFromUrl = (url: string): string => {
+    const matches = url.match(/\/v\d+\/(.+)\.[^.]+$/);
+    return matches ? matches[1] : '';
+  };

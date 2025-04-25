@@ -13,7 +13,7 @@ defineProps({
           <div class="recipe-image-contain">
             <img :src="selectedRecipe?.imgPath" class="recipe-image-bg" />
             <div class="recipe-name">
-              <h4>{{ selectedRecipe?.name }}</h4>
+              <h3>{{ selectedRecipe?.name }}</h3>
             </div>
           </div>
           <div class="recipe-description">
@@ -48,18 +48,20 @@ defineProps({
 
 .recipe-header
   width: 100%
-  min-height: 100px
+  min-height: 150px
   display: flex
   flex-direction: column
 
   @media (min-width: 768px)
     flex-direction: row
-    height: 300px
+    height: 350px
 
 
 .recipe-image-contain
   position: relative
+  display: flex
   width: 100%
+  text-align: center
 
   @media (min-width: 768px)
     width: 50%
@@ -67,15 +69,17 @@ defineProps({
 .recipe-image-bg
   width: 100%
   min-height: 100px
-  object-fit: cover
+  object-fit: contain
   object-position: center
   border-radius: 5px
-  max-height: 100px
+  max-height: 150px
+  max-width: 500px
   padding-left: 10px
   padding-right: 10px
 
   @media (min-width: 768px)
-    max-height: 300px
+    max-height: 350px
+    max-width: 500px
     border-radius: 10px
 
 .recipe-name
@@ -85,8 +89,12 @@ defineProps({
   justify-content: center
   align-items: center
   width: 100%
-  background-color: rgba(255,255,255,0.9)
+  background-color: rgba(225,225,225,0.8)
   height: 30px
+  padding: 0 25px
+
+  @media (min-width: 768px)
+    height: 75px
 
   h4
     margin: 0

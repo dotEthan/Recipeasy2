@@ -28,7 +28,6 @@ interface UploadError {
  * Manages upload state, preview URLs, and provides error handling
  */
 export function useImageUpload() {
-  // const { generateSignature, isLoading: isGeneratingSignature } = useCloudinarySignature();
   
   const isUploading = ref(false);
   const isDeleting = ref(false);
@@ -36,16 +35,6 @@ export function useImageUpload() {
   const uploadedUrl: Ref<string | null> = ref(null);
   const previewUrl: Ref<string | null> = ref(null);
 
-  /**
-   * Creates a preview URL for an image file
-   * @param file - The image file to preview
-   */
-  const createPreview = (file: File) => {
-    if (previewUrl.value) {
-      URL.revokeObjectURL(previewUrl.value);
-    }
-    previewUrl.value = URL.createObjectURL(file);
-  };
 
   /**
    * Extracts public_id from Cloudinary URL
@@ -76,10 +65,7 @@ export function useImageUpload() {
         throw new Error('Invalid image URL');
       }
 
-      const signatureData = await generateSignature({
-        operation: 'delete',
-        publicId
-      });
+      const signatureData = {timestamp: '', signature: ''}
 
       if (!signatureData) {
         throw new Error('Failed to generate deletion signature');
@@ -131,14 +117,7 @@ export function useImageUpload() {
 
     try {
       // Generate signature for secure upload
-      const signatureData = await generateSignature({
-        operation: 'upload'
-      });
-
-      if (!signatureData) {
-        throw new Error('Failed to generate upload signature');
-      }
-
+      const signatureData = {folder: '', timestamp: '', uploadPreset: '', signature:''}
       // Create form data with signature and file
       const formData = new FormData();
       formData.append('file', file);
@@ -198,11 +177,9 @@ export function useImageUpload() {
   return {
     uploadImage,
     deleteImage,
-    createPreview,
     cleanup,
     isUploading,
     isDeleting,
-    isGeneratingSignature,
     error,
     uploadedUrl,
     previewUrl

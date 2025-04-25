@@ -1,3 +1,64 @@
+<script lang="ts" setup>
+import { MAX_FILE_SIZE } from '@/constants';
+import { onBeforeUnmount, ref } from 'vue'
+
+/**
+ * User Image Upload Component
+ * @todo - 'errorMessage', emit('upload-error') - still needed here?
+ * @returns - signIn, registerUser, logOut, verifyUser, passwordReset, setNewPassword, validatePasswordToken
+ * @example
+ * const authService = useAuthService();
+ * const authRes = await authService.registerUser('name', 'email@email.com', '1234abcd')
+ */
+
+ const emit = defineEmits<{
+  (e: 'file-selected', file: File): void
+}>();
+
+const fileInput = ref<HTMLInputElement | null>(null);
+const dragging = ref<boolean>(false);
+const errorMessage = ref<string>('');
+const selectedFile = ref<File | null>(null);
+
+const openFileDialog = (): void => {
+  fileInput.value?.click();
+}
+
+const handleFileChange = (event: Event): void=> {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    const file = input.files[0];
+    setNewImageFile(file);
+  }
+}
+
+const handleDrop = async (event: DragEvent): Promise<void> => {
+  event.preventDefault();
+  dragging.value = false;
+  if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
+    const file = event.dataTransfer.files[0];
+    setNewImageFile(file);
+  }
+}
+
+const setNewImageFile = (file: File) => {
+  if (file.size > MAX_FILE_SIZE) {
+    // TODO validation goign through error handler or right here right now? 
+    errorMessage.value = 'File size must be less than 5MB';
+    return;
+  }
+    
+  if (!file.type.match('image.*')) {
+    errorMessage.value = 'Please select an image file';
+    return;
+  }
+  
+  selectedFile.value = file;
+  emit('file-selected', file);
+}
+
+</script>
+
 <template>
   <div
     class="upload-container"
@@ -16,108 +77,21 @@
     <div 
       class="upload-area" 
       :class="{ 
-        dragging,
-        'is-loading': isUploading || isGeneratingSignature 
+        dragging
       }" 
       @click="openFileDialog"
     >
       <div class="upload-content">
-        <p v-if="!isUploading && !isGeneratingSignature">
+        <p>
           Click to upload or drag and drop an image
         </p>
-        <p v-else-if="isGeneratingSignature" class="status-message">
-          Preparing upload...
-        </p>
-        <p v-else class="status-message">
-          Uploading...
-        </p>
-        <div v-if="error" class="error-message" role="alert">
-          {{ error.message }}
-        </div>
-        <div v-if="previewUrl" class="preview-container">
-          <img :src="previewUrl" alt="Image preview" class="preview-image" />
+        <div v-if="errorMessage" class="error-message" role="alert">
+          {{ errorMessage }}
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { ref, onUnmounted } from 'vue'
-import { useImageUpload } from '@/composables/useImageUpload'
-
-interface EmitEvents {
-  (e: 'upload-complete', url: string): void
-  (e: 'upload-error', error: any): void
-  (e: 'upload-start'): void
-}
-
-const emit = defineEmits<EmitEvents>()
-
-const fileInput = ref<HTMLInputElement | null>(null)
-const dragging = ref<boolean>(false)
-
-const {
-  uploadImage,
-  createPreview,
-  cleanup,
-  isUploading,
-  isGeneratingSignature,
-  error,
-  previewUrl
-} = useImageUpload()
-
-const openFileDialog = (): void => {
-  fileInput.value?.click()
-}
-
-const handleFileChange = async (event: Event): Promise<void> => {
-  const input = event.target as HTMLInputElement
-  if (input.files && input.files[0]) {
-    await handleImageUpload(input.files[0])
-  }
-}
-
-const handleDrop = async (event: DragEvent): Promise<void> => {
-  dragging.value = false
-  if (event.dataTransfer?.files[0]) {
-    await handleImageUpload(event.dataTransfer.files[0])
-  }
-}
-
-const handleImageUpload = async (file: File): Promise<void> => {
-  // Validate file type
-  if (!file.type.startsWith('image/')) {
-    error.value = { message: 'Please upload an image file' }
-    emit('upload-error', error.value)
-    return
-  }
-
-  // Validate file size (max 5MB)
-  const maxSize = 5 * 1024 * 1024 // 5MB in bytes
-  if (file.size > maxSize) {
-    error.value = { message: 'Image size should be less than 5MB' }
-    emit('upload-error', error.value)
-    return
-  }
-
-  emit('upload-start')
-  createPreview(file)
-  
-  const uploadedUrl = await uploadImage(file)
-  if (uploadedUrl) {
-    console.log('upload is complete')
-    emit('upload-complete', uploadedUrl)
-  } else if (error.value) {
-    emit('upload-error', error.value)
-  }
-}
-
-// Cleanup preview URL when component is destroyed
-onUnmounted(() => {
-  cleanup()
-})
-</script>
 
 <style scoped>
 .upload-container {
@@ -176,20 +150,6 @@ onUnmounted(() => {
 .status-message {
   color: #666;
   font-style: italic;
-}
-
-.preview-container {
-  margin-top: 1rem;
-  max-width: 100%;
-  max-height: 300px;
-  overflow: hidden;
-  border-radius: 4px;
-}
-
-.preview-image {
-  max-width: 100%;
-  max-height: 300px;
-  object-fit: contain;
 }
 
 @media (hover: hover) {

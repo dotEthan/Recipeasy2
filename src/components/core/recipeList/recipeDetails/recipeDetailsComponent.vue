@@ -4,7 +4,6 @@ import ListItemComponent from './listItem/ListItemComponent.vue'
 import RecipeDetailHeaderComponent from './recipeDetailHeader/RecipeDetailHeaderComponent.vue';
 import RecipeManageButtonsComponent from './recipeManageButtons/RecipeManageButtonsComponent.vue';
 import XToCloseComponent from '../../shared/xToClose/XToCloseComponent.vue';
-// import { useImageUpload } from '@/composables/useImageUpload';
 import NoteItemComponent from './noteItem/NoteItemComponent.vue';
 import TagItemComponent from './tag-item/TagItemComponent.vue';
 import { Recipe } from '@/types/Recipes';
@@ -15,7 +14,6 @@ const props = defineProps({
 })
 const emit = defineEmits(['closeRecipeDetails', 'removedRecipe', 'editSelectedRecipe']);
 console.log('recipe details selected: ', props.selectedRecipe)
-// const { deleteImage } = useImageUpload();
 
 function onClose() {
   emit('closeRecipeDetails');

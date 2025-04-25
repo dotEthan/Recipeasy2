@@ -1,49 +1,26 @@
-import { getAuth } from 'firebase/auth';
-import { getFunctions, httpsCallable, HttpsCallableResult } from 'firebase/functions';
+import { SignatureRequest } from '@/types/apiRequest';
+import { CloudSignatureResponse } from '@/types/ApiResponse';
+import { SignatureError } from '@/types/errors';
 import { ref } from 'vue';
 import type { Ref } from 'vue';
+import { useDataService } from './useDataService';
 
-/**
- * Response from the Cloudinary signature Firebase function
- */
-interface SignatureResponse {
-  signature: string;
-  timestamp: number;
-  uploadPreset?: string;
-  folder?: string;
-  expirationTime: number;
-}
 
-interface SignatureRequest {
-  operation: 'upload' | 'delete';
-  publicId?: string;
-}
 
 /**
  * Error states for signature generation
  */
-interface SignatureError {
-  code: string;
-  message: string;
-  details?: string;
-}
 
 /**
  * Composable for handling Cloudinary signature generation
  * Manages the state of signature generation and provides error handling
  */
 export function useCloudinarySignature() {
+  const dataService = useDataService();
   const isLoading = ref(false);
   const error: Ref<SignatureError | null> = ref(null);
-  const signature: Ref<SignatureResponse | null> = ref(null);
+  const signature: Ref<CloudSignatureResponse | null> = ref(null);
 
-  // Initialize Firebase Functions
-  const functions = getFunctions(undefined, 'us-central1');
-
-  const createCloudinarySignature = httpsCallable<SignatureRequest, SignatureResponse>(
-    functions,
-    'createCloudinarySignature'
-  );
 
   /**
    * Generates a new Cloudinary signature using Firebase Functions
@@ -51,30 +28,23 @@ export function useCloudinarySignature() {
    * @param {SignatureRequest} request - The signature request details
    * @returns Promise<SignatureResponse | null>
    */
-  const generateSignature = async (request: SignatureRequest): Promise<SignatureResponse | null> => {
+  const generateSignature = async (request: SignatureRequest): Promise<CloudSignatureResponse | null> => {
     console.log('Starting signature generation process...', request);
     isLoading.value = true;
     error.value = null;
     signature.value = null;
 
     try {
-      const auth = getAuth();
-      if (!auth.currentUser) {
-        console.error('No authenticated user found');
-        throw new Error('User must be authenticated to generate signature');
-      }
-
       console.log('User authenticated, calling cloud function...');
-      const result: HttpsCallableResult<SignatureResponse> = await createCloudinarySignature(request);
-      
-      if (!result.data) {
+      const signature = await dataService.getCloudinarySignature();
+      if (!signature) {
         console.error('No data received from cloud function');
         throw new Error('No signature data received from server');
       }
 
       console.log('Successfully received signature from cloud function');
-      signature.value = result.data;
-      return result.data;
+      signature.value = signature;
+      return signature;
     } catch (e: any) {
       console.error('Failed to generate signature:', e);
       

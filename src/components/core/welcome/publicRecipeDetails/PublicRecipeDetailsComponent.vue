@@ -1,6 +1,5 @@
 <script setup lang="ts">
 // TODO DRY this and Welcome's publicRecipeDetailsComponent. componentize shared pieces.
-// import { useImageUpload } from '@/composables/useImageUpload';
 import XToCloseComponent from '../../shared/xToClose/XToCloseComponent.vue';
 import RecipeDetailHeaderComponent from '../../recipeList/recipeDetails/recipeDetailHeader/RecipeDetailHeaderComponent.vue';
 import RecipeManageButtonsComponent from '../../recipeList/recipeDetails/recipeManageButtons/RecipeManageButtonsComponent.vue';
@@ -10,23 +9,12 @@ import NoteItemComponent from '../../recipeList/recipeDetails/noteItem/NoteItemC
 import { useRecipeStore } from '@/stores/recipe';
 
 const emit = defineEmits(['closeRecipeDetails', 'removedRecipe', 'editSelectedRecipe']);
-// const { deleteImage } = useImageUpload();
 const recipeStore = useRecipeStore();
 const selectedRecipe = recipeStore.selectedRecipe;
 function onClose() {
   emit('closeRecipeDetails');
 }
 
-async function deleteRemovedRecipeImage() {
-  const imgPath = selectedRecipe?.imgPath;
-  if (imgPath) {
-    console.log('removing image: ', imgPath);
-    // const success = await deleteImage(imgPath)
-    // if (!success) {
-    //   console.error('Failed to delete image from Cloudinary')
-    // }
-  }
-}
 </script>
 
 <template>
@@ -37,7 +25,7 @@ async function deleteRemovedRecipeImage() {
       <div class="overlay-contain">
         <div class="recipe-overlay-content">
           <RecipeDetailHeaderComponent :selectedRecipe="selectedRecipe"/>
-          <RecipeManageButtonsComponent :can-edit="false" :can-delete="false" @removed-recipe="deleteRemovedRecipeImage"/>
+          <RecipeManageButtonsComponent :can-edit="false" :can-delete="false"/>
           <div class="ingredients-contain">
             <div class="type-section-title" v-if="selectedRecipe?.ingredients">
               INGREDIENTS: <span class="help-text">(click to add ingredient to shopping list)</span>

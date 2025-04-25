@@ -4,8 +4,6 @@ import router from '@/router/main';
 import { useRecipeStore } from '@/stores/recipe'
 import { useShoppingListStore } from '@/stores/shoppingList'
 import { useUserStore } from '@/stores/user';
-import { Recipe } from '@/types/Recipes';
-import { Visibility } from '@/types/RecipesEnums';
 import { ArrowBigRight } from 'lucide-vue-next';
 import { computed } from 'vue';
 // define buttons by props, default all false, unless instance wants
@@ -111,7 +109,7 @@ const openRegistration = () => {
             <span class="">Public Recipes</span>
         </button>
         <!--- Right Button -->
-        <button v-if="canDelete && userAuthorized && recipeStore.isSelectedRecipeLocalUsers" class="manage-btn-3" @click="onDeleteRecipe">
+        <button v-if="canDelete && userAuthorized && recipeStore.isSelectedRecipeInLocalUsersRecipes" class="manage-btn-3" @click="onDeleteRecipe">
             <div class="delete-recipe"></div>
             <span class="red-word">Delete</span>&nbsp;Recipe
         </button>

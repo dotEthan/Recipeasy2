@@ -1,17 +1,26 @@
+
 <script setup lang="ts">
 import DOMPurify from 'dompurify';
-import { nextTick, onMounted, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onUnmounted, ref } from 'vue';
 import type { ComponentPublicInstance, PropType, Ref } from 'vue';
 import { NewRecipe, Recipe } from '@/types/Recipes' ;
 import { useRecipeStore } from '@/stores/recipe';
-// import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue';
-// import { useImageUpload } from '@/composables/useImageUpload';
 import ToolTipComponent from '../../shared/toolTip/ToolTipComponent.vue';
-import { createNewRecipe } from '@/utilities';
-import { Visibility } from '@/types/RecipesEnums';
+import { createNewRecipe, getPublicIdFromUrl } from '@/utilities';
 import { useDataService } from '@/composables/useDataService';
+import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue';
+import { Blob } from 'buffer';
 
-//TODO Refactor into multiple components 'header', 'ingredients', 'directions'
+//////////////// User Upload mostly working, no more preview, should update imag eright away, need to save on submit (IF changed and delete original)
+
+/**
+ * Handles all recipe related services
+ * @todo formData sending in axios, need headers: {'Content-Type': 'multipart/form-data'} like with image?
+ * @todo Refactor into multiple components 'header', 'ingredients', 'directions'
+ * @todo Ensure all errors are handled
+ */
+// 
+//TODO 
 
 const props = defineProps({
   isNew: Boolean,
@@ -22,6 +31,9 @@ const emit = defineEmits(['editingFinished','recipeDeleted']);
 let formValid = true;
 let formData: Ref<Recipe>;
 let formError = ref('');
+const newImageFile = ref<File | null>(null);
+const imageChanged = ref(false);
+let originalImagePath = '';
 
 const recipeStore = useRecipeStore();
 const dataService = useDataService();
@@ -33,13 +45,9 @@ const directionRefs = ref<Record<string, HTMLInputElement | Element | ComponentP
 const directionTypeRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
 let tagsInput = ref('');
 
-// onMounted(() => {
-//   populateForm();
-// })
-// TODO wont work in onMounted, figure out why
-populateForm();
+// TODO populateForm wont work in onMounted, figure out why
 
-function populateForm() {
+const populateForm = () => {
   formData = ref<Recipe>({
     // Deep Clones the object
     ...JSON.parse(JSON.stringify(selectedRecipeToEdit)),
@@ -50,16 +58,29 @@ function populateForm() {
       ? JSON.parse(JSON.stringify(selectedRecipeToEdit.directions))
       : [],
     tags: selectedRecipeToEdit?.tags ? JSON.parse(JSON.stringify(selectedRecipeToEdit.tags)) : []
-  })
+  });
+  originalImagePath = formData.value.imgPath;
 }
+populateForm();
 
-function onSubmit() {
+const onSubmit = async () => {
+  console.log('submit')
   if (formData.value.url) {
     const santizedUrl = DOMPurify.sanitize(formData.value.url);
     formData.value.url = santizedUrl;
   }
+
+  if (imageChanged.value && newImageFile.value) {
+    const newUrl = await dataService.uploadRecipeImage(newImageFile.value);
+
+    formData.value.imgPath = newUrl;
+  }
+  if (originalImagePath.length > 0) {
+    console.log(`deleting: oriignal ${originalImagePath}`)
+    dataService.deleteRecipeImage(originalImagePath);
+  }
+
   if (formData?.value && !props.isNew) {
-    // TODO For "Update Recipe" If 'userId' !=== user's Id, then compared to original recipe and add alterations to User.recipe[id].alterations
     console.log('Updating existing Recipe');
     recipeStore.addNewTempRecipe(formData.value);
     dataService.updateRecipe(formData.value);
@@ -136,71 +157,85 @@ function onAddIngredient(ingredientIndex: number) {
     const newStepIndex = formData.value.ingredients[ingredientIndex].steps.length - 1
     const refKey = `amount-${ingredientIndex}-${newStepIndex}`
     const input = amountRefs.value[refKey] as HTMLInputElement
-    input?.focus()  
+    input?.focus();
   });
 }
 
 function onDeleteIngredient(ingredientTypeIndex: number, ingredientIndex: number) {
-  formData.value.ingredients[ingredientTypeIndex].steps.splice(ingredientIndex, 1)
+  formData.value.ingredients[ingredientTypeIndex].steps.splice(ingredientIndex, 1);
 }
 
 function onAddDirection(directionIndex: number) {
-  if (!formData.value.directions[directionIndex].steps) formData.value.directions[directionIndex].steps = ['']
-  formData.value.directions[directionIndex].steps.push('')
+  if (!formData.value.directions[directionIndex].steps) formData.value.directions[directionIndex].steps = [''];
+  formData.value.directions[directionIndex].steps.push('');
   nextTick(() => {
-    const newStepIndex = formData.value.directions[directionIndex].steps.length - 1
-    const refKey = `direction-${directionIndex}-${newStepIndex}`
-    const input = directionRefs.value[refKey] as HTMLInputElement
-    input?.focus()  
+    const newStepIndex = formData.value.directions[directionIndex].steps.length - 1;
+    const refKey = `direction-${directionIndex}-${newStepIndex}`;
+    const input = directionRefs.value[refKey] as HTMLInputElement;
+    input?.focus()  ;
   });
 }
 
 function onDeleteDirection(directionTypeIndex: number, directionIndex: number) {
-  formData.value.directions[directionTypeIndex].steps.splice(directionIndex, 1)
+  formData.value.directions[directionTypeIndex].steps.splice(directionIndex, 1);
 }
 
 function onAddNote() {
-  if (!formData.value.notes) formData.value.notes = []
-  console.log('notes: ', formData.value.notes)
-  formData.value.notes.push('')
+  if (!formData.value.notes) formData.value.notes = [];
+  console.log('notes: ', formData.value.notes);
+  formData.value.notes.push('');
 }
 
 function onDeleteNote(noteIndex: number) {
-  formData.value.notes?.splice(noteIndex, 1)
+  formData.value.notes?.splice(noteIndex, 1);
 }
 
-async function removeImage() {
+function handleRemoveImage() {
+  console.log('removing image path');
   if (formData.value.imgPath) {
-    const imgPath = formData.value.imgPath
-    formData.value.imgPath = ""
-    // const success = await deleteImage(imgPath)
-    // if (!success) {
-    //   console.error('Failed to delete image from Cloudinary')
-    // }
-    console.log('removing image path')
+    if (!imageChanged.value) imageChanged.value = true;
+    formData.value.imgPath = "";
+    newImageFile.value = null;
   }
 }
 
-function saveImagePath(uploadedImgURL: string) {
-  formData.value.imgPath = uploadedImgURL
+function handleImageSelected(file: File) {
+  console.log('image selected');
+  if (!imageChanged.value) imageChanged.value = true;
+  newImageFile.value = file;
+  formData.value.imgPath = URL.createObjectURL(file);
 }
 
 function addTag() {
-  const tagValue = tagsInput.value.trim()
+  const tagValue = tagsInput.value.trim();
   if (tagValue) {
-    formData.value.tags.push(tagValue)
-    tagsInput.value = ''
+    formData.value.tags.push(tagValue);
+    tagsInput.value = '';
   }
 }
 
 function removeTag(i: number) {
-  formData.value.tags.splice(i, 1)
+  formData.value.tags.splice(i, 1);
 }
+
+const onCancel = () => {
+  newImageFile.value = null;
+  imageChanged.value = false;
+  onEditingOver();
+}
+// onMounted(() => {
+//   populateForm();
+// })
+onUnmounted(() => {
+  if (formData.value.imgPath && formData.value.imgPath.startsWith('blob:')) {
+    URL.revokeObjectURL(formData.value.imgPath);
+  }
+});
 </script>
 
 <template>
   <div class="recipe-detail-container">
-    <div class="overlay-shadow" @click="onEditingOver"></div>
+    <div class="overlay-shadow" @click="onCancel"></div>
     <div class="recipe-overlay edit">
       <div class="overlay-contain edit">
         <div class="form-contain">
@@ -217,7 +252,7 @@ function removeTag(i: number) {
                   v-bind:class="{ 'show-tooltip': !formValid }" />
               </div>
               <div class="cancel-btn">
-                <button type="button" class="recipe-manage-btn cancel" @click="onEditingOver">
+                <button type="button" class="recipe-manage-btn cancel" @click="onCancel">
                   Cancel
                 </button>
               </div>
@@ -227,14 +262,17 @@ function removeTag(i: number) {
                 <div class="form-group">
                   <div class="image-title-bar">
                     <label>Recipe Image</label>
-                    <span class="remove-image" @click="removeImage" v-if="formData.imgPath">Remove Image</span>
+                    <span class="remove-image" @click="handleRemoveImage" v-if="formData.imgPath">Remove Image</span>
                   </div>
                   <img
                     :src="formData.imgPath"
                     class="img-responsive recipe-edit-image"
                     v-if="formData.imgPath"
                   />
-                  <UserImageUploadComponent @upload-complete="saveImagePath" v-else />
+                  <UserImageUploadComponent 
+                    @file-selected="handleImageSelected" 
+                    v-else
+                  />
                 </div>
               </div>
               <div class="edit-header-column">
