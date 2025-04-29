@@ -38,7 +38,7 @@ export const useAppStore = defineStore('app', () => {
   const isMobileMenuOpen = ref(false);
   const appHasUnsavedChanges = ref(false);
   const showUnsavedChangesModal = ref(false);
-  const userCsrfToken = ref('');
+  const csrfToken = ref('');
   const isLoading = ref(false);
   const lightMode = ref(true);
 
@@ -97,9 +97,6 @@ export const useAppStore = defineStore('app', () => {
           userStore.hydratestore(cachedUserStore); 
           recipeStore.hydrateStore(cachedRecipeStore);
           shoppingListStore.hydrateStore(cachedShoppingListStore.shoppingLists);
-
-          // set app state
-          // If data is older than X, make call to refresh, set TTL when saving
         }
       }
     } catch (error) {
@@ -161,7 +158,12 @@ export const useAppStore = defineStore('app', () => {
   }
 
   async function fetchCsrfToken() {
-    await appService.fetchCsrfToken();
+    const token = await appService.fetchCsrfToken();
+    if (!token) throw new Error('Csrf Token missing');
+    setCsrfToken(token);
+  }
+  async function setCsrfToken(token: string) {
+    csrfToken.value = token;
   }
 
   function isLoadingToggle() {
@@ -196,7 +198,7 @@ export const useAppStore = defineStore('app', () => {
     isMobileMenuOpen,
     appHasUnsavedChanges,
     showUnsavedChangesModal,
-    userCsrfToken,
+    csrfToken,
     isLoading,
     lightMode,
     authModalType,
@@ -210,6 +212,7 @@ export const useAppStore = defineStore('app', () => {
     setAuthModalType,
     setScreenSize,
     fetchCsrfToken,
+    setCsrfToken,
     isLoadingToggle,
     hydrateStore,
     cacheAppState,

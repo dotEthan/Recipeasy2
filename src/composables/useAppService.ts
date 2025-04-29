@@ -69,9 +69,10 @@ export function useAppService() {
   * const { fetchCsrfToken } = useAppService();
   * const token = await fetchCsrfToken();
    */
-  const fetchCsrfToken = async (): Promise<void> => {
+  const fetchCsrfToken = async (): Promise<string | undefined> => {
     try {
-      await axios.get('/admin/csrf-token');
+      const getTokenRes = await axios.get('/admin/csrf-token');
+      return getTokenRes.data.token;
     } catch (error: unknown) {
       console.error('Failed to fetch CSRF token', error);
     }

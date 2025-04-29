@@ -8,11 +8,8 @@ const instance: AxiosInstance = axios.create({
 
 instance.interceptors.request.use((config) => {
   const appStore = useAppStore();
-  const csrfToken = appStore.userCsrfToken;
-  console.log('csrftoken: ', csrfToken)
-  if (csrfToken) {
-    console.log('csrftoken: ', csrfToken)
-    config.headers['X-CSRF-Token'] = csrfToken;
+  if (appStore.csrfToken && config.method?.toUpperCase() !== 'GET') {
+    config.headers['X-CSRF-Token'] = appStore.csrfToken;
   }
   
   return config;
@@ -21,15 +18,16 @@ instance.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
-// TODO Global Error Handler for API calls
+// TODO Connect API calls to global error handler
 instance.interceptors.response.use(
   (response) => { 
     const appStore = useAppStore();
     const token = response.headers['x-csrf-token'];
-    if (token) appStore.userCsrfToken = token;
+    if (token) appStore.setCsrfToken(token);
     return response 
   },
   (error) => {
+    console.log("error handler switchboard here?");
     if (error.response?.status === 401) {
       // Handle unauthorized access
       // Maybe redirect to login or refresh token

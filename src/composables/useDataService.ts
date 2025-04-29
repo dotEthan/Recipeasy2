@@ -41,24 +41,22 @@ export function useDataService() {
     try {
       const saveNewRecipeResponse = await axios.post<StandardRecipeApiResponse>("/recipes", {
         recipe
-      })
-      const returnedData = saveNewRecipeResponse.data
-      console.log("save recipe response: ", returnedData)
-
+      });
+      const returnedData = saveNewRecipeResponse.data;
+      console.log("save recipe response: ", returnedData);
       if (!returnedData.success)
-        throw new Error(`recipe save not successful: ${returnedData.message}`)
+        throw new Error(`recipe save not successful: ${returnedData.message}`);
 
-      const returnRecipe = returnedData.recipe
-      if (!returnRecipe) throw new Error("Recipe Returned Blank. Retry?")
+      const returnedRecipe = returnedData.recipe;
+      if (!returnedRecipe) throw new Error("Recipe Returned Blank. Retry?");
 
-      recipeStore.addRecipe(returnRecipe)
-      recipeStore.removeTempLocalRecipe(recipe)
-      userStore.addIdToLocalUserRecipes(recipe._id)
-      recipeStore.cacheRecipeState()
-      userStore.cacheUserState()
+      recipeStore.finishSuccessfulSave(returnedRecipe);
+      userStore.addIdToLocalUserRecipes(recipe._id);
+      recipeStore.cacheRecipeState();
+      userStore.cacheUserState();
     } catch (error) {
-      console.log("Saving Recipe error: ", error)
-      throw new Error(`Save New Recipe Fail: ${error}`)
+      console.log("Saving Recipe error: ", error);
+      throw new Error(`Save New Recipe Fail: ${error}`);
     }
   }
 
@@ -113,7 +111,7 @@ export function useDataService() {
       console.log("save recipe response: ", returnedData)
 
       if (!returnedData.success)
-        throw new Error(`recipe upate not successful: ${returnedData.message}`)
+        throw new Error(`recipe update not successful: ${returnedData.message}`)
 
       const returnedRecipe = returnedData.recipe
       if (!returnedRecipe) throw new Error("Recipe Returned Blank. Possible?")
@@ -121,9 +119,8 @@ export function useDataService() {
       if (returnedRecipe.userId === userStore.getCurrentUserId) {
         recipeStore.updatePublicRecipe(returnedRecipe)
       }
-      recipeStore.updateRecipe(returnedRecipe)
-      recipeStore.removeTempLocalRecipe(returnedRecipe)
-      recipeStore.cacheRecipeState()
+      recipeStore.finishSuccessfulUpdate(returnedRecipe);
+      recipeStore.cacheRecipeState();
     } catch (error) {
       console.log("Updating Recipe error: ", error)
       recipeStore.revertFailedUpdate(recipe)

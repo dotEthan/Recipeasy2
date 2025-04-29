@@ -82,14 +82,14 @@ const onSubmit = async () => {
 
   if (formData?.value && !props.isNew) {
     console.log('Updating existing Recipe');
-    recipeStore.addNewTempRecipe(formData.value);
+    recipeStore.prepRecipeDataForUpdate(formData.value);
     dataService.updateRecipe(formData.value);
     
     onEditingOver();
   } else if (formData?.value && formValid) {
 
     console.log('Creating New Recipe');
-    recipeStore.addNewTempRecipe(formData.value);
+    recipeStore.backupNewRecipeDataForSave(formData.value);
     dataService.saveNewRecipe(formData.value);
     
     onEditingOver();

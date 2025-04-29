@@ -18,33 +18,18 @@ async function initializeApp() {
     console.log('info : ', info);
   };
   app.use(createPinia());
+  app.use(router);
  
- 
+  const appStore = useAppStore();
+
   try {
-    // TODO Increase timeout
- 
-    app.use(router);
-    const appStore = useAppStore();
-    
-    await appStore.fetchCsrfToken().then(() => {
-      app.mount('#app');
-    })
-    .catch((error) => {
-      app.mount('#app');
-      console.error('csrfToken not fetched');
-      // TODO Global Error handling 
-      // throw new Error(add retry with exponential backoff);
-      // const thisDelay = Math.min(1000 * Math.pow(startingdelay, attempt), 30000);
-    });
-
+    await appStore.fetchCsrfToken();
   } catch (error) {
-
-    console.error('App Initialization Failed', error);
-    // TODO Fallback strategy: mount anyway (add better)
-    app.use(router);
-    app.mount('#app');
-
-  }
+      console.error('csrfToken not fetched');
+      // TODO Retry logic?
+  } finally {
+    app.mount('#app')
+  };
 }
 
 initializeApp().catch(console.error);

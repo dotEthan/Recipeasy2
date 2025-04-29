@@ -89,7 +89,8 @@ export function useAuthService() {
 
       const userResponse = await axios.post('/auth/login', { email, password });
       console.log('signed in: ', userResponse);
-    
+      // TODO - if userResponse.newEmailVerifyCodeCreated then block signin, password change flow started
+      // notify to check email, or resend token if not available
       const localUser = userResponse.data.user as LocalUser;
       const userRecipesData: Recipe[] = userResponse.data.recipeResponse;
       const userState = { authorized: true, localUser: {

@@ -12,7 +12,8 @@ import { CACHED_DATA_TTL } from '@/constants'
  * Store for all Recipe Related Data
  * @todo Update Mock Store and Apply store types
  * @todo refactor to multiple stores?
- * @returns {Object} - recipes, allTags, selectedRecipeId, existingPublicRecipes, editSelectedRecipe, getAllUserRecipes, selectedRecipe, isSelectedRecipePublic, isSelectedRecipeLocalUsers, personalFilters, tempRecipeSaveArray, tempRecipeDeleteArray, recipesLength, existingPublicRecipesLength, getAllRecipeTags, useFilteredRecipes, setInitialUserRecipeState, setInitialPublicRecipeState, generatePublicRecipeCollections, updatePublicRecipe, getRecipeById, updateRecipe, addRecipe, setSelectedRecipeId, setEditStatusSelectedId, finishRecipeDeletion, revertRecipeDeletion, prepareRecipeDeletion, removeRecipeById, addNewTempRecipe, removeTempLocalRecipe, clearSelectedRecipeId, hydrateStore, cacheRecipeState, resetState, resetUserRecipeState
+ * @todo fix returns, that's ugly
+ * @returns {Object} - recipes, allTags, selectedRecipeId, existingPublicRecipes, editSelectedRecipe, getAllUserRecipes, selectedRecipe, isSelectedRecipePublic, isSelectedRecipeLocalUsers, personalFilters, tempRecipeSaveArray, tempRecipeDeleteArray, recipesLength, existingPublicRecipesLength, getAllRecipeTags, useFilteredRecipes, setInitialUserRecipeState, setInitialPublicRecipeState, generatePublicRecipeCollections, updatePublicRecipe, getRecipeById, updateRecipe, addRecipe, setSelectedRecipeId, setEditStatusSelectedId, finishRecipeDeletion, revertRecipeDeletion, prepareRecipeDeletion, removeRecipeById, backupOriginalRecipeData, removeTempLocalRecipe, clearSelectedRecipeId, hydrateStore, cacheRecipeState, resetState, resetUserRecipeState
  */
 
 export const useRecipeStore = defineStore('recipes', () => {
@@ -49,7 +50,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   });
 
   const selectedRecipe: ComputedRef<Recipe | undefined> = computed(() => {
-    const allCurrentRecipes = recipes.value.concat(existingPublicRecipes.value);
+    const allCurrentRecipes = recipes.value.concat(existingPublicRecipes.value).concat(tempRecipeSaveArray.value);
     return allCurrentRecipes.find(r => r._id === selectedRecipeId.value);
   });
   
@@ -169,19 +170,8 @@ export const useRecipeStore = defineStore('recipes', () => {
     editSelectedRecipe.value = status
   }
 
-  function revertRecipeDeletion(id: ObjectId) {
-    console.log('delete failed')
-    if (tempRecipeDeleteArray.value.length > 0) {
-      const recipe = tempRecipeDeleteArray.value.find(recipe => recipe._id === id) as Recipe;
-      console.log('recipe has temps: ', recipe)
-      addRecipe(recipe);
-    } else {
-      console.log('no recipes waiting to be deleted')
-    }
-  }
-
-  function finishRecipeDeletion() {
-    tempRecipeDeleteArray.value = [];
+  function backupNewRecipeDataForSave(recipe: Recipe) {
+    tempRecipeSaveArray.value.push(recipe);
   }
 
   function prepareRecipeDeletion(id: ObjectId) {
@@ -194,6 +184,21 @@ export const useRecipeStore = defineStore('recipes', () => {
     removeRecipeById(id);
   }
 
+  function finishRecipeDeletion() {
+    tempRecipeDeleteArray.value = [];
+  }
+
+  function revertRecipeDeletion(id: ObjectId) {
+    console.log('delete failed')
+    if (tempRecipeDeleteArray.value.length > 0) {
+      const recipe = tempRecipeDeleteArray.value.find(recipe => recipe._id === id) as Recipe;
+      console.log('recipe has temps: ', recipe)
+      addRecipe(recipe);
+    } else {
+      console.log('no recipes waiting to be deleted')
+    }
+  }
+
   function removeRecipeById(id: ObjectId) {
     const index = recipes.value.findIndex(recipe => recipe._id === id);
     if (index === -1) throw new Error('Recipe for deletion does not exist');
@@ -201,17 +206,40 @@ export const useRecipeStore = defineStore('recipes', () => {
     recipes.value = recipes.value.filter(recipe => recipe._id !== id);
   }
 
-  function addNewTempRecipe(recipe: Recipe) {
-    tempRecipeSaveArray.value.push(recipe);
+  // Optimistic UI - Remove from main array, add to temp while update in progress
+  // need two temp arrays, updated (to show recent updates), oldRecipe to revert to
+  function prepRecipeDataForUpdate(recipe: Recipe) {
+    const oldRecipe = recipes.value.find(existingRecipe => existingRecipe._id === recipe._id);
+    console.log('recipename: ', recipe.name)
+
+    if (!oldRecipe) throw new Error('no old recipe found for updating, ruh roh!')
+    tempRecipeSaveArray.value.push(oldRecipe);
+    removeRecipeById(recipe._id);
   }
 
-  function removeTempLocalRecipe(recipeToDelete: Recipe) {
-    const newArray = tempRecipeSaveArray.value.filter(recipe => recipe.name !== recipeToDelete.name)
+  function finishSuccessfulSave(updatedRecipe: Recipe) {
+    const newArray = tempRecipeSaveArray.value.filter(recipe => recipe.name !== updatedRecipe.name);
     tempRecipeSaveArray.value = newArray;
+
+    addRecipe(updatedRecipe);
   }
 
-  function revertFailedUpdate(recipeToDelete: Recipe) { 
-    // TODO Ruh Roh!
+  function finishSuccessfulUpdate(updatedRecipe: Recipe) {
+    const newArray = tempRecipeSaveArray.value.filter(recipe => recipe._id !== updatedRecipe._id);
+    tempRecipeSaveArray.value = newArray;
+
+    addRecipe(updatedRecipe);
+  }
+  function revertFailedUpdate(recipeToRevert: Recipe) { 
+    const oldRecipe = tempRecipeSaveArray.value.find(recipe => recipe._id === recipeToRevert._id);
+
+    const newArray = tempRecipeSaveArray.value.filter(recipe => recipe._id !== recipeToRevert._id)
+    tempRecipeSaveArray.value = newArray;
+
+    if (oldRecipe) {
+      console.log('oldRecipe: ', oldRecipe)
+      addRecipe(oldRecipe);
+    }
   }
 
   function clearSelectedRecipeId() {
@@ -289,12 +317,14 @@ export const useRecipeStore = defineStore('recipes', () => {
     addRecipe,
     setSelectedRecipeId,
     setEditStatusSelectedId,
+    backupNewRecipeDataForSave,
+    prepareRecipeDeletion,
     finishRecipeDeletion,
     revertRecipeDeletion,
-    prepareRecipeDeletion,
     removeRecipeById,
-    addNewTempRecipe,
-    removeTempLocalRecipe,
+    prepRecipeDataForUpdate,
+    finishSuccessfulUpdate,
+    finishSuccessfulSave,
     revertFailedUpdate,
     clearSelectedRecipeId,
     hydrateStore,
