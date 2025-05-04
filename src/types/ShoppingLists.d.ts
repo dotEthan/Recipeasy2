@@ -1,5 +1,3 @@
-import { ObjectId } from "bson";
-
 export type ShoppingListState = {
   shoppingLists: ShoppingList[];
   editingListIndex: number;
@@ -12,8 +10,8 @@ export type ShoppingList = {
   items: string[];
   isDefault: boolean;
   isOpen: boolean;
-  creator: ObjectId;
-  viewableBy: ObjectId[];
+  creator: string;
+  viewableBy: string[];
 }
 
 export type CachedShoppingListState = {

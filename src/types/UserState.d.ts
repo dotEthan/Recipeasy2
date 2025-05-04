@@ -1,6 +1,5 @@
 import type { Recipe } from '@/types/Recipes'
 import type { ShoppingList } from './ShoppingLists'
-import { ObjectId } from 'bson'
 
 export type UserState = {
   localUser: LocalUser;
@@ -9,7 +8,7 @@ export type UserState = {
 export type CachedUserState = UserState & { expiresAt: number }
 
 export type LocalUser = {
-  _id: ObjectId;
+  _id: string;
   firstName?: string;
   lastName?: string;
   displayName?: string;
@@ -28,12 +27,12 @@ export type UserPreferences = {
 }
 
 export type UserRatings = {
-  recipeId: ObjectId;
+  recipeId: string;
   rating: number;
   timestamp: date;
 }
 
 export type UserRecipes = {
-  id: ObjectId;
+  id: string;
   alterations?: Partial<Recipe>;
 }

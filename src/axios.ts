@@ -1,8 +1,8 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { useAppStore } from './stores/app';
 
 const instance: AxiosInstance = axios.create({
-  baseURL: '/api/v1',
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/v1`,
   withCredentials: true,
 });
 
@@ -20,13 +20,14 @@ instance.interceptors.request.use((config) => {
 
 // TODO Connect API calls to global error handler
 instance.interceptors.response.use(
-  (response) => { 
-    const appStore = useAppStore();
-    const token = response.headers['x-csrf-token'];
-    if (token) appStore.setCsrfToken(token);
+  (response: AxiosResponse) => { 
+    updateCsrfTokenFromAPIResponse(response);
     return response 
   },
   (error) => {
+    if (error.response) {
+      updateCsrfTokenFromAPIResponse(error.response);
+    }
     console.log("error handler switchboard here?");
     if (error.response?.status === 401) {
       // Handle unauthorized access
@@ -36,10 +37,17 @@ instance.interceptors.response.use(
     if (error.response?.status === 403) {
       // Handle forbidden access
     }
-    
     // Optional: log errors or show global error notification
     return Promise.reject(error)
   }
 )
+
+const updateCsrfTokenFromAPIResponse = (response: AxiosResponse) => {
+  const token = response.headers['x-csrf-token'];
+  if (token) {
+    const appStore = useAppStore();
+    appStore.setCsrfToken(token);
+  }
+}
 
 export default instance;

@@ -4,7 +4,6 @@ import { useUserStore } from './user'
 import type { Recipe, RecipeState } from '@/types/Recipes'
 import { useAppStore } from './app'
 import { Visibility } from '@/types/RecipesEnums'
-import { ObjectId } from 'bson'
 import { setSessionData } from '@/utilities'
 import { CACHED_DATA_TTL } from '@/constants'
 
@@ -25,21 +24,21 @@ export const useRecipeStore = defineStore('recipes', () => {
   const existingPublicRecipes = ref<Recipe[]>([]);
   const allTags = ref<string[]>([]);
   // TODO update to look at ethan.id's 5 stars
-  const ethansFavouritePublicIds = ref<ObjectId[]>([
-    new ObjectId('67f1259f3177aa84c4a0595e'),
-    new ObjectId('67f1259f3177aa84c4a0595d'),
-    new ObjectId('67f1259f3177aa84c4a0594e'),
-    new ObjectId('67f125883177aa84c4a05945'),
-    new ObjectId('67f1259f3177aa84c4a05952'),
-    new ObjectId('67f125883177aa84c4a05937'),
-    new ObjectId('67f125883177aa84c4a05938'),
-    new ObjectId('67f1259f3177aa84c4a05955'),
-    new ObjectId('67f965de2f1269daf320292e'),
-    new ObjectId('67f1259f3177aa84c4a0594b'),
-    new ObjectId('67f125883177aa84c4a05946'),
+  const ethansFavouritePublicIds = ref<string[]>([
+    '67f1259f3177aa84c4a0595e',
+    '67f1259f3177aa84c4a0595d',
+    '67f1259f3177aa84c4a0594e',
+    '67f125883177aa84c4a05945',
+    '67f1259f3177aa84c4a05952',
+    '67f125883177aa84c4a05937',
+    '67f125883177aa84c4a05938',
+    '67f1259f3177aa84c4a05955',
+    '67f965de2f1269daf320292e',
+    '67f1259f3177aa84c4a0594b',
+    '67f125883177aa84c4a05946',
   ]);
 
-  const selectedRecipeId = ref<ObjectId | undefined>();
+  const selectedRecipeId = ref<string | undefined>();
   const editSelectedRecipe = ref<boolean>(false);
   const tempRecipeSaveArray = ref<Recipe[]>([]);
   const tempRecipeDeleteArray = ref<Recipe[]>([]);
@@ -149,7 +148,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     ]
   }
 
-  function getRecipeById(id: ObjectId): Recipe | undefined {
+  function getRecipeById(id: string): Recipe | undefined {
     return recipes.value.find((recipe) => recipe._id === id);
   }
   
@@ -161,7 +160,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     recipes.value = [...recipes.value, recipe];
   }
 
-  function setSelectedRecipeId(id: ObjectId) {
+  function setSelectedRecipeId(id: string) {
     console.log('setting: ', id)
     selectedRecipeId.value = id;
   }
@@ -174,7 +173,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     tempRecipeSaveArray.value.push(recipe);
   }
 
-  function prepareRecipeDeletion(id: ObjectId) {
+  function prepareRecipeDeletion(id: string) {
     const recipe = getRecipeById(id);
     console.log('has recipe:', recipe)
     if (recipe) {
@@ -188,7 +187,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     tempRecipeDeleteArray.value = [];
   }
 
-  function revertRecipeDeletion(id: ObjectId) {
+  function revertRecipeDeletion(id: string) {
     console.log('delete failed')
     if (tempRecipeDeleteArray.value.length > 0) {
       const recipe = tempRecipeDeleteArray.value.find(recipe => recipe._id === id) as Recipe;
@@ -199,7 +198,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     }
   }
 
-  function removeRecipeById(id: ObjectId) {
+  function removeRecipeById(id: string) {
     const index = recipes.value.findIndex(recipe => recipe._id === id);
     if (index === -1) throw new Error('Recipe for deletion does not exist');
     
@@ -230,6 +229,7 @@ export const useRecipeStore = defineStore('recipes', () => {
 
     addRecipe(updatedRecipe);
   }
+
   function revertFailedUpdate(recipeToRevert: Recipe) { 
     const oldRecipe = tempRecipeSaveArray.value.find(recipe => recipe._id === recipeToRevert._id);
 
@@ -239,6 +239,18 @@ export const useRecipeStore = defineStore('recipes', () => {
     if (oldRecipe) {
       console.log('oldRecipe: ', oldRecipe)
       addRecipe(oldRecipe);
+    }
+  }
+  
+  function revertFailedSave(recipeToRevert: Recipe) { 
+    const oldRecipe = tempRecipeSaveArray.value.find(recipe => recipe.name === recipeToRevert.name);
+
+    const newArray = tempRecipeSaveArray.value.filter(recipe => recipe._id !== recipeToRevert._id)
+    tempRecipeSaveArray.value = newArray;
+
+    if (oldRecipe) {
+      console.log('oldRecipe: ', oldRecipe);
+      // TODO Notify User and return to edit screen? 
     }
   }
 
@@ -326,6 +338,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     finishSuccessfulUpdate,
     finishSuccessfulSave,
     revertFailedUpdate,
+    revertFailedSave,
     clearSelectedRecipeId,
     hydrateStore,
     cacheRecipeState,

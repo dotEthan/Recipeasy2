@@ -1,11 +1,10 @@
-import { ObjectId } from "bson";
 import { DurationUnits, Visibility } from "./RecipesEnums";
 
 export interface RecipeStore {
   recipes?: Ref<Recipe[]>;
   existingPublicRecipes?: Ref<Recipe[]>;
   allTags?: Ref<Recipe[]>;
-  ethansFavouritePublicIds: Ref<ObjectId>;
+  ethansFavouritePublicIds: Ref<string>;
   selectedRecipeId: Ref<string>;
   existingPublicRecipes: Ref<Recipe[]>;
   editSelectedRecipe: Ref<boolean>;
@@ -39,8 +38,8 @@ export type RecipeState = {
   recipes: Recipe[];
   existingPublicRecipes?: Recipe[];
   allTags: string[];
-  ethansFavouritePublicIds: ObjectId[];
-  selectedRecipeId: ObjectId;
+  ethansFavouritePublicIds: string[];
+  selectedRecipeId: string;
   existingPublicRecipes: Recipe[];
   editSelectedRecipe: boolean;
   tempRecipeDeleteArray: Recipe[];
@@ -48,7 +47,7 @@ export type RecipeState = {
 }
 
 export type Recipe = {
-  _id: ObjectId;
+  _id: string;
   name: string;
   description: string;
   imgPath: string;
@@ -60,7 +59,7 @@ export type Recipe = {
   visibility: Visibility;
   tags: string[];
   notes: string[];
-  userId: ObjectId;
+  userId: string;
 }
 
 export type RecipeInfo = {

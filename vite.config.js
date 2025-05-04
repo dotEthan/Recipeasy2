@@ -15,8 +15,8 @@ export default defineConfig({
                 target: 'http://localhost:8080',
                 changeOrigin: true,
                 cookieDomainRewrite: {
-                // Rewrite domain if needed
-                '*': ''
+                    // Rewrite domain if needed
+                    'localhost': 'localhost' 
                 },
                 onProxyRes(proxyRes) {
                     // Ensure cookies are properly forwarded
@@ -35,7 +35,4 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
     },
-    optimizeDeps: {
-      exclude: ['bson']
-    }
 });

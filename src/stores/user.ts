@@ -1,7 +1,6 @@
 import { CACHED_DATA_TTL } from '@/constants';
 import type { LocalUser, UserState } from '@/types/UserState';
 import { setSessionData } from '@/utilities';
-import { ObjectId } from 'bson';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
@@ -39,11 +38,11 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  function addIdToLocalUserRecipes(recipeId: ObjectId) {
+  function addIdToLocalUserRecipes(recipeId: string) {
     localUser.value?.recipes?.push({id: recipeId});
   }
 
-  function removeIdFromLocalUserRecipes(recipeId: ObjectId) {
+  function removeIdFromLocalUserRecipes(recipeId: string) {
     if (!localUser.value) return;
 
     localUser.value.recipes = localUser.value.recipes?.filter((recipe) => {

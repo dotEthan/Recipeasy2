@@ -10,7 +10,6 @@ import {
   StandardUserApiResponse,
   StandardApiResponse
 } from "@/types/ApiResponse"
-import { ObjectId } from "bson"
 import { useUserStore } from "@/stores/user"
 import { getPublicIdFromUrl } from "@/utilities"
 
@@ -56,6 +55,7 @@ export function useDataService() {
       userStore.cacheUserState();
     } catch (error) {
       console.log("Saving Recipe error: ", error);
+      recipeStore.revertFailedSave(recipe);
       throw new Error(`Save New Recipe Fail: ${error}`);
     }
   }
@@ -168,13 +168,13 @@ export function useDataService() {
    * Calls API to get delete a recipe
    * @todo error handling
    * @todo Optimistic UI & Revert
-   * @param {ObjectId} - Recipe to be deleted's id
+   * @param {string} - Recipe to be deleted's id
    * @returns {StandardRecipeApiResponse} - An res object htat includes 'success', 'message', and error data is success: false
    * @example
    * const dataService = useDataService();
    * const res = await dataService.deleteRecipe('1234abcd);
    */
-  const deleteRecipe = async (id: ObjectId) => {
+  const deleteRecipe = async (id: string) => {
     try {
       await axios.delete(`/recipes/${id}`)
       console.log("Deletion successful")

@@ -4,7 +4,6 @@ import CollectionItemComponent from './collectionItem/CollectionItemComponent.vu
 import type { PropType } from 'vue'
 import type { Recipe } from '@/types/Recipes'
 import { useRecipeStore } from '@/stores/recipe';
-import { ObjectId } from 'bson';
 
 defineProps({
   title: String,
@@ -15,7 +14,7 @@ const recipeStore = useRecipeStore()
 
 
 
-function openRecipeDetails(id: ObjectId) {
+function openRecipeDetails(id: string) {
   console.log('id: ', id)
   recipeStore.setSelectedRecipeId(id);
 }

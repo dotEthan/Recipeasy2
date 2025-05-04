@@ -8,7 +8,6 @@ import RecipeDetailsComponent from './recipeDetails/recipeDetailsComponent.vue'
 import RecipeEditComponent from './recipeEdit/RecipeEditComponent.vue'
 import RecipesEmptyComponent from './recipesEmpty/recipesEmptyComponent.vue'
 import NewRecipeButtonComponent from './newRecipeButton/newRecipeButtonComponent.vue'
-import { ObjectId } from 'bson'
 
 const recipeStore = useRecipeStore();
 let selectedRecipe = computed(() => recipeStore.selectedRecipe);
@@ -31,14 +30,14 @@ function closeRecipeDetails() {
   recipeStore.clearSelectedRecipeId();
 }
 
-function openRecipeDetail(id: ObjectId) {
+function openRecipeDetail(id: string) {
   console.log('opening: ', id)
   recipeStore.setSelectedRecipeId(id);
 }
-
+// TODO Check this is still working
 function addNewRecipe() {
   console.log('adding');
-  recipeStore.setSelectedRecipeId(new ObjectId());
+  recipeStore.setSelectedRecipeId('1234abcd');
   recipeStore.setEditStatusSelectedId(true);
   isAddedRecipeNew.value = true;
 }

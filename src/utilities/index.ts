@@ -1,10 +1,6 @@
 import { useUserStore } from "@/stores/user";
-import { CachedAppState } from "@/types/AppState";
-import { NewRecipe, RecipeState, RecipeStore } from "@/types/Recipes";
+import { NewRecipe } from "@/types/Recipes";
 import { Visibility } from "@/types/RecipesEnums";
-import { ShoppingList } from "@/types/ShoppingLists";
-import { UserState } from "@/types/UserState";
-import { ObjectId } from "bson";
 
 /**
  * Create URL slug out of recipe's title and id slice
@@ -74,7 +70,7 @@ export function createNewRecipe(): NewRecipe {
     notes: [],
     visibility: Visibility.Public,
     tags: [],
-    userId: new ObjectId(userId)
+    userId: userId
   }
   
   return newRecipe;
