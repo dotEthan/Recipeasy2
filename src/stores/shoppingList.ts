@@ -101,6 +101,7 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
     shoppingLists,
     editingListIndex,
     editingItemIndex,
+    defaultList,
     setInitialListState,
     setEditingListIndex,
     setEditingItemIndex,

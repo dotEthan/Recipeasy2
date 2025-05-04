@@ -8,7 +8,6 @@ import { FormField, FormData } from '@/types/authFormConfig';
 const authService = useAuthService();
 const appStore = useAppStore();
 
-
 const signinFields = [
     {
         name: 'email',

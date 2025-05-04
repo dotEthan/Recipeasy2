@@ -52,7 +52,7 @@ export function debounce(fn: Function, delay: number) {
   */
 export function createNewRecipe(): NewRecipe {
   const userStore = useUserStore();
-  const userId = userStore.getCurrentUserId;
+  const userId = userStore.getCurrentUserId || '';
   const newRecipe = {
     name: '',
     description: '',

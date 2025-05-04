@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {ref} from 'vue'
 import CollectionItemComponent from './collectionItem/CollectionItemComponent.vue'
 import type { PropType } from 'vue'
 import type { Recipe } from '@/types/Recipes'

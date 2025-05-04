@@ -21,7 +21,7 @@ const props = defineProps({
 console.log('currentList: ', props.currentList)
 console.log('currentListIndex: ', props.currentListIndex)
 
-const dummyData = { id: '', items: [], isDefault: false, isOpen: true }
+const dummyData = { id: '', items: [], isDefault: false, isOpen: true, creator: '', viewableBy: [''] }
 
 let currentList = props.currentList || (dummyData as ShoppingList)
 
@@ -29,7 +29,8 @@ let currentListItems = currentList?.items
 let isMinimized = ref(false)
 let editingListIndex = computed(() => shoppingListStore.editingListIndex)
 let editingItemIndex = computed(() => shoppingListStore.editingItemIndex)
-let defaultListId = computed(() => shoppingListStore.defaultListId)
+const defaultList = computed(() => shoppingListStore.defaultList);
+const defaultListId = defaultList.value?.id;
 
 const hideOrShow = computed(() => (!currentList.isOpen ? 'show' : 'hide'))
 

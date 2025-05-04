@@ -12,8 +12,6 @@ import AuthSetNewPasswordFormComponent from './authSetNewPasswordForm/AuthSetNew
 // TODO Should be in Splash Component, but rework of splash component coming. 
 const appStore = useAppStore();
 
-const emit = defineEmits(['close']);
-
 let thisType = ref(appStore.authModalType) as Ref<FormType>;
 
 const currentAuthComponent = computed(() => {
@@ -27,15 +25,16 @@ const currentAuthComponent = computed(() => {
   }
 })
 
-function onSwitchTypeHandler(type: FormType) {
-  console.log('switching modal type: ', type);
-  appStore.setAuthModalType(type);
+function onSwitchTypeHandler(type: unknown) {
+  const formType = type as FormType;
+  console.log('switching modal type: ', formType);
+  appStore.setAuthModalType(formType);
 }
 
 </script>
 <template>
   <AppModalComponent :xToClose="true" :backdrop="true">
-    <component :is="currentAuthComponent" @switch-type="onSwitchTypeHandler" />
+    <component :is="currentAuthComponent" @switch-type="onSwitchTypeHandler"  />
   </AppModalComponent>
 </template>
 <style lang="sass" scoped>

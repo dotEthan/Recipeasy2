@@ -1,129 +1,117 @@
 import { computed, ref } from 'vue'
 import type { Recipe } from '@/types/Recipes'
+import { DurationUnits, Visibility } from '@/types/RecipesEnums';
 
 export const mockComputedRecipes = computed<Recipe[]>(() => [
   { 
    _id: '1', 
     name: 'Recipe 1', 
+    description: '',
+    imgPath: '',
+    info: {
+      mealType: [],
+      cuisineType: '',
+      cookTime: { value: 4, unit: DurationUnits.Hours},
+      prepTime: { value: 4, unit: DurationUnits.Hours},
+      servingSize: 1,
+      nutritionalInfo: []
+    },
+    ratings: {
+       ratings: [],
+       averageRating: 0,
+       totalRatings: 0,
+       ratingsSum: 0
+    },
+    url: '',
     ingredients: [], 
     directions: [], 
+    visibility: Visibility.Public,
     tags: [],
-    nutritionalInfo: [],
     notes:[],
-    isPrivate: false,
-    creatorId: '1'
+    userId: ''
   },
   { 
-   _id: '2', 
-    name: 'Recipe 2', 
-    ingredients: [], 
-    directions: [], 
-    tags: [],
-    nutritionalInfo: [],
-    notes:[],
-    isPrivate: false,
-    creatorId: '1'
+    _id: '2', 
+     name: 'Recipe 2', 
+     description: '',
+     imgPath: '',
+     info: {
+       mealType: [],
+       cuisineType: '',
+       cookTime: { value: 4, unit: DurationUnits.Hours},
+       prepTime: { value: 4, unit: DurationUnits.Hours},
+       servingSize: 1,
+       nutritionalInfo: []
+     },
+     ratings: {
+        ratings: [],
+        averageRating: 0,
+        totalRatings: 0,
+        ratingsSum: 0
+     },
+     url: '',
+     ingredients: [], 
+     directions: [], 
+     visibility: Visibility.Public,
+     tags: [],
+     notes:[],
+     userId: ''
   }
 ]);
 
 export const mockRefRecipes = ref<Recipe[]>([
-    { 
-     _id: '1', 
-      name: 'Recipe 1', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-      nutritionalInfo: [],
-      notes:[],
-      isPrivate: false,
-      creatorId: '1'
+  { 
+   _id: '1', 
+    name: 'Recipe 1', 
+    description: '',
+    imgPath: '',
+    info: {
+      mealType: [],
+      cuisineType: '',
+      cookTime: { value: 4, unit: DurationUnits.Hours},
+      prepTime: { value: 4, unit: DurationUnits.Hours},
+      servingSize: 1,
+      nutritionalInfo: []
     },
-    { 
-     _id: '2', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-      nutritionalInfo: [],
-      notes:[],
-      isPrivate: false,
-      creatorId: '1'
+    ratings: {
+       ratings: [],
+       averageRating: 0,
+       totalRatings: 0,
+       ratingsSum: 0
     },
-    { 
-     _id: '3', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-      nutritionalInfo: [],
-      notes:[],
-      isPrivate: false,
-      creatorId: '1'
-    },
-    { 
-     _id: '4', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-      nutritionalInfo: [],
-      notes:[],
-      isPrivate: false,
-      creatorId: '1'
-    },
-    { 
-     _id: '5', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-      nutritionalInfo: [],
-      notes:[],
-      isPrivate: false,
-      creatorId: '1'
-    },
-    { 
-     _id: '6', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-    nutritionalInfo: [],
+    url: '',
+    ingredients: [], 
+    directions: [], 
+    visibility: Visibility.Public,
+    tags: [],
     notes:[],
-    isPrivate: false,
-    creatorId: '1'
-    },
-    { 
-     _id: '7', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-    nutritionalInfo: [],
-    notes:[],
-    isPrivate: false,
-    creatorId: '1'
-    },
-    { 
-     _id: '8', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-    nutritionalInfo: [],
-    notes:[],
-    isPrivate: false,
-    creatorId: '1'
-    },
-    { 
-     _id: '9', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-    nutritionalInfo: [],
-    notes:[],
-    isPrivate: false,
-    creatorId: '1'
-    }
+    userId: ''
+  },
+  { 
+    _id: '2', 
+     name: 'Recipe 2', 
+     description: '',
+     imgPath: '',
+     info: {
+       mealType: [],
+       cuisineType: '',
+       cookTime: { value: 4, unit: DurationUnits.Hours},
+       prepTime: { value: 4, unit: DurationUnits.Hours},
+       servingSize: 1,
+       nutritionalInfo: []
+     },
+     ratings: {
+        ratings: [],
+        averageRating: 0,
+        totalRatings: 0,
+        ratingsSum: 0
+     },
+     url: '',
+     ingredients: [], 
+     directions: [], 
+     visibility: Visibility.Public,
+     tags: [],
+     notes:[],
+     userId: ''
+  }
   ]);

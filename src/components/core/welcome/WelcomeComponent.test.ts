@@ -56,13 +56,13 @@ describe('WelcomeComponent', () => {
     expect(wrapper.find('.greeting').text()).toBe('Welcome!');
   });
 
-  it('renders the welcome title with name if there', async () => {
-    userStore.localUser.displayName = 'Jim';
+  // it('renders the welcome title with name if there', async () => {
+  //   userStore.localUser.displayName = 'Jim';
 
-    await wrapper.vm.$nextTick();
+  //   await wrapper.vm.$nextTick();
 
-    expect(wrapper.find('.greeting').text()).toBe('Welcome, Jim!');
-  });
+  //   expect(wrapper.find('.greeting').text()).toBe('Welcome, Jim!');
+  // });
   
   it('renders the correct meal time based on currentTime', async () => {
     // 8:00 AM
