@@ -5,7 +5,7 @@ export type AppState = {
   isMobileMenuOpen: boolean;
   appHasUnsavedChanges: boolean;
   showUnsavedChangesModal: boolean;
-  userCsrfToken: string;
+  accessToken: string;
   isLoading: boolean;
   lightMode: boolean;
 }

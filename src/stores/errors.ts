@@ -1,5 +1,3 @@
-//403 CSRF Invalid
-
 
 /**
  * Store for all Global Error Handling

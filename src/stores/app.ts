@@ -18,7 +18,7 @@ import { CACHED_DATA_TTL } from '@/constants'
  * Store for all App State
  * @todo Update Mock Store and Apply store types
  * @todo ScreenSize to enum
- * @returns {Object} - testModeOn, screenSize, isMobileMenuOpen, appHasUnsavedChanges, showUnsavedChangesModal, userCsrfToken, isLoading, lightMode, authModalType, isTestModeOn, isAuthModalOpen, initializeApp, setInitialAppState, resetAppStates, turnTestModeOn, turnTestModeOff, setAuthModalType, setScreenSize, fetchCsrfToken, isLoadingToggle, hydrateStore, cacheAppState, resetState
+ * @returns {Object} - testModeOn, screenSize, isMobileMenuOpen, appHasUnsavedChanges, showUnsavedChangesModal, accessToken, isLoading, lightMode, authModalType, isTestModeOn, isAuthModalOpen, initializeApp, setInitialAppState, resetAppStates, turnTestModeOn, turnTestModeOff, setAuthModalType, setScreenSize, setAccessToken, isLoadingToggle, hydrateStore, cacheAppState, resetState
  */
 
 type ScreenSize = 'sm' | 'md' | 'lg'
@@ -38,7 +38,7 @@ export const useAppStore = defineStore('app', () => {
   const isMobileMenuOpen = ref(false);
   const appHasUnsavedChanges = ref(false);
   const showUnsavedChangesModal = ref(false);
-  const csrfToken = ref('');
+  const accessToken = ref('');
   const isLoading = ref(false);
   const lightMode = ref(true);
 
@@ -156,14 +156,9 @@ export const useAppStore = defineStore('app', () => {
     console.log('screen size setting!: ', updatedScreenSize)
     screenSize.value = updatedScreenSize
   }
-
-  async function fetchCsrfToken() {
-    const token = await appService.fetchCsrfToken();
-    if (!token) throw new Error('Csrf Token missing');
-    setCsrfToken(token);
-  }
-  async function setCsrfToken(token: string) {
-    csrfToken.value = token;
+  
+  async function setAcessToken(token: string) {
+    accessToken.value = token;
   }
 
   function isLoadingToggle() {
@@ -198,7 +193,7 @@ export const useAppStore = defineStore('app', () => {
     isMobileMenuOpen,
     appHasUnsavedChanges,
     showUnsavedChangesModal,
-    csrfToken,
+    accessToken,
     isLoading,
     lightMode,
     authModalType,
@@ -211,8 +206,7 @@ export const useAppStore = defineStore('app', () => {
     turnTestModeOff,
     setAuthModalType,
     setScreenSize,
-    fetchCsrfToken,
-    setCsrfToken,
+    setAcessToken,
     isLoadingToggle,
     hydrateStore,
     cacheAppState,

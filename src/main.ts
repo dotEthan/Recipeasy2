@@ -5,7 +5,6 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router/main'
-import { useAppStore } from './stores/app'
 
 async function initializeApp() {
   const app = createApp(App);
@@ -20,16 +19,8 @@ async function initializeApp() {
   app.use(createPinia());
   app.use(router);
  
-  const appStore = useAppStore();
 
-  try {
-    await appStore.fetchCsrfToken();
-  } catch (error) {
-      console.error('csrfToken not fetched');
-      // TODO Retry logic?
-  } finally {
-    app.mount('#app')
-  };
+  app.mount('#app');
 }
 
 initializeApp().catch(console.error);

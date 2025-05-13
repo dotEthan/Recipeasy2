@@ -6,8 +6,8 @@ import { StandardUserApiResponse } from '@/types/ApiResponse';
 import type { ScreenSize } from '@/types/ScreenSize'
 
 /**
- * Handles all methods to help bootstrap the App: CSRF tokens, screen size tracking.
- * @returns {Object} - onResize, handleUnsavedChanges, fetchCsrfToken, checkSession, hydrateStores
+ * Handles all methods to help bootstrap the App: screen size tracking.
+ * @returns {Object} - onResize, handleUnsavedChanges, checkSession, hydrateStores
  */
 
 export function useAppService() {
@@ -60,24 +60,6 @@ export function useAppService() {
       e.preventDefault()
     }
   } 
-
-  /**
-   * Get the CSRF token on page reload
-   * @param {} - Nothing!
-   * @returns {Promise<void>} - Nothing
-   * @example
-  * const { fetchCsrfToken } = useAppService();
-  * const token = await fetchCsrfToken();
-   */
-  const fetchCsrfToken = async (): Promise<string | undefined> => {
-    try {
-      const getTokenRes = await axios.get('/admin/csrf-token');
-      return getTokenRes.headers['X-CSRF-Token'];
-    } catch (error: unknown) {
-      console.error('Failed to fetch CSRF token', error);
-    }
-  }
-
   
   /**
    * Check that backend session is still valid during app initialization
@@ -99,7 +81,6 @@ export function useAppService() {
   return {
     onResize,
     handleUnsavedChanges,
-    fetchCsrfToken,
     checkSession,
   }
 }

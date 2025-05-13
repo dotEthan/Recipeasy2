@@ -93,10 +93,12 @@ export function useAuthService() {
       // notify to check email, or resend token if not available
       const localUser = userResponse.data.user as LocalUser;
       const userRecipesData: Recipe[] = userResponse.data.recipeResponse;
-      const userState = { authorized: true, localUser: {
-        ...userResponse.data.user
-      }};
-      console.log('trigger App Store Initialization, data: ', userRecipesData)
+      const userState = { authorized: true, localUser};
+      console.log('trigger App Store Initialization, data: ', userRecipesData);
+
+      const accessToken: string = userResponse.data.accessToken;
+
+      appStore.setAcessToken(accessToken);
 
       // Store Initializations
       userStore.setInitialUserState(userState);
@@ -104,7 +106,7 @@ export function useAuthService() {
       shoppingListStore.setInitialListState(userState.localUser.shoppingLists || []);
       // TODO Update with ful App State updates
       const appState = { 
-        lightMode: userState.localUser.preferences.lightMode
+        lightMode: userState.localUser.preferences?.lightMode
       };
       // TODO wasnt working, check
       appStore.setInitialAppState(appState);
@@ -145,6 +147,8 @@ export function useAuthService() {
       clearSessionData('shoppingLists');
       recipeStore.resetUserRecipeState();
       recipeStore.cacheRecipeState();
+      appStore.setAcessToken('');
+      
       console.log('logged out: ', response);
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Logout failed';

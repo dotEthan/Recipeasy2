@@ -1,5 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { useAppStore } from './stores/app';
+import { useAuthService } from './composables/useAuthService';
+import router from './router/main';
 
 const instance: AxiosInstance = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/v1`,
@@ -7,10 +9,11 @@ const instance: AxiosInstance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-  const appStore = useAppStore();
-  if (appStore.csrfToken && config.method?.toUpperCase() !== 'GET') {
-    config.headers['X-CSRF-Token'] = appStore.csrfToken;
-  }
+    const appStore = useAppStore();
+
+    if (appStore.accessToken) {
+      config.headers['Authorization'] = `Bearer ${appStore.accessToken}`;
+    }
   
   return config;
 }, 
@@ -21,17 +24,25 @@ instance.interceptors.request.use((config) => {
 // TODO Connect API calls to global error handler
 instance.interceptors.response.use(
   (response: AxiosResponse) => { 
-    updateCsrfTokenFromAPIResponse(response);
     return response 
   },
   (error) => {
-    if (error.response) {
-      updateCsrfTokenFromAPIResponse(error.response);
-    }
     console.log("error handler switchboard here?");
     if (error.response?.status === 401) {
+      if (error.response.errorCode === '401:ACCESS_TOKEN_EXPIRED') {
+        console.log('refresh and retry');
+        // refresh accesstoken & retry        
+      }
+      if (error.response?.errorCode === '401:REFRESH_TOKEN_EXPIRED' ||
+        error.response.errorCode === '401:REFRESH_TOKEN_MISSING') {
+        console.log('log out and force relogin');
+        const authService = useAuthService();
+        authService.logOut();
+        router.push('/');
+      }
       // Handle unauthorized access
       // Maybe redirect to login or refresh token
+      // If errorCode = AccessToke related, refresh and retry
     }
     
     if (error.response?.status === 403) {
@@ -41,13 +52,5 @@ instance.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
-const updateCsrfTokenFromAPIResponse = (response: AxiosResponse) => {
-  const token = response.headers['x-csrf-token'];
-  if (token) {
-    const appStore = useAppStore();
-    appStore.setCsrfToken(token);
-  }
-}
 
 export default instance;
