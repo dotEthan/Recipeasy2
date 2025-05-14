@@ -36,12 +36,13 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 - Firebase image upload Signature (removed)
 - Pinia store Implementation
 - Routing and guards
-- Authenticated User Image uploading (and deleting) to CDN (removed)
+- Authenticated User Image uploading (and deleting) to CDN 
 - Functional Mobile Design
 - Public Recipes Displaying and functional
 
 ### Working on Now:
 
+- Deploying with api proxy for security
 - Custom Backend Functionality using Expressjs, Nodejs, and MongoDB.
 - - Working: security & all auth flows. user Recipe Creation, and updating.User persistence public Recipe flow, Data Persistence - User, Recipes
 - - Error Handling
