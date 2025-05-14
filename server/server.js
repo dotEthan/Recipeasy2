@@ -5,10 +5,8 @@ import { fileURLToPath } from 'url';
 import * as dotenv from 'dotenv';
 import process from 'process';
 
-// Load .env file
 dotenv.config();
 
-// Recreate __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -21,6 +19,9 @@ app.use(express.static(path.join(__dirname, '../dist')));
 app.use('/api', createProxyMiddleware({ 
   target: 'https://recipeasy-backend.onrender.com',
   changeOrigin: true,
+  pathRewrite: {
+    '^/api': '/api'
+  }
 }));
 
 // Handle SPA fallback
