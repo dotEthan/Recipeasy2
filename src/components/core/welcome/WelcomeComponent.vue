@@ -52,7 +52,6 @@ onMounted(async () => {
       const publicRecipes = await dataService.getPublicRecipes();
       if(!publicRecipes) throw new Error('No Public Recipes Found');
       recipeStore.setInitialPublicRecipeState(publicRecipes);
-      recipeStore.cacheRecipeState();
     } catch (error) {
       console.log('loading public recipes error: ', error)
     }

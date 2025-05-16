@@ -36,14 +36,10 @@ export type CachedRecipeState = RecipeState & { expiresAt: number };
 
 export type RecipeState = {
   recipes: Recipe[];
-  existingPublicRecipes?: Recipe[];
-  allTags: string[];
-  ethansFavouritePublicIds: string[];
-  selectedRecipeId: string;
   existingPublicRecipes: Recipe[];
+  allTags: string[];
+  selectedRecipeId?: string;
   editSelectedRecipe: boolean;
-  tempRecipeDeleteArray: Recipe[];
-  tempRecipeSaveArray: Recipe[];
 }
 
 export type Recipe = {

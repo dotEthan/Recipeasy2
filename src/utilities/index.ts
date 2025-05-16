@@ -117,6 +117,7 @@ export const clearSessionData = (key: string) => {
 
 /**
  * Checks Data expiration
+ * @todo still needed or dupe of checkIfCacheExpired
  * @param {number} - Maximum age the data can be (miliseconds)
  * @param {data to check} - Maximum age the data can be (miliseconds)
  * @returns {boolean} - A boolean representing whether the data is expired
@@ -130,12 +131,47 @@ export const isCacheExpired = (expiresAt: number) => {
   return now >= expiryDate;
 };  
 
-  /**
-   * Extracts public_id from Cloudinary URL
-   * @param url - The Cloudinary URL
-   * @returns string - The public_id of the image
-   */
-  export const getPublicIdFromUrl = (url: string): string => {
-    const matches = url.match(/\/v\d+\/(.+)\.[^.]+$/);
-    return matches ? matches[1] : '';
-  };
+/**
+ * Extracts public_id from Cloudinary URL
+ * @param url - The Cloudinary URL
+ * @returns string - The public_id of the image
+ */
+export const getPublicIdFromUrl = (url: string): string => {
+  const matches = url.match(/\/v\d+\/(.+)\.[^.]+$/);
+  return matches ? matches[1] : '';
+};
+
+/**
+ * Check if the cached data is expired
+ * @param key - string that is used to store the data in sessionStorage
+ * @returns data || null - either the cached data or null if the data is expired
+ */
+export const checkIfCacheExpired = (key: string) => {
+  const item = sessionStorage.getItem(key);
+  if (!item) return null;
+
+  const { data, expiresAt } = JSON.parse(item);
+  return expiresAt > Date.now() ? data : null;
+}
+
+/**
+ * Check if the cached data is expired
+ * @param key - string that is used to store the data in sessionStorage
+ * @returns data || null - either the cached data or null if the data is expired
+ */
+export const getCachedDataOrFetch = (key: string) => {
+  const item = checkIfCacheExpired(key);
+  if (item === null) return null;
+
+  const { data, expiresAt } = JSON.parse(item);
+  return expiresAt > Date.now() ? data : null;
+}
+
+/**
+ * Format data to be cached to add cachedAt time to ensure freshness
+ * @param value - Data to be cached
+ * @returns JSON stringified data
+ */
+export const formatCachedValue = (value: unknown) => {
+  return JSON.stringify({ data: value, cachedAt: Date.now()})
+}

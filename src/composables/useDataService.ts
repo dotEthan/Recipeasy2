@@ -51,8 +51,6 @@ export function useDataService() {
 
       recipeStore.finishSuccessfulSave(returnedRecipe);
       userStore.addIdToLocalUserRecipes(recipe._id);
-      recipeStore.cacheRecipeState();
-      userStore.cacheUserState();
     } catch (error) {
       console.log("Saving Recipe error: ", error);
       recipeStore.revertFailedSave(recipe);
@@ -69,7 +67,7 @@ export function useDataService() {
    * await dataService.updateUserRecipes(recipe);
    */
   const updateUserRecipes = async (recipe: Recipe): Promise<LocalUser | undefined> => {
-    const userId = userStore.getCurrentUserId
+    const userId = userStore.getCurrentUserId;
     try {
       const addUserRecipesResponse = await axios.patch<StandardUserApiResponse>(
         `/users/${userId}/recipes`,
@@ -77,15 +75,13 @@ export function useDataService() {
           recipeId: recipe._id.toString(),
           originalUserId: recipe.userId
         }
-      )
-      const user = addUserRecipesResponse.data.user
-      if (!user) throw new Error("Updated Data not found, retry, reset FE changes?")
-      userStore.setLocalUser(user)
-      recipeStore.cacheRecipeState()
-      userStore.cacheUserState()
-      return user
+      );
+      const user = addUserRecipesResponse.data.user;
+      if (!user) throw new Error("Updated Data not found, retry, reset FE changes?");
+      userStore.setLocalUser(user);
+      return user;
     } catch (error) {
-      console.log("upset user recipe error: ", error)
+      console.log("upset user recipe error: ", error);
     }
   }
 
@@ -100,31 +96,29 @@ export function useDataService() {
    */
   const updateRecipe = async (recipe: Recipe) => {
     try {
-      console.log("trying to save recipe: ", recipe)
+      console.log("trying to save recipe: ", recipe);
       const saveNewRecipeResponse = await axios.put<StandardRecipeApiResponse>(
         `/recipes/${recipe._id}`,
         {
           recipe
         }
-      )
-      const returnedData = saveNewRecipeResponse.data
-      console.log("save recipe response: ", returnedData)
+      );
+      const returnedData = saveNewRecipeResponse.data;
+      console.log("save recipe response: ", returnedData);
 
       if (!returnedData.success)
-        throw new Error(`recipe update not successful: ${returnedData.message}`)
+        throw new Error(`recipe update not successful: ${returnedData.message}`);
 
-      const returnedRecipe = returnedData.recipe
-      if (!returnedRecipe) throw new Error("Recipe Returned Blank. Possible?")
+      const returnedRecipe = returnedData.recipe;
+      if (!returnedRecipe) throw new Error("Recipe Returned Blank. Possible?");
 
       if (returnedRecipe.userId === userStore.getCurrentUserId) {
-        recipeStore.updatePublicRecipe(returnedRecipe)
+        recipeStore.updatePublicRecipe(returnedRecipe);
       }
       recipeStore.finishSuccessfulUpdate(returnedRecipe);
-      recipeStore.cacheRecipeState();
     } catch (error) {
-      console.log("Updating Recipe error: ", error)
-      recipeStore.revertFailedUpdate(recipe)
-      recipeStore.cacheRecipeState()
+      console.log("Updating Recipe error: ", error);
+      recipeStore.revertFailedUpdate(recipe);
     }
   }
 
@@ -138,12 +132,12 @@ export function useDataService() {
    * await dataService.getPublicRecipes();
    */
   const getPublicRecipes = async (): Promise<Recipe[]> => {
-    console.log("loading public recipes")
+    console.log("loading public recipes");
     // TODO add ?page=0?limit=50
-    const publicRecipeResponse = await axios.get("/recipes?visibility=public&page=1&limit=25")
-    console.log(publicRecipeResponse.data)
-    const publicRecipes = publicRecipeResponse.data
-    return publicRecipes
+    const publicRecipeResponse = await axios.get("/recipes?visibility=public&page=1&limit=25");
+    console.log(publicRecipeResponse.data);
+    const publicRecipes = publicRecipeResponse.data;
+    return publicRecipes;
   }
 
   /**
@@ -155,13 +149,28 @@ export function useDataService() {
    * const { userData, userRecipes } = await dataService.getUserData();
    */
   const getUserData = async (): Promise<GetUserDataResponse> => {
-    const userId = userStore.getCurrentUserId
-    if (!userId) throw new Error("No userid to get, relogin")
-    console.log("Load Authorized User Data: ", userId)
-    const userDataResponse = await axios.get(`/users/${userId.toString()}`)
-    const userData = userDataResponse.data.user
-    const userRecipes = userDataResponse.data.userRecipes
-    return { userData, userRecipes }
+    const userId = userStore.getCurrentUserId;
+    if (!userId) throw new Error("No userid to get, relogin");
+    console.log("Load Authorized User Data: ", userId);
+    const userDataResponse = await axios.get(`/users/${userId.toString()}`);
+    const userData = userDataResponse.data.user;
+    const userRecipes = userDataResponse.data.userRecipes;
+    return { userData, userRecipes };
+  }
+
+  /**
+   * Calls API to get User Data for current user when id missing (data persistence)
+   * @param {} - None
+   * @returns {Promise<GetUserDataResponse>} - An object that includes userData and userRecipes
+   * @example
+   * const dataService = useDataService();
+   * const { userData, userRecipes } = await dataService.getUserData();
+   */
+  const getCurrentUserData = async (): Promise<GetUserDataResponse> => {
+    const userDataResponse = await axios.get('/users/me');
+    const userData = userDataResponse.data.user;
+    const userRecipes = userDataResponse.data.userRecipes;
+    return { userData, userRecipes };
   }
 
   /**
@@ -176,17 +185,14 @@ export function useDataService() {
    */
   const deleteRecipe = async (id: string) => {
     try {
-      await axios.delete(`/recipes/${id}`)
-      console.log("Deletion successful")
-      recipeStore.finishRecipeDeletion()
-      userStore.removeIdFromLocalUserRecipes(id)
-      userStore.cacheUserState()
-      recipeStore.cacheRecipeState()
+      await axios.delete(`/recipes/${id}`);
+      console.log("Deletion successful");
+      recipeStore.finishRecipeDeletion();
+      userStore.removeIdFromLocalUserRecipes(id);
     } catch (error: unknown) {
       // check all Roll back Optimistic UI
-      console.log("error")
-      recipeStore.revertRecipeDeletion(id)
-      recipeStore.cacheRecipeState()
+      console.log("error");
+      recipeStore.revertRecipeDeletion(id);
 
       throw new Error("deleting recipe Error: ")
     }
@@ -235,6 +241,7 @@ export function useDataService() {
     getPublicRecipes,
     deleteRecipe,
     getUserData,
+    getCurrentUserData,
     uploadRecipeImage,
     deleteRecipeImage,
     error

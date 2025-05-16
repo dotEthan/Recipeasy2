@@ -1,19 +1,28 @@
 import { CACHED_DATA_TTL } from '@/constants';
 import type { LocalUser, UserState } from '@/types/UserState';
-import { setSessionData } from '@/utilities';
+import { formatCachedValue, setSessionData } from '@/utilities';
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 export const useUserStore = defineStore('user', () => {
+  // Variables
   const authorized = ref<boolean | null>(false);
-  const localUser = ref<LocalUser|undefined>();
+  const localUser = ref<LocalUser | undefined>();
 
+  // Watchers
+  watch(() => localUser.value, (newLocalUser: LocalUser | undefined) => {
+      sessionStorage.setItem('localUser', formatCachedValue(newLocalUser));
+    }, { deep: true } );
+
+  // Computed Values
   const isAuthorized = computed(() => authorized.value);
   const isUserVerified = computed(() => localUser.value?.verified);
   const getCurrentUser = computed(() => localUser.value);
   const getCurrentUserId = computed(() => localUser.value?._id);
+  const getCurrentUserEmail = computed(() => localUser.value?.email);
   const getUserPersonalPreferences = computed(() => localUser.value?.preferences?.personalFilters);
 
+  // Functions
   function deauthorize() {
     authorized.value = false;
   }
@@ -55,14 +64,6 @@ export const useUserStore = defineStore('user', () => {
     localUser.value = userState.localUser;
   }
 
-  function cacheUserState() {
-    setSessionData('userData', {
-      authorized: authorized.value,
-      localUser: localUser.value,
-      expiresAt: new Date().getTime() + (CACHED_DATA_TTL)
-    })
-  }
-
   function resetState() {
     authorized.value = false;
     localUser.value = undefined;
@@ -75,6 +76,7 @@ export const useUserStore = defineStore('user', () => {
     isUserVerified,
     getCurrentUser,
     getCurrentUserId,
+    getCurrentUserEmail,
     getUserPersonalPreferences,
     deauthorize,
     authorize,
@@ -84,7 +86,6 @@ export const useUserStore = defineStore('user', () => {
     addIdToLocalUserRecipes,
     removeIdFromLocalUserRecipes,
     hydratestore,
-    cacheUserState,
     resetState,
   };
 })

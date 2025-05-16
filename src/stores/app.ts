@@ -1,18 +1,11 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 import { defineStore } from 'pinia'
-import axios from 'axios'
+
 import { useRecipeStore } from './recipe'
 import { useUserStore } from './user'
 import { useShoppingListStore } from './shoppingList'
 import { useAuthService } from '@/composables/useAuthService'
-import { useAppService } from '@/composables/useAppService'
-import { useDataService } from '@/composables/useDataService'
-import { getSessionData, isCacheExpired, setSessionData } from '@/utilities'
-import { CachedRecipeState } from '@/types/Recipes'
-import { CachedUserState } from '@/types/UserState'
-import { CachedAppState, InitialAppState } from '@/types/AppState'
-import { CachedShoppingListState } from '@/types/ShoppingLists'
-import { CACHED_DATA_TTL } from '@/constants'
+import { InitialAppState } from '@/types/AppState'
 
 /**
  * Store for all App State
@@ -28,8 +21,6 @@ export const useAppStore = defineStore('app', () => {
   const userStore = useUserStore();
   const shoppingListStore = useShoppingListStore();
   const authService = useAuthService();
-  const appService = useAppService();
-  const dataService = useDataService();
 
   // Variables
   const testModeOn = ref(false);
@@ -42,70 +33,21 @@ export const useAppStore = defineStore('app', () => {
   const isLoading = ref(false);
   const lightMode = ref(true);
 
+  // Watchers
+  watchEffect(() => {
+    sessionStorage.setItem('testModeOn', String(testModeOn.value));
+    sessionStorage.setItem('authModalType', authModalType.value);
+    sessionStorage.setItem('screenSize', screenSize.value);
+    sessionStorage.setItem('isMobileMenuOpen', String(isMobileMenuOpen.value));
+    sessionStorage.setItem('lightMode', String(lightMode.value));
+  });
+
   // Computed
   const isTestModeOn = computed(() => testModeOn.value)
   const isAuthModalOpen = computed(() => authModalType.value.length > 0)
 
 
   // Functions 
-  async function initializeApp() {
-    try { 
-      const cachedUserStore = getSessionData('userData') as CachedUserState;
-      const cachedRecipeStore = getSessionData('recipes') as CachedRecipeState;
-      const cachedShoppingListStore = getSessionData('shoppingLists') as CachedShoppingListState;
-      const cachedAppStore = getSessionData('appState') as CachedAppState;
-
-      // Check session
-      const sessionActiveresponse = await appService.checkSession();
-      console.log('checking Sesesion: ', sessionActiveresponse)
-
-      const sessionIsActive = sessionActiveresponse.success
-      const activeUser = sessionActiveresponse.user
-      if (!activeUser) throw new Error('No active user, relog in - toast display, no breaking');
-      userStore.setLocalUser(activeUser)
-
-      console.log('cached Data: User: ', isCacheExpired(cachedUserStore.expiresAt))
-      console.log('cached Data: recipes: ', cachedRecipeStore)
-      console.log('cached Data: app: ', cachedAppStore)
-      console.log('cached Data: SL: ', cachedShoppingListStore)
-      if (sessionIsActive) {
-        if(!activeUser) throw new Error('session active but no active user. relogin')
-        console.log('user session still active')
-        if ((!cachedUserStore || isCacheExpired(cachedUserStore.expiresAt)) 
-          || (!cachedRecipeStore || isCacheExpired(cachedRecipeStore.expiresAt))
-          || (!cachedAppStore || isCacheExpired(cachedAppStore.expiresAt)) 
-          || (!cachedShoppingListStore || isCacheExpired(cachedShoppingListStore.expiresAt))) {
-
-            console.log('no, or old, saved data')
-          const publicRecipes = await dataService.getPublicRecipes();
-          const userData = await dataService.getUserData();
-          
-          hydrateStore({lightMode: userData.userData.preferences?.lightMode || true})
-          userStore.setInitialUserState({authorized: true, localUser: userData.userData})
-          recipeStore.setInitialPublicRecipeState(publicRecipes);
-          recipeStore.setInitialUserRecipeState(userData.userRecipes);
-          shoppingListStore.hydrateStore(userData.userData.shoppingLists || []);
-          userStore.cacheUserState();
-          recipeStore.cacheRecipeState();
-          shoppingListStore.cacheListState();
-          cacheAppState();
-
-        } else {
-          console.log('cachedData exists')
-          // TODO remove expiresAt
-          hydrateStore(cachedAppStore);
-          userStore.hydratestore(cachedUserStore); 
-          recipeStore.hydrateStore(cachedRecipeStore);
-          shoppingListStore.hydrateStore(cachedShoppingListStore.shoppingLists);
-        }
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.status === 401) {
-        // TODO make sure logged out and all stores/saved Data is reset
-        resetAppStates();
-      }
-    }
-  }
 
   function setInitialAppState(appState: InitialAppState) {
     testModeOn.value = appState.testModeOn || false;
@@ -116,15 +58,13 @@ export const useAppStore = defineStore('app', () => {
   }
 
   function resetAppStates() {
-    userStore.resetState()
-    recipeStore.resetUserRecipeState()
-    shoppingListStore.resetState()
-    resetState()
+    userStore.resetState();
+    recipeStore.resetUserRecipeState();
+    shoppingListStore.resetState();
+    resetState();
     
     // Pesistent Data Stored in Browser
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('userRecipes');
-    sessionStorage.removeItem('publicRecipes');
+    sessionStorage.clear();
 
     console.log('all stores reset')
   }
@@ -172,19 +112,10 @@ export const useAppStore = defineStore('app', () => {
     lightMode.value = appState.lightMode || true;
   }
 
-  function cacheAppState() {
-    setSessionData('appState', {
-      testModeOn: testModeOn.value,
-      authModalType: authModalType.value,
-      isMobileMenuOpen: isMobileMenuOpen.value,
-      lightMode: lightMode.value,
-      expiresAt: new Date().getTime() + (CACHED_DATA_TTL)
-    })
-  }
-
   function resetState() {
-    testModeOn.value = false
-    authModalType.value = ''
+    testModeOn.value = false;
+    authModalType.value = '';
+    accessToken.value = '';
   }
 
   return {
@@ -199,7 +130,6 @@ export const useAppStore = defineStore('app', () => {
     authModalType,
     isTestModeOn,
     isAuthModalOpen,
-    initializeApp,
     setInitialAppState,
     resetAppStates,
     turnTestModeOn,
@@ -209,7 +139,6 @@ export const useAppStore = defineStore('app', () => {
     setAcessToken,
     isLoadingToggle,
     hydrateStore,
-    cacheAppState,
     resetState
   }
 })

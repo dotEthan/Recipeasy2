@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia'
-import { ref, computed, ComputedRef, Ref } from 'vue'
+import { ref, computed, ComputedRef, Ref, watchEffect, watch } from 'vue'
 import { useUserStore } from './user'
 import type { Recipe, RecipeState } from '@/types/Recipes'
 import { useAppStore } from './app'
 import { Visibility } from '@/types/RecipesEnums'
-import { setSessionData } from '@/utilities'
-import { CACHED_DATA_TTL } from '@/constants'
+import { checkIfCacheExpired, formatCachedValue } from '@/utilities'
 
 /**
  * Store for all Recipe Related Data
  * @todo Update Mock Store and Apply store types
  * @todo refactor to multiple stores?
  * @todo fix returns, that's ugly
+ * @todo Update "ethansFavouritePublicIds" to a search of DB for top rated by me
  * @returns {Object} - recipes, allTags, selectedRecipeId, existingPublicRecipes, editSelectedRecipe, getAllUserRecipes, selectedRecipe, isSelectedRecipePublic, isSelectedRecipeLocalUsers, personalFilters, tempRecipeSaveArray, tempRecipeDeleteArray, recipesLength, existingPublicRecipesLength, getAllRecipeTags, useFilteredRecipes, setInitialUserRecipeState, setInitialPublicRecipeState, generatePublicRecipeCollections, updatePublicRecipe, getRecipeById, updateRecipe, addRecipe, setSelectedRecipeId, setEditStatusSelectedId, finishRecipeDeletion, revertRecipeDeletion, prepareRecipeDeletion, removeRecipeById, backupOriginalRecipeData, removeTempLocalRecipe, clearSelectedRecipeId, hydrateStore, cacheRecipeState, resetState, resetUserRecipeState
  */
 
@@ -23,7 +23,6 @@ export const useRecipeStore = defineStore('recipes', () => {
   const recipes = ref<Recipe[]>([]);
   const existingPublicRecipes = ref<Recipe[]>([]);
   const allTags = ref<string[]>([]);
-  // TODO update to look at ethan.id's 5 stars
   const ethansFavouritePublicIds = ref<string[]>([
     '67f1259f3177aa84c4a0595e',
     '67f1259f3177aa84c4a0595d',
@@ -42,6 +41,31 @@ export const useRecipeStore = defineStore('recipes', () => {
   const editSelectedRecipe = ref<boolean>(false);
   const tempRecipeSaveArray = ref<Recipe[]>([]);
   const tempRecipeDeleteArray = ref<Recipe[]>([]);
+
+  // Watchers
+  watch(() => recipes.value, (newRecipes: Recipe[]) => {
+      sessionStorage.setItem('userRecipes', formatCachedValue(newRecipes));
+    }, { deep: true } );
+
+  watch(() => recipes.value, (newPublicRecipes: Recipe[]) => {
+      sessionStorage.setItem('publicRecipes', formatCachedValue(newPublicRecipes));
+    }, { deep: true } );
+
+  watch(() => allTags.value, (newAllTags: string[]) => {
+      sessionStorage.setItem('allTags', formatCachedValue(newAllTags));
+    }, { deep: true } );
+
+  watch(() => selectedRecipeId.value, (newSelectedRecipeId: string | undefined) => {
+  if (newSelectedRecipeId !== undefined) {
+    sessionStorage.setItem('selectedRecipeId', newSelectedRecipeId);
+  } else {
+    sessionStorage.removeItem('selectedRecipeId');
+  }
+    });
+
+  watchEffect(() => {
+    sessionStorage.setItem('editSelectedRecipe', String(editSelectedRecipe.value));
+  });
 
   // Computed
   const getAllUserRecipes: ComputedRef<Recipe[]> = computed(() => {
@@ -262,30 +286,11 @@ export const useRecipeStore = defineStore('recipes', () => {
     recipes.value = RecipeState.recipes || [];
     existingPublicRecipes.value = RecipeState.existingPublicRecipes || [];
     allTags.value = RecipeState.allTags || []
-    ethansFavouritePublicIds.value = RecipeState.ethansFavouritePublicIds || [];
     selectedRecipeId.value = RecipeState.selectedRecipeId;
     editSelectedRecipe.value = RecipeState.editSelectedRecipe;
-    tempRecipeSaveArray.value = RecipeState.tempRecipeSaveArray;
-    tempRecipeDeleteArray.value = RecipeState.tempRecipeDeleteArray;
 
   }
   
-  function cacheRecipeState() {
-    console.log('caching recipes')
-    setSessionData('recipes', {
-      recipes: recipes.value,
-      existingPublicRecipes: existingPublicRecipes.value,
-      allTags: allTags.value,
-      ethansFavouritePublicIds: ethansFavouritePublicIds.value,
-      selectedRecipeId: selectedRecipeId.value,
-      editSelectedRecipe: editSelectedRecipe.value,
-      tempRecipeSaveArray: tempRecipeSaveArray.value,
-      tempRecipeDeleteArray: tempRecipeDeleteArray.value,
-      expiresAt: new Date().getTime() + (CACHED_DATA_TTL)
-    });
-    console.log('finished recipes')
-  }
-
   function resetState() {
     recipes.value = [];
     existingPublicRecipes.value = [];
@@ -341,7 +346,6 @@ export const useRecipeStore = defineStore('recipes', () => {
     revertFailedSave,
     clearSelectedRecipeId,
     hydrateStore,
-    cacheRecipeState,
     resetState,
     resetUserRecipeState
   }

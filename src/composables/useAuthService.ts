@@ -9,7 +9,7 @@ import { LocalUser } from '@/types/UserState';
 import { StandardRecipeApiResponse } from '@/types/ApiResponse';
 import { useRecipeStore } from '@/stores/recipe';
 import { useShoppingListStore } from '@/stores/shoppingList';
-import { clearSessionData, setSessionData } from '@/utilities';
+import { clearSessionData } from '@/utilities';
 
 /**
  * Handles Authorization related API calls and initilizations
@@ -58,7 +58,6 @@ export function useAuthService() {
         }
         // const publicRecipeArray = publicRecipeStoredData 
         userStore.setInitialUserState(userState);
-        userStore.cacheUserState();
         return;
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
@@ -110,14 +109,6 @@ export function useAuthService() {
       };
       // TODO wasnt working, check
       appStore.setInitialAppState(appState);
-      console.log('caching')
-      userStore.cacheUserState();
-      recipeStore.cacheRecipeState();
-      console.log('finished all')
-      shoppingListStore.cacheListState();
-      console.log('finished all')
-      appStore.cacheAppState();
-      console.log('finished all')
 
       return localUser.verified;
     } catch (err) {
@@ -139,15 +130,13 @@ export function useAuthService() {
   const logOut = async () => {
     try {
       clearError();
-      const response = await axios.delete('/auth/session');
+      // todo 
+      const response = await axios.delete('/auth/refresh-token');
 
-      // Clear cached data
-      clearSessionData('userData');
-      clearSessionData('appState');
-      clearSessionData('shoppingLists');
+      sessionStorage.clear();
+      localStorage.clear();
       recipeStore.resetUserRecipeState();
-      recipeStore.cacheRecipeState();
-      appStore.setAcessToken('');
+      appStore.resetAppStates();
       
       console.log('logged out: ', response);
     } catch (err) {
@@ -167,11 +156,11 @@ export function useAuthService() {
   const verifyUser = async (enteredCode: string) => {
     try {
       const response = await axios.post('/admin/verification-codes/verify', {
-        code: enteredCode
+        code: enteredCode,
+        userEmail: userStore.getCurrentUserEmail
       });
       if (!response.data.success) throw new Error('User Verifcation Unsuccessful. Retry?');
       userStore.verifyUser();
-      userStore.cacheUserState();
     } catch(err) {
       console.log('verify User err: ', err);
     }

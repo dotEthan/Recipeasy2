@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
-import { RouterView } from 'vue-router'
-import HeaderComponent from './components/core/header/HeaderComponent.vue'
-import { useAppService } from '@/composables/useAppService'
-import { useAppStore } from './stores/app'
+import { onMounted, onUnmounted } from 'vue';
+import { RouterView } from 'vue-router';
+import HeaderComponent from './components/core/header/HeaderComponent.vue';
+import { useAppService } from '@/composables/useAppService';
 
 console.log('app loading')
 const appService = useAppService();
-const appStore = useAppStore();
 
-appStore.initializeApp();
+appService.initializeApp();
 
 // TODO changes coming with Express update
 onMounted(() => {

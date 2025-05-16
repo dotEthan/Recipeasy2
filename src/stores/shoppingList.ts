@@ -1,11 +1,10 @@
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { defineStore } from 'pinia'
 
 import type { ShoppingList } from '@/types/ShoppingLists'
 import { useUserStore } from './user'
-import { setSessionData } from '@/utilities'
-import { CACHED_DATA_TTL } from '@/constants'
+import { formatCachedValue } from '@/utilities'
 
 /**
  * Store for all Shopping list Related Data
@@ -19,6 +18,11 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
   const shoppingLists = ref<ShoppingList[]>([]);
   const editingListIndex = ref(-1);
   const editingItemIndex = ref(-1);
+
+  // Watchers
+  watch(() => shoppingLists.value, (newShoppingLists: ShoppingList[]) => {
+      sessionStorage.setItem('shoppingLists', formatCachedValue(newShoppingLists));
+    }, { deep: true } );
 
   // Computed
   const defaultList = computed((): ShoppingList | undefined => {
@@ -86,13 +90,6 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
     shoppingLists.value = cachedShoppingLists;
   }
 
-  function cacheListState() {
-    setSessionData('shoppingLists', {
-      list: shoppingLists.value,
-      expiresAt: new Date().getTime() + (CACHED_DATA_TTL)
-    });
-  }
-
   function resetState() {
     shoppingLists.value = []
   }
@@ -112,7 +109,6 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
     setDefaultList,
     deleteListItem,
     hydrateStore,
-    cacheListState,
     resetState
   }
 })
