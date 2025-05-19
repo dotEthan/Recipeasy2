@@ -10,6 +10,7 @@ export interface FormField {
     type: 'email' | 'password' | 'text';
     label: string;
     warning?: string;
+    required: boolean
 }
 
 export interface FormData {

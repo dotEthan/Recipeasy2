@@ -1,9 +1,9 @@
 import { vi } from 'vitest';
 import { computed, ref } from 'vue';
 import { createTestingPinia } from '@pinia/testing';
-import { useRecipeStore } from '@/stores/recipe';
-import { useAppStore } from '@/stores/app';
-import { useUserStore } from '@/stores/user';
+import { useRecipeStore } from '@/stores/recipeStore';
+import { useAppStore } from '@/stores/appStore';
+import { useUserStore } from '@/stores/userStore';
 import { mockRefRecipes } from './mockData';
 import { RecipeStore } from '@/types/Recipes';
 

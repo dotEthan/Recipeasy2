@@ -1,9 +1,9 @@
 import { ref, computed, watchEffect } from 'vue'
 import { defineStore } from 'pinia'
 
-import { useRecipeStore } from './recipe'
-import { useUserStore } from './user'
-import { useShoppingListStore } from './shoppingList'
+import { useRecipeStore } from './recipeStore'
+import { useUserStore } from './userStore'
+import { useShoppingListStore } from './shoppingListStore'
 import { useAuthService } from '@/composables/useAuthService'
 import { InitialAppState } from '@/types/AppState'
 

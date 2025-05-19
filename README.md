@@ -39,15 +39,16 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 - Authenticated User Image uploading (and deleting) to CDN 
 - Functional Mobile Design
 - Public Recipes Displaying and functional
+- API proxy for tokens
+- Data persistence
 
 ### Working on Now:
 
-- Deploying with api proxy for security
+- test email sending with ![alt text](image.png)
 - Custom Backend Functionality using Expressjs, Nodejs, and MongoDB.
-- - Working: security & all auth flows. user Recipe Creation, and updating.User persistence public Recipe flow, Data Persistence - User, Recipes
+- - Working: security & all auth flows. user Recipe Creation, and updating.User persistence public Recipe flow, Data Persistence - User, Recipes, soft deletes for public recipes
 - - Error Handling
-- - test Data persistence and implement URL persistence
-- - test DELETE Fully working (all gets taged and ready for Cron job)
+- - implement URL persistence
 - - Deploy
 
 ### In Progress (on hold as Backend Work On-Going)

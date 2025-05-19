@@ -2,9 +2,9 @@
 import { ref } from 'vue';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { mount, shallowMount, VueWrapper } from '@vue/test-utils';
-import { useAppStore } from '@/stores/app';
-import { useRecipeStore } from '@/stores/recipe';
-import { useUserStore } from '@/stores/user';
+import { useAppStore } from '@/stores/appStore';
+import { useRecipeStore } from '@/stores/recipeStore';
+import { useUserStore } from '@/stores/userStore';
 import WelcomeComponent from './WelcomeComponent.vue';
 import { mockRefRecipes } from '@/testing/mockData';
 import { createMockedStores } from '@/testing/mockStores';

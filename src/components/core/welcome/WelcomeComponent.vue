@@ -3,11 +3,10 @@ import { computed, onMounted, Ref, ref, unref, watch } from 'vue'
 import { useRoute } from 'vue-router';
 import { Search } from 'lucide-vue-next'
 
-import { useRecipeStore } from '@/stores/recipe'
-import { useAppStore } from '@/stores/app';
-import { useUserStore } from '@/stores/user';
+import { useRecipeStore } from '@/stores/recipeStore'
+import { useAppStore } from '@/stores/appStore';
+import { useUserStore } from '@/stores/userStore';
 
-import RecipeDetailsComponent from '@/components/core/recipeList/recipeDetails/recipeDetailsComponent.vue';
 import AuthComponent from '../auth/AuthComponent.vue';
 import CollectionComponent from '../collections/CollectionComponent.vue'
 import SplashComponent from './splash/SplashComponent.vue';
@@ -185,11 +184,11 @@ onMounted(async () => {
     max-width: 1366px
 
 .guest-welcome
-  height: 480px
+  height: 100%
   margin-bottom: 20px
-  
-  @media (min-width: 768px)
-    margin-bottom: 50px
+
+.welcome
+  overflow-y: auto
 
 .welcome, .guest-welcome
   display: flex
@@ -197,7 +196,6 @@ onMounted(async () => {
   flex-direction: column
   background-color: white
   border-radius: 5px
-  overflow-y: auto
   width: 100%
 
   h1

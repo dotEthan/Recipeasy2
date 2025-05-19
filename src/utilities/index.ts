@@ -1,4 +1,4 @@
-import { useUserStore } from "@/stores/user";
+import { useUserStore } from "@/stores/userStore";
 import { NewRecipe } from "@/types/Recipes";
 import { Visibility } from "@/types/RecipesEnums";
 

@@ -1,15 +1,16 @@
 // src/composables/useDataService.ts
 import { ref } from 'vue';
 import { AxiosError } from 'axios';
-import { useAppStore } from '@/stores/app';
-import { useUserStore } from '@/stores/user';
+import { useAppStore } from '@/stores/appStore';
+import { useUserStore } from '@/stores/userStore';
 import { Recipe } from '@/types/Recipes';
 import axios from '@/axios';
 import { LocalUser } from '@/types/UserState';
 import { StandardRecipeApiResponse } from '@/types/ApiResponse';
-import { useRecipeStore } from '@/stores/recipe';
-import { useShoppingListStore } from '@/stores/shoppingList';
-import { clearSessionData } from '@/utilities';
+import { useRecipeStore } from '@/stores/recipeStore';
+import { useShoppingListStore } from '@/stores/shoppingListStore';
+import { useToastStore } from '@/stores/toastStore';
+import { ToastType } from '@/types/toasts.d';
 
 /**
  * Handles Authorization related API calls and initilizations
@@ -24,6 +25,7 @@ export function useAuthService() {
   const userStore = useUserStore();
   const recipeStore = useRecipeStore();
   const shoppingListStore = useShoppingListStore();
+  const toastStore = useToastStore();
 
   const error = ref<string | null>(null)
   const isLoading = ref(false) // TODO User Feedback
@@ -109,6 +111,7 @@ export function useAuthService() {
       };
       // TODO wasnt working, check
       appStore.setInitialAppState(appState);
+      toastStore.showToast('Login Successful', ToastType.SUCCESS);
 
       return localUser.verified;
     } catch (err) {
@@ -138,6 +141,7 @@ export function useAuthService() {
       recipeStore.resetUserRecipeState();
       appStore.resetAppStates();
       
+      toastStore.showToast('User Logged out', ToastType.SUCCESS);
       console.log('logged out: ', response);
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Logout failed';
@@ -155,9 +159,11 @@ export function useAuthService() {
    */
   const verifyUser = async (enteredCode: string) => {
     try {
+      const userEmail = userStore.getCurrentUserEmail;
+      console.log('email:', userEmail)
       const response = await axios.post('/admin/verification-codes/verify', {
         code: enteredCode,
-        userEmail: userStore.getCurrentUserEmail
+        userEmail
       });
       if (!response.data.success) throw new Error('User Verifcation Unsuccessful. Retry?');
       userStore.verifyUser();

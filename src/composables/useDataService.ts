@@ -1,7 +1,7 @@
 import { ref } from "vue"
 import type { LocalUser } from "@/types/UserState"
 import { Recipe } from "@/types/Recipes"
-import { useRecipeStore } from "@/stores/recipe"
+import { useRecipeStore } from "@/stores/recipeStore"
 import axios from "@/axios"
 import {
   ImageUploadResponse,
@@ -10,8 +10,10 @@ import {
   StandardUserApiResponse,
   StandardApiResponse
 } from "@/types/ApiResponse"
-import { useUserStore } from "@/stores/user"
+import { useUserStore } from "@/stores/userStore"
 import { getPublicIdFromUrl } from "@/utilities"
+import { useToastStore } from "@/stores/toastStore"
+import { ToastType } from "@/types/toasts.d"
 
 /**
  * Handles all Data related API calls and initilizations
@@ -25,8 +27,9 @@ import { getPublicIdFromUrl } from "@/utilities"
 
 export function useDataService() {
   const error = ref<string | null>(null)
-  const recipeStore = useRecipeStore()
-  const userStore = useUserStore()
+  const recipeStore = useRecipeStore();
+  const userStore = useUserStore();
+  const toastStore = useToastStore();
 
   /**
    * Calls API to save newly created recipes
@@ -41,8 +44,8 @@ export function useDataService() {
       const saveNewRecipeResponse = await axios.post<StandardRecipeApiResponse>("/recipes", {
         recipe
       });
+
       const returnedData = saveNewRecipeResponse.data;
-      console.log("save recipe response: ", returnedData);
       if (!returnedData.success)
         throw new Error(`recipe save not successful: ${returnedData.message}`);
 
@@ -51,9 +54,11 @@ export function useDataService() {
 
       recipeStore.finishSuccessfulSave(returnedRecipe);
       userStore.addIdToLocalUserRecipes(recipe._id);
+      toastStore.showToast('New Recipe Created', ToastType.SUCCESS);
     } catch (error) {
-      console.log("Saving Recipe error: ", error);
       recipeStore.revertFailedSave(recipe);
+
+      console.log("Saving Recipe error: ", error);
       throw new Error(`Save New Recipe Fail: ${error}`);
     }
   }
@@ -79,6 +84,7 @@ export function useDataService() {
       const user = addUserRecipesResponse.data.user;
       if (!user) throw new Error("Updated Data not found, retry, reset FE changes?");
       userStore.setLocalUser(user);
+      toastStore.showToast('Public recipe added', ToastType.SUCCESS);
       return user;
     } catch (error) {
       console.log("upset user recipe error: ", error);
@@ -116,6 +122,7 @@ export function useDataService() {
         recipeStore.updatePublicRecipe(returnedRecipe);
       }
       recipeStore.finishSuccessfulUpdate(returnedRecipe);
+      toastStore.showToast('Recipe Updated', ToastType.SUCCESS);
     } catch (error) {
       console.log("Updating Recipe error: ", error);
       recipeStore.revertFailedUpdate(recipe);
@@ -189,6 +196,7 @@ export function useDataService() {
       console.log("Deletion successful");
       recipeStore.finishRecipeDeletion();
       userStore.removeIdFromLocalUserRecipes(id);
+      toastStore.showToast('Recipe Deleted', ToastType.SUCCESS);
     } catch (error: unknown) {
       // check all Roll back Optimistic UI
       console.log("error");

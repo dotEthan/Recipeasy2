@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import type { PropType } from 'vue'
-import { useShoppingListStore } from '@/stores/shoppingList'
+import { useShoppingListStore } from '@/stores/shoppingListStore'
 import ShoppingListItemComponent from './shoppingListItem/ShoppingListItemComponent.vue'
 import type { ShoppingList } from '@/types/ShoppingLists'
 import ShoppingListEditItemComponent from './shoppingListEditItemComponent/ShoppingListEditItemComponent.vue'
@@ -126,7 +126,7 @@ function onMakeDefault() {
   text-align: center
   font-weight: 500
   font-size: 1.3em
-  font-family: pacifico, sans-serif
+  font-family: 'Limelight', sans-serif
 
 .ingredient-inplace
   width: 90%

@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory, RouteLocationNormalized } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import { useUserStore } from '@/stores/user'
-import { useAppStore } from '@/stores/app'
-import { useRecipeStore } from '@/stores/recipe'
+import { useUserStore } from '@/stores/userStore'
+import { useAppStore } from '@/stores/appStore'
+import { useRecipeStore } from '@/stores/recipeStore'
 
 // TODO Verified and AUthorized user requires
 const routes = [

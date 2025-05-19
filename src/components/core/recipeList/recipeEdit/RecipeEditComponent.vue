@@ -4,7 +4,7 @@ import DOMPurify from 'dompurify';
 import { computed, nextTick, onBeforeUnmount, onUnmounted, ref } from 'vue';
 import type { ComponentPublicInstance, PropType, Ref } from 'vue';
 import { NewRecipe, Recipe } from '@/types/Recipes' ;
-import { useRecipeStore } from '@/stores/recipe';
+import { useRecipeStore } from '@/stores/recipeStore';
 import ToolTipComponent from '../../shared/toolTip/ToolTipComponent.vue';
 import { createNewRecipe, getPublicIdFromUrl } from '@/utilities';
 import { useDataService } from '@/composables/useDataService';

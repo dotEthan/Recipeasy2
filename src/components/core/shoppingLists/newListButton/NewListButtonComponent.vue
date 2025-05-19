@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useShoppingListStore } from '@/stores/shoppingList'
+import { useShoppingListStore } from '@/stores/shoppingListStore'
 import { CirclePlus } from 'lucide-vue-next';
 
 const shoppingListStore = useShoppingListStore()

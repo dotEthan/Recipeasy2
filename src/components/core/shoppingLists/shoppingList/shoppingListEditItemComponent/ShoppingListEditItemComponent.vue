@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useShoppingListStore } from '@/stores/shoppingList'
+import { useShoppingListStore } from '@/stores/shoppingListStore'
 import { ref, computed } from 'vue'
 
 const shoppingListStore = useShoppingListStore()

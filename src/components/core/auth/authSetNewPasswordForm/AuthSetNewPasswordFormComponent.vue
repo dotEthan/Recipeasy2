@@ -1,11 +1,12 @@
 
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
+import router from '@/router/main';
 import AuthFormComponent from '../authForm/AuthFormComponent.vue';
 import {useAuthService} from '@/composables/useAuthService';
-import { useAppStore } from '@/stores/app';
-import router from '@/router/main';
+import { useAppStore } from '@/stores/appStore';
 import { FormField, FormData } from '@/types/authFormConfig';
-import { useRoute } from 'vue-router';
+import { AuthFormType } from '@/constants';
 
 const authService = useAuthService();
 const appStore = useAppStore();
@@ -19,13 +20,13 @@ const signinFields = [
         name: 'password',
         label: 'Password',
         type: 'password',
-        warning: ''
+        required: true
     },
     {
         name: 'confirmPassword',
         label: 'Confirm Password',
         type: 'password',
-        warning: ''
+        required: true
     }
 ] as FormField[]
 
@@ -50,28 +51,13 @@ async function handleSubmit(formData: FormData) {
       <div class="text-center auth__title">
         <h1>Enter New Password</h1>
       </div>
-      <AuthFormComponent :fields="signinFields" button-text="Set Password" @submit="handleSubmit" error="" />
+      <AuthFormComponent :fields="signinFields" button-text="Set Password" :formType="AuthFormType.SET_PASSWORD"  @submit="handleSubmit" error="" />
       <hr />
     </div>
   </div>
 </template>
 
 <style lang="sass" scoped>
-
-.auth__title
-    margin: 5px 0 5px
-    text-align: center
-    font-family: sans-serif
-
-    @media (min-width: 768px)
-        margin: 25px 0 25px
-
-    h1
-        font-size: 1.5em
-        text-transform: capitalize
-
-        @media (min-width: 768px)
-            font-size: 2em
             
 .auth-mistake
     font-size: .8em

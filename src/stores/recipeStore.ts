@@ -1,19 +1,18 @@
 import { defineStore } from 'pinia'
 import { ref, computed, ComputedRef, Ref, watchEffect, watch } from 'vue'
-import { useUserStore } from './user'
+import { useUserStore } from './userStore'
 import type { Recipe, RecipeState } from '@/types/Recipes'
-import { useAppStore } from './app'
+import { useAppStore } from './appStore'
 import { Visibility } from '@/types/RecipesEnums'
-import { checkIfCacheExpired, formatCachedValue } from '@/utilities'
+import { formatCachedValue } from '@/utilities'
 
 /**
- * Store for all Recipe Related Data
- * @todo Update Mock Store and Apply store types
- * @todo refactor to multiple stores?
- * @todo fix returns, that's ugly
- * @todo Update "ethansFavouritePublicIds" to a search of DB for top rated by me
- * @returns {Object} - recipes, allTags, selectedRecipeId, existingPublicRecipes, editSelectedRecipe, getAllUserRecipes, selectedRecipe, isSelectedRecipePublic, isSelectedRecipeLocalUsers, personalFilters, tempRecipeSaveArray, tempRecipeDeleteArray, recipesLength, existingPublicRecipesLength, getAllRecipeTags, useFilteredRecipes, setInitialUserRecipeState, setInitialPublicRecipeState, generatePublicRecipeCollections, updatePublicRecipe, getRecipeById, updateRecipe, addRecipe, setSelectedRecipeId, setEditStatusSelectedId, finishRecipeDeletion, revertRecipeDeletion, prepareRecipeDeletion, removeRecipeById, backupOriginalRecipeData, removeTempLocalRecipe, clearSelectedRecipeId, hydrateStore, cacheRecipeState, resetState, resetUserRecipeState
- */
+  * Store for all Recipe Related Data
+  * @typedef {Object} RecipeStore
+  * @todo Update Mock Store and Apply store types
+  * @todo refactor to multiple stores?
+  * @todo Update "ethansFavouritePublicIds" to a search of DB for top rated by me
+*/
 
 export const useRecipeStore = defineStore('recipes', () => {
   const userStore = useUserStore();

@@ -3,6 +3,7 @@
 import AuthFormComponent from '../authForm/AuthFormComponent.vue';
 import {useAuthService} from '@/composables/useAuthService';
 import { FormField, FormData } from '@/types/authFormConfig';
+import { AuthFormType } from '@/constants';
 
 const authService = useAuthService();
 
@@ -13,25 +14,29 @@ const signinFields = [
         name: 'displayName',
         label: 'Display Name',
         type: 'test',
-        warning: ''
+        warning: '',
+        required: true
     },
     {
         name: 'email',
         label: 'Email',
         type: 'email',
-        warning: ''
+        warning: '',
+        required: true
     },
     {
         name: 'password',
         label: 'Password',
         type: 'password',
-        warning: ''
+        warning: '',
+        required: true
     },
     {
         name: 'confirmPassword',
         label: 'Confirm Password',
         type: 'password',
-        warning: ''
+        warning: '',
+        required: true
     }
 ] as FormField[]
 
@@ -51,7 +56,7 @@ async function handleSubmit(formData: FormData) {
             <div class="text-center auth__title">
               <h1>Register</h1>
             </div>
-            <AuthFormComponent :fields="signinFields" button-text="Register" @submit="handleSubmit" error="" />
+            <AuthFormComponent :fields="signinFields" button-text="Register" :formType="AuthFormType.REGISTER" @submit="handleSubmit" error="" />
             <hr />
             <div class="auth-mistake">
               <div class="auth-footer">
@@ -64,21 +69,6 @@ async function handleSubmit(formData: FormData) {
     </template>
 
 <style lang="sass" scoped>
-
-.auth__title
-    margin: 5px 0 5px
-    text-align: center
-    font-family: sans-serif
-
-    @media (min-width: 768px)
-        margin: 25px 0 25px
-
-    h1
-        font-size: 1.5em
-        text-transform: capitalize
-
-        @media (min-width: 768px)
-            font-size: 2em
             
 .auth-mistake
     font-size: .8em

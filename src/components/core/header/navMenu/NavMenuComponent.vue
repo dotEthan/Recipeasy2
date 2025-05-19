@@ -1,23 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useAppStore } from '@/stores/app';
-import { useUserStore } from '@/stores/user';
+import { useAppStore } from '@/stores/appStore';
+import { useUserStore } from '@/stores/userStore';
 import router from '@/router/main';
-import { useDataService } from '@/composables/useDataService';
-import { useRecipeStore } from '@/stores/recipe';
-import { useShoppingListStore } from '@/stores/shoppingList';
-import { LocalUser } from '@/types/UserState';
 import { useAuthService } from '@/composables/useAuthService';
 
 const appStore = useAppStore();
 const userStore = useUserStore();
-const recipeStore = useRecipeStore();
-const shoppingListStore = useShoppingListStore();
-const dataService = useDataService();
 const authService = useAuthService();
 const isTestModeOn = computed(() => appStore.isTestModeOn);
 const isAuthorized = computed(() => userStore.isAuthorized);
-const currentUser = computed(() => userStore.getCurrentUser);
 
 //TODO needed or just call resetApp?
 function testModeOff() {

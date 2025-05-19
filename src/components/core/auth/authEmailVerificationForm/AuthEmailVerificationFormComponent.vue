@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAuthService } from '@/composables/useAuthService';
-import { useAppStore } from '@/stores/app';
+import { useAppStore } from '@/stores/appStore';
 import { ref } from 'vue';
 
 const authService = useAuthService();

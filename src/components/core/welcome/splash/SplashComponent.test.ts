@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { describe, it, expect, vitest } from 'vitest'
-import { useAppStore } from '@/stores/app'
+import { useAppStore } from '@/stores/appStore'
 import SplashComponent from './SplashComponent.vue'
 
 describe('SplashComponent', () => {
@@ -27,7 +27,7 @@ describe('SplashComponent', () => {
 
   it('renders the welcome title', () => {
     const wrapper = mountComponent()
-    expect(wrapper.find('.app-title').text()).toBe('Welcome to Recipeasy')
+    expect(wrapper.find('.app-title').text()).toBe('Welcome to Fasionista')
   })
 
   it('shows test mode button when not authorized and test mode is off', () => {

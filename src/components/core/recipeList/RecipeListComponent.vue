@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { v4 as uuidv4 } from 'uuid'
 import { computed, ref } from 'vue'
-import { useRecipeStore } from '@/stores/recipe'
+import { useRecipeStore } from '@/stores/recipeStore'
 import RecipeListItemComponent from './recipeListItem/RecipeListItemComponent.vue'
 import FilterComponent from './recipeFilter/FilterComponent.vue'
 import RecipeDetailsComponent from './recipeDetails/recipeDetailsComponent.vue'

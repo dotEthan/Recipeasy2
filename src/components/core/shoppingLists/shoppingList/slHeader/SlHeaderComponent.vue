@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useShoppingListStore } from '@/stores/shoppingList'
+import { useShoppingListStore } from '@/stores/shoppingListStore'
 import type { ShoppingList } from '@/types/ShoppingLists'
 import { defineProps, defineEmits, ref, type PropType, computed, nextTick } from 'vue'
 
@@ -89,7 +89,7 @@ const onSaveTitle = () => {
   text-align: center
   font-weight: 500
   font-size: 1.3em
-  font-family: pacifico, sans-serif
+  font-family: 'Limelight', sans-serif
 
 .ingredient-inplace
   width: 90%

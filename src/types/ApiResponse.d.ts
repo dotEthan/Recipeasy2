@@ -31,3 +31,15 @@ export interface ImageUploadResponse {
   url: string;
   message?: string;
 }
+
+export interface ApiErrorResponse {
+  message?: string;
+  validationErrors?: Record<string, string>;
+  // expand if needed
+}
+
+export interface ApiResponse<T = any> {
+  data: T;
+  status: number;
+  // expand if needed
+}

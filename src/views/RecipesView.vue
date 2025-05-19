@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import RecipeListComponent from '@/components/core/recipeList/RecipeListComponent.vue'
-import { useRecipeStore } from '@/stores/recipe';
+import { useRecipeStore } from '@/stores/recipeStore';
 const recipeStore = useRecipeStore()
   console.log("reviews")
 </script>
@@ -31,7 +31,7 @@ const recipeStore = useRecipeStore()
 
 .headline-title
   margin-top: 10px
-  font-family: pacifico, sans-serif
+  font-family: 'Limelight', sans-serif
   text-align: center
 
   @media (min-width: 768px)

@@ -2,7 +2,7 @@
 import { ref, defineEmits, reactive, toRaw } from 'vue'
 import { Filter, CircleX } from 'lucide-vue-next'
 import CheckboxComponent from '../../shared/checkbox/CheckboxComponent.vue'
-import { useRecipeStore } from '@/stores/recipe'
+import { useRecipeStore } from '@/stores/recipeStore'
 
 const recipeStore = useRecipeStore()
 const emit = defineEmits(['filter'])

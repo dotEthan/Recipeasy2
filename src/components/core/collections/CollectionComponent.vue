@@ -2,7 +2,7 @@
 import CollectionItemComponent from './collectionItem/CollectionItemComponent.vue'
 import type { PropType } from 'vue'
 import type { Recipe } from '@/types/Recipes'
-import { useRecipeStore } from '@/stores/recipe';
+import { useRecipeStore } from '@/stores/recipeStore';
 
 defineProps({
   title: String,

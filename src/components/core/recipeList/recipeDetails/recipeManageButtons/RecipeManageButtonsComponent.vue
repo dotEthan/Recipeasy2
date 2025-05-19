@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useDataService } from '@/composables/useDataService';
 import router from '@/router/main';
-import { useRecipeStore } from '@/stores/recipe'
-import { useShoppingListStore } from '@/stores/shoppingList'
-import { useUserStore } from '@/stores/user';
+import { useRecipeStore } from '@/stores/recipeStore'
+import { useShoppingListStore } from '@/stores/shoppingListStore'
+import { useUserStore } from '@/stores/userStore';
 import { ArrowBigRight } from 'lucide-vue-next';
 import { computed } from 'vue';
 // define buttons by props, default all false, unless instance wants

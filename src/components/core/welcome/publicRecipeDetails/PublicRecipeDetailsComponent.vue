@@ -6,7 +6,7 @@ import RecipeManageButtonsComponent from '../../recipeList/recipeDetails/recipeM
 import ListItemComponent from '../../recipeList/recipeDetails/listItem/ListItemComponent.vue';
 import TagItemComponent from '../../recipeList/recipeDetails/tag-item/TagItemComponent.vue';
 import NoteItemComponent from '../../recipeList/recipeDetails/noteItem/NoteItemComponent.vue';
-import { useRecipeStore } from '@/stores/recipe';
+import { useRecipeStore } from '@/stores/recipeStore';
 
 const emit = defineEmits(['closeRecipeDetails', 'removedRecipe', 'editSelectedRecipe']);
 const recipeStore = useRecipeStore();

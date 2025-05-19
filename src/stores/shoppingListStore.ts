@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { defineStore } from 'pinia'
 
 import type { ShoppingList } from '@/types/ShoppingLists'
-import { useUserStore } from './user'
+import { useUserStore } from './userStore'
 import { formatCachedValue } from '@/utilities'
 
 /**

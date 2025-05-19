@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useShoppingListStore } from '@/stores/shoppingList'
+import { useShoppingListStore } from '@/stores/shoppingListStore'
 import ShoppingListComponent from './shoppingList/ShoppingListComponent.vue'
 import NewListButtonComponent from './newListButton/NewListButtonComponent.vue'
 

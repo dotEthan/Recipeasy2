@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import type { Direction, Ingredient } from '@/types/Recipes'
-import { useShoppingListStore } from '@/stores/shoppingList'
+import { useShoppingListStore } from '@/stores/shoppingListStore'
 
 const props = defineProps({
   itemObject: Object as PropType<Ingredient | Direction>,

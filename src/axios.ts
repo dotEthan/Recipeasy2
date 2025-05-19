@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { useAppStore } from './stores/app';
+import { useAppStore } from './stores/appStore';
 import { useAuthService } from './composables/useAuthService';
 import router from './router/main';
 
@@ -24,7 +24,7 @@ instance.interceptors.request.use((config) => {
 // TODO Connect API calls to global error handler
 instance.interceptors.response.use(
   (response: AxiosResponse) => { 
-    return response 
+    return response
   },
   (error) => {
     console.log("error handler switchboard here?");

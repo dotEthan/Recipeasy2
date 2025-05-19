@@ -1,59 +1,90 @@
 <script setup lang="ts">
+import { reactive, computed } from 'vue';
+
+import { authFormValidation } from '@/utilities/AuthFormValidation';
 import { FormData, FormField } from '@/types/authFormConfig'
-import { reactive } from 'vue';
+import { AuthFormType } from '@/constants';
 
 const props = defineProps<{
   fields: Array<FormField>,
   buttonText: string,
-  error: string
+  error: string,
+  formType: AuthFormType
 }>();
 
 const emit = defineEmits(['submit']);
 
 const formData: FormData = reactive({});
+const fieldErrors = reactive<Record<string, string>>({});
 
 for (const field of props.fields) {
   formData[field.name] = '';
 }
 
+const hasErrors = computed(() => {
+  return Object.keys(fieldErrors).some(key => fieldErrors[key]);
+});
+
+function validateField(field: FormField, value: string) {
+    delete fieldErrors[field.name];
+    
+    const { isValid, errorMsg, errorField } = authFormValidation(field, value, formData);
+    
+    if (!isValid && errorMsg && errorField) {
+        fieldErrors[errorField] = errorMsg;
+    }
+    
+    return isValid;
+}
+
+
 async function onSubmit(e: any) {
   e.preventDefault();
-  emit('submit', {...formData})
-}
+  console.log('submitting')
 
-function validateField(field: FormField) {
-  console.log('validating: ', field)
-}
-
-function onClose() {
-  console.log(close)
+  let isValid = true;
+  props.fields.forEach(field => {
+    if (!validateField(field, formData[field.name])) {
+      isValid = false;
+    }
+  });
+  
+  if (isValid && !hasErrors.value) {
+    emit('submit', {...formData});
+  }
 }
 
 </script>
 
 <template>
-  <div class="back-drop">
+  <div class="container">
     <div class="auth__warning" v-if="error">
       {{ error }}
     </div>
     <form @submit.prevent="onSubmit">
       <div class="form-group" v-for="field in fields" :key="field.name">
-          <label :for="field.name" class="auth-form__label">{{ field.label }}</label>
+          <label :for="field.name" class="auth-form__label">{{ field.label }}<span class="warning" v-if="field.required">*</span></label>
           <input
             :type="field.type"
             :id="field.name"
-            @input="validateField(field)"
+            @blur="validateField(field, formData[field.name])"
             class="form-control"
+            :class="{ 'is-invalid': fieldErrors[field.name] }"
             v-model="formData[field.name]"
           >
-          <span v-if="field.warning" class="warning">{{ field.warning }}</span>
+          <div class="error-slot">
+            <span v-if="fieldErrors[field.name]" class="warning">{{ fieldErrors[field.name] }}</span>
+          </div>
       </div>
-      <button type="submit">{{ buttonText }}</button>
+      <button type="submit" :disabled="hasErrors">{{ buttonText }}</button>
     </form>
   </div>
 </template>
 
 <style lang="sass" scoped>
+
+.is-invalid
+  border-color: red
 
 .auth__warning
     color: red
@@ -76,6 +107,10 @@ function onClose() {
 .auth-form__label
     font-weight: 700
     margin-bottom: 5px
+    
+    span
+      vertical-align: top
+      margin-left: 5px
 
 input.ng-invalid.ng-touched
     border: 1px solid red
@@ -94,18 +129,25 @@ input.ng-invalid.ng-touched
         height: 3em
         margin-top: 10px
 
-.email-warning
-    display: none
-    margin-top: 5px
+.error-slot 
+  height: 1.2em
+  line-height: 1.2
+
+.warning
     color: red
-    font-size: .8em
+    font-size: .7em
+    margin-top: 5px
 
 
-.btn
+button
     padding: 3px 6px
     color: #fff
     background-color: #337ab7
     border-color: #2e6da4
+
+    &:disabled
+      opacity: 0.5
+      cursor: not-allowed
 
     @media (min-width: 768px)
         padding: 6px 12px

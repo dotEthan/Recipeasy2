@@ -1,6 +1,6 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import axios from '@/axios';
-import { useAppStore } from '@/stores/app'
+import { useAppStore } from '@/stores/appStore'
 import { checkIfCacheExpired, debounce, getSessionData } from '@/utilities';
 import { StandardUserApiResponse } from '@/types/ApiResponse';
 import type { ScreenSize } from '@/types/ScreenSize'
@@ -10,9 +10,9 @@ import { CachedUserState } from '@/types/UserState';
 import { CachedRecipeState } from '@/types/Recipes';
 import { CachedShoppingListState } from '@/types/ShoppingLists';
 import { useDataService } from './useDataService';
-import { useUserStore } from '@/stores/user';
-import { useRecipeStore } from '@/stores/recipe';
-import { useShoppingListStore } from '@/stores/shoppingList';
+import { useUserStore } from '@/stores/userStore';
+import { useRecipeStore } from '@/stores/recipeStore';
+import { useShoppingListStore } from '@/stores/shoppingListStore';
 
 /**
  * Handles all methods to help bootstrap the App: screen size tracking.
