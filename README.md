@@ -6,9 +6,9 @@
 
 ### Status
 
-Rebuild Underway with Vue. Functionality is caught up, creating tests and adding new functionality. Redesign, using a proper design system required as prevoius CSS and HTML is not properly structured. 
+Rebuild Underway with Vue. Functionality is caught up, creating tests and adding new functionality. Redesign, using a proper design system required as prevoius CSS and HTML is not properly structured.
 
-Why Vue and not React or Angular? I Have already worked with React and Angular a great deal, both personally and professionally, so I wanted to see what differences there were and why so many praise Vue. 
+Why Vue and not React or Angular? I Have already worked with React and Angular a great deal, both personally and professionally, so I wanted to see what differences there were and why so many praise Vue.
 
 So far it's really nice and feels orderly which is great. Easy to find what you need, easy to refactor and split. and Pinia works great with a really simple setup. No real negatives so far from what I can see.
 
@@ -22,8 +22,6 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### What isn't working
 
-- paramquery parsing in WelcomeComponent needs better error checks (what?)
-
 ## Where are we?
 
 ### Working (not feature complete as Error handling and UX to come, redesign with tailwindcss after):
@@ -36,15 +34,16 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 - Firebase image upload Signature (removed)
 - Pinia store Implementation
 - Routing and guards
-- Authenticated User Image uploading (and deleting) to CDN 
+- Authenticated User Image uploading (and deleting) to CDN
 - Functional Mobile Design
 - Public Recipes Displaying and functional
 - API proxy for tokens
 - Data persistence
+- Es-lint/prettier enforcement
 
 ### Working on Now:
 
-- test email sending with ![alt text](image.png)
+- test email sending
 - Custom Backend Functionality using Expressjs, Nodejs, and MongoDB.
 - - Working: security & all auth flows. user Recipe Creation, and updating.User persistence public Recipe flow, Data Persistence - User, Recipes, soft deletes for public recipes
 - - Error Handling

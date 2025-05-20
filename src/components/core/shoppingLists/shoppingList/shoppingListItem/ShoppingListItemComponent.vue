@@ -1,5 +1,16 @@
 <script setup lang="ts">
-import { useShoppingListStore } from '@/stores/shoppingListStore'
+/**
+ * Component to display each item in the shopping list
+ * @example
+ *  <ShoppingListItemComponent
+      v-model="currentListItems[i]"
+      class="sl-ingredient-input"
+      :item="currentListItems[i]"
+      :itemIndex="i"
+      :listIndex="currentListIndex"
+    />
+ */
+import { useShoppingListStore } from "@/stores/shoppingListStore";
 
 const props = defineProps({
   item: String,
@@ -11,16 +22,16 @@ const props = defineProps({
     type: Number,
     default: -1
   }
-})
+});
 
-const shoppingListStore = useShoppingListStore()
+const shoppingListStore = useShoppingListStore();
 
 function onEditItem() {
-  shoppingListStore.setEditingListIndex(props.listIndex)
-  shoppingListStore.setEditingItemIndex(props.itemIndex)
+  shoppingListStore.setEditingListIndex(props.listIndex);
+  shoppingListStore.setEditingItemIndex(props.itemIndex);
 }
 function onDeleteItem() {
-  shoppingListStore.deleteListItem(props.listIndex, props.itemIndex)
+  shoppingListStore.deleteListItem(props.listIndex, props.itemIndex);
 }
 </script>
 <template>

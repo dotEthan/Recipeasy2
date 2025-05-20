@@ -1,14 +1,27 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import type { PropType } from 'vue'
-import { useShoppingListStore } from '@/stores/shoppingListStore'
-import ShoppingListItemComponent from './shoppingListItem/ShoppingListItemComponent.vue'
-import type { ShoppingList } from '@/types/ShoppingLists'
-import ShoppingListEditItemComponent from './shoppingListEditItemComponent/ShoppingListEditItemComponent.vue'
-import SlFooter from './slFooter/SlFooterComponent.vue'
-import SlHeaderComponent from './slHeader/SlHeaderComponent.vue'
+/**
+ * Component to display individual Shopping Lists
+ * @todo Click item to edit, or cross off?
+ * @example
+ *  <ShoppingListComponent
+      v-for="(shoppingList, i) in shoppingListStore.shoppingLists"
+      :key="shoppingList.id"
+      :currentList="shoppingListStore.shoppingLists[i]"
+      :currentListIndex="i"
+    />
+ */
+import { computed, ref } from "vue";
+import type { PropType } from "vue";
 
-const shoppingListStore = useShoppingListStore()
+import { useShoppingListStore } from "@/stores/shoppingListStore";
+import type { ShoppingList } from "@/types/ShoppingLists.d";
+
+import ShoppingListEditItemComponent from "./shoppingListEditItemComponent/ShoppingListEditItemComponent.vue";
+import ShoppingListFooterComponent from "./shoppingListFooter/ShoppingListFooterComponent.vue";
+import ShoppingListHeaderComponent from "./shoppingListHeader/ShoppingListHeaderComponent.vue";
+import ShoppingListItemComponent from "./shoppingListItem/ShoppingListItemComponent.vue";
+
+const shoppingListStore = useShoppingListStore();
 
 const props = defineProps({
   currentList: Object as PropType<ShoppingList>,
@@ -16,47 +29,52 @@ const props = defineProps({
     type: Number,
     default: -1
   }
-})
+});
 
-const dummyData = { id: '', items: [], isDefault: false, isOpen: true, creator: '', viewableBy: [''] }
+const dummyData = {
+  id: "",
+  items: [],
+  isDefault: false,
+  isOpen: true,
+  creator: "",
+  viewableBy: [""]
+};
 
-let currentList = props.currentList || (dummyData as ShoppingList)
+let currentList = props.currentList || (dummyData as ShoppingList);
 
-let currentListItems = currentList?.items
-let isMinimized = ref(false)
-let editingListIndex = computed(() => shoppingListStore.editingListIndex)
-let editingItemIndex = computed(() => shoppingListStore.editingItemIndex)
+let currentListItems = currentList?.items;
+let isMinimized = ref(false);
+let editingListIndex = computed(() => shoppingListStore.editingListIndex);
+let editingItemIndex = computed(() => shoppingListStore.editingItemIndex);
 const defaultList = computed(() => shoppingListStore.defaultList);
 const defaultListId = defaultList.value?.id;
 
-const hideOrShow = computed(() => (!currentList.isOpen ? 'show' : 'hide'))
+const hideOrShow = computed(() => (!currentList.isOpen ? "show" : "hide"));
 
 function onAddItem() {
-  currentListItems.push('')
-  shoppingListStore.setEditingListIndex(props.currentListIndex)
-  shoppingListStore.setEditingItemIndex(currentList.items.length - 1)
+  currentListItems.push("");
+  shoppingListStore.setEditingListIndex(props.currentListIndex);
+  shoppingListStore.setEditingItemIndex(currentList.items.length - 1);
 }
 
 function onDeleteList() {
-  shoppingListStore.deleteList(props.currentListIndex)
+  shoppingListStore.deleteList(props.currentListIndex);
 }
 
 function toggleListCollapse() {
-  isMinimized.value = !isMinimized.value
-  currentList.isOpen = !currentList.isOpen
+  isMinimized.value = !isMinimized.value;
+  currentList.isOpen = !currentList.isOpen;
 }
 
 function onMakeDefault() {
-  shoppingListStore.setDefaultList(currentList.id)
+  shoppingListStore.setDefaultList(currentList.id);
 }
-
-//TODO Edit Item when clicked focuses on input
 </script>
 
 <template>
   <div class="sl-each-contain">
     <div class="sl-contain">
-      <SlHeaderComponent
+      <ShoppingListHeaderComponent
         :currentList="currentList"
         :currentListIndex="currentListIndex"
         @update:title="currentList.title = $event"
@@ -82,7 +100,7 @@ function onMakeDefault() {
         </li>
       </ul>
     </div>
-    <SlFooter
+    <ShoppingListFooterComponent
       :currentList="currentList"
       :defaultListId="defaultListId"
       :hideOrShow="hideOrShow"

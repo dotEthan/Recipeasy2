@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { useShoppingListStore } from '@/stores/shoppingListStore'
-import ShoppingListComponent from './shoppingList/ShoppingListComponent.vue'
-import NewListButtonComponent from './newListButton/NewListButtonComponent.vue'
+/**
+ * Component to display full Shopping List collection
+ * @todo Ensure all Shoppign List functionality working since BackEnd migration
+ * @example
+ *  <ShoppingListsComponent />
+ */
+import { useShoppingListStore } from "@/stores/shoppingListStore";
 
-const shoppingListStore = useShoppingListStore()
-const defaultListIndex = 0
+import NewListButtonComponent from "./newListButton/NewListButtonComponent.vue";
+import ShoppingListComponent from "./shoppingList/ShoppingListComponent.vue";
 
-function onAddList() {
-  shoppingListStore.addNewList()
-}
+const shoppingListStore = useShoppingListStore();
+const defaultListIndex = 0;
 </script>
 
 <template>
@@ -24,7 +27,7 @@ function onAddList() {
         :currentList="shoppingListStore.shoppingLists[i]"
         :currentListIndex="i"
       />
-      <NewListButtonComponent @add-new-list="onAddList" />
+      <NewListButtonComponent />
     </div>
   </section>
 </template>

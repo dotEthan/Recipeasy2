@@ -1,20 +1,28 @@
 <script setup lang="ts">
-// TODO DRY this and Welcome's publicRecipeDetailsComponent. componentize shared pieces.
-import XToCloseComponent from '../../shared/xToClose/XToCloseComponent.vue';
-import RecipeDetailHeaderComponent from '../../recipeList/recipeDetails/recipeDetailHeader/RecipeDetailHeaderComponent.vue';
-import RecipeManageButtonsComponent from '../../recipeList/recipeDetails/recipeManageButtons/RecipeManageButtonsComponent.vue';
-import ListItemComponent from '../../recipeList/recipeDetails/listItem/ListItemComponent.vue';
-import TagItemComponent from '../../recipeList/recipeDetails/tag-item/TagItemComponent.vue';
-import NoteItemComponent from '../../recipeList/recipeDetails/noteItem/NoteItemComponent.vue';
-import { useRecipeStore } from '@/stores/recipeStore';
+/**
+ * Component to display recipe details for public recipes
+ * @todo DRY this and Welcome's publicRecipeDetailsComponent. componentize shared pieces. 
+ * @example
+ *  <PublicRecipeDetailsComponent
+      v-if="recipeStore.selectedRecipeId"
+      @closeRecipeDetails="closeRecipeDetails()"
+    />
+ */
+import { useRecipeStore } from "@/stores/recipeStore";
 
-const emit = defineEmits(['closeRecipeDetails', 'removedRecipe', 'editSelectedRecipe']);
+import ListItemComponent from "../../recipeList/recipeDetails/listItem/ListItemComponent.vue";
+import NoteItemComponent from "../../recipeList/recipeDetails/noteItem/NoteItemComponent.vue";
+import RecipeDetailHeaderComponent from "../../recipeList/recipeDetails/recipeDetailHeader/RecipeDetailHeaderComponent.vue";
+import RecipeManageButtonsComponent from "../../recipeList/recipeDetails/recipeManageButtons/RecipeManageButtonsComponent.vue";
+import TagItemComponent from "../../recipeList/recipeDetails/tag-item/TagItemComponent.vue";
+import XToCloseComponent from "../../shared/xToClose/XToCloseComponent.vue";
+
+const emit = defineEmits(["closeRecipeDetails", "removedRecipe", "editSelectedRecipe"]);
 const recipeStore = useRecipeStore();
 const selectedRecipe = recipeStore.selectedRecipe;
 function onClose() {
-  emit('closeRecipeDetails');
+  emit("closeRecipeDetails");
 }
-
 </script>
 
 <template>
@@ -24,8 +32,8 @@ function onClose() {
       <XToCloseComponent @close="onClose" />
       <div class="overlay-contain">
         <div class="recipe-overlay-content">
-          <RecipeDetailHeaderComponent :selectedRecipe="selectedRecipe"/>
-          <RecipeManageButtonsComponent :can-edit="false" :can-delete="false"/>
+          <RecipeDetailHeaderComponent :selectedRecipe="selectedRecipe" />
+          <RecipeManageButtonsComponent :can-edit="false" :can-delete="false" />
           <div class="ingredients-contain">
             <div class="type-section-title" v-if="selectedRecipe?.ingredients">
               INGREDIENTS: <span class="help-text">(click to add ingredient to shopping list)</span>
@@ -51,14 +59,22 @@ function onClose() {
           <div class="ingredients-contain">
             <div class="type-section-title">Tags:</div>
             <div class="tags-wrapper" v-if="selectedRecipe?.tags">
-              <TagItemComponent v-for="(tag, index) of selectedRecipe?.tags" v-bind:key="index" :tag="tag" />
+              <TagItemComponent
+                v-for="(tag, index) of selectedRecipe?.tags"
+                v-bind:key="index"
+                :tag="tag"
+              />
             </div>
             <div class="type-section-none" v-else>No tags</div>
           </div>
           <div class="ingredients-contain">
             <div class="type-section-title">Notes:</div>
             <div class="notes-wrapper" v-if="selectedRecipe?.notes">
-              <NoteItemComponent v-for="(note, index) of selectedRecipe?.notes" v-bind:key="index" :note="note" />
+              <NoteItemComponent
+                v-for="(note, index) of selectedRecipe?.notes"
+                v-bind:key="index"
+                :note="note"
+              />
             </div>
             <div class="type-section-none" v-else>No Notes</div>
           </div>

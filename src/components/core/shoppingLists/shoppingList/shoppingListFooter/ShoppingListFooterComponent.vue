@@ -1,25 +1,34 @@
 <script setup lang="ts">
-import { defineEmits } from 'vue'
+/**
+ * Component to display the footer for each shopping list
+ * @example
+ *  <ShoppingListHeaderComponent
+      :currentList="currentList"
+      :currentListIndex="currentListIndex"
+      @update:title="currentList.title = $event"
+    />
+ */
+import { defineEmits } from "vue";
 
 defineProps({
   currentList: Object,
   defaultListId: String,
   hideOrShow: String
-})
+});
 
-const emit = defineEmits(['makeDefault', 'toggleCollapse', 'deleteList'])
+const emit = defineEmits(["makeDefault", "toggleCollapse", "deleteList"]);
 
 const onMakeDefault = () => {
-  emit('makeDefault')
-}
+  emit("makeDefault");
+};
 
 const toggleListCollapse = () => {
-  emit('toggleCollapse')
-}
+  emit("toggleCollapse");
+};
 
 const onDeleteList = () => {
-  emit('deleteList')
-}
+  emit("deleteList");
+};
 </script>
 
 <template>

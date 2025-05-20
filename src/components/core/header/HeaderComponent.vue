@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
-import MenuBurgerComponent from './menuBurger/MenuBurgerComponent.vue'
-import NavMenuComponent from './navMenu/NavMenuComponent.vue'
-import { useAppStore } from '@/stores/appStore';
+/**
+ * Component for apps header
+ * @example
+ * <HeaderComponent />
+ */
+import { RouterLink } from "vue-router";
 
-const appStore = useAppStore()
+import { useAppStore } from "@/stores/appStore";
+
+import MenuBurgerComponent from "./menuBurger/MenuBurgerComponent.vue";
+import NavMenuComponent from "./navMenu/NavMenuComponent.vue";
+
+const appStore = useAppStore();
 
 function closeMobileMenu() {
-  appStore.isMobileMenuOpen = false
+  appStore.isMobileMenuOpen = false;
 }
 </script>
 
@@ -18,7 +24,7 @@ function closeMobileMenu() {
       <div class="navbar-brand-contain">
         <RouterLink class="navbar-brand" @click="closeMobileMenu" to="/">Tastyista</RouterLink>
       </div>
-      <MenuBurgerComponent/>
+      <MenuBurgerComponent />
       <div
         class="navbar-default nav__header"
         :class="{ active: appStore.isMobileMenuOpen }"
@@ -70,7 +76,7 @@ function closeMobileMenu() {
     font-size: 40px
     margin-left: 25px
 
-.nav__header 
+.nav__header
   position: fixed
   top: 75px
   right: 0
@@ -85,17 +91,17 @@ function closeMobileMenu() {
   box-shadow: -2px 2px 2px -1px #666
   opacity: 1
 
-  &.active 
+  &.active
     transform: translateX(0)
-  
-  @media (min-width: 560px) 
+
+  @media (min-width: 560px)
     width: 25vw
     padding: 25px
 
-    &.active 
+    &.active
       transform: translateX(0)
-    
-  @media (min-width: 768px) 
+
+  @media (min-width: 768px)
     position: relative
     top: 0
     transform: none
@@ -107,5 +113,4 @@ function closeMobileMenu() {
     width: auto
     box-shadow: none
     transition: none
-
 </style>

@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { useShoppingListStore } from '@/stores/shoppingListStore'
-import { CirclePlus } from 'lucide-vue-next';
+/**
+ * Component to display button to add a new shopping list to collection
+ * @example
+ *  <NewListButtonComponent />
+ */
+import { CirclePlus } from "lucide-vue-next";
 
-const shoppingListStore = useShoppingListStore()
+import { useShoppingListStore } from "@/stores/shoppingListStore";
+
+const shoppingListStore = useShoppingListStore();
 
 function onAddNewList() {
-  shoppingListStore.addNewList()
+  shoppingListStore.addNewList();
 }
 </script>
 
@@ -46,10 +52,9 @@ function onAddNewList() {
 
     .new-list-text, .new-list-icon
       color: $colorDarker
-     
+
 .new-list-text
   font-size: 1.7em
   margin: 10px 0
   font-weight: 500
-  
 </style>

@@ -1,47 +1,59 @@
 <script setup lang="ts">
-import { PropType} from 'vue';
-import type { Recipe } from '@/types/Recipes'
+/**
+ * Component used to display header for recipe detail page
+ * @todo refactor into one componentized button defined by props (type).
+ * @example
+ *  <RecipeDetailHeaderComponent :selectedRecipe="selectedRecipe" />
+ */
+import { PropType } from "vue";
+
+import type { Recipe } from "@/types/Recipes";
 
 defineProps({
   selectedRecipe: Object as PropType<Recipe>
-})
-
+});
 </script>
 
 <template>
-    <div class="recipe-header">
-          <div class="recipe-image-contain">
-            <img :src="selectedRecipe?.imgPath" class="recipe-image-bg" />
-            <div class="recipe-name">
-              <h3>{{ selectedRecipe?.name }}</h3>
+  <div class="recipe-header">
+    <div class="recipe-image-contain">
+      <img :src="selectedRecipe?.imgPath" class="recipe-image-bg" />
+      <div class="recipe-name">
+        <h3>{{ selectedRecipe?.name }}</h3>
+      </div>
+    </div>
+    <div class="recipe-description">
+      <div class="description-box">
+        <h4 class="recipe-description-title">Description:</h4>
+        <p class="recipe-description-text">
+          {{ selectedRecipe?.description }}
+        </p>
+      </div>
+      <div class="head-lower-info">
+        <div class="ratingbar">
+          <div class="ratingbar-left">
+            <div v-if="selectedRecipe?.ratings?.averageRating">
+              <span v-if="selectedRecipe?.ratings?.averageRating">Your Rating:</span>
+              {{ selectedRecipe?.ratings?.averageRating }}
+            </div>
+            <div :class="{ smallText: selectedRecipe?.ratings?.averageRating }">
+              <span class="ratingbar-text">Rating: </span
+              >{{ selectedRecipe?.ratings?.averageRating }}
             </div>
           </div>
-          <div class="recipe-description">
-            <div class="description-box">
-              <h4 class="recipe-description-title">Description:</h4>
-              <p class="recipe-description-text">
-                {{ selectedRecipe?.description }}
-              </p>
-            </div>
-            <div class="head-lower-info">
-              <div class="ratingbar">
-                <div class="ratingbar-left">
-                  <div v-if="selectedRecipe?.ratings?.averageRating">
-                    <span v-if="selectedRecipe?.ratings?.averageRating">Your Rating:</span>
-                    {{ selectedRecipe?.ratings?.averageRating }}
-                  </div>
-                  <div :class="{smallText: selectedRecipe?.ratings?.averageRating}">
-                    <span class="ratingbar-text">Rating: </span>{{ selectedRecipe?.ratings?.averageRating }}
-                  </div>
-                </div>
-                <div class="ratingbar-right"><span class="ratingbar-text">{{ selectedRecipe?.visibility}} </span> </div>
-              </div>
-              <div class="recipe-url">
-                Recipe Url: <a :href="selectedRecipe?.url" rel="noopener noreferrer" target="_blank">{{ selectedRecipe?.url }}</a>
-              </div>
-            </div>
+          <div class="ratingbar-right">
+            <span class="ratingbar-text">{{ selectedRecipe?.visibility }} </span>
           </div>
         </div>
+        <div class="recipe-url">
+          Recipe Url:
+          <a :href="selectedRecipe?.url" rel="noopener noreferrer" target="_blank">{{
+            selectedRecipe?.url
+          }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <style lang="sass">
 @use '@/assets/variables' as *
@@ -132,7 +144,7 @@ defineProps({
 
 // Radix Switch CSS in Global as required
 
-.Label 
+.Label
   color: white
   font-size: 15px
   line-height: 1

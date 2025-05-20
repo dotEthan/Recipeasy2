@@ -1,6 +1,13 @@
 <script setup lang="ts">
-import { useToastStore } from '@/stores/toastStore';
-import Toast from '@/components/core/shared/toast/ToastComponent.vue';
+/**
+ * toast and modal container
+ * @todo add modal
+ * @example
+ *  <AppOverlays />
+ */
+import { useToastStore } from "@/stores/toastStore";
+
+import Toast from "../../shared/toast/ToastComponent.vue";
 
 const toastStore = useToastStore();
 // const modalStore = useModalStore();
@@ -8,14 +15,14 @@ const toastStore = useToastStore();
 <template>
   <Teleport to="body">
     <div class="toast-container">
-        <Toast 
-            v-for="toast in toastStore.toastQueue"
-            :key="toast.id"
-            :toast="toast"
-            @close="toastStore.removeToast(toast.id)"
-            @pause="toastStore.pauseTimer(toast.id)"
-            @resume="toastStore.resumeTimer(toast.id)"
-        />
+      <Toast
+        v-for="toast in toastStore.toastQueue"
+        :key="toast.id"
+        :toast="toast"
+        @close="toastStore.removeToast(toast.id)"
+        @pause="toastStore.pauseTimer(toast.id)"
+        @resume="toastStore.resumeTimer(toast.id)"
+      />
     </div>
   </Teleport>
 
@@ -29,9 +36,8 @@ const toastStore = useToastStore();
   </Teleport> -->
 </template>
 
-
 <style lang="sass" scoped>
-.toast-container 
+.toast-container
   position: fixed
   top: 120px
   left: 50%

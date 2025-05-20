@@ -1,48 +1,55 @@
+import { VueWrapper, mount, shallowMount } from "@vue/test-utils";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { ref } from 'vue';
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { mount, shallowMount, VueWrapper } from '@vue/test-utils';
-import { useAppStore } from '@/stores/appStore';
-import { useRecipeStore } from '@/stores/recipeStore';
-import { useUserStore } from '@/stores/userStore';
-import WelcomeComponent from './WelcomeComponent.vue';
-import { mockRefRecipes } from '@/testing/mockData';
-import { createMockedStores } from '@/testing/mockStores';
-import { Recipe } from '@/types/Recipes';
+import { ref } from "vue";
 
+import { useAppStore } from "@/stores/appStore";
+import { useRecipeStore } from "@/stores/recipeStore";
+// import { useUserStore } from "@/stores/userStore";
+import { mockRefRecipes } from "@/testing/mockData";
+import { createMockedStores } from "@/testing/mockStores";
+import { ScreenSize } from "@/types/AppState.d";
+import type { Recipe } from "@/types/Recipes.d";
 
-describe('WelcomeComponent', () => {
+import WelcomeComponent from "./WelcomeComponent.vue";
+
+describe("WelcomeComponent", () => {
   let wrapper: VueWrapper;
   let recipeStore: ReturnType<typeof useRecipeStore>;
   let appStore: ReturnType<typeof useAppStore>;
-  let userStore: ReturnType<typeof useUserStore>;
+  // let userStore: ReturnType<typeof useUserStore>;
 
   beforeEach(() => {
-    const { pinia, recipeStore: mockedRecipeStore, appStore: mockedAppStore, userStore: mockedUserStore } = createMockedStores({
+    const {
+      pinia,
+      recipeStore: mockedRecipeStore,
+      appStore: mockedAppStore,
+      userStore: mockedUserStore
+    } = createMockedStores({
       appStore: {
-        screenSize: 'sm',
+        screenSize: ref(ScreenSize.SMALL)
       },
       recipeStore: {
-        selectedRecipeId: '123',
-        setSelectedRecipeId: vi.fn(),
-      },
+        selectedRecipeId: ref("123"),
+        setSelectedRecipeId: vi.fn()
+      }
     });
 
     recipeStore = mockedRecipeStore;
     appStore = mockedAppStore;
-    userStore = mockedUserStore;
+    // userStore = mockedUserStore;
 
     wrapper = mount(WelcomeComponent, {
       global: {
         plugins: [pinia],
-        stubs: {},
+        stubs: {}
       },
       mocks: {
         $expose: {
           recipeDetailsOpen: ref(false),
-          closeRecipeDetails: vi.fn(), 
-        },
-      },
+          closeRecipeDetails: vi.fn()
+        }
+      }
     });
   });
 
@@ -52,8 +59,8 @@ describe('WelcomeComponent', () => {
     vi.restoreAllMocks();
   });
 
-  it('renders the welcome title', async () => {
-    expect(wrapper.find('.greeting').text()).toBe('Welcome!');
+  it("renders the welcome title", async () => {
+    expect(wrapper.find(".greeting").text()).toBe("Welcome!");
   });
 
   // it('renders the welcome title with name if there', async () => {
@@ -63,36 +70,36 @@ describe('WelcomeComponent', () => {
 
   //   expect(wrapper.find('.greeting').text()).toBe('Welcome, Jim!');
   // });
-  
-  it('renders the correct meal time based on currentTime', async () => {
+
+  it("renders the correct meal time based on currentTime", async () => {
     // 8:00 AM
     const currentTime = ref(new Date(2025, 0, 23, 8, 0, 0));
-  
+
     const wrapper = mount(WelcomeComponent, {
       props: {
-         currentTime
-      },
+        currentTime
+      }
     });
-  
-    const mealTimeComponent = wrapper.findComponent({ ref: 'mealtime-collection' });
+
+    const mealTimeComponent = wrapper.findComponent({ ref: "mealtime-collection" });
     const h3Element = mealTimeComponent.find('[data-test="mealtime"]');
-  
-    expect(h3Element.text()).toBe('Ready for Breakfast:');
-  
-    // 12:00 PM 
+
+    expect(h3Element.text()).toBe("Ready for Breakfast:");
+
+    // 12:00 PM
     currentTime.value = new Date(2025, 0, 23, 12, 0, 0);
-    
-    await wrapper.vm.$nextTick(); 
-  
-    expect(h3Element.text()).toBe('Ready for Lunch:');
-    // 8:00 PM
-    currentTime.value = new Date(2025, 0, 23, 20, 0, 0);
-    
+
     await wrapper.vm.$nextTick();
 
-    expect(h3Element.text()).toBe('Ready for Dinner:');
+    expect(h3Element.text()).toBe("Ready for Lunch:");
+    // 8:00 PM
+    currentTime.value = new Date(2025, 0, 23, 20, 0, 0);
+
+    await wrapper.vm.$nextTick();
+
+    expect(h3Element.text()).toBe("Ready for Dinner:");
   });
-  
+
   // it('resets values needed when "closeRecipeDetails" is emitted', async () => {
 
   //   wrapper = shallowMount(WelcomeComponent, {
@@ -105,7 +112,7 @@ describe('WelcomeComponent', () => {
   //       },
   //     },
   //   });
-    
+
   //   const exposed = {
   //     recipeDetailsOpen: ref(false),
   //     closeRecipeDetails: vi.fn(() => {
@@ -113,36 +120,34 @@ describe('WelcomeComponent', () => {
   //     }),
   //   };
   //   Object.assign(wrapper.vm, exposed);
-    
+
   //   await wrapper.findComponent(RecipeDetailsComponent).vm.$emit('closeRecipeDetails');
   //   await wrapper.vm.$nextTick();
-    
-  
+
   //   recipeStore.selectedRecipeId = '123'; // Mock initial state
   //   exposed.recipeDetailsOpen.value = true; // Now this should work
   //   await wrapper.vm.$nextTick();
-  
+
   //   await wrapper.findComponent(RecipeDetailsComponent).vm.$emit('closeRecipeDetails');
   //   await wrapper.vm.$nextTick();
-  
+
   //   // Assertions
   //   expect(recipeStore.setSelectedRecipeId).toHaveBeenCalledWith('');
   //   expect(exposed.recipeDetailsOpen.value).toBe(false);
   // });
 
-  it('calls generatePublicRecipeCollections and assigns properly', async () => {
-
+  it("calls generatePublicRecipeCollections and assigns properly", async () => {
     shallowMount(WelcomeComponent, {
       global: {
         provide: {
           recipeStore,
-          appStore,
+          appStore
         },
         stubs: {
           RecipeDetailHeaderComponent: true,
-          RecipeDetailComponent: true,
-        },
-      },
+          RecipeDetailComponent: true
+        }
+      }
     });
     const vm = wrapper.vm as unknown as {
       ethansFavouriteRecipes: Recipe[];

@@ -1,4 +1,4 @@
-type BooleanObject = { [key: string]: boolean }
+type BooleanObject = { [key: string]: boolean };
 
 interface RegisterResult {
   user: User;
@@ -9,7 +9,7 @@ interface RegisterResult {
     createdAt: Date;
     recipes: any[];
     shoppingLists: any[];
-  }
+  };
 }
 
 type ValidationRule = {
@@ -19,4 +19,4 @@ type ValidationRule = {
   message?: string;
   pattern?: RegExp;
   // add more as we go
-}
+};

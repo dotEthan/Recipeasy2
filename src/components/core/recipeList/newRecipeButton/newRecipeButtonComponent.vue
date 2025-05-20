@@ -1,24 +1,32 @@
 <script setup lang="ts">
-import { CirclePlus } from 'lucide-vue-next';
+/**
+ * Component used to display button for creating a new recipe
+ * @example
+ *  <NewRecipeButtonComponent
+      class="recipe-item-contain"
+      icon-size="large"
+      @add-new-recipe="addNewRecipe"
+    />
+ */
+import { CirclePlus } from "lucide-vue-next";
 
 const props = defineProps({
-  iconSize: String,
-})
+  iconSize: String
+});
 
-const iconSizeNumber = props.iconSize === 'small' ? 13 : 30
-const btnPadding = props.iconSize === 'small' ? '3px' : '20px'
-// const btnPadding = props.iconSize === 'small' ? '5px' : '20px'
-
+const iconSizeNumber = props.iconSize === "small" ? 13 : 30;
+const btnPadding = props.iconSize === "small" ? "3px" : "20px";
 </script>
 
 <template>
   <div class="new-container">
-    <button class="btn new-recipe" @click="$emit('addNewRecipe')"><CirclePlus :size="iconSizeNumber" /></button>
-    <span :class="(iconSize === 'small') ? 'recipe-title-sm' : 'recipe-title'">
-      New Recipe
-    </span>
+    <button class="btn new-recipe" @click="$emit('addNewRecipe')">
+      <CirclePlus :size="iconSizeNumber" />
+    </button>
+    <span :class="iconSize === 'small' ? 'recipe-title-sm' : 'recipe-title'"> New Recipe </span>
   </div>
 </template>
+
 <style lang="sass" scoped>
 @use '@/assets/variables' as *
 .new-container

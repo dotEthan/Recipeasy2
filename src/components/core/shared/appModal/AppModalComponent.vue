@@ -1,38 +1,43 @@
 <script setup lang="ts">
-import { useAppStore } from '@/stores/appStore'
-import XToCloseComponent from '../../shared/xToClose/XToCloseComponent.vue';
+/**
+ * reusable base for all modals
+ * @example
+ *  <AppModalComponent :xToClose="true" :backdrop="true">
+ */
+import { useAppStore } from "@/stores/appStore";
+
+import XToCloseComponent from "../../shared/xToClose/XToCloseComponent.vue";
 
 defineProps({
-    xToClose: {
-        type: Boolean,
-        default: false
-    },
-    backdrop: {
-        type: Boolean,
-        default: false
-    }
-})
+  xToClose: {
+    type: Boolean,
+    default: false
+  },
+  backdrop: {
+    type: Boolean,
+    default: false
+  }
+});
 
-const appStore = useAppStore()
-const emit = defineEmits(['close'])
+const appStore = useAppStore();
+const emit = defineEmits(["close"]);
 
 function onClose() {
-  appStore.setAuthModalType('')
-  emit('close')
+  appStore.setAuthModalType("");
+  emit("close");
 }
 </script>
 
 <template>
-    <div class="modal-contain">
-        <div class="backdrop" v-if="backdrop" @click="onClose">
-        </div>
-        <div class="modal-wrapper">
-            <dialog open class="modal">
-                <slot></slot>
-            </dialog>
-            <XToCloseComponent class="close-button" @close="onClose" v-if="xToClose"/>
-        </div>
+  <div class="modal-contain">
+    <div class="backdrop" v-if="backdrop" @click="onClose"></div>
+    <div class="modal-wrapper">
+      <dialog open class="modal">
+        <slot></slot>
+      </dialog>
+      <XToCloseComponent class="close-button" @close="onClose" v-if="xToClose" />
     </div>
+  </div>
 </template>
 
 <style lang="sass" scoped>
@@ -63,7 +68,7 @@ function onClose() {
     box-shadow: 2px 3px 10px 1px rgba(0,0,0,.3)
     padding: 50px
     overflow-y: auto
-    margin: auto 
+    margin: auto
 
     @media (min-width: 1024px)
       max-width: 50vw
@@ -74,5 +79,4 @@ function onClose() {
     height: 100%
     // z-index: -10
     background-color: rgba(0,0,0,0.8)
-
 </style>

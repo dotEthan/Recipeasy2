@@ -1,13 +1,34 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import type { Recipe } from '@/types/Recipes'
+/**
+ * Component to display user's recipe list
+ * @example
+ *  <RecipeListItemComponent
+      class="recipe-item-contain"
+      v-for="recipe in recipes.value"
+      :key="recipe._id?.toString() ?? uuidv4()"
+      :recipeData="recipe"
+      @openRecipe="openRecipeDetail"
+      @removedRecipe="removedRecipe"
+    />
+*/
+import type { PropType } from "vue";
+
+import type { Recipe } from "@/types/Recipes";
+
 defineProps({
   recipeData: Object as PropType<Recipe>
-})
+});
 </script>
 
 <template>
-  <div class="recipeItem" @click="recipeData?._id ? $emit('openRecipe', recipeData?._id) : console.log('Item not saved, please wait.')">
+  <div
+    class="recipeItem"
+    @click="
+      recipeData?._id
+        ? $emit('openRecipe', recipeData?._id)
+        : console.log('Item not saved, please wait.')
+    "
+  >
     <a style="cursor: pointer" class="recipeItem-contain">
       <img class="recipe-image" :class="{ grey: !recipeData?._id }" :src="recipeData?.imgPath" />
       <span class="recipe-title">

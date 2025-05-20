@@ -1,13 +1,22 @@
 <script setup lang="ts">
-import { v4 as uuidv4 } from 'uuid'
-import { computed, ref } from 'vue'
-import { useRecipeStore } from '@/stores/recipeStore'
-import RecipeListItemComponent from './recipeListItem/RecipeListItemComponent.vue'
-import FilterComponent from './recipeFilter/FilterComponent.vue'
-import RecipeDetailsComponent from './recipeDetails/recipeDetailsComponent.vue'
-import RecipeEditComponent from './recipeEdit/RecipeEditComponent.vue'
-import RecipesEmptyComponent from './recipesEmpty/recipesEmptyComponent.vue'
-import NewRecipeButtonComponent from './newRecipeButton/newRecipeButtonComponent.vue'
+/**
+ * Base structure for the users recipe list
+ * @todo Get Filtering working
+ * @example
+ *  <RecipeListComponent />
+ */
+import { v4 as uuidv4 } from "uuid";
+
+import { computed, ref } from "vue";
+
+import { useRecipeStore } from "@/stores/recipeStore";
+
+import NewRecipeButtonComponent from "./newRecipeButton/newRecipeButtonComponent.vue";
+import RecipeDetailsComponent from "./recipeDetails/recipeDetailsComponent.vue";
+import RecipeEditComponent from "./recipeEdit/RecipeEditComponent.vue";
+import FilterComponent from "./recipeFilter/FilterComponent.vue";
+import RecipeListItemComponent from "./recipeListItem/RecipeListItemComponent.vue";
+import RecipesEmptyComponent from "./recipesEmpty/recipesEmptyComponent.vue";
 
 const recipeStore = useRecipeStore();
 let selectedRecipe = computed(() => recipeStore.selectedRecipe);
@@ -16,13 +25,12 @@ let isAddedRecipeNew = ref(false);
 
 const filteredRecipes = computed(() => {
   const recipes = recipeStore.useFilteredRecipes(activeFilters.value);
-  return recipes
-})
+  return recipes;
+});
 
-let allRecipeTags = ref<string[] | undefined>(undefined)
+let allRecipeTags = ref<string[] | undefined>(undefined);
 
 allRecipeTags.value = recipeStore.getAllRecipeTags;
-
 
 function closeRecipeDetails() {
   recipeStore.clearSelectedRecipeId();
@@ -31,9 +39,9 @@ function closeRecipeDetails() {
 function openRecipeDetail(id: string) {
   recipeStore.setSelectedRecipeId(id);
 }
-// TODO Check this is still working
+
 function addNewRecipe() {
-  recipeStore.setSelectedRecipeId('1234abcd');
+  recipeStore.setSelectedRecipeId("1234abcd");
   recipeStore.setEditStatusSelectedId(true);
   isAddedRecipeNew.value = true;
 }
@@ -43,14 +51,13 @@ function setFilters(filters: string[]) {
 }
 
 function removedRecipe() {
-  console.log('ok, so what?')
+  console.log("ok, so what?");
 }
 
 function editingFinishedCleanUp() {
   recipeStore.setEditStatusSelectedId(false);
   isAddedRecipeNew.value = false;
 }
-//TODO align filter and new recipes look
 </script>
 
 <template>
@@ -59,14 +66,18 @@ function editingFinishedCleanUp() {
       <FilterComponent @filter="setFilters" :filters="allRecipeTags" />
     </div>
     <div class="recipeRow" v-if="recipeStore.recipesLength">
-      <NewRecipeButtonComponent class="recipe-item-contain" icon-size="large" @add-new-recipe="addNewRecipe" />
+      <NewRecipeButtonComponent
+        class="recipe-item-contain"
+        icon-size="large"
+        @add-new-recipe="addNewRecipe"
+      />
       <RecipeListItemComponent
         class="recipe-item-contain"
         v-for="recipe in filteredRecipes.value"
         :key="recipe._id?.toString() ?? uuidv4()"
         :recipeData="recipe"
         @openRecipe="openRecipeDetail"
-        @removedRecipe="removedRecipe" 
+        @removedRecipe="removedRecipe"
       />
     </div>
     <RecipesEmptyComponent v-else />

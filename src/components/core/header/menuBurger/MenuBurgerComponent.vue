@@ -1,14 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useAppStore } from '@/stores/appStore';
+/**
+ * Component for the header's mobile hamburger menu
+ * @todo decide on final manual VS auto save. hybrid? PWA?
+ * @example
+ * <MenuBurgerComponent />
+ */
+import { ref } from "vue";
 
-const appStore = useAppStore() 
+import { useAppStore } from "@/stores/appStore";
 
-const afterFirst = ref(false)
+const appStore = useAppStore();
+
+const afterFirst = ref(false);
 
 function onMobileMenuClick() {
-  if (!afterFirst.value) afterFirst.value = true
-  appStore.isMobileMenuOpen = !appStore.isMobileMenuOpen
+  if (!afterFirst.value) afterFirst.value = true;
+  appStore.isMobileMenuOpen = !appStore.isMobileMenuOpen;
 }
 </script>
 
@@ -18,8 +25,7 @@ function onMobileMenuClick() {
       <div
         v-for="(n, index) in 3"
         :key="index"
-        :class="[`line${index + 1}`,
-        !afterFirst ? 'stopped' : '']"
+        :class="[`line${index + 1}`, !afterFirst ? 'stopped' : '']"
       ></div>
     </div>
   </div>

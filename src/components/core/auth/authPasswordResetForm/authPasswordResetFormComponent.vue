@@ -1,60 +1,69 @@
-
 <script setup lang="ts">
-import { ref } from 'vue';
-import AuthFormComponent from '../authForm/AuthFormComponent.vue';
-import {useAuthService} from '@/composables/useAuthService';
-import { FormField, FormData } from '@/types/authFormConfig';
-import { AuthFormType } from '@/constants';
+/**
+ * Component for allowing user to start Reset Password flow
+ * @example
+ * <AuthPasswordResetFormComponet @switch-type="onSwitchTypeHandler" />
+ */
+import { ref } from "vue";
+
+import { useAuthService } from "@/composables/useAuthService";
+import { AuthFormType } from "@/constants";
+import type { FormData, FormField } from "@/types/authFormConfig";
+
+import AuthFormComponent from "../authForm/AuthFormComponent.vue";
 
 const authService = useAuthService();
 
 let resetSuccessful = ref(false);
 
-
 const signinFields = [
-    {
-        name: 'email',
-        label: 'Email',
-        type: 'email',
-        required: true
-    }
+  {
+    name: "email",
+    label: "Email",
+    type: "email",
+    required: true
+  }
 ] as FormField[];
 
 async function handleSubmit(formData: FormData) {
   try {
     await authService.passwordReset(formData.email);
     resetSuccessful.value = true;
-  } catch(error) {
-    console.log('signin error: ', error)
+  } catch (error) {
+    console.log("signin error: ", error);
     // authError.value = error.message || 'Failed to sign in';
     console.error(error);
   }
 }
-
 </script>
 
 <template>
-
-    <div class="row">
-          <div class="col-xs-10 col-xs-offset-1">
-            <div class="text-center auth__title">
-              <h1>Reset Password</h1>
-              <div v-if="resetSuccessful">
-                <hr />
-                <h3>Check email for reset password link.</h3>
-                <hr />
-              </div>
-            </div>
-            <AuthFormComponent :fields="signinFields" button-text="Reset Password" :formType="AuthFormType.RESET" @submit="handleSubmit" error="" />
-            <hr />
-            <div class="auth-mistake">
-              <div class="auth-footer">
-                <a class="auth-footer__text" @click="$emit('switch-type', 'signin')">Back to Signin</a>
-              </div>
-            </div>
-          </div>
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+      <div class="text-center auth__title">
+        <h1>Reset Password</h1>
+        <div v-if="resetSuccessful">
+          <hr />
+          <h3>Check email for reset password link.</h3>
+          <hr />
         </div>
-    </template>
+      </div>
+      <AuthFormComponent
+        :fields="signinFields"
+        button-text="Reset Password"
+        :formType="AuthFormType.RESET"
+        @submit="handleSubmit"
+        error=""
+      />
+      <hr />
+      <div class="auth-mistake">
+        <div class="auth-footer">
+          <a class="auth-footer__text" @click="$emit('switch-type', 'signin')">Back to Signin</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style lang="sass" scoped>
 
@@ -77,5 +86,4 @@ hr
   &__text
     cursor: pointer
     text-decoration: underline
-
 </style>

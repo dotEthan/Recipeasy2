@@ -1,5 +1,4 @@
-
 export interface SignatureRequest {
-    operation: 'upload' | 'delete';
-    publicId?: string;
+  operation: "upload" | "delete";
+  publicId?: string;
 }

@@ -1,15 +1,21 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useAppStore } from '@/stores/appStore';
-import { useUserStore } from '@/stores/userStore';
-import router from '@/router/main';
-import { useAuthService } from '@/composables/useAuthService';
+/**
+ * Component for the header's navigation elements
+ * @todo decide on final manual VS auto save. hybrid? PWA?
+ * @example
+ * <NavMenuComponent />
+ */
+import { computed } from "vue";
+
+import { useAuthService } from "@/composables/useAuthService";
+import router from "@/router/main";
+import { useAppStore } from "@/stores/appStore";
+import { useUserStore } from "@/stores/userStore";
 
 const appStore = useAppStore();
 const userStore = useUserStore();
 const authService = useAuthService();
 const isAuthorized = computed(() => userStore.isAuthorized);
-
 
 function onClickRegisterSigning(type: string) {
   closeMobileMenu();
@@ -17,7 +23,6 @@ function onClickRegisterSigning(type: string) {
 }
 
 async function onSave() {
-  // TODO manuals aving removed till offline functionality
   closeMobileMenu();
 }
 
@@ -26,14 +31,14 @@ function onReset() {
 }
 
 async function onSignOut() {
-  closeMobileMenu()
+  closeMobileMenu();
   try {
     await authService.logOut();
   } catch (error) {
-    console.error('Error signing out:', error);
+    console.error("Error signing out:", error);
   }
-  router.push('/');
-};
+  router.push("/");
+}
 
 function closeMobileMenu() {
   appStore.isMobileMenuOpen = false;
@@ -43,9 +48,7 @@ function closeMobileMenu() {
 <template>
   <ul class="nav navbar-nav">
     <li routerLinkActive="active" class="nav-recipes" v-if="isAuthorized">
-      <RouterLink class="nav-menu-item" to="recipes" @click="closeMobileMenu"
-        >Recipes</RouterLink
-      >
+      <RouterLink class="nav-menu-item" to="recipes" @click="closeMobileMenu">Recipes</RouterLink>
     </li>
     <li routerLinkActive="active" class="nav-shopping-list" v-if="isAuthorized">
       <RouterLink class="nav-menu-item" to="shopping-lists" @click="closeMobileMenu"
@@ -64,9 +67,7 @@ function closeMobileMenu() {
         ></a>
         <ul class="dropdown-menu">
           <li>
-            <a class="dropdown-menu-item" style="cursor: pointer" @click="onSave()"
-              >Save Data</a
-            >
+            <a class="dropdown-menu-item" style="cursor: pointer" @click="onSave()">Save Data</a>
           </li>
           <li>
             <a class="dropdown-menu-item" style="cursor: pointer" @click="onReset()">Reset Data</a>

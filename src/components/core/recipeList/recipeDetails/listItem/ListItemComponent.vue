@@ -1,31 +1,43 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import type { Direction, Ingredient } from '@/types/Recipes'
-import { useShoppingListStore } from '@/stores/shoppingListStore'
+/**
+ * Component used to display each recipe ingredient or directoin in recipe details
+ * @todo split for ingredient and details? 
+ * @example
+ *  <ListItemComponent
+      v-for="(ingredient, index) of selectedRecipe?.ingredients"
+      :key="index"
+      :itemObject="ingredient"
+      itemType="ingredient"
+    />
+ */
+import type { PropType } from "vue";
+
+import { useShoppingListStore } from "@/stores/shoppingListStore";
+import type { Direction, Ingredient } from "@/types/Recipes";
 
 const props = defineProps({
   itemObject: Object as PropType<Ingredient | Direction>,
   itemType: String
-})
+});
 const shoppingListStore = useShoppingListStore();
 
 const steps = props.itemObject?.steps?.map((step) => {
-  if (step === undefined) return
+  if (step === undefined) return;
 
-  if (typeof step === 'string') {
-    return step
+  if (typeof step === "string") {
+    return step;
   } else {
-    const amount = step.amount ?? ''
-    const unit = step.unit ?? ''
-    const name = step.name ?? ''
+    const amount = step.amount ?? "";
+    const unit = step.unit ?? "";
+    const name = step.name ?? "";
 
-    return [amount, unit, name].filter(Boolean).join(' ').trim()
+    return [amount, unit, name].filter(Boolean).join(" ").trim();
   }
-})
+});
 
 function onAddIngredientToList(item: string | undefined) {
-  if (typeof item === 'undefined') return
-  shoppingListStore.addToDefaultList([item])
+  if (typeof item === "undefined") return;
+  shoppingListStore.addToDefaultList([item]);
 }
 </script>
 
@@ -43,7 +55,7 @@ function onAddIngredientToList(item: string | undefined) {
             :class="itemType === 'ingredient' ? 'text ingredient-text' : 'text direction-text'"
             @click="
               () => {
-                if (itemType === 'ingredient') onAddIngredientToList(item)
+                if (itemType === 'ingredient') onAddIngredientToList(item);
               }
             "
           >

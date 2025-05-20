@@ -1,48 +1,56 @@
-
 <script setup lang="ts">
-import DOMPurify from 'dompurify';
-import { nextTick, onUnmounted, ref } from 'vue';
-import type { ComponentPublicInstance, PropType, Ref } from 'vue';
-import { NewRecipe, Recipe } from '@/types/Recipes' ;
-import { useRecipeStore } from '@/stores/recipeStore';
-import ToolTipComponent from '../../shared/toolTip/ToolTipComponent.vue';
-import { createNewRecipe } from '@/utilities';
-import { useDataService } from '@/composables/useDataService';
-import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue';
-
-//////////////// User Upload mostly working, no more preview, should update imag eright away, need to save on submit (IF changed and delete original)
-
 /**
- * Handles all recipe related services
- * @todo formData sending in axios, need headers: {'Content-Type': 'multipart/form-data'} like with image?
- * @todo Refactor into multiple components 'header', 'ingredients', 'directions'
- * @todo Ensure all errors are handled
+ * Component used for editing recipes
+ * @todo Refactor into smaller usuable components
+ * @example
+ *  <RecipeEditComponent
+      class="recipe-item-contain"
+      :selected-recipe="selectedRecipe"
+      :isNew="isAddedRecipeNew"
+      @editing-finished="editingFinishedCleanUp"
+    />
  */
-// 
-//TODO 
+import DOMPurify from "dompurify";
+
+import { nextTick, onUnmounted, ref } from "vue";
+import type { ComponentPublicInstance, PropType, Ref } from "vue";
+
+import { useDataService } from "@/composables/useDataService";
+import { useRecipeStore } from "@/stores/recipeStore";
+import type { NewRecipe, Recipe } from "@/types/Recipes";
+import { createNewRecipe } from "@/utilities";
+
+import ToolTipComponent from "../../shared/toolTip/ToolTipComponent.vue";
+import UserImageUploadComponent from "../../shared/userImageUpload/UserImageUploadComponent.vue";
 
 const props = defineProps({
   isNew: Boolean,
   selectedRecipe: Object as PropType<Recipe | undefined>
 });
-const emit = defineEmits(['editingFinished','recipeDeleted']);
+const emit = defineEmits(["editingFinished", "recipeDeleted"]);
 
 let formValid = true;
 let formData: Ref<Recipe>;
-let formError = ref('');
+let formError = ref("");
 const newImageFile = ref<File | null>(null);
 const imageChanged = ref(false);
-let originalImagePath = '';
+let originalImagePath = "";
 
 const recipeStore = useRecipeStore();
 const dataService = useDataService();
 
-const selectedRecipeToEdit: Recipe | NewRecipe = (!props.selectedRecipe) ? createNewRecipe() : props.selectedRecipe;
+const selectedRecipeToEdit: Recipe | NewRecipe = !props.selectedRecipe
+  ? createNewRecipe()
+  : props.selectedRecipe;
 const amountRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
-const ingredientTypeRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
+const ingredientTypeRefs = ref<
+  Record<string, HTMLInputElement | Element | ComponentPublicInstance>
+>({});
 const directionRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
-const directionTypeRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
-let tagsInput = ref('');
+const directionTypeRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>(
+  {}
+);
+let tagsInput = ref("");
 
 // TODO populateForm wont work in onMounted, figure out why
 
@@ -59,7 +67,7 @@ const populateForm = () => {
     tags: selectedRecipeToEdit?.tags ? JSON.parse(JSON.stringify(selectedRecipeToEdit.tags)) : []
   });
   originalImagePath = formData.value.imgPath;
-}
+};
 populateForm();
 
 const onSubmit = async () => {
@@ -80,31 +88,31 @@ const onSubmit = async () => {
   if (formData?.value && !props.isNew) {
     recipeStore.prepRecipeDataForUpdate(formData.value);
     dataService.updateRecipe(formData.value);
-    
+
     onEditingOver();
   } else if (formData?.value && formValid) {
     recipeStore.backupNewRecipeDataForSave(formData.value);
     dataService.saveNewRecipe(formData.value);
-    
+
     onEditingOver();
   } else {
-    // TODO Handle error state locally 
-    console.log('not valid, handle locally');
+    // TODO Handle error state locally
+    console.log("not valid, handle locally");
   }
   //TODO add new tags (ingredients, cuisine, meal type)
   // const allUserTags: string[] = Array.from(
   //   new Set(userData?.recipes.flatMap((recipe: Recipe) => recipe.tags))
   // )
-}
+};
 
-// TODO Better validation. 
+// TODO Better validation.
 function validateName() {
   if (!formData.value.name || formData.value.name.length < 1) {
-    formError.value = "Recipe Name Required"
-    formValid = false
+    formError.value = "Recipe Name Required";
+    formValid = false;
   } else {
-    formError.value = ""
-    formValid = true
+    formError.value = "";
+    formValid = true;
   }
 }
 
@@ -113,24 +121,24 @@ const onEditingOver = () => {
     recipeStore.clearSelectedRecipeId();
   }
   emit("editingFinished");
-}
+};
 
 function onAddIngredientType() {
-  formData.value.ingredients.push({ title: '', steps: [{}] })
+  formData.value.ingredients.push({ title: "", steps: [{}] });
   nextTick(() => {
     const newStepIndex = formData.value.ingredients.length - 1;
-    const refKey = `ingredientType-${newStepIndex}`
-    const input = ingredientTypeRefs.value[refKey] as HTMLInputElement
-    input?.focus()  
+    const refKey = `ingredientType-${newStepIndex}`;
+    const input = ingredientTypeRefs.value[refKey] as HTMLInputElement;
+    input?.focus();
   });
 }
 
 function onDeleteIngredientType(ingredientTypeIndex: number) {
-  formData.value.ingredients.splice(ingredientTypeIndex, 1)
+  formData.value.ingredients.splice(ingredientTypeIndex, 1);
 }
 
 function onAddDirectionType() {
-  formData.value.directions.push({ title: '', steps: [''] })
+  formData.value.directions.push({ title: "", steps: [""] });
   nextTick(() => {
     const newStepIndex = formData.value.directions.length - 1;
     const refKey = `directionType-${newStepIndex}`;
@@ -140,16 +148,17 @@ function onAddDirectionType() {
 }
 
 function onDeleteDirectionType(directionTypeIndex: number) {
-  formData.value.directions.splice(directionTypeIndex, 1)
+  formData.value.directions.splice(directionTypeIndex, 1);
 }
 
 function onAddIngredient(ingredientIndex: number) {
-  if (!formData.value.ingredients[ingredientIndex].steps) formData.value.ingredients[ingredientIndex].steps = [];
+  if (!formData.value.ingredients[ingredientIndex].steps)
+    formData.value.ingredients[ingredientIndex].steps = [];
   formData.value.ingredients[ingredientIndex].steps.push({});
   nextTick(() => {
-    const newStepIndex = formData.value.ingredients[ingredientIndex].steps.length - 1
-    const refKey = `amount-${ingredientIndex}-${newStepIndex}`
-    const input = amountRefs.value[refKey] as HTMLInputElement
+    const newStepIndex = formData.value.ingredients[ingredientIndex].steps.length - 1;
+    const refKey = `amount-${ingredientIndex}-${newStepIndex}`;
+    const input = amountRefs.value[refKey] as HTMLInputElement;
     input?.focus();
   });
 }
@@ -159,13 +168,14 @@ function onDeleteIngredient(ingredientTypeIndex: number, ingredientIndex: number
 }
 
 function onAddDirection(directionIndex: number) {
-  if (!formData.value.directions[directionIndex].steps) formData.value.directions[directionIndex].steps = [''];
-  formData.value.directions[directionIndex].steps.push('');
+  if (!formData.value.directions[directionIndex].steps)
+    formData.value.directions[directionIndex].steps = [""];
+  formData.value.directions[directionIndex].steps.push("");
   nextTick(() => {
     const newStepIndex = formData.value.directions[directionIndex].steps.length - 1;
     const refKey = `direction-${directionIndex}-${newStepIndex}`;
     const input = directionRefs.value[refKey] as HTMLInputElement;
-    input?.focus()  ;
+    input?.focus();
   });
 }
 
@@ -175,7 +185,7 @@ function onDeleteDirection(directionTypeIndex: number, directionIndex: number) {
 
 function onAddNote() {
   if (!formData.value.notes) formData.value.notes = [];
-  formData.value.notes.push('');
+  formData.value.notes.push("");
 }
 
 function onDeleteNote(noteIndex: number) {
@@ -200,7 +210,7 @@ function addTag() {
   const tagValue = tagsInput.value.trim();
   if (tagValue) {
     formData.value.tags.push(tagValue);
-    tagsInput.value = '';
+    tagsInput.value = "";
   }
 }
 
@@ -212,12 +222,12 @@ const onCancel = () => {
   newImageFile.value = null;
   imageChanged.value = false;
   onEditingOver();
-}
+};
 // onMounted(() => {
 //   populateForm();
 // })
 onUnmounted(() => {
-  if (formData.value.imgPath && formData.value.imgPath.startsWith('blob:')) {
+  if (formData.value.imgPath && formData.value.imgPath.startsWith("blob:")) {
     URL.revokeObjectURL(formData.value.imgPath);
   }
 });
@@ -238,8 +248,9 @@ onUnmounted(() => {
                 <ToolTipComponent
                   :content="formError"
                   format="warning"
-                  class="tooltip" 
-                  v-bind:class="{ 'show-tooltip': !formValid }" />
+                  class="tooltip"
+                  v-bind:class="{ 'show-tooltip': !formValid }"
+                />
               </div>
               <div class="cancel-btn">
                 <button type="button" class="recipe-manage-btn cancel" @click="onCancel">
@@ -252,23 +263,28 @@ onUnmounted(() => {
                 <div class="form-group">
                   <div class="image-title-bar">
                     <label>Recipe Image</label>
-                    <span class="remove-image" @click="handleRemoveImage" v-if="formData.imgPath">Remove Image</span>
+                    <span class="remove-image" @click="handleRemoveImage" v-if="formData.imgPath"
+                      >Remove Image</span
+                    >
                   </div>
                   <img
                     :src="formData.imgPath"
                     class="img-responsive recipe-edit-image"
                     v-if="formData.imgPath"
                   />
-                  <UserImageUploadComponent 
-                    @file-selected="handleImageSelected" 
-                    v-else
-                  />
+                  <UserImageUploadComponent @file-selected="handleImageSelected" v-else />
                 </div>
               </div>
               <div class="edit-header-column">
                 <div class="form-group">
                   <label for="name">Recipe Name*</label>
-                  <input type="text" id="name" class="form-control" v-model="formData.name" @blur="validateName" />
+                  <input
+                    type="text"
+                    id="name"
+                    class="form-control"
+                    v-model="formData.name"
+                    @blur="validateName"
+                  />
                 </div>
                 <div class="form-group">
                   <label for="description">Description</label>
@@ -284,16 +300,25 @@ onUnmounted(() => {
                   <label for="url">Website URL:</label>
                   <input type="text" id="url" class="form-control" v-model="formData.url" />
                   <div class="public-choice">
-                    <input type="radio" id="public" value='public' v-model="formData.visibility" />
+                    <input type="radio" id="public" value="public" v-model="formData.visibility" />
                     <label for="public">Public</label>
-                    <input type="radio" id="private" value='private' v-model="formData.visibility" />
+                    <input
+                      type="radio"
+                      id="private"
+                      value="private"
+                      v-model="formData.visibility"
+                    />
                     <label for="private">Private</label>
                   </div>
                 </div>
               </div>
             </div>
             <div class="item-group-contain" formGroupName="ingredients">
-              <div class="item-contain" v-for="(ingredientType, i) of formData.ingredients" :key="i">
+              <div
+                class="item-contain"
+                v-for="(ingredientType, i) of formData.ingredients"
+                :key="i"
+              >
                 <div class="form-group item-type-contain">
                   <label class="section-title" for="ingredient-group{{i}}"
                     >INGREDIENT GROUP NAME:</label
@@ -304,7 +329,11 @@ onUnmounted(() => {
                       class="form-control item-type-input"
                       id="ingredient-group{{i}}"
                       v-model="formData.ingredients[i].title"
-                      :ref="el => { if (el) ingredientTypeRefs[`ingredientType-${i}`] = el }"
+                      :ref="
+                        (el) => {
+                          if (el) ingredientTypeRefs[`ingredientType-${i}`] = el;
+                        }
+                      "
                       placeholder="Main Dish"
                     />
                     <button
@@ -316,7 +345,11 @@ onUnmounted(() => {
                   <div class="item-list-contain">
                     <div class="section-title">INGREDIENTS:</div>
                     <div class="item-list">
-                      <div class="item-each" v-for="(ingredient, j) of ingredientType.steps" :key="j">
+                      <div
+                        class="item-each"
+                        v-for="(ingredient, j) of ingredientType.steps"
+                        :key="j"
+                      >
                         <div class="item-each-container">
                           <div class="item-each-row amount-row">
                             <label class="item-label" for="ingredient-{{j}}">Amount:</label>
@@ -326,7 +359,11 @@ onUnmounted(() => {
                                 class="form-control item-input"
                                 v-model="formData.ingredients[i].steps[j].amount"
                                 id="`ingredient-${i}-${j}`"
-                                :ref="el => { if (el) amountRefs[`amount-${i}-${j}`] = el }"
+                                :ref="
+                                  (el) => {
+                                    if (el) amountRefs[`amount-${i}-${j}`] = el;
+                                  }
+                                "
                                 placeholder="1"
                               />
                             </div>
@@ -383,14 +420,20 @@ onUnmounted(() => {
             <div class="item-group-contain" formGroupName="directions">
               <div class="item-contain" v-for="(directionType, k) of formData.directions" :key="k">
                 <div class="form-group">
-                  <label class="section-title" for="direction-group{{k}}">DIRECTION GROUP NAME</label>
+                  <label class="section-title" for="direction-group{{k}}"
+                    >DIRECTION GROUP NAME</label
+                  >
                   <div class="item-type-row">
                     <input
                       type="text"
                       class="form-control item-type-input"
                       v-model="directionType.title"
                       id="direction-group{{k}}"
-                      :ref="el => { if (el) directionTypeRefs[`directionType-${k}`] = el }"
+                      :ref="
+                        (el) => {
+                          if (el) directionTypeRefs[`directionType-${k}`] = el;
+                        }
+                      "
                       placeholder="Main Dish"
                     />
                     <button
@@ -411,7 +454,11 @@ onUnmounted(() => {
                               type="text"
                               class="form-control direction-input"
                               v-model="directionType.steps[l]"
-                              :ref="el => { if (el) directionRefs[`direction-${k}-${l}`] = el }"
+                              :ref="
+                                (el) => {
+                                  if (el) directionRefs[`direction-${k}-${l}`] = el;
+                                }
+                              "
                               id="direction{{l}}"
                               placeholder="Cut, Stir, Bake"
                             />
@@ -450,11 +497,13 @@ onUnmounted(() => {
               </div>
               <div class="tags-input">
                 <label for="tagsInput">New Tag:</label>
-                <input type="text"
+                <input
+                  type="text"
                   v-model="tagsInput"
-                  name="tagsInput" 
-                  @keydown.enter.prevent="addTag">   
-                <button class="existing-tag-remove" @click="addTag()">Add Tag</button>             
+                  name="tagsInput"
+                  @keydown.enter.prevent="addTag"
+                />
+                <button class="existing-tag-remove" @click="addTag()">Add Tag</button>
               </div>
             </div>
             <div class="item-group-contain">
@@ -471,18 +520,12 @@ onUnmounted(() => {
                       id="note{{n}}"
                       placeholder="Be sure to wash your hands!"
                     />
-                    <button
-                      type="button"
-                      class="btn-delete"
-                      @click="onDeleteNote(n)"
-                    ></button>
+                    <button type="button" class="btn-delete" @click="onDeleteNote(n)"></button>
                   </div>
                 </div>
               </div>
               <div class="item-each">
-                <button type="button" class="btn btn-clear" @click="onAddNote()">
-                  + Add Note
-                </button>
+                <button type="button" class="btn btn-clear" @click="onAddNote()">+ Add Note</button>
               </div>
             </div>
             <div class="item-group-contain">
@@ -551,8 +594,8 @@ label
   display: flex
   flex-direction: column
   justify-content: flex-end
-  cursor: pointer  
-  
+  cursor: pointer
+
 .image-title-bar
   display: flex
   flex-direction: row
@@ -640,10 +683,10 @@ label
   flex-grow: 1
 
 .btn-clear
-  box-sizing: border-box 
+  box-sizing: border-box
   cursor: pointer
   border: 1px dashed transparent
-  
+
   &:active, &:focus, &:hover
     border: 1px dashed black
 
@@ -685,7 +728,7 @@ label
   width: 100px
   border-radius: 10px 10px 0 0
   border: 0
-  
+
   &.save
     color: $colorLighter
     margin-right: 110px
@@ -711,10 +754,10 @@ label
 .tooltip
   display: none
 
-  
-.submit-btn 
+
+.submit-btn
   position: relative
-  
+
   &:hover
     .show-tooltip
       display: block
@@ -730,7 +773,7 @@ label
 .direction-input
   flex-grow: 1
 
-.add-tag-btn 
+.add-tag-btn
   margin-left: 10px
   font-size: clamp(8px, 3.5vw, 12px)
 
@@ -761,7 +804,7 @@ label
 
   &:active, &:focus, &:hover
     border: 1px solid black
-  
+
 .tags-input
   display: flex
   flex-direction: row
@@ -770,6 +813,4 @@ label
   label
     margin-right: 5px
     margin-left: 0
-  
-
 </style>

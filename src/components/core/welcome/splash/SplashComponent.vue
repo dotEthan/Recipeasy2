@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ * Component to display non-logged in splash screen
+ * @todo Remove and redesign Welcome page
+ * @example
+ *  <SplashComponent />
+ */
 </script>
 
 <template>
@@ -12,7 +18,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <style lang="sass" scoped>
@@ -65,5 +70,4 @@
 
   @media (min-width: 768px)
     padding: 10px
-
 </style>

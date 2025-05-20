@@ -1,36 +1,36 @@
 <script lang="ts" setup>
-import { MAX_FILE_SIZE } from '@/constants';
-import { onBeforeUnmount, ref } from 'vue'
+import { ref } from "vue";
+
+import { MAX_FILE_SIZE } from "@/constants";
 
 /**
  * User Image Upload Component
  * @todo - 'errorMessage', emit('upload-error') - still needed here?
  * @returns - signIn, registerUser, logOut, verifyUser, passwordReset, setNewPassword, validatePasswordToken
  * @example
- * const authService = useAuthService();
- * const authRes = await authService.registerUser('name', 'email@email.com', '1234abcd')
+ * <UserImageUploadComponent @file-selected="handleImageSelected" />
  */
 
- const emit = defineEmits<{
-  (e: 'file-selected', file: File): void
+const emit = defineEmits<{
+  (e: "file-selected", file: File): void;
 }>();
 
 const fileInput = ref<HTMLInputElement | null>(null);
 const dragging = ref<boolean>(false);
-const errorMessage = ref<string>('');
+const errorMessage = ref<string>("");
 const selectedFile = ref<File | null>(null);
 
 const openFileDialog = (): void => {
   fileInput.value?.click();
-}
+};
 
-const handleFileChange = (event: Event): void=> {
+const handleFileChange = (event: Event): void => {
   const input = event.target as HTMLInputElement;
   if (input.files && input.files.length > 0) {
     const file = input.files[0];
     setNewImageFile(file);
   }
-}
+};
 
 const handleDrop = async (event: DragEvent): Promise<void> => {
   event.preventDefault();
@@ -39,24 +39,23 @@ const handleDrop = async (event: DragEvent): Promise<void> => {
     const file = event.dataTransfer.files[0];
     setNewImageFile(file);
   }
-}
+};
 
 const setNewImageFile = (file: File) => {
   if (file.size > MAX_FILE_SIZE) {
-    // TODO validation goign through error handler or right here right now? 
-    errorMessage.value = 'File size must be less than 5MB';
+    // TODO validation goign through error handler or right here right now?
+    errorMessage.value = "File size must be less than 5MB";
     return;
   }
-    
-  if (!file.type.match('image.*')) {
-    errorMessage.value = 'Please select an image file';
-    return;
-  }
-  
-  selectedFile.value = file;
-  emit('file-selected', file);
-}
 
+  if (!file.type.match("image.*")) {
+    errorMessage.value = "Please select an image file";
+    return;
+  }
+
+  selectedFile.value = file;
+  emit("file-selected", file);
+};
 </script>
 
 <template>
@@ -74,17 +73,15 @@ const setNewImageFile = (file: File) => {
       accept="image/*"
       class="hidden-file-input"
     />
-    <div 
-      class="upload-area" 
-      :class="{ 
+    <div
+      class="upload-area"
+      :class="{
         dragging
-      }" 
+      }"
       @click="openFileDialog"
     >
       <div class="upload-content">
-        <p>
-          Click to upload or drag and drop an image
-        </p>
+        <p>Click to upload or drag and drop an image</p>
         <div v-if="errorMessage" class="error-message" role="alert">
           {{ errorMessage }}
         </div>

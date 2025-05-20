@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import RecipeListComponent from '@/components/core/recipeList/RecipeListComponent.vue'
-import { useRecipeStore } from '@/stores/recipeStore';
-const recipeStore = useRecipeStore()
+import RecipeListComponent from "@/components/core/recipeList/RecipeListComponent.vue";
+import { useRecipeStore } from "@/stores/recipeStore";
+
+const recipeStore = useRecipeStore();
 </script>
 
 <template>
   <div class="base-container">
-    <div class="recipe-viewer" :class="{selectedRecipeOpen: recipeStore.selectedRecipeId}">
+    <div class="recipe-viewer" :class="{ selectedRecipeOpen: recipeStore.selectedRecipeId }">
       <div class="headline-title">
         <h1>Your Recipes</h1>
       </div>
@@ -35,5 +36,4 @@ const recipeStore = useRecipeStore()
 
   @media (min-width: 768px)
     margin: 50px 0
-
 </style>

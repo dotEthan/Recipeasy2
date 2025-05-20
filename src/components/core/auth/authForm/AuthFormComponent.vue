@@ -1,58 +1,68 @@
 <script setup lang="ts">
-import { reactive, computed } from 'vue';
+/**
+ * Base Component all authForms rely on 
+ * @todo refactor for errors coming from api
+ * @example
+ * <AuthFormComponent
+      :fields="signinFields"
+      button-text="Reset Password"
+      :formType="AuthFormType.RESET"
+      @submit="handleSubmit"
+      error=""
+    />
+ */
+import { computed, reactive } from "vue";
 
-import { authFormValidation } from '@/utilities/AuthFormValidation';
-import { FormData, FormField } from '@/types/authFormConfig'
-import { AuthFormType } from '@/constants';
+import { AuthFormType } from "@/constants";
+import { FormData, FormField } from "@/types/authFormConfig";
+import { authFormValidation } from "@/utilities/AuthFormValidation";
 
 const props = defineProps<{
-  fields: Array<FormField>,
-  buttonText: string,
-  error: string,
-  formType: AuthFormType
+  fields: Array<FormField>;
+  buttonText: string;
+  error: string;
+  formType: AuthFormType;
 }>();
 
-const emit = defineEmits(['submit']);
+const emit = defineEmits(["submit"]);
 
 const formData: FormData = reactive({});
 const fieldErrors = reactive<Record<string, string>>({});
 
 for (const field of props.fields) {
-  formData[field.name] = '';
+  formData[field.name] = "";
 }
 
 const hasErrors = computed(() => {
-  return Object.keys(fieldErrors).some(key => fieldErrors[key]);
+  return Object.keys(fieldErrors).some((key) => fieldErrors[key]);
 });
 
 function validateField(field: FormField, value: string) {
-    delete fieldErrors[field.name];
-    
-    const { isValid, errorMsg, errorField } = authFormValidation(field, value, formData);
-    
-    if (!isValid && errorMsg && errorField) {
-        fieldErrors[errorField] = errorMsg;
-    }
-    
-    return isValid;
-}
+  delete fieldErrors[field.name];
 
+  const { isValid, errorMsg, errorField } = authFormValidation(field, value, formData);
+
+  if (!isValid && errorMsg && errorField) {
+    fieldErrors[errorField] = errorMsg;
+  }
+
+  return isValid;
+}
 
 async function onSubmit(e: any) {
   e.preventDefault();
 
   let isValid = true;
-  props.fields.forEach(field => {
+  props.fields.forEach((field) => {
     if (!validateField(field, formData[field.name])) {
       isValid = false;
     }
   });
-  
+
   if (isValid && !hasErrors.value) {
-    emit('submit', {...formData});
+    emit("submit", { ...formData });
   }
 }
-
 </script>
 
 <template>
@@ -62,18 +72,20 @@ async function onSubmit(e: any) {
     </div>
     <form @submit.prevent="onSubmit">
       <div class="form-group" v-for="field in fields" :key="field.name">
-          <label :for="field.name" class="auth-form__label">{{ field.label }}<span class="warning" v-if="field.required">*</span></label>
-          <input
-            :type="field.type"
-            :id="field.name"
-            @blur="validateField(field, formData[field.name])"
-            class="form-control"
-            :class="{ 'is-invalid': fieldErrors[field.name] }"
-            v-model="formData[field.name]"
-          >
-          <div class="error-slot">
-            <span v-if="fieldErrors[field.name]" class="warning">{{ fieldErrors[field.name] }}</span>
-          </div>
+        <label :for="field.name" class="auth-form__label"
+          >{{ field.label }}<span class="warning" v-if="field.required">*</span></label
+        >
+        <input
+          :type="field.type"
+          :id="field.name"
+          @blur="validateField(field, formData[field.name])"
+          class="form-control"
+          :class="{ 'is-invalid': fieldErrors[field.name] }"
+          v-model="formData[field.name]"
+        />
+        <div class="error-slot">
+          <span v-if="fieldErrors[field.name]" class="warning">{{ fieldErrors[field.name] }}</span>
+        </div>
       </div>
       <button type="submit" :disabled="hasErrors">{{ buttonText }}</button>
     </form>
@@ -106,7 +118,7 @@ async function onSubmit(e: any) {
 .auth-form__label
     font-weight: 700
     margin-bottom: 5px
-    
+
     span
       vertical-align: top
       margin-left: 5px
@@ -128,7 +140,7 @@ input.ng-invalid.ng-touched
         height: 3em
         margin-top: 10px
 
-.error-slot 
+.error-slot
   height: 1.2em
   line-height: 1.2
 
@@ -150,5 +162,4 @@ button
 
     @media (min-width: 768px)
         padding: 6px 12px
-
 </style>

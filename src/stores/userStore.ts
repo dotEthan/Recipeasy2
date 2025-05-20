@@ -1,18 +1,23 @@
-import { CACHED_DATA_TTL } from '@/constants';
-import type { LocalUser, UserState } from '@/types/UserState';
-import { formatCachedValue, setSessionData } from '@/utilities';
-import { defineStore } from 'pinia';
-import { computed, ref, watch } from 'vue';
+import { defineStore } from "pinia";
 
-export const useUserStore = defineStore('user', () => {
+import { computed, ref, watch } from "vue";
+
+import type { LocalUser, UserState, UserStore } from "@/types/UserState.d";
+import { formatCachedValue } from "@/utilities";
+
+export const useUserStore = defineStore("user", (): UserStore => {
   // Variables
   const authorized = ref<boolean | null>(false);
   const localUser = ref<LocalUser | undefined>();
 
   // Watchers
-  watch(() => localUser.value, (newLocalUser: LocalUser | undefined) => {
-      sessionStorage.setItem('localUser', formatCachedValue(newLocalUser));
-    }, { deep: true } );
+  watch(
+    () => localUser.value,
+    (newLocalUser: LocalUser | undefined) => {
+      sessionStorage.setItem("localUser", formatCachedValue(newLocalUser));
+    },
+    { deep: true }
+  );
 
   // Computed Values
   const isAuthorized = computed(() => authorized.value);
@@ -47,15 +52,16 @@ export const useUserStore = defineStore('user', () => {
   }
 
   function addIdToLocalUserRecipes(recipeId: string) {
-    localUser.value?.recipes?.push({id: recipeId});
+    localUser.value?.recipes?.push({ id: recipeId });
   }
 
   function removeIdFromLocalUserRecipes(recipeId: string) {
     if (!localUser.value) return;
 
-    localUser.value.recipes = localUser.value.recipes?.filter((recipe) => {
-      return recipe.id !== recipeId
-    }) ?? [];
+    localUser.value.recipes =
+      localUser.value.recipes?.filter((recipe) => {
+        return recipe.id !== recipeId;
+      }) ?? [];
   }
 
   function hydratestore(userState: UserState) {
@@ -85,6 +91,6 @@ export const useUserStore = defineStore('user', () => {
     addIdToLocalUserRecipes,
     removeIdFromLocalUserRecipes,
     hydratestore,
-    resetState,
+    resetState
   };
-})
+});

@@ -1,31 +1,36 @@
 <script setup lang="ts">
-import { computed, onMounted, Ref, ref, unref, watch } from 'vue'
-import { useRoute } from 'vue-router';
-import { Search } from 'lucide-vue-next'
+/**
+ * Component to display Welcome page for all users
+ * @todo Redesign as View
+ * @todo onMounted still needed with data persistence update?
+ * @todo two onmounteds? Refactor, add Toast for password reset token
+ * @example
+ *  <WelcomeComponent />
+ */
+import { Search } from "lucide-vue-next";
+import { useRoute } from "vue-router";
 
-import { useRecipeStore } from '@/stores/recipeStore'
-import { useAppStore } from '@/stores/appStore';
-import { useUserStore } from '@/stores/userStore';
+import { computed, onMounted, ref, unref } from "vue";
 
-import AuthComponent from '../auth/AuthComponent.vue';
-import CollectionComponent from '../collections/CollectionComponent.vue'
-import SplashComponent from './splash/SplashComponent.vue';
+import { useAuthService } from "@/composables/useAuthService";
+import { useDataService } from "@/composables/useDataService";
+import { useAppStore } from "@/stores/appStore";
+import { useRecipeStore } from "@/stores/recipeStore";
+import { useUserStore } from "@/stores/userStore";
+import type { Recipe } from "@/types/Recipes.d";
+import type { ExposedInWelcomeComponent } from "@/types/componentExposedValues.d";
 
-import { useAuthService } from '@/composables/useAuthService';
-import { useDataService } from '@/composables/useDataService';
+import AuthComponent from "../auth/AuthComponent.vue";
+import CollectionComponent from "../collections/CollectionComponent.vue";
+import PublicRecipeDetailsComponent from "./publicRecipeDetails/PublicRecipeDetailsComponent.vue";
+import SplashComponent from "./splash/SplashComponent.vue";
 
-import { Recipe } from '@/types/Recipes';
-import { ExposedInWelcomeComponent } from '@/types/componentExposedValues';
-import PublicRecipeDetailsComponent from './publicRecipeDetails/PublicRecipeDetailsComponent.vue';
-
-
-// Testing required more reactivity
 const props = defineProps({
   currentTime: {
     type: [Object],
     required: false,
-    default: () => new Date(),
-  },
+    default: () => new Date()
+  }
 });
 
 const appStore = useAppStore();
@@ -44,45 +49,44 @@ let healthyRecipes = ref<Recipe[]>([]);
 let snackRecipes = ref<Recipe[]>([]);
 
 onMounted(async () => {
-  // TODO needed? Loading when sorting out persistence?
   if (recipeStore.publicRecipesLength === 0) {
     try {
       const publicRecipes = await dataService.getPublicRecipes();
-      if(!publicRecipes) throw new Error('No Public Recipes Found');
+      if (!publicRecipes) throw new Error("No Public Recipes Found");
       recipeStore.setInitialPublicRecipeState(publicRecipes);
     } catch (error) {
-      console.log('loading public recipes error: ', error)
+      console.log("loading public recipes error: ", error);
     }
   }
-  const [ethanFavs, recommended, mealTime, snack, healthy] = recipeStore.generatePublicRecipeCollections();
+  const [ethanFavs, recommended, mealTime, snack, healthy] =
+    recipeStore.generatePublicRecipeCollections();
   ethansFavouriteRecipes.value = ethanFavs.value;
   recommendedRecipes.value = recommended.value;
   mealTimeRecipes.value = mealTime.value;
   healthyRecipes.value = healthy.value;
   snackRecipes.value = snack.value;
 });
-let recipeDetailsOpen = ref(false)
-const isAuthModalOpen = computed(() => appStore.isAuthModalOpen)
+let recipeDetailsOpen = ref(false);
+const isAuthModalOpen = computed(() => appStore.isAuthModalOpen);
 
 const currentTime = computed(() => {
   const rawTime = unref(props.currentTime);
   if (rawTime instanceof Date) {
     return rawTime;
   } else {
-    console.warn('Invalid currentTime prop. Falling back to new Date.');
+    console.warn("Invalid currentTime prop. Falling back to new Date.");
     return new Date();
   }
 });
 
 const greeting = computed((): string => {
-  const displayName = userStore.localUser?.displayName
+  const displayName = userStore.localUser?.displayName;
   if (displayName) {
-    return `Welcome, ${displayName}!` 
+    return `Welcome, ${displayName}!`;
   } else {
-    return `Welcome!` 
+    return `Welcome!`;
   }
-})
-
+});
 
 const mealTime = computed(() => {
   return determineMealTime(currentTime.value.getHours());
@@ -90,11 +94,11 @@ const mealTime = computed(() => {
 
 function determineMealTime(hours: number) {
   if (hours >= 2 && hours < 10) {
-    return 'Breakfast'
+    return "Breakfast";
   } else if (hours >= 10 && hours < 15) {
-    return 'Lunch'
+    return "Lunch";
   } else {
-    return 'Dinner'
+    return "Dinner";
   }
 }
 
@@ -110,7 +114,7 @@ defineExpose<ExposedInWelcomeComponent>({
   healthyRecipes,
   snackRecipes,
   recipeDetailsOpen,
-  closeRecipeDetails,
+  closeRecipeDetails
 });
 
 onMounted(async () => {
@@ -118,17 +122,16 @@ onMounted(async () => {
   if (token) {
     try {
       const isValid = await authService.validatePasswordToken(token);
-      if (!isValid) throw new Error('Validation Token no longer Valid')
+      if (!isValid) throw new Error("Validation Token no longer Valid");
       validToken.value = true;
-      appStore.setAuthModalType('set-password');
+      appStore.setAuthModalType("set-password");
     } catch (error) {
-      console.log('passwrod reset token verification error: ', error);
-      // TODO Pop up to say failed and allow resend? Modal?
+      console.log("passwrod reset token verification error: ", error);
     } finally {
       isLoading.value = false;
     }
   }
-})
+});
 </script>
 
 <template>
@@ -138,17 +141,25 @@ onMounted(async () => {
       <SplashComponent />
     </div>
     <div class="welcome">
-      <h1 class="greeting">{{greeting}}</h1>
+      <h1 class="greeting">{{ greeting }}</h1>
       <h2>What's for Supper?</h2>
       <div class="searchbar">
         <input disabled type="text" class="searchbar-input" placeholder="Burritos" />
         <button disabled><Search class="magnifying" :size="15" /></button>
       </div>
-      <span style="font-size: 0.7em;">Search and Public Recipe Filtering Coming Soon!</span>
+      <span style="font-size: 0.7em">Search and Public Recipe Filtering Coming Soon!</span>
       <div class="base-content-container">
-        <CollectionComponent ref="recommended-recipes-collection" title="Recommended Public Recipes" :recipeData="recommendedRecipes" />
+        <CollectionComponent
+          ref="recommended-recipes-collection"
+          title="Recommended Public Recipes"
+          :recipeData="recommendedRecipes"
+        />
         <CollectionComponent title="Ethan's Favourites" :recipeData="ethansFavouriteRecipes" />
-        <CollectionComponent ref="mealtime-collection" :title="'Ready for ' + mealTime" :recipeData="mealTimeRecipes" />
+        <CollectionComponent
+          ref="mealtime-collection"
+          :title="'Ready for ' + mealTime"
+          :recipeData="mealTimeRecipes"
+        />
         <CollectionComponent title="Snacks" :recipeData="snackRecipes" />
         <CollectionComponent title="Healthy Foods" :recipeData="healthyRecipes" />
       </div>
@@ -160,10 +171,9 @@ onMounted(async () => {
 
   <PublicRecipeDetailsComponent
     v-if="recipeStore.selectedRecipeId"
-    @closeRecipeDetails="() => { console.log('Event received'); closeRecipeDetails(); }" 
+    @closeRecipeDetails="closeRecipeDetails()"
   />
-  <AuthComponent v-if="isAuthModalOpen"></AuthComponent>
-
+  <AuthComponent v-if="isAuthModalOpen" />
 </template>
 
 <style lang="sass" scoped>
@@ -175,7 +185,7 @@ onMounted(async () => {
   flex-direction: column
   height: calc(95vh - $navbar-height)
   width: 95vw
-  
+
   @media (min-width: 768px)
     max-width: 1366px
 
@@ -230,7 +240,7 @@ onMounted(async () => {
 
     &:focus
       background-color: $colorLighter
-      
+
 
   .magnifying
     display: flex
@@ -251,5 +261,4 @@ onMounted(async () => {
 
   a
     color: white
-
 </style>

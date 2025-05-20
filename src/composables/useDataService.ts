@@ -1,19 +1,20 @@
-import { ref } from "vue"
-import type { LocalUser } from "@/types/UserState"
-import { Recipe } from "@/types/Recipes"
-import { useRecipeStore } from "@/stores/recipeStore"
-import axios from "@/axios"
+import { ref } from "vue";
+
+import axios from "@/axios";
+import { useRecipeStore } from "@/stores/recipeStore";
+import { useToastStore } from "@/stores/toastStore";
+import { useUserStore } from "@/stores/userStore";
 import {
-  ImageUploadResponse,
   GetUserDataResponse,
+  ImageUploadResponse,
+  StandardApiResponse,
   StandardRecipeApiResponse,
-  StandardUserApiResponse,
-  StandardApiResponse
-} from "@/types/ApiResponse"
-import { useUserStore } from "@/stores/userStore"
-import { getPublicIdFromUrl } from "@/utilities"
-import { useToastStore } from "@/stores/toastStore"
-import { ToastType } from "@/types/toasts.d"
+  StandardUserApiResponse
+} from "@/types/ApiResponse.d";
+import { Recipe } from "@/types/Recipes.d";
+import type { LocalUser } from "@/types/UserState.d";
+import { ToastType } from "@/types/toasts.d";
+import { getPublicIdFromUrl } from "@/utilities";
 
 /**
  * Handles all Data related API calls and initilizations
@@ -26,7 +27,7 @@ import { ToastType } from "@/types/toasts.d"
  */
 
 export function useDataService() {
-  const error = ref<string | null>(null)
+  const error = ref<string | null>(null);
   const recipeStore = useRecipeStore();
   const userStore = useUserStore();
   const toastStore = useToastStore();
@@ -54,14 +55,14 @@ export function useDataService() {
 
       recipeStore.finishSuccessfulSave(returnedRecipe);
       userStore.addIdToLocalUserRecipes(recipe._id);
-      toastStore.showToast('New Recipe Created', ToastType.SUCCESS);
+      toastStore.showToast("New Recipe Created", ToastType.SUCCESS);
     } catch (error) {
       recipeStore.revertFailedSave(recipe);
 
       console.log("Saving Recipe error: ", error);
       throw new Error(`Save New Recipe Fail: ${error}`);
     }
-  }
+  };
 
   /**
    * Calls API to update User Object's 'recipes' array after adding public recipe to personal list
@@ -84,12 +85,12 @@ export function useDataService() {
       const user = addUserRecipesResponse.data.user;
       if (!user) throw new Error("Updated Data not found, retry, reset FE changes?");
       userStore.setLocalUser(user);
-      toastStore.showToast('Public recipe added', ToastType.SUCCESS);
+      toastStore.showToast("Public recipe added", ToastType.SUCCESS);
       return user;
     } catch (error) {
       console.log("upset user recipe error: ", error);
     }
-  }
+  };
 
   /**
    * Calls API to update recipe data
@@ -120,12 +121,12 @@ export function useDataService() {
         recipeStore.updatePublicRecipe(returnedRecipe);
       }
       recipeStore.finishSuccessfulUpdate(returnedRecipe);
-      toastStore.showToast('Recipe Updated', ToastType.SUCCESS);
+      toastStore.showToast("Recipe Updated", ToastType.SUCCESS);
     } catch (error) {
       console.log("Updating Recipe error: ", error);
       recipeStore.revertFailedUpdate(recipe);
     }
-  }
+  };
 
   /**
    * Calls API to get various public recipes to populate front page
@@ -141,7 +142,7 @@ export function useDataService() {
     const publicRecipeResponse = await axios.get("/recipes?visibility=public&page=1&limit=25");
     const publicRecipes = publicRecipeResponse.data;
     return publicRecipes;
-  }
+  };
 
   /**
    * Calls API to get User Data for logged in user
@@ -158,7 +159,7 @@ export function useDataService() {
     const userData = userDataResponse.data.user;
     const userRecipes = userDataResponse.data.userRecipes;
     return { userData, userRecipes };
-  }
+  };
 
   /**
    * Calls API to get User Data for current user when id missing (data persistence)
@@ -169,11 +170,11 @@ export function useDataService() {
    * const { userData, userRecipes } = await dataService.getUserData();
    */
   const getCurrentUserData = async (): Promise<GetUserDataResponse> => {
-    const userDataResponse = await axios.get('/users/me');
+    const userDataResponse = await axios.get("/users/me");
     const userData = userDataResponse.data.user;
     const userRecipes = userDataResponse.data.userRecipes;
     return { userData, userRecipes };
-  }
+  };
 
   /**
    * Calls API to get delete a recipe
@@ -190,46 +191,42 @@ export function useDataService() {
       await axios.delete(`/recipes/${id}`);
       recipeStore.finishRecipeDeletion();
       userStore.removeIdFromLocalUserRecipes(id);
-      toastStore.showToast('Recipe Deleted', ToastType.SUCCESS);
+      toastStore.showToast("Recipe Deleted", ToastType.SUCCESS);
     } catch (error: unknown) {
       recipeStore.revertRecipeDeletion(id);
 
-      throw new Error("deleting recipe Error: ")
+      throw new Error("deleting recipe Error: ");
     }
-  }
+  };
 
   const uploadRecipeImage = async (image: File): Promise<string> => {
     try {
-      const formData = new FormData()
-      formData.append("image", image)
+      const formData = new FormData();
+      formData.append("image", image);
 
-      const { data } = await axios.post<ImageUploadResponse | null>(
-        "/recipes/image",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
+      const { data } = await axios.post<ImageUploadResponse | null>("/recipes/image", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
         }
-      )
-      if (!data || !data.success) throw new Error("uploadRecipeImage - Upload Failed")
+      });
+      if (!data || !data.success) throw new Error("uploadRecipeImage - Upload Failed");
 
-      return data.url
+      return data.url;
     } catch (error) {
-      throw new Error("uploadRecipeImage - Image Upload failed")
+      throw new Error("uploadRecipeImage - Image Upload failed");
     }
-  }
+  };
 
   const deleteRecipeImage = async (path: string): Promise<void> => {
     try {
       const publicId = getPublicIdFromUrl(path);
       const encodedPublicId = encodeURIComponent(publicId);
-      const { data } = await axios.delete<StandardApiResponse>(`recipes/image/${encodedPublicId}`)
-      if (!data.success) console.log('Background image delete failed')
+      const { data } = await axios.delete<StandardApiResponse>(`recipes/image/${encodedPublicId}`);
+      if (!data.success) console.log("Background image delete failed");
     } catch (error) {
-      throw new Error("deleteRecipeImage - deletion not successful")
+      throw new Error("deleteRecipeImage - deletion not successful");
     }
-  }
+  };
 
   return {
     saveNewRecipe,
@@ -242,5 +239,5 @@ export function useDataService() {
     uploadRecipeImage,
     deleteRecipeImage,
     error
-  }
+  };
 }

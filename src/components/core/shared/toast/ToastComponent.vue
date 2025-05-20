@@ -1,32 +1,46 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+/**
+ * Toast connected to toastStore for displaying non-critical user notifications
+ * @todo style
+ * @example
+ * <Toast
+      v-for="toast in toastStore.toastQueue"
+      :key="toast.id"
+      :toast="toast"
+      @close="toastStore.removeToast(toast.id)"
+      @pause="toastStore.pauseTimer(toast.id)"
+      @resume="toastStore.resumeTimer(toast.id)"
+    />
+ */
+import { computed } from "vue";
 
-import { ToastQueue } from "@/types/toasts"
+import type { ToastQueue } from "@/types/toasts";
 
 const props = defineProps<{
-  toast: ToastQueue
-}>()
+  toast: ToastQueue;
+}>();
 
-const emit = defineEmits(['close', 'pause', 'resume']);
+const emit = defineEmits(["close", "pause", "resume"]);
 
-const isErrorWarning = computed(() => props.toast.type === 'error' || props.toast.type === 'warning');
-const ariaType = computed(() => isErrorWarning.value ? 'assertive' : 'polite')
+const isErrorWarning = computed(
+  () => props.toast.type === "error" || props.toast.type === "warning"
+);
+const ariaType = computed(() => (isErrorWarning.value ? "assertive" : "polite"));
 
 const toastStyles = computed(() => ({
-  'toast-base': true,
-  'toast-error': props.toast.type === 'error',
-  'toast-warning': props.toast.type === 'warning',
-  'toast-success': props.toast.type === 'success',
-  'toast-info': props.toast.type === 'info'
-}))
-
+  "toast-base": true,
+  "toast-error": props.toast.type === "error",
+  "toast-warning": props.toast.type === "warning",
+  "toast-success": props.toast.type === "success",
+  "toast-info": props.toast.type === "info"
+}));
 </script>
 
 <template>
-  <div 
+  <div
     :class="toastStyles"
     :aria-type="ariaType"
-    :aria-atomic=true
+    :aria-atomic="true"
     @mouseover="emit('pause')"
     @mouseleave="emit('resume')"
   >
@@ -41,7 +55,7 @@ const toastStyles = computed(() => ({
 </template>
 
 <style lang="sass" scoped>
-.toast-base 
+.toast-base
   position: relative
   background: white
   border-radius: 6px
@@ -57,45 +71,45 @@ const toastStyles = computed(() => ({
   animation: toastSlideIn 0.3s ease-out
 
 
-.toast-header 
+.toast-header
   display: flex
   justify-content: space-between
   align-items: center
 
 
-.toast-title 
+.toast-title
   font-weight: 500
   font-size: 15px
   margin: 0
 
 
-.toast-error 
+.toast-error
   border-left: 4px solid #e53e3e
   background-color: #fff5f5
 
 
-.toast-warning 
+.toast-warning
   border-left: 4px solid #dd6b20
   background-color: #fffaf0
 
 
-.toast-success 
+.toast-success
   border-left: 4px solid #38a169
   background-color: #f0fff4
 
 
-.toast-info 
+.toast-info
   border-left: 4px solid #3182ce
   background-color: #ebf8ff
 
 
-.toast-description 
+.toast-description
   font-size: 13px
   color: #666
   margin: 0
 
 
-.toast-close 
+.toast-close
   background: none
   border: none
   cursor: pointer
@@ -104,14 +118,12 @@ const toastStyles = computed(() => ({
   color: inherit
 
 
-@keyframes toastSlideIn 
-  from 
+@keyframes toastSlideIn
+  from
     transform: translateY(20px)
     opacity: 0
-  
-  to 
+
+  to
     transform: translateY(0)
     opacity: 1
-  
-
 </style>
