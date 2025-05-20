@@ -47,7 +47,7 @@ export class NonCriticalError extends BaseError {
 
 export class CriticalError extends BaseError {
     public errorCode = 'CRITICAL';
-    constructor(message: string, options: { actions?: CriticalErrorAction[] } = {}) {
-        super(message, options);
+    constructor(message: string, details: ErrorDetails = {}) {
+        super(message, details);
     }
 }

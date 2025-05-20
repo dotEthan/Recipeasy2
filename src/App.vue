@@ -5,7 +5,6 @@ import HeaderComponent from '@/components/core/header/HeaderComponent.vue';
 import { useAppService } from '@/composables/useAppService';
 import AppOverlays from '@/components/core/shared/appOverlays/AppOverlays.vue';
 
-console.log('app loading')
 const appService = useAppService();
 
 appService.initializeApp();

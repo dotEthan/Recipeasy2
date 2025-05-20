@@ -117,7 +117,6 @@ describe('WelcomeComponent', () => {
   //   await wrapper.findComponent(RecipeDetailsComponent).vm.$emit('closeRecipeDetails');
   //   await wrapper.vm.$nextTick();
     
-  //   console.log('recipeDetailsOpen.value:', exposed.recipeDetailsOpen.value);
   
   //   recipeStore.selectedRecipeId = '123'; // Mock initial state
   //   exposed.recipeDetailsOpen.value = true; // Now this should work

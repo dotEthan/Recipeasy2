@@ -32,8 +32,8 @@ function onAddToShoppingList() {
     if(!selectedRecipe) throw new Error('Selected REcipe data missing, refresh?');
     const items = selectedRecipe.ingredients.reduce((acc, ingredient) => {
         if (!Array.isArray(ingredient.steps)) {
-        console.warn(`Ingredient ${ingredient.title || 'unknown'} has no valid steps`)
-        return acc
+            console.warn(`Ingredient ${ingredient.title || 'unknown'} has no valid steps`)
+            return acc
         }
 
         ingredient.steps.forEach((step) => {
@@ -43,17 +43,14 @@ function onAddToShoppingList() {
 
         return acc
     }, [] as string[])
-    if (items) shoppingListStore.addToDefaultList(items)
-    console.log('adding')
+    if (items) shoppingListStore.addToDefaultList(items);
 }
 
 function onEditRecipe() {
-    recipeStore.setEditStatusSelectedId(true)   
-    console.log('editing')
+    recipeStore.setEditStatusSelectedId(true);
 }
 
 function onDeleteRecipe() {
-  console.log('removing')
   recipeStore.prepareRecipeDeletion(selectedRecipe!._id);
   dataService.deleteRecipe(selectedRecipe!._id);
   recipeStore.clearSelectedRecipeId();
@@ -64,7 +61,6 @@ async function addPublicRecipeToPersonal() {
     if (!selectedRecipe) throw new Error('selected Recipe data does not exist, refresh page?');
     recipeStore.addRecipe(selectedRecipe);
     userStore.addIdToLocalUserRecipes(selectedRecipe._id);
-    console.log(selectedRecipe);
     await router.push('/recipes');
     // TODO: Do we open it? Hides the route movement
     recipeStore.setSelectedRecipeId(selectedRecipe._id);
@@ -72,10 +68,8 @@ async function addPublicRecipeToPersonal() {
 }
 
 const goToUserRecipes = async () => {
-    console.log('go')
     // TODO keep selectedRecipeId
     await router.push('/recipes');
-    recipeStore.setSelectedRecipeId(selectedRecipe!._id)
 }
 
 const openRegistration = () => {

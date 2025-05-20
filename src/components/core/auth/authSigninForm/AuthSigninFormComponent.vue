@@ -28,7 +28,6 @@ const signinFields = [
 async function handleSubmit(formData: FormData) {
   try {
     const userVerified = await authService.signIn(formData.email, formData.password);
-    console.log('user Signed in, is verified: ', userVerified)
     if (!userVerified) {
       appStore.setAuthModalType('verify-email');
     } else {
@@ -36,7 +35,6 @@ async function handleSubmit(formData: FormData) {
       appStore.setAuthModalType();
     }
   } catch(error) {
-    console.log('signin error: ', error)
     // authError.value = error.message || 'Failed to sign in';
     console.error(error);
   }

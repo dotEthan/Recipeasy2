@@ -42,9 +42,7 @@ const signinFields = [
 
 async function handleSubmit(formData: FormData) {
   await authService.registerUser(formData.displayName, formData.email, formData.password);
-  console.log('registration Finished')
   emit('switch-type', 'verify-email');
-  console.log('emitted')
 }
 
 </script>

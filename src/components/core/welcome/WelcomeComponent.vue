@@ -45,9 +45,8 @@ let snackRecipes = ref<Recipe[]>([]);
 
 onMounted(async () => {
   // TODO needed? Loading when sorting out persistence?
-  if (recipeStore.existingPublicRecipesLength === 0) {
+  if (recipeStore.publicRecipesLength === 0) {
     try {
-      console.log('public recipes are empty, getting from API')
       const publicRecipes = await dataService.getPublicRecipes();
       if(!publicRecipes) throw new Error('No Public Recipes Found');
       recipeStore.setInitialPublicRecipeState(publicRecipes);
@@ -56,7 +55,6 @@ onMounted(async () => {
     }
   }
   const [ethanFavs, recommended, mealTime, snack, healthy] = recipeStore.generatePublicRecipeCollections();
-  console.log('public recipe setting')
   ethansFavouriteRecipes.value = ethanFavs.value;
   recommendedRecipes.value = recommended.value;
   mealTimeRecipes.value = mealTime.value;
@@ -101,7 +99,6 @@ function determineMealTime(hours: number) {
 }
 
 function closeRecipeDetails() {
-  console.log('closeRecipeDetails called'); // Debugging
   recipeDetailsOpen.value = false;
   recipeStore.clearSelectedRecipeId();
 }
@@ -117,7 +114,6 @@ defineExpose<ExposedInWelcomeComponent>({
 });
 
 onMounted(async () => {
-  console.log('mounting')
   const token = route.query.token as string;
   if (token) {
     try {

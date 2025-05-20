@@ -20,7 +20,7 @@ export const useRecipeStore = defineStore('recipes', () => {
 
   // Variables
   const recipes = ref<Recipe[]>([]);
-  const existingPublicRecipes = ref<Recipe[]>([]);
+  const publicRecipes = ref<Recipe[]>([]);
   const allTags = ref<string[]>([]);
   const ethansFavouritePublicIds = ref<string[]>([
     '67f1259f3177aa84c4a0595e',
@@ -46,7 +46,7 @@ export const useRecipeStore = defineStore('recipes', () => {
       sessionStorage.setItem('userRecipes', formatCachedValue(newRecipes));
     }, { deep: true } );
 
-  watch(() => recipes.value, (newPublicRecipes: Recipe[]) => {
+  watch(() => publicRecipes.value, (newPublicRecipes: Recipe[]) => {
       sessionStorage.setItem('publicRecipes', formatCachedValue(newPublicRecipes));
     }, { deep: true } );
 
@@ -72,7 +72,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   });
 
   const selectedRecipe: ComputedRef<Recipe | undefined> = computed(() => {
-    const allCurrentRecipes = recipes.value.concat(existingPublicRecipes.value).concat(tempRecipeSaveArray.value);
+    const allCurrentRecipes = recipes.value.concat(publicRecipes.value).concat(tempRecipeSaveArray.value);
     return allCurrentRecipes.find(r => r._id === selectedRecipeId.value);
   });
   
@@ -86,7 +86,7 @@ export const useRecipeStore = defineStore('recipes', () => {
 
   const recipesLength: ComputedRef<number> = computed(() => recipes.value.length);
 
-  const existingPublicRecipesLength: ComputedRef<number> = computed(() => existingPublicRecipes.value.length);
+  const publicRecipesLength: ComputedRef<number> = computed(() => publicRecipes.value.length);
   
   const getAllRecipeTags: ComputedRef<string[]> = computed(() =>
     Array.from(
@@ -110,7 +110,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   function setInitialPublicRecipeState(publicRecipeData: Recipe[]) {
-    existingPublicRecipes.value = publicRecipeData || [];
+    publicRecipes.value = publicRecipeData || [];
     selectedRecipeId.value = undefined;
   }
 
@@ -123,21 +123,19 @@ export const useRecipeStore = defineStore('recipes', () => {
     //TODO API call for specific tags or search criteria needed
   function generatePublicRecipeCollections(): Ref<Recipe[]>[] {
     const numberOfRecipesEach = appStore.screenSize === 'sm' ? 6 : 5;
-    const length = existingPublicRecipes.value.length;
+    const length = publicRecipes.value.length;
     const usedIndices = new Set<number>();
-    console.log('number needed:', numberOfRecipesEach)
     // TODO refactor this
     const ethansFavoriteIndices = ethansFavouritePublicIds.value
-        .map((id) => existingPublicRecipes.value.findIndex((recipe) => recipe._id === id))
+        .map((id) => publicRecipes.value.findIndex((recipe) => recipe._id === id))
         .filter((index) => index !== -1);
 
-    console.log('indices: ', numberOfRecipesEach)
     const ethansCollection: Recipe[] = [];
     while (ethansCollection.length < numberOfRecipesEach && ethansFavoriteIndices.length > 0) {
         const randomIndex = Math.floor(Math.random() * ethansFavoriteIndices.length);
         const recipeIndex = ethansFavoriteIndices.splice(randomIndex, 1)[0];
         usedIndices.add(recipeIndex);
-        ethansCollection.push(existingPublicRecipes.value[recipeIndex]);
+        ethansCollection.push(publicRecipes.value[recipeIndex]);
     }
     const randomCollections = Array.from({ length: 4 }, () => {
         const recipesInGroup: Recipe[] = [];
@@ -147,27 +145,24 @@ export const useRecipeStore = defineStore('recipes', () => {
 
             if (!usedIndices.has(randomIndex)) {
                 usedIndices.add(randomIndex);
-                recipesInGroup.push(existingPublicRecipes.value[randomIndex]);
+                recipesInGroup.push(publicRecipes.value[randomIndex]);
             }
         }
 
         return ref(recipesInGroup);
     });
-    console.log('mine: ', ethansCollection)
     return [ref(ethansCollection), ...randomCollections];
   }
 
   function updatePublicRecipe(recipe: Recipe) {
-    console.log('updating public recipe as well')
-    const index = existingPublicRecipes.value.findIndex((publicRecipe) => publicRecipe._id === recipe._id);
+    const index = publicRecipes.value.findIndex((publicRecipe) => publicRecipe._id === recipe._id);
     if (index === -1) {
-      console.log('Not found in public recipe array');
       return;
     }
-    existingPublicRecipes.value = [
-      ...existingPublicRecipes.value.slice(0, index),
+    publicRecipes.value = [
+      ...publicRecipes.value.slice(0, index),
       recipe,
-      ...existingPublicRecipes.value.slice(index+1)
+      ...publicRecipes.value.slice(index+1)
     ]
   }
 
@@ -184,7 +179,6 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   function setSelectedRecipeId(id: string) {
-    console.log('setting: ', id)
     selectedRecipeId.value = id;
   }
 
@@ -198,11 +192,9 @@ export const useRecipeStore = defineStore('recipes', () => {
 
   function prepareRecipeDeletion(id: string) {
     const recipe = getRecipeById(id);
-    console.log('has recipe:', recipe)
     if (recipe) {
       tempRecipeDeleteArray.value = [...tempRecipeDeleteArray.value, recipe]
     }
-    console.log('temp recipe:', tempRecipeDeleteArray)
     removeRecipeById(id);
   }
 
@@ -211,10 +203,8 @@ export const useRecipeStore = defineStore('recipes', () => {
   }
 
   function revertRecipeDeletion(id: string) {
-    console.log('delete failed')
     if (tempRecipeDeleteArray.value.length > 0) {
       const recipe = tempRecipeDeleteArray.value.find(recipe => recipe._id === id) as Recipe;
-      console.log('recipe has temps: ', recipe)
       addRecipe(recipe);
     } else {
       console.log('no recipes waiting to be deleted')
@@ -232,7 +222,6 @@ export const useRecipeStore = defineStore('recipes', () => {
   // need two temp arrays, updated (to show recent updates), oldRecipe to revert to
   function prepRecipeDataForUpdate(recipe: Recipe) {
     const oldRecipe = recipes.value.find(existingRecipe => existingRecipe._id === recipe._id);
-    console.log('recipename: ', recipe.name)
 
     if (!oldRecipe) throw new Error('no old recipe found for updating, ruh roh!')
     tempRecipeSaveArray.value.push(oldRecipe);
@@ -260,7 +249,6 @@ export const useRecipeStore = defineStore('recipes', () => {
     tempRecipeSaveArray.value = newArray;
 
     if (oldRecipe) {
-      console.log('oldRecipe: ', oldRecipe)
       addRecipe(oldRecipe);
     }
   }
@@ -283,7 +271,7 @@ export const useRecipeStore = defineStore('recipes', () => {
 
   function hydrateStore(RecipeState: RecipeState) {
     recipes.value = RecipeState.recipes || [];
-    existingPublicRecipes.value = RecipeState.existingPublicRecipes || [];
+    publicRecipes.value = RecipeState.publicRecipes || [];
     allTags.value = RecipeState.allTags || []
     selectedRecipeId.value = RecipeState.selectedRecipeId;
     editSelectedRecipe.value = RecipeState.editSelectedRecipe;
@@ -292,7 +280,7 @@ export const useRecipeStore = defineStore('recipes', () => {
   
   function resetState() {
     recipes.value = [];
-    existingPublicRecipes.value = [];
+    publicRecipes.value = [];
     allTags.value = [];
     clearSelectedRecipeId();
   }
@@ -310,7 +298,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     recipes,
     allTags,
     selectedRecipeId,
-    existingPublicRecipes,
+    publicRecipes,
     editSelectedRecipe,
     getAllUserRecipes,
     selectedRecipe,
@@ -321,7 +309,7 @@ export const useRecipeStore = defineStore('recipes', () => {
     tempRecipeSaveArray,
     tempRecipeDeleteArray,
     recipesLength,
-    existingPublicRecipesLength,
+    publicRecipesLength,
     getAllRecipeTags,
     useFilteredRecipes,
     setInitialUserRecipeState,

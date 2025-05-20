@@ -21,7 +21,6 @@ const handleSubmit = async () => {
 // TODO Style and make work properly
 
 const handleInput = (e: Event, index: number) => {
-    console.log('inputing')
     const targetEle = e.target as HTMLInputElement
     if (targetEle.value.length === 1 && index < 5) {
         inputs.value[index+1].focus();

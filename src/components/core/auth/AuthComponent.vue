@@ -28,7 +28,6 @@ const currentAuthComponent = computed(() => {
 
 function onSwitchTypeHandler(type: unknown) {
   const formType = type as FormType;
-  console.log('switching modal type: ', formType);
   appStore.setAuthModalType(formType);
 }
 

@@ -1,14 +1,8 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import axios from '@/axios';
 import { useAppStore } from '@/stores/appStore'
-import { checkIfCacheExpired, debounce, getSessionData } from '@/utilities';
-import { StandardUserApiResponse } from '@/types/ApiResponse';
+import { checkIfCacheExpired, debounce } from '@/utilities';
 import type { ScreenSize } from '@/types/ScreenSize'
-import router from '@/router/main';
-import { useAuthService } from './useAuthService';
-import { CachedUserState } from '@/types/UserState';
-import { CachedRecipeState } from '@/types/Recipes';
-import { CachedShoppingListState } from '@/types/ShoppingLists';
 import { useDataService } from './useDataService';
 import { useUserStore } from '@/stores/userStore';
 import { useRecipeStore } from '@/stores/recipeStore';
@@ -24,7 +18,6 @@ export function useAppService() {
   const userStore = useUserStore();
   const recipeStore = useRecipeStore();
   const shoppingListStore = useShoppingListStore();
-  const authService = useAuthService();
   const dataService = useDataService();
   const screenWidth = ref(window.innerWidth);
 
@@ -41,7 +34,6 @@ export function useAppService() {
   const updatescreenSize = () => {
     const width = screenWidth.value
     let screenSize: ScreenSize
-    console.log('screensizze')
     if (width < 640) {
       screenSize = 'sm'
     } else if (width < 1024) {
@@ -88,8 +80,7 @@ export function useAppService() {
     const cachedPublicRecipes = checkIfCacheExpired('publicRecipes');
     const cachedSelectedRecipeId = sessionStorage.getItem('selectedRecipeId') ?? undefined;
     const cachedEditSelectedRecipe = sessionStorage.getItem('editSelectedRecipe') === 'true' || false;
-    const cachedShoppingLists = checkIfCacheExpired('shoppingLists');
-
+    const cachedShoppingLists = checkIfCacheExpired('shoppingLists')
     if (
       !cachedUserRecipes ||
       !cachedLocalUser ||
@@ -104,13 +95,15 @@ export function useAppService() {
       // TODO add when implementing tags
       cachedAllTags = [];
     }
+
     recipeStore.hydrateStore({ 
       recipes: cachedUserRecipes, 
       allTags: cachedAllTags, 
-      existingPublicRecipes: cachedPublicRecipes, 
+      publicRecipes: cachedPublicRecipes, 
       selectedRecipeId: cachedSelectedRecipeId, 
       editSelectedRecipe: cachedEditSelectedRecipe 
     });
+
     userStore.setInitialUserState({ localUser: cachedLocalUser, authorized: true});
     shoppingListStore.hydrateStore(cachedShoppingLists);
     console.log('Stores hydrated');

@@ -2,7 +2,6 @@
 import RecipeListComponent from '@/components/core/recipeList/RecipeListComponent.vue'
 import { useRecipeStore } from '@/stores/recipeStore';
 const recipeStore = useRecipeStore()
-  console.log("reviews")
 </script>
 
 <template>

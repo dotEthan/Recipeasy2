@@ -1,13 +1,4 @@
 <script setup lang="ts">
-import { useAppStore } from '@/stores/appStore'
-import { useUserStore } from '@/stores/userStore'
-
-const appStore = useAppStore()
-const userStore = useUserStore()
-const isTestModeOn = appStore.isTestModeOn
-const isAuthorized = userStore.isAuthorized
-
-
 </script>
 
 <template>

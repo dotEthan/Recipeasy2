@@ -58,7 +58,6 @@ export const useErrorStore = defineStore('error', () => {
     }
 
     function handleApiError(error: AxiosError<ApiErrorResponse>) {
-      console.log('api error');
       const { status, data } = error.response || {};
       
       switch (status) {

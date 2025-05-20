@@ -4,10 +4,6 @@ import Toast from '@/components/core/shared/toast/ToastComponent.vue';
 
 const toastStore = useToastStore();
 // const modalStore = useModalStore();
-
-const over = () => {
-  console.log('over')
-}
 </script>
 <template>
   <Teleport to="body">

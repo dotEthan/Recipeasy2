@@ -65,8 +65,6 @@ export function useAuthService() {
         if (error instanceof AxiosError) {
           if (error.response) {
             console.error(error.response.data);
-          } else if (error.request) {
-            console.error('No response received');
           } else {
             console.error('Error', error.message);
           }
@@ -77,6 +75,8 @@ export function useAuthService() {
   /**
    * Calls API to login user and then set user's data in store
    * @todo if password reset flow initialized?
+   * @todo Update with ful App State updates
+   * @todo if userResponse.newEmailVerifyCodeCreated created, block login
    * @param {string} email - The user's email
    * @param {string} password - the user's password
    * @returns {Promise<boolean>} - A boolean to show if the user is verified or not
@@ -89,13 +89,10 @@ export function useAuthService() {
       clearError()
 
       const userResponse = await axios.post('/auth/login', { email, password });
-      console.log('signed in: ', userResponse);
-      // TODO - if userResponse.newEmailVerifyCodeCreated then block signin, password change flow started
       // notify to check email, or resend token if not available
       const localUser = userResponse.data.user as LocalUser;
       const userRecipesData: Recipe[] = userResponse.data.recipeResponse;
       const userState = { authorized: true, localUser};
-      console.log('trigger App Store Initialization, data: ', userRecipesData);
 
       const accessToken: string = userResponse.data.accessToken;
 
@@ -105,7 +102,7 @@ export function useAuthService() {
       userStore.setInitialUserState(userState);
       recipeStore.setInitialUserRecipeState(userRecipesData);
       shoppingListStore.setInitialListState(userState.localUser.shoppingLists || []);
-      // TODO Update with ful App State updates
+
       const appState = { 
         lightMode: userState.localUser.preferences?.lightMode
       };
@@ -133,16 +130,22 @@ export function useAuthService() {
   const logOut = async () => {
     try {
       clearError();
-      // todo 
-      const response = await axios.delete('/auth/refresh-token');
+      await axios.delete('/auth/refresh-token');
 
-      sessionStorage.clear();
+      const storedKeys = Object.keys(sessionStorage);
+
+      storedKeys.map(key => {
+        console.log('key:', key)
+        if (key !== 'publicRecipes') {
+          console.log('remove:', key)
+          sessionStorage.removeItem(key);
+        }
+      });
       localStorage.clear();
       recipeStore.resetUserRecipeState();
       appStore.resetAppStates();
       
       toastStore.showToast('User Logged out', ToastType.SUCCESS);
-      console.log('logged out: ', response);
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Logout failed';
       throw err;
@@ -160,7 +163,6 @@ export function useAuthService() {
   const verifyUser = async (enteredCode: string) => {
     try {
       const userEmail = userStore.getCurrentUserEmail;
-      console.log('email:', userEmail)
       const response = await axios.post('/admin/verification-codes/verify', {
         code: enteredCode,
         userEmail
@@ -181,7 +183,6 @@ export function useAuthService() {
    * await authService.passwordReset('email@email.com');
    */
   const passwordReset = async (email: string) => {
-    console.log('password reset api call')
     await axios.post('/admin/password-reset-requests', {
       email
     });
@@ -198,7 +199,6 @@ export function useAuthService() {
    * await authService.setNewPassword('newpassword1234!', '1234abcd');
    */  
   const setNewPassword = async (password: string, token: string) => {
-    console.log('set new Password api call')
     await axios.patch('/admin/user-password', {
       password,
       code: token
@@ -215,7 +215,6 @@ export function useAuthService() {
    * await authService.v('1234abcd');
    */  
   const validatePasswordToken = async (token: String) => {
-    console.log('validate password token: ', token);
     const validateRes = await axios.post<StandardRecipeApiResponse>('/admin/password-reset/validate', {
       code: token
     });

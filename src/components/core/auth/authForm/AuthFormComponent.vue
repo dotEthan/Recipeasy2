@@ -40,7 +40,6 @@ function validateField(field: FormField, value: string) {
 
 async function onSubmit(e: any) {
   e.preventDefault();
-  console.log('submitting')
 
   let isValid = true;
   props.fields.forEach(field => {

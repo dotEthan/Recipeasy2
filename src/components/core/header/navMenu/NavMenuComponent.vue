@@ -8,16 +8,8 @@ import { useAuthService } from '@/composables/useAuthService';
 const appStore = useAppStore();
 const userStore = useUserStore();
 const authService = useAuthService();
-const isTestModeOn = computed(() => appStore.isTestModeOn);
 const isAuthorized = computed(() => userStore.isAuthorized);
 
-//TODO needed or just call resetApp?
-function testModeOff() {
-  closeMobileMenu();
-  appStore.turnTestModeOff();
-  userStore.deauthorize();
-  router.push('/');
-}
 
 function onClickRegisterSigning(type: string) {
   closeMobileMenu();
@@ -35,18 +27,11 @@ function onReset() {
 
 async function onSignOut() {
   closeMobileMenu()
-  if (!appStore.isTestModeOn) {
-
-    try {
-      await authService.logOut();
-      console.log('Logged Out');
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  } else {
-    testModeOff();
+  try {
+    await authService.logOut();
+  } catch (error) {
+    console.error('Error signing out:', error);
   }
-  appStore.resetAppStates();
   router.push('/');
 };
 
@@ -57,22 +42,19 @@ function closeMobileMenu() {
 
 <template>
   <ul class="nav navbar-nav">
-    <li routerLinkActive="active" class="nav-recipes" v-if="isTestModeOn || isAuthorized">
+    <li routerLinkActive="active" class="nav-recipes" v-if="isAuthorized">
       <RouterLink class="nav-menu-item" to="recipes" @click="closeMobileMenu"
         >Recipes</RouterLink
       >
     </li>
-    <li routerLinkActive="active" class="nav-shopping-list" v-if="isTestModeOn || isAuthorized">
+    <li routerLinkActive="active" class="nav-shopping-list" v-if="isAuthorized">
       <RouterLink class="nav-menu-item" to="shopping-lists" @click="closeMobileMenu"
         >Shopping Lists</RouterLink
       >
     </li>
-    <li v-if="isTestModeOn" @click="testModeOff" class="test-text-contain">
-      <span class="test-text nav-menu-item" @click="$emit('mobileModalClose')">Test Mode Off</span>
-    </li>
   </ul>
   <ul class="nav navbar-nav rightward">
-    <div class="nav-menu-items" v-if="isTestModeOn || isAuthorized">
+    <div class="nav-menu-items" v-if="isAuthorized">
       <li class="nav-menu-item">
         <a @click="onSignOut()" style="cursor: pointer" routerLink="/">Log Out</a>
       </li>
@@ -92,7 +74,7 @@ function closeMobileMenu() {
         </ul>
       </li>
     </div>
-    <div class="nav-menu-items" v-if="!isAuthorized && !isTestModeOn">
+    <div class="nav-menu-items" v-if="!isAuthorized">
       <li>
         <a class="nav-menu-item" style="cursor: pointer" @click="onClickRegisterSigning('register')"
           >Register</a

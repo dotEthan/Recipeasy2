@@ -1,3 +1,4 @@
+import { CACHED_DATA_TTL } from "@/constants";
 import { useUserStore } from "@/stores/userStore";
 import { NewRecipe } from "@/types/Recipes";
 import { Visibility } from "@/types/RecipesEnums";
@@ -110,8 +111,7 @@ export const setSessionData = (key: string, data: unknown) => {
 * import { clearSessionData } from '/utilities';
  * clearSessionData('userData';
  */
-export const clearSessionData = (key: string) => { 
-  console.log('clearing:', key) 
+export const clearSessionData = (key: string) => {
   sessionStorage.removeItem(key);  
 };  
 
@@ -150,21 +150,8 @@ export const checkIfCacheExpired = (key: string) => {
   const item = sessionStorage.getItem(key);
   if (!item) return null;
 
-  const { data, expiresAt } = JSON.parse(item);
-  return expiresAt > Date.now() ? data : null;
-}
-
-/**
- * Check if the cached data is expired
- * @param key - string that is used to store the data in sessionStorage
- * @returns data || null - either the cached data or null if the data is expired
- */
-export const getCachedDataOrFetch = (key: string) => {
-  const item = checkIfCacheExpired(key);
-  if (item === null) return null;
-
-  const { data, expiresAt } = JSON.parse(item);
-  return expiresAt > Date.now() ? data : null;
+  const { data, cachedAt } = JSON.parse(item);
+  return Date.now() - cachedAt < CACHED_DATA_TTL ? data : null;
 }
 
 /**

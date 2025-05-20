@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory, RouteLocationNormalized } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useUserStore } from '@/stores/userStore'
-import { useAppStore } from '@/stores/appStore'
 import { useRecipeStore } from '@/stores/recipeStore'
 
 // TODO Verified and AUthorized user requires
@@ -44,19 +43,16 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
-  const appStore = useAppStore()
   const recipeStore = useRecipeStore()
   // wait a sec to let authorization unfold if needed
   await new Promise(resolve => setTimeout(resolve, 100))
 
   const userIsAuth = userStore.authorized
-  const isTestModeOn = appStore.isTestModeOn
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
   
   console.log('Router Guard Details:', {
     path: to.fullPath,
     userIsAuth,
-    isTestModeOn,
     requiresAuth
   })
 
@@ -67,16 +63,14 @@ router.beforeEach(async (to, from, next) => {
     return
   }
 
-  if (!isTestModeOn && requiresAuth && !userIsAuth) {
+  if (requiresAuth && !userIsAuth) {
     console.log('Current Path not allowed for user')
     next('/')
     return
   }
-  console.log('router guard')
   // TODO add recipe ID to url query so no need to reset as each navigation will reset when id not there. 
   recipeStore.clearSelectedRecipeId();
   recipeStore.setEditStatusSelectedId(false);
-  console.log('router guard')
   next()
 })
 

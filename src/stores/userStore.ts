@@ -32,7 +32,6 @@ export const useUserStore = defineStore('user', () => {
   }
 
   function setLocalUser(user: LocalUser) {
-    console.log('inside set localUser local user: ', user);
     localUser.value = user;
   }
 

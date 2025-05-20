@@ -59,7 +59,6 @@ export const useToastStore = defineStore('toast', () => {
     }
 
     function resumeTimer(id:number) {
-        console.log('resuming')
         const activeToast = toastQueue.value.find(toast => toast.id === id);
         if (!activeToast?.remaining) return;
 

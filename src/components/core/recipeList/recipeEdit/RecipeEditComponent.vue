@@ -1,15 +1,14 @@
 
 <script setup lang="ts">
 import DOMPurify from 'dompurify';
-import { computed, nextTick, onBeforeUnmount, onUnmounted, ref } from 'vue';
+import { nextTick, onUnmounted, ref } from 'vue';
 import type { ComponentPublicInstance, PropType, Ref } from 'vue';
 import { NewRecipe, Recipe } from '@/types/Recipes' ;
 import { useRecipeStore } from '@/stores/recipeStore';
 import ToolTipComponent from '../../shared/toolTip/ToolTipComponent.vue';
-import { createNewRecipe, getPublicIdFromUrl } from '@/utilities';
+import { createNewRecipe } from '@/utilities';
 import { useDataService } from '@/composables/useDataService';
 import UserImageUploadComponent from '../../shared/userImageUpload/UserImageUploadComponent.vue';
-import { Blob } from 'buffer';
 
 //////////////// User Upload mostly working, no more preview, should update imag eright away, need to save on submit (IF changed and delete original)
 
@@ -37,7 +36,7 @@ let originalImagePath = '';
 
 const recipeStore = useRecipeStore();
 const dataService = useDataService();
-console.log(props.selectedRecipe)
+
 const selectedRecipeToEdit: Recipe | NewRecipe = (!props.selectedRecipe) ? createNewRecipe() : props.selectedRecipe;
 const amountRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
 const ingredientTypeRefs = ref<Record<string, HTMLInputElement | Element | ComponentPublicInstance>>({});
@@ -64,7 +63,6 @@ const populateForm = () => {
 populateForm();
 
 const onSubmit = async () => {
-  console.log('submit')
   if (formData.value.url) {
     const santizedUrl = DOMPurify.sanitize(formData.value.url);
     formData.value.url = santizedUrl;
@@ -76,19 +74,15 @@ const onSubmit = async () => {
     formData.value.imgPath = newUrl;
   }
   if (originalImagePath.length > 0) {
-    console.log(`deleting: oriignal ${originalImagePath}`)
     dataService.deleteRecipeImage(originalImagePath);
   }
 
   if (formData?.value && !props.isNew) {
-    console.log('Updating existing Recipe');
     recipeStore.prepRecipeDataForUpdate(formData.value);
     dataService.updateRecipe(formData.value);
     
     onEditingOver();
   } else if (formData?.value && formValid) {
-
-    console.log('Creating New Recipe');
     recipeStore.backupNewRecipeDataForSave(formData.value);
     dataService.saveNewRecipe(formData.value);
     
@@ -105,7 +99,6 @@ const onSubmit = async () => {
 
 // TODO Better validation. 
 function validateName() {
-  console.log('validating Name: ', formData.value.name?.length)
   if (!formData.value.name || formData.value.name.length < 1) {
     formError.value = "Recipe Name Required"
     formValid = false
@@ -182,7 +175,6 @@ function onDeleteDirection(directionTypeIndex: number, directionIndex: number) {
 
 function onAddNote() {
   if (!formData.value.notes) formData.value.notes = [];
-  console.log('notes: ', formData.value.notes);
   formData.value.notes.push('');
 }
 
@@ -191,7 +183,6 @@ function onDeleteNote(noteIndex: number) {
 }
 
 function handleRemoveImage() {
-  console.log('removing image path');
   if (formData.value.imgPath) {
     if (!imageChanged.value) imageChanged.value = true;
     formData.value.imgPath = "";
@@ -200,7 +191,6 @@ function handleRemoveImage() {
 }
 
 function handleImageSelected(file: File) {
-  console.log('image selected');
   if (!imageChanged.value) imageChanged.value = true;
   newImageFile.value = file;
   formData.value.imgPath = URL.createObjectURL(file);

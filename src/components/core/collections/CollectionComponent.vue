@@ -14,7 +14,6 @@ const recipeStore = useRecipeStore()
 
 
 function openRecipeDetails(id: string) {
-  console.log('id: ', id)
   recipeStore.setSelectedRecipeId(id);
 }
 

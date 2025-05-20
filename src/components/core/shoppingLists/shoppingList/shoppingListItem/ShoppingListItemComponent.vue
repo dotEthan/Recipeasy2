@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useShoppingListStore } from '@/stores/shoppingListStore'
-import { ref } from 'vue'
 
 const props = defineProps({
   item: String,
@@ -17,8 +16,6 @@ const props = defineProps({
 const shoppingListStore = useShoppingListStore()
 
 function onEditItem() {
-  console.log('edit item index: ', props.itemIndex)
-  console.log('edit list index: ', props.listIndex)
   shoppingListStore.setEditingListIndex(props.listIndex)
   shoppingListStore.setEditingItemIndex(props.itemIndex)
 }

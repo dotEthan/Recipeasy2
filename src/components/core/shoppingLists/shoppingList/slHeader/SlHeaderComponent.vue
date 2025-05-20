@@ -31,7 +31,6 @@ const titleInputRef = ref<HTMLInputElement | null>(null)
 const isEditingTitle = ref(false)
 
 const onEditTitle = async () => {
-  console.log('editing')
   isEditingTitle.value = true
   shoppingListStore.setEditingListIndex(props.currentListIndex)
   shoppingListStore.setEditingItemIndex(-6)

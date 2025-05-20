@@ -102,7 +102,6 @@ export function useDataService() {
    */
   const updateRecipe = async (recipe: Recipe) => {
     try {
-      console.log("trying to save recipe: ", recipe);
       const saveNewRecipeResponse = await axios.put<StandardRecipeApiResponse>(
         `/recipes/${recipe._id}`,
         {
@@ -110,7 +109,6 @@ export function useDataService() {
         }
       );
       const returnedData = saveNewRecipeResponse.data;
-      console.log("save recipe response: ", returnedData);
 
       if (!returnedData.success)
         throw new Error(`recipe update not successful: ${returnedData.message}`);
@@ -132,6 +130,7 @@ export function useDataService() {
   /**
    * Calls API to get various public recipes to populate front page
    * @todo implement proper fetching using tags
+   * @todo Implment pagination
    * @param {} - None
    * @returns {Promise<Recipe[]>} - An array of public recipes to use
    * @example
@@ -139,10 +138,7 @@ export function useDataService() {
    * await dataService.getPublicRecipes();
    */
   const getPublicRecipes = async (): Promise<Recipe[]> => {
-    console.log("loading public recipes");
-    // TODO add ?page=0?limit=50
     const publicRecipeResponse = await axios.get("/recipes?visibility=public&page=1&limit=25");
-    console.log(publicRecipeResponse.data);
     const publicRecipes = publicRecipeResponse.data;
     return publicRecipes;
   }
@@ -158,7 +154,6 @@ export function useDataService() {
   const getUserData = async (): Promise<GetUserDataResponse> => {
     const userId = userStore.getCurrentUserId;
     if (!userId) throw new Error("No userid to get, relogin");
-    console.log("Load Authorized User Data: ", userId);
     const userDataResponse = await axios.get(`/users/${userId.toString()}`);
     const userData = userDataResponse.data.user;
     const userRecipes = userDataResponse.data.userRecipes;
@@ -193,13 +188,10 @@ export function useDataService() {
   const deleteRecipe = async (id: string) => {
     try {
       await axios.delete(`/recipes/${id}`);
-      console.log("Deletion successful");
       recipeStore.finishRecipeDeletion();
       userStore.removeIdFromLocalUserRecipes(id);
       toastStore.showToast('Recipe Deleted', ToastType.SUCCESS);
     } catch (error: unknown) {
-      // check all Roll back Optimistic UI
-      console.log("error");
       recipeStore.revertRecipeDeletion(id);
 
       throw new Error("deleting recipe Error: ")
@@ -208,7 +200,6 @@ export function useDataService() {
 
   const uploadRecipeImage = async (image: File): Promise<string> => {
     try {
-      console.log("uploading")
       const formData = new FormData()
       formData.append("image", image)
 
@@ -222,7 +213,6 @@ export function useDataService() {
         }
       )
       if (!data || !data.success) throw new Error("uploadRecipeImage - Upload Failed")
-      console.log("imageUploadRes: ", data)
 
       return data.url
     } catch (error) {
@@ -233,7 +223,6 @@ export function useDataService() {
   const deleteRecipeImage = async (path: string): Promise<void> => {
     try {
       const publicId = getPublicIdFromUrl(path);
-      console.log('recipe id: ', publicId)
       const encodedPublicId = encodeURIComponent(publicId);
       const { data } = await axios.delete<StandardApiResponse>(`recipes/image/${encodedPublicId}`)
       if (!data.success) console.log('Background image delete failed')

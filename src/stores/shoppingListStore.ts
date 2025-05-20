@@ -59,8 +59,6 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
   }
 
   function deleteList(index: number) {
-    console.log('deleting index: ', index)
-    console.log('dleteing list: ', shoppingLists.value[index])
     if (index >= 0 && index < shoppingLists.value.length) {
       shoppingLists.value.splice(index, 1)
     }
@@ -81,8 +79,6 @@ export const useShoppingListStore = defineStore('shopping-lists', () => {
   }
 
   function deleteListItem(listIndex: number, itemIndex: number) {
-    console.log('listIndex: ', listIndex)
-    console.log('itemIndex: ', itemIndex)
     if (listIndex >= 0 && itemIndex >= 0) shoppingLists.value[listIndex].items.splice(itemIndex, 1)
   }
 

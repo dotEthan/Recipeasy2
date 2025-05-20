@@ -8,7 +8,6 @@ const props = defineProps({
   itemType: String
 })
 const shoppingListStore = useShoppingListStore();
-console.log(props.itemType === 'ingredient')
 
 const steps = props.itemObject?.steps?.map((step) => {
   if (step === undefined) return
@@ -25,7 +24,6 @@ const steps = props.itemObject?.steps?.map((step) => {
 })
 
 function onAddIngredientToList(item: string | undefined) {
-  console.log('add ingredient: ', item)
   if (typeof item === 'undefined') return
   shoppingListStore.addToDefaultList([item])
 }

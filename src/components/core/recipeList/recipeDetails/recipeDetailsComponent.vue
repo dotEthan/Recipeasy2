@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // TODO DRY this and Welcome's publicRecipeDetailsComponent. componentize shared pieces.
+// TODO deleteRemovedRecipeImage
 import ListItemComponent from './listItem/ListItemComponent.vue'
 import RecipeDetailHeaderComponent from './recipeDetailHeader/RecipeDetailHeaderComponent.vue';
 import RecipeManageButtonsComponent from './recipeManageButtons/RecipeManageButtonsComponent.vue';
@@ -13,7 +14,6 @@ const props = defineProps({
   selectedRecipe: Object as PropType<Recipe>
 })
 const emit = defineEmits(['closeRecipeDetails', 'removedRecipe', 'editSelectedRecipe']);
-console.log('recipe details selected: ', props.selectedRecipe)
 
 function onClose() {
   emit('closeRecipeDetails');
@@ -22,7 +22,6 @@ function onClose() {
 async function deleteRemovedRecipeImage() {
   const imgPath = props.selectedRecipe?.imgPath;
   if (imgPath) {
-    console.log('removing image: ', imgPath);
     // const success = await deleteImage(imgPath)
     // if (!success) {
     //   console.error('Failed to delete image from Cloudinary')

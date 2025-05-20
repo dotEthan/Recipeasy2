@@ -27,7 +27,6 @@ let editingItemIndex = '1'
 function saveItem() {
   if (!inputValue.value) {
     // TODO Show some reason for deletion on UI
-    console.log('no value!')
     shoppingListStore.shoppingLists[props.listIndex].items.splice(-1, 1)
   }
   shoppingListStore.setEditingItemIndex(-1)

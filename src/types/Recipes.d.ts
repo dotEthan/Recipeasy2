@@ -2,11 +2,11 @@ import { DurationUnits, Visibility } from "./RecipesEnums";
 
 export interface RecipeStore {
   recipes?: Ref<Recipe[]>;
-  existingPublicRecipes?: Ref<Recipe[]>;
+  publicRecipes?: Ref<Recipe[]>;
   allTags?: Ref<Recipe[]>;
   ethansFavouritePublicIds: Ref<string>;
   selectedRecipeId: Ref<string>;
-  existingPublicRecipes: Ref<Recipe[]>;
+  publicRecipes: Ref<Recipe[]>;
   editSelectedRecipe: Ref<boolean>;
   tempRecipeDeleteArray: Ref<Recipe[]>;
   tempRecipeSaveArray: Ref<Recipe[]>;
@@ -15,7 +15,7 @@ export interface RecipeStore {
   isSelectedRecipeLocalUsers(): Ref<boolean>;
   personalFilters(): Ref<string[]>;
   recipesLength(): Ref<number>;
-  existingPublicRecipesLength(): Ref<number>;
+  publicRecipesLength(): Ref<number>;
   getAllRecipeTags(): Ref<string[]>
   useFilteredRecipes(activeFilters: string[]): Ref<Recipe[]>;
   setInitialRecipeState(userData: UserState, publicRecipeData: Recipe[]): void;
@@ -36,7 +36,7 @@ export type CachedRecipeState = RecipeState & { expiresAt: number };
 
 export type RecipeState = {
   recipes: Recipe[];
-  existingPublicRecipes: Recipe[];
+  publicRecipes: Recipe[];
   allTags: string[];
   selectedRecipeId?: string;
   editSelectedRecipe: boolean;

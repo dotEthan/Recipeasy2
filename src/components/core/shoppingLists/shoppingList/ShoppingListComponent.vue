@@ -18,9 +18,6 @@ const props = defineProps({
   }
 })
 
-console.log('currentList: ', props.currentList)
-console.log('currentListIndex: ', props.currentListIndex)
-
 const dummyData = { id: '', items: [], isDefault: false, isOpen: true, creator: '', viewableBy: [''] }
 
 let currentList = props.currentList || (dummyData as ShoppingList)

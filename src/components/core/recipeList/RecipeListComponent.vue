@@ -16,11 +16,9 @@ let isAddedRecipeNew = ref(false);
 
 const filteredRecipes = computed(() => {
   const recipes = recipeStore.useFilteredRecipes(activeFilters.value);
-  console.log('recipes: ', recipes)
   return recipes
 })
 
-console.log('recipes: ')
 let allRecipeTags = ref<string[] | undefined>(undefined)
 
 allRecipeTags.value = recipeStore.getAllRecipeTags;
@@ -31,12 +29,10 @@ function closeRecipeDetails() {
 }
 
 function openRecipeDetail(id: string) {
-  console.log('opening: ', id)
   recipeStore.setSelectedRecipeId(id);
 }
 // TODO Check this is still working
 function addNewRecipe() {
-  console.log('adding');
   recipeStore.setSelectedRecipeId('1234abcd');
   recipeStore.setEditStatusSelectedId(true);
   isAddedRecipeNew.value = true;

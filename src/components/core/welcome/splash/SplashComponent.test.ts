@@ -30,33 +30,6 @@ describe('SplashComponent', () => {
     expect(wrapper.find('.app-title').text()).toBe('Welcome to Fasionista')
   })
 
-  it('shows test mode button when not authorized and test mode is off', () => {
-    const wrapper = mountComponent()
-    expect(wrapper.find('.testmode-btn').exists()).toBe(true)
-  })
-
-  it('hides test mode button when authorized', () => {
-    const wrapper = mountComponent({
-      user: { authorized: true }
-    })
-    expect(wrapper.find('.testmode-btn').exists()).toBe(false)
-  })
-
-  it('hides test mode button when test mode is on', () => {
-    const wrapper = mountComponent({
-      app: { testModeOn: true }
-    })
-    expect(wrapper.find('.testmode-btn').exists()).toBe(false)
-  })
-
-  it('toggles test mode when button is clicked', async () => {
-    const wrapper = mountComponent()
-    const appStore = useAppStore()
-    
-    await wrapper.find('.testmode-btn').trigger('click')
-    expect(appStore.turnTestModeOn).toHaveBeenCalled()
-  })
-
   // it('shows AuthComponent when registration modal is open', () => {
   //   const wrapper = mountComponent({
   //     app: { authModalType: 'registration' }

@@ -33,7 +33,6 @@ function toggleShowFilters() {
   isFiltersOpen.value = !isFiltersOpen.value
 }
 function filterButtonOnClick() {
-  console.log('filterState: ', filterState)
   toggleShowFilters()
 }
 
