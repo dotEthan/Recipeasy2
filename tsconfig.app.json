@@ -4,7 +4,6 @@
     "env.d.ts", // Ensure any type declarations are included
     "src/**/*", // Include all TypeScript files in the src directory
     "src/**/*.vue", // Include Vue files for TypeScript processing
-    "firebase.ts" // If Firebase is a separate file outside of src, include it
   ],
   "exclude": [
     "src/**/__tests__/*" // Exclude test files if needed

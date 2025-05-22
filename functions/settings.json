@@ -1,8 +1,0 @@
-{
-  "editor.defaultFormatter": null, // Or set this to another formatter like ESLint
-  "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint" // Ensure ESLint is the default formatter for TypeScript
-  },
-  "editor.formatOnSave": false, // Disable format on save for Prettier
-  "prettier.enable": false // Explicitly disable Prettier
-}

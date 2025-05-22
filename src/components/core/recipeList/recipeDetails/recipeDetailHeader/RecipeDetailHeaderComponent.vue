@@ -1,65 +1,79 @@
 <script setup lang="ts">
-import { PropType} from 'vue';
-import type { Recipe } from '@/types/Recipes'
+/**
+ * Component used to display header for recipe detail page
+ * @todo refactor into one componentized button defined by props (type).
+ * @example
+ *  <RecipeDetailHeaderComponent :selectedRecipe="selectedRecipe" />
+ */
+import { PropType } from "vue";
+
+import type { Recipe } from "@/types/Recipes";
 
 defineProps({
   selectedRecipe: Object as PropType<Recipe>
-})
-
+});
 </script>
 
 <template>
-    <div class="recipe-header">
-          <div class="recipe-image-contain">
-            <img :src="selectedRecipe?.imgPath" class="recipe-image-bg" />
-            <div class="recipe-name">
-              <h4>{{ selectedRecipe?.name }}</h4>
+  <div class="recipe-header">
+    <div class="recipe-image-contain">
+      <img :src="selectedRecipe?.imgPath" class="recipe-image-bg" />
+      <div class="recipe-name">
+        <h3>{{ selectedRecipe?.name }}</h3>
+      </div>
+    </div>
+    <div class="recipe-description">
+      <div class="description-box">
+        <h4 class="recipe-description-title">Description:</h4>
+        <p class="recipe-description-text">
+          {{ selectedRecipe?.description }}
+        </p>
+      </div>
+      <div class="head-lower-info">
+        <div class="ratingbar">
+          <div class="ratingbar-left">
+            <div v-if="selectedRecipe?.ratings?.averageRating">
+              <span v-if="selectedRecipe?.ratings?.averageRating">Your Rating:</span>
+              {{ selectedRecipe?.ratings?.averageRating }}
+            </div>
+            <div :class="{ smallText: selectedRecipe?.ratings?.averageRating }">
+              <span class="ratingbar-text">Rating: </span
+              >{{ selectedRecipe?.ratings?.averageRating }}
             </div>
           </div>
-          <div class="recipe-description">
-            <div class="description-box">
-              <h4 class="recipe-description-title">Description:</h4>
-              <p class="recipe-description-text">
-                {{ selectedRecipe?.description }}
-              </p>
-            </div>
-            <div class="head-lower-info">
-              <div class="ratingbar">
-                <div class="ratingbar-left">
-                  <div v-if="selectedRecipe?.userRating">
-                    <span v-if="selectedRecipe?.userRating">Your Rating:</span>
-                    {{ selectedRecipe?.userRating }}
-                  </div>
-                  <div :class="{smallText: selectedRecipe?.userRating}">
-                    <span class="ratingbar-text">Rating: </span>{{ selectedRecipe?.publicRating }}
-                  </div>
-                </div>
-                <div class="ratingbar-right"><span class="ratingbar-text">{{ selectedRecipe?.isPrivate ? 'Private' : 'public'}} </span> </div>
-              </div>
-              <div class="recipe-url">
-                Recipe Url: <a :href="selectedRecipe?.url" rel="noopener noreferrer" target="_blank">{{ selectedRecipe?.url }}</a>
-              </div>
-            </div>
+          <div class="ratingbar-right">
+            <span class="ratingbar-text">{{ selectedRecipe?.visibility }} </span>
           </div>
         </div>
+        <div class="recipe-url">
+          Recipe Url:
+          <a :href="selectedRecipe?.url" rel="noopener noreferrer" target="_blank">{{
+            selectedRecipe?.url
+          }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <style lang="sass">
 @use '@/assets/variables' as *
 
 .recipe-header
   width: 100%
-  min-height: 100px
+  min-height: 150px
   display: flex
   flex-direction: column
 
   @media (min-width: 768px)
     flex-direction: row
-    height: 300px
+    height: 350px
 
 
 .recipe-image-contain
   position: relative
+  display: flex
   width: 100%
+  text-align: center
 
   @media (min-width: 768px)
     width: 50%
@@ -67,15 +81,17 @@ defineProps({
 .recipe-image-bg
   width: 100%
   min-height: 100px
-  object-fit: cover
+  object-fit: contain
   object-position: center
   border-radius: 5px
-  max-height: 100px
+  max-height: 150px
+  max-width: 500px
   padding-left: 10px
   padding-right: 10px
 
   @media (min-width: 768px)
-    max-height: 300px
+    max-height: 350px
+    max-width: 500px
     border-radius: 10px
 
 .recipe-name
@@ -85,8 +101,12 @@ defineProps({
   justify-content: center
   align-items: center
   width: 100%
-  background-color: rgba(255,255,255,0.9)
+  background-color: rgba(225,225,225,0.8)
   height: 30px
+  padding: 0 25px
+
+  @media (min-width: 768px)
+    height: 75px
 
   h4
     margin: 0
@@ -124,7 +144,7 @@ defineProps({
 
 // Radix Switch CSS in Global as required
 
-.Label 
+.Label
   color: white
   font-size: 15px
   line-height: 1

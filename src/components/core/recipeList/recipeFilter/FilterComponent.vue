@@ -1,52 +1,58 @@
 <script setup lang="ts">
-import { ref, defineEmits, reactive, toRaw } from 'vue'
-import { Filter, CircleX } from 'lucide-vue-next'
-import CheckboxComponent from '../../shared/checkbox/CheckboxComponent.vue'
-import { useRecipeStore } from '@/stores/recipe'
+/**
+ * Component to display Recipe filtering options
+ * @todo Rebuild for new backend
+ * @example
+ *  <FilterComponent @filter="setFilters" :filters="allRecipeTags" />
+ */
+import { CircleX, Filter } from "lucide-vue-next";
 
-const recipeStore = useRecipeStore()
-const emit = defineEmits(['filter'])
+import { defineEmits, ref } from "vue";
+
+import { useRecipeStore } from "@/stores/recipeStore";
+
+import CheckboxComponent from "../../shared/checkbox/CheckboxComponent.vue";
+
+const recipeStore = useRecipeStore();
+const emit = defineEmits(["filter"]);
 defineProps({
   filters: Array as () => string[]
-})
+});
 
-let mobileFiltersOpen = ref(false)
-let allUserTags = ref<String[]>([...recipeStore.getAllRecipeTags])
+let mobileFiltersOpen = ref(false);
+let allUserTags = ref<String[]>([...recipeStore.getAllRecipeTags]);
 // const filterState = reactive<{ [key: string]: boolean }>({})
-let filterList = ref(allUserTags.value as string[])
-let isFiltersOpen = ref(false)
+let filterList = ref(allUserTags.value as string[]);
+let isFiltersOpen = ref(false);
 
-const usersPersonalFilters = recipeStore.personalFilters
+const usersPersonalFilters = recipeStore.personalFilters;
 
 //TODO create/alter/disabled on recipe load based on user's reciepes?
-const mealTypes = ['breakfast', 'lunch', 'dinner', 'dessert', 'snack'] 
-
+const mealTypes = ["breakfast", "lunch", "dinner", "dessert", "snack"];
 
 const filterState: any = ref({
   mealType: [],
   includedTags: [],
   excludedTags: [],
   personalTags: usersPersonalFilters
-})
+});
 
 function toggleShowFilters() {
-  isFiltersOpen.value = !isFiltersOpen.value
+  isFiltersOpen.value = !isFiltersOpen.value;
 }
 function filterButtonOnClick() {
-  console.log('filterState: ', filterState)
-  toggleShowFilters()
+  toggleShowFilters();
 }
 
 function updateMealType(type: string, isSelected: boolean) {
   if (isSelected) {
-    filterState.value.mealType.push(type)
+    filterState.value.mealType.push(type);
   } else {
-    const index = filterState.value.mealType.indexOf(type)
+    const index = filterState.value.mealType.indexOf(type);
     if (index > -1) {
-      filterState.value.mealType.splice(index, 1)
+      filterState.value.mealType.splice(index, 1);
     }
   }
-
 }
 </script>
 
@@ -60,7 +66,7 @@ function updateMealType(type: string, isSelected: boolean) {
   <Teleport to="body">
     <div class="filter-box floating" v-if="isFiltersOpen">
       <div class="filter-not-working">Filtering waiting for final schema</div>
-      <CircleX class="button-close" @click="toggleShowFilters()"/>
+      <CircleX class="button-close" @click="toggleShowFilters()" />
       <div class="filters-contain">
         <div class="filter-category">
           <span>Meal Type:</span>
@@ -73,8 +79,24 @@ function updateMealType(type: string, isSelected: boolean) {
             />
           </div>
         </div>
-        <div class="filter-category inclusive"><label for="includedtags">Included Tag(s): </label><input v-model="filterState.includedTags" type="text" id="includedtags" placeholder="onion, potato, mango"></div>
-        <div class="filter-category exclusive"><label for="excludedtags">Excluded Tag(s): </label><input v-model="filterState.excludedTags" type="text" id="excludedtags" placeholder="tears, monkshood, cyanide"></div>
+        <div class="filter-category inclusive">
+          <label for="includedtags">Included Tag(s): </label
+          ><input
+            v-model="filterState.includedTags"
+            type="text"
+            id="includedtags"
+            placeholder="onion, potato, mango"
+          />
+        </div>
+        <div class="filter-category exclusive">
+          <label for="excludedtags">Excluded Tag(s): </label
+          ><input
+            v-model="filterState.excludedTags"
+            type="text"
+            id="excludedtags"
+            placeholder="tears, monkshood, cyanide"
+          />
+        </div>
       </div>
       <button class="filter-btn-submit" @click="filterButtonOnClick()">Filter</button>
       <div class="filter-not-working">Filtering waiting for final schema</div>

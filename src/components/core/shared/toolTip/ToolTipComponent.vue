@@ -1,24 +1,27 @@
 <script setup lang="ts">
-
+/**
+ * Add Tooltip
+ * @example
+ * <ToolTipComponent :content="formError" format="warning" class="tooltip" />
+ */
 defineProps({
-    format: String,
-    content: String
-})
-
+  format: String,
+  content: String
+});
 </script>
 
 <template>
-    <div class="tooltip-container">
-        <div class="tooltip-content" :class="{warning: format === 'warning'}">
-            <span>{{ content }}</span>
-        </div>
+  <div class="tooltip-container">
+    <div class="tooltip-content" :class="{ warning: format === 'warning' }">
+      <span>{{ content }}</span>
     </div>
+  </div>
 </template>
 
 <style lang="sass" scoped>
 @use '@/assets/variables' as *
 
-.tooltip-container 
+.tooltip-container
   position: relative
 
 
@@ -35,5 +38,4 @@ defineProps({
 
   &.warning
     background: $colorWarning
-
 </style>

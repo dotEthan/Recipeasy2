@@ -1,33 +1,42 @@
 <script setup lang="ts">
-import {ref} from 'vue'
-import CollectionItemComponent from './collectionItem/CollectionItemComponent.vue'
-import type { PropType } from 'vue'
-import type { Recipe } from '@/types/Recipes'
-import { useRecipeStore } from '@/stores/recipe';
+/**
+ * Component for display recipe collections on the welcome page
+ * @example
+ * <CollectionComponent
+    ref="recommended-recipes-collection"
+    title="Recommended Public Recipes"
+    :recipeData="recommendedRecipes"
+  />
+ */
+import type { PropType } from "vue";
+
+import { useRecipeStore } from "@/stores/recipeStore";
+import type { Recipe } from "@/types/Recipes";
+
+import CollectionItemComponent from "./collectionItem/CollectionItemComponent.vue";
 
 defineProps({
   title: String,
   recipeData: Array as PropType<Recipe[]>
-})
+});
 
-const recipeStore = useRecipeStore()
-
-
+const recipeStore = useRecipeStore();
 
 function openRecipeDetails(id: string) {
-  if (id !== '') {
-    recipeStore.setSelectedRecipeId(id)
-  }
+  recipeStore.setSelectedRecipeId(id);
 }
-
-
 </script>
 
 <template>
   <div class="collection-container">
     <h3 data-test="mealtime" id="collection-title">{{ title }}:</h3>
     <div class="collection-item-container">
-      <CollectionItemComponent v-for="recipe in recipeData" @click="() => openRecipeDetails(recipe.id || '')" :key="recipe.id" :recipeData="recipe" />
+      <CollectionItemComponent
+        v-for="recipe in recipeData"
+        :key="recipe._id.toString()"
+        @click="() => openRecipeDetails(recipe._id)"
+        :recipeData="recipe"
+      />
     </div>
   </div>
 </template>

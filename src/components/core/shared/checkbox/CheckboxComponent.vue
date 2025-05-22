@@ -1,39 +1,48 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { CheckboxIndicator, CheckboxRoot } from 'radix-vue'
-import { Check } from 'lucide-vue-next'
+/**
+ * Toast connected to toastStore for displaying non-critical user notifications
+ * @todo remove radix-vue
+ * @example
+ * <CheckboxComponent
+      :checkboxLabel="type"
+      @update:modelValue="(isSelected) => updateMealType(type, isSelected)"
+    />
+ */
+import { Check } from "lucide-vue-next";
+import { CheckboxIndicator, CheckboxRoot } from "radix-vue";
+
+import { ref, watch } from "vue";
+
 const props = defineProps({
   checkboxLabel: String,
   modelValue: {
     type: Boolean,
     default: false
   }
-})
+});
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: boolean): void
-}>()
+  (e: "update:modelValue", value: boolean): void;
+}>();
 
-const isChecked = ref(props.modelValue)
+const isChecked = ref(props.modelValue);
 
 watch(
   () => props.modelValue,
   (newValue) => {
-    isChecked.value = newValue
+    isChecked.value = newValue;
   }
-)
+);
 
 function toggleCheckbox() {
-  isChecked.value = !isChecked.value
-  emit('update:modelValue', isChecked.value)
+  isChecked.value = !isChecked.value;
+  emit("update:modelValue", isChecked.value);
 }
 </script>
 
 <template>
   <label>
-    <CheckboxRoot 
-    :checked="isChecked"
-    @update:checked="toggleCheckbox" class="checkboxRoot">
+    <CheckboxRoot :checked="isChecked" @update:checked="toggleCheckbox" class="checkboxRoot">
       <CheckboxIndicator class="checkboxIndicator">
         <Check v-if="isChecked" />
       </CheckboxIndicator>

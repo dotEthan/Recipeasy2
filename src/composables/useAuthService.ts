@@ -1,164 +1,239 @@
 // src/composables/useDataService.ts
-import { ref } from 'vue'
-import { auth, usersRef } from '../../firebase'
-import { doc, setDoc } from 'firebase/firestore'
-import { 
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut, 
-  setPersistence,
-  browserLocalPersistence,
-  onAuthStateChanged,
-} from 'firebase/auth'
-import { useDataService } from './useDataService'
-import { useAppStore } from '@/stores/app'
-import { useUserStore } from '@/stores/user'
-import { Recipe } from '@/types/Recipes'
+import { AxiosError } from "axios";
+
+import { ref } from "vue";
+
+import axios from "@/axios";
+import { useAppStore } from "@/stores/appStore";
+import { useRecipeStore } from "@/stores/recipeStore";
+import { useShoppingListStore } from "@/stores/shoppingListStore";
+import { useToastStore } from "@/stores/toastStore";
+import { useUserStore } from "@/stores/userStore";
+import type { StandardRecipeApiResponse } from "@/types/ApiResponse.d";
+import type { Recipe } from "@/types/Recipes.d";
+import type { LocalUser } from "@/types/UserState.d";
+import { ToastType } from "@/types/toasts.d";
+
+/**
+ * Handles Authorization related API calls and initilizations
+ * @returns - signIn, registerUser, logOut, verifyUser, passwordReset, setNewPassword, validatePasswordToken
+ * @example
+ * const authService = useAuthService();
+ * const authRes = await authService.registerUser('name', 'email@email.com', '1234abcd')
+ */
 
 export function useAuthService() {
-  const error = ref<string | null>(null)
-  const isLoading = ref(false) // For displaying user feedback AKA: TODO
-  const dataService = useDataService()
-  const appStore = useAppStore()
-  const userStore = useUserStore()
+  const appStore = useAppStore();
+  const userStore = useUserStore();
+  const recipeStore = useRecipeStore();
+  const shoppingListStore = useShoppingListStore();
+  const toastStore = useToastStore();
+
+  const error = ref<string | null>(null);
+  const isLoading = ref(false); // TODO User Feedback
 
   const clearError = () => {
-    error.value = null
-  }
+    error.value = null;
+  };
 
-  const initializeAuth = async () => {
-    return new Promise((resolve) => {
-      userStore.authorized = false
-     
-    const timeoutId = setTimeout(() => {
-      console.error('Auth Initialization Timed Out')
-      userStore.authorized = false
-      resolve(false)
-    }, 7000)
-  
-      const unsubscribe = onAuthStateChanged(auth, async(currentUser) => {
-        try {
-          clearTimeout(timeoutId)
-          if (currentUser) {
-            const userId = currentUser?.uid
-            const [userStoredData, uid] = await dataService.loadUserData(userId)
-            const publicRecipeStoredData = await dataService.loadPublicRecipeData()
-
-            const userState = {
-              uid: currentUser?.uid,
-              authorized: true,
-              localUser: {
-                ...userStoredData,
-                uid
-              }
-            }
-
-            userStore.authorized = true
-            appStore.initializeApp(userState, publicRecipeStoredData)
-            
-            resolve(true)
-          } else {
-            userStore.authorized = false
-            console.log('No User Found', new Date().toISOString())
-            resolve(false)
-          }
-                   
-          // Important: Unsubscribe immediately
-          unsubscribe()
-        } catch (error) {
-          console.error('Auth Initialization Error', error)
-          userStore.authorized = false
-          unsubscribe()
-          resolve(false)
-        }
-      }, (error) => {
-        console.error('Firebase Auth State Change Error', error)
-        userStore.authorized = false
-        clearTimeout(timeoutId)
-        resolve(false)
-      })
-    })
-  }
-
-  const signIn = async (email: string, password: string) => {
+  /**
+   * Calls API to register user and then set user's data in store
+   * @param {string} displayName - The user's chosen display name
+   * @param {string} email - The user's email
+   * @param {string} password - the user's password
+   * @returns {Promise<void>}
+   * @example
+   * const authService = useAuthService();
+   * await authService.registerUser('name', 'email@email.com', '1234abcd')
+   */
+  const registerUser = async (displayName: string, email: string, password: string) => {
     try {
-      isLoading.value = true
-      clearError()
+      clearError();
+      const response = await axios.post("/auth/register", {
+        displayName,
+        email,
+        password
+      });
 
-      await setPersistence(auth, browserLocalPersistence)
+      // Initialize stores
+      const userState = {
+        localUser: response.data,
+        authorized: true
+      };
+      // const publicRecipeArray = publicRecipeStoredData
+      userStore.setInitialUserState(userState);
+      return;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          console.error(error.response.data);
+        } else {
+          console.error("Error", error.message);
+        }
+      }
+    }
+  };
 
-      const userCredential = await signInWithEmailAndPassword(auth, email, password)
-      const {user} = userCredential
-      localStorage.setItem('recipeasyUser', JSON.stringify({
-        uid: user.uid,
-        email: user.email,
-        lastLogin: new Date().toISOString()
-      }))
+  /**
+   * Calls API to login user and then set user's data in store
+   * @todo if password reset flow initialized?
+   * @todo Update with ful App State updates
+   * @todo if userResponse.newEmailVerifyCodeCreated created, block login
+   * @param {string} email - The user's email
+   * @param {string} password - the user's password
+   * @returns {Promise<boolean>} - A boolean to show if the user is verified or not
+   * @example
+   * const authService = useAuthService();
+   * const isVerified = await authService.signIn('email@email.com', '1234abcd')
+   */
+  const signIn = async (email: string, password: string): Promise<boolean> => {
+    try {
+      clearError();
 
-      const [userStoredData, uid] = await dataService.loadUserData(user.uid)
-      const publicRecipeStoredData = await dataService.loadPublicRecipeData()
+      const userResponse = await axios.post("/auth/login", { email, password });
+      // notify to check email, or resend token if not available
+      const localUser = userResponse.data.user as LocalUser;
+      const userRecipesData: Recipe[] = userResponse.data.recipeResponse;
+      const userState = { authorized: true, localUser };
 
-      const userState = { uid, authorized: true, localUser: {
-        uid,
-        ...userStoredData
-      } }
+      const accessToken: string = userResponse.data.accessToken;
 
-      console.log('Store Data set:', userState)
-      // trigger full app initialization
-      appStore.initializeApp(userState, publicRecipeStoredData)
+      appStore.setAcessToken(accessToken);
 
-      return
+      // Store Initializations
+      userStore.setInitialUserState(userState);
+      recipeStore.setInitialUserRecipeState(userRecipesData);
+      shoppingListStore.setInitialListState(userState.localUser.shoppingLists || []);
+
+      const appState = {
+        lightMode: userState.localUser.preferences?.lightMode
+      };
+
+      appStore.setInitialAppState(appState);
+      toastStore.showToast("Login Successful", ToastType.SUCCESS);
+
+      return localUser.verified;
     } catch (err) {
       //TODO error handling
-      error.value = err instanceof Error ? err.message : 'Sign in failed'
-      throw err
+      console.log("signin failed: ", JSON.stringify(err));
+      error.value = err instanceof Error ? err.message : "Sign in failed";
+      throw err;
     }
-  }
+  };
 
-  const registerUser = async (email: string, password: string)=> {
-    try {
-      clearError()
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-      const user = userCredential.user
-  
-      // Prep data for Firestore
-      const userStoredData = {
-        uid: user.uid,
-        email: user.email ?? undefined,
-        displayName: '',
-        createdAt: new Date(),
-        recipes: [],
-        shoppingLists: []
-      }
-  
-      // Save user data to Firestore
-      await setDoc(doc(usersRef, user.uid), userStoredData)
-      const publicRecipeStoredData = await dataService.loadPublicRecipeData()
-  
-      // Initialize stores
-      const userState = { 
-        localUser: userStoredData, 
-        uid: user.uid, 
-        authorized: true 
-      }
-      const publicRecipeArray = publicRecipeStoredData 
-      appStore.initializeApp(userState, publicRecipeArray)
-      return
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Registration failed'
-      throw err
-    }
-  }
-
+  /**
+   * Calls API to logout user from the backend
+   * @param {void} - None
+   * @returns {Promise<void>} - None
+   * @example
+   * const authService = useAuthService();
+   * await authService.logOut();
+   */
   const logOut = async () => {
     try {
-      clearError()
-      await signOut(auth)
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Logout failed'
-      throw err
-    }
-  }
+      clearError();
+      await axios.delete("/auth/refresh-token");
 
-  return { signIn, registerUser, logOut, initializeAuth }
+      const storedKeys = Object.keys(sessionStorage);
+
+      storedKeys.map((key) => {
+        console.log("key:", key);
+        if (key !== "publicRecipes") {
+          console.log("remove:", key);
+          sessionStorage.removeItem(key);
+        }
+      });
+      localStorage.clear();
+      recipeStore.resetUserRecipeState();
+      appStore.resetAppStates();
+
+      toastStore.showToast("User Logged out", ToastType.SUCCESS);
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : "Logout failed";
+      throw err;
+    }
+  };
+
+  /**
+   * Calls API to verify user based on code emailed to them and set user.verified if correct
+   * @param {string} - code emailed to user
+   * @returns {Promise<void>} - None
+   * @example
+   * const authService = useAuthService();
+   * await authService.verifyUser('1234abcd');
+   */
+  const verifyUser = async (enteredCode: string) => {
+    try {
+      const userEmail = userStore.getCurrentUserEmail;
+      const response = await axios.post("/admin/verification-codes/verify", {
+        code: enteredCode,
+        userEmail
+      });
+      if (!response.data.success) throw new Error("User Verifcation Unsuccessful. Retry?");
+      userStore.verifyUser();
+    } catch (err) {
+      console.log("verify User err: ", err);
+    }
+  };
+
+  /**
+   * Calls API to start user password reset flow
+   * @param {string} - email of user asking for reset
+   * @returns {Promise<void>} - None
+   * @example
+   * const authService = useAuthService();
+   * await authService.passwordReset('email@email.com');
+   */
+  const passwordReset = async (email: string) => {
+    await axios.post("/admin/password-reset-requests", {
+      email
+    });
+  };
+
+  /**
+   * Calls API to finish User password reset flow and reset users password
+   * @todo token in body or in url?
+   * @param {string} - new password
+   * @param {string} - password reset token
+   * @returns {Promise<void>} - None
+   * @example
+   * const authService = useAuthService();
+   * await authService.setNewPassword('newpassword1234!', '1234abcd');
+   */
+  const setNewPassword = async (password: string, token: string) => {
+    await axios.patch("/admin/user-password", {
+      password,
+      code: token
+    });
+  };
+
+  /**
+   * Calls API to check if the password reset token is valid
+   * @todo token in body or in url?
+   * @param {string} - password reset token
+   * @returns {boolean} - boolean to say if token is still valid
+   * @example
+   * const authService = useAuthService();
+   * await authService.v('1234abcd');
+   */
+  const validatePasswordToken = async (token: String) => {
+    const validateRes = await axios.post<StandardRecipeApiResponse>(
+      "/admin/password-reset/validate",
+      {
+        code: token
+      }
+    );
+    const isTokenValid = validateRes.data.success;
+    return isTokenValid;
+  };
+
+  return {
+    signIn,
+    registerUser,
+    logOut,
+    verifyUser,
+    passwordReset,
+    setNewPassword,
+    validatePasswordToken
+  };
 }

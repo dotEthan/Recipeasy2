@@ -1,8 +1,18 @@
 <script setup lang="ts">
-import { useShoppingListStore } from '@/stores/shoppingList'
-import { ref, computed } from 'vue'
+/**
+ * Component to edit each item in the shopping list
+ * @todo User notification if failed validation (toast?)
+ * @example
+ *  <ShoppingListEditItemComponent
+      :itemIndex="i"
+      :listIndex="currentListIndex"
+    />
+ */
+import { computed } from "vue";
 
-const shoppingListStore = useShoppingListStore()
+import { useShoppingListStore } from "@/stores/shoppingListStore";
+
+const shoppingListStore = useShoppingListStore();
 
 const props = defineProps({
   itemIndex: {
@@ -13,25 +23,23 @@ const props = defineProps({
     type: Number,
     default: -1
   }
-})
+});
 
 const inputValue = computed({
   get: () => shoppingListStore.getItemValue(props.listIndex, props.itemIndex),
   set: (newValue) => {
-    shoppingListStore.shoppingLists[props.listIndex].items[props.itemIndex] = newValue
+    shoppingListStore.shoppingLists[props.listIndex].items[props.itemIndex] = newValue;
   }
-})
+});
 
-let editingItemIndex = '1'
+let editingItemIndex = "1";
 
 function saveItem() {
   if (!inputValue.value) {
-    // TODO Show some reason for deletion on UI
-    console.log('no value!')
-    shoppingListStore.shoppingLists[props.listIndex].items.splice(-1, 1)
+    shoppingListStore.shoppingLists[props.listIndex].items.splice(-1, 1);
   }
-  shoppingListStore.setEditingItemIndex(-1)
-  shoppingListStore.setEditingListIndex(-1)
+  shoppingListStore.setEditingItemIndex(-1);
+  shoppingListStore.setEditingListIndex(-1);
 }
 </script>
 <template>

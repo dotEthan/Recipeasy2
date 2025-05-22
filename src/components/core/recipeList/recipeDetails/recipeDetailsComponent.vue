@@ -1,32 +1,42 @@
 <script setup lang="ts">
-import { useRecipeStore } from '@/stores/recipe'
-import ListItemComponent from './listItem/ListItemComponent.vue'
-import RecipeDetailHeaderComponent from './recipeDetailHeader/RecipeDetailHeaderComponent.vue';
-import RecipeManageButtonsComponent from './recipeManageButtons/RecipeManageButtonsComponent.vue';
-import XToCloseComponent from '../../shared/xToClose/XToCloseComponent.vue';
-import { useImageUpload } from '@/composables/useImageUpload';
-import NoteItemComponent from './noteItem/NoteItemComponent.vue';
-import TagItemComponent from './tag-item/TagItemComponent.vue';
+/**
+ * Component used when user clicks recipe image to see full recipe details
+ * @todo DRY this and Welcome's publicRecipeDetailsComponent. componentize shared pieces.
+ * @todo Ensure when user deletes recipe the image is also deleted if it's private, or if public, add to Chron job when recipe HARD deleted, image is too
+ * @example
+ *  <RecipeDetailsComponent
+      :selected-recipe="selectedRecipe"
+      @closeRecipeDetails="closeRecipeDetails"
+      @edit-selected-recipe="recipeStore.setEditStatusSelectedId(true)"
+    />
+ */
+import { PropType } from "vue";
 
-const emit = defineEmits(['closeRecipeDetails', 'removedRecipe', 'editSelectedRecipe'])
+import type { Recipe } from "@/types/Recipes";
 
-const { deleteImage } = useImageUpload()
-const recipeStore = useRecipeStore()
+import XToCloseComponent from "../../shared/xToClose/XToCloseComponent.vue";
+import ListItemComponent from "./listItem/ListItemComponent.vue";
+import NoteItemComponent from "./noteItem/NoteItemComponent.vue";
+import RecipeDetailHeaderComponent from "./recipeDetailHeader/RecipeDetailHeaderComponent.vue";
+import RecipeManageButtonsComponent from "./recipeManageButtons/RecipeManageButtonsComponent.vue";
+import TagItemComponent from "./tag-item/TagItemComponent.vue";
 
-const selectedRecipe = recipeStore.getSelectedRecipe
+const props = defineProps({
+  selectedRecipe: Object as PropType<Recipe>
+});
+const emit = defineEmits(["closeRecipeDetails", "removedRecipe", "editSelectedRecipe"]);
 
 function onClose() {
-  emit('closeRecipeDetails')
+  emit("closeRecipeDetails");
 }
 
-async function deleteRemovedRecipeImage() {
-  const imgPath = selectedRecipe?.imgPath
+async function onRecipeRemoval() {
+  const imgPath = props.selectedRecipe?.imgPath;
   if (imgPath) {
-    console.log('removing image: ', imgPath)
-    const success = await deleteImage(imgPath)
-    if (!success) {
-      console.error('Failed to delete image from Cloudinary')
-    }
+    // const success = await deleteImage(imgPath)
+    // if (!success) {
+    //   console.error('Failed to delete image from Cloudinary')
+    // }
   }
 }
 </script>
@@ -38,8 +48,8 @@ async function deleteRemovedRecipeImage() {
       <XToCloseComponent @close="onClose" />
       <div class="overlay-contain">
         <div class="recipe-overlay-content">
-          <RecipeDetailHeaderComponent :selectedRecipe="selectedRecipe"/>
-          <RecipeManageButtonsComponent @removed-recipe="deleteRemovedRecipeImage"/>
+          <RecipeDetailHeaderComponent :selectedRecipe="selectedRecipe" />
+          <RecipeManageButtonsComponent @removed-recipe="onRecipeRemoval" />
           <div class="ingredients-contain">
             <div class="type-section-title" v-if="selectedRecipe?.ingredients">
               INGREDIENTS: <span class="help-text">(click to add ingredient to shopping list)</span>
@@ -57,7 +67,7 @@ async function deleteRemovedRecipeImage() {
             <div class="type-section-title" v-else>No Directions</div>
             <ListItemComponent
               v-for="(direction, index) of selectedRecipe?.directions"
-              v-bind:key="index"
+              :key="index"
               :itemObject="direction"
               itemType="direction"
             />
@@ -65,14 +75,22 @@ async function deleteRemovedRecipeImage() {
           <div class="ingredients-contain">
             <div class="type-section-title">Tags:</div>
             <div class="tags-wrapper" v-if="selectedRecipe?.tags">
-              <TagItemComponent v-for="(tag, index) of selectedRecipe?.tags" v-bind:key="index" :tag="tag" />
+              <TagItemComponent
+                v-for="(tag, index) of selectedRecipe?.tags"
+                :key="index"
+                :tag="tag"
+              />
             </div>
             <div class="type-section-none" v-else>No tags</div>
           </div>
           <div class="ingredients-contain">
             <div class="type-section-title">Notes:</div>
             <div class="notes-wrapper" v-if="selectedRecipe?.notes">
-              <NoteItemComponent v-for="(note, index) of selectedRecipe?.notes" v-bind:key="index" :note="note" />
+              <NoteItemComponent
+                v-for="(note, index) of selectedRecipe?.notes"
+                :key="index"
+                :note="note"
+              />
             </div>
             <div class="type-section-none" v-else>No Notes</div>
           </div>

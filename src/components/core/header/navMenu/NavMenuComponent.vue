@@ -1,96 +1,63 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { getAuth, signOut } from 'firebase/auth'
-import { useAppStore } from '@/stores/app'
-import { useUserStore } from '@/stores/user'
-import router from '@/router/main'
-import { useDataService } from '@/composables/useDataService'
-import { useRecipeStore } from '@/stores/recipe'
-import { useShoppingListStore } from '@/stores/shoppingList'
-import { LocalUser } from '@/types/UserState'
+/**
+ * Component for the header's navigation elements
+ * @todo decide on final manual VS auto save. hybrid? PWA?
+ * @example
+ * <NavMenuComponent />
+ */
+import { computed } from "vue";
 
-const appStore = useAppStore()
-const userStore = useUserStore()
-const recipeStore = useRecipeStore()
-const shoppingListStore = useShoppingListStore()
-const dataService = useDataService()
-const isTestModeOn = computed(() => appStore.isTestModeOn)
-const isAuthorized = computed(() => userStore.isAuthorized)
-const currentUser = computed(() => userStore.getCurrentUser)
+import { useAuthService } from "@/composables/useAuthService";
+import router from "@/router/main";
+import { useAppStore } from "@/stores/appStore";
+import { useUserStore } from "@/stores/userStore";
 
-//TODO needed or just call resetApp?
-function testModeOff() {
-  closeMobileMenu()
-  appStore.turnTestModeOff()
-  userStore.deauthorize()
-  router.push('/')
-}
+const appStore = useAppStore();
+const userStore = useUserStore();
+const authService = useAuthService();
+const isAuthorized = computed(() => userStore.isAuthorized);
 
 function onClickRegisterSigning(type: string) {
-  closeMobileMenu()
-  appStore.toggleRegistrationModal(type)
+  closeMobileMenu();
+  appStore.setAuthModalType(type);
 }
 
 async function onSave() {
-  closeMobileMenu()
-  // Public Data Saving. 
-  if (currentUser.value) {
-    const updateUser: LocalUser = {...currentUser.value, recipes: recipeStore.recipes, shoppingLists: shoppingListStore.shoppingLists, personalFilters: recipeStore.personalFilters}
-    try {
-      dataService.saveUserData(updateUser)
-      dataService.updatePublicRecipesData()
-    } catch (error: any) {
-      // TODO: handle & display errors
-      console.log('Error during Saving:', error)
-    }
-  }
+  closeMobileMenu();
 }
 
 function onReset() {
-  console.log('fetched')
+  console.log("reset");
 }
 
 async function onSignOut() {
-  closeMobileMenu()
-  if (!appStore.isTestModeOn) {
-    const auth = getAuth()
-
-    try {
-      await signOut(auth)
-      console.log('signed out of firebase')
-    } catch (error) {
-      console.error('Error signing out:', error)
-    }
-  } else {
-    testModeOff()
+  closeMobileMenu();
+  try {
+    await authService.logOut();
+  } catch (error) {
+    console.error("Error signing out:", error);
   }
-  appStore.resetAppStates()
-  router.push('/')
+  router.push("/");
 }
 
 function closeMobileMenu() {
-  appStore.isMobileMenuOpen = false
+  appStore.isMobileMenuOpen = false;
 }
 </script>
 
 <template>
   <ul class="nav navbar-nav">
-    <li routerLinkActive="active" class="nav-recipes" v-if="isTestModeOn || isAuthorized">
-      <RouterLink class="nav-menu-item" to="recipes" @click="closeMobileMenu"
-        >Recipes</RouterLink
-      >
+    <li routerLinkActive="active" class="nav-recipes" v-if="isAuthorized">
+      <RouterLink class="nav-menu-item" to="recipes" @click="closeMobileMenu">Recipes</RouterLink>
     </li>
-    <li routerLinkActive="active" class="nav-shopping-list" v-if="isTestModeOn || isAuthorized">
+    <li routerLinkActive="active" class="nav-shopping-list" v-if="isAuthorized">
       <RouterLink class="nav-menu-item" to="shopping-lists" @click="closeMobileMenu"
         >Shopping Lists</RouterLink
       >
     </li>
-    <li v-if="isTestModeOn" @click="testModeOff" class="test-text-contain">
-      <span class="test-text nav-menu-item" @click="$emit('mobileModalClose')">Test Mode Off</span>
-    </li>
   </ul>
   <ul class="nav navbar-nav rightward">
-    <div class="nav-menu-items" v-if="isTestModeOn || isAuthorized">
+    <div class="nav-menu-items" v-if="isAuthorized">
       <li class="nav-menu-item">
         <a @click="onSignOut()" style="cursor: pointer" routerLink="/">Log Out</a>
       </li>
@@ -100,9 +67,7 @@ function closeMobileMenu() {
         ></a>
         <ul class="dropdown-menu">
           <li>
-            <a class="dropdown-menu-item" style="cursor: pointer" @click="onSave()"
-              >Save Data</a
-            >
+            <a class="dropdown-menu-item" style="cursor: pointer" @click="onSave()">Save Data</a>
           </li>
           <li>
             <a class="dropdown-menu-item" style="cursor: pointer" @click="onReset()">Reset Data</a>
@@ -110,7 +75,7 @@ function closeMobileMenu() {
         </ul>
       </li>
     </div>
-    <div class="nav-menu-items" v-if="!isAuthorized && !isTestModeOn">
+    <div class="nav-menu-items" v-if="!isAuthorized">
       <li>
         <a class="nav-menu-item" style="cursor: pointer" @click="onClickRegisterSigning('register')"
           >Register</a

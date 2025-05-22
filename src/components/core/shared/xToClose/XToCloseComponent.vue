@@ -1,11 +1,17 @@
 <script setup lang="ts">
-defineEmits(['close'])
+/**
+ * Button for Closing any element requiring it
+ * @todo - add placement props
+ * @example
+ * <XToCloseComponent class="close-button" @close="onClose" />
+ */
+defineEmits(["close"]);
 </script>
 
 <template>
-    <button type="button" class="close-container" aria-label="Close" @click="$emit('close')">
-      <span class="close-x" aria-hidden="true">&times;</span>
-    </button>
+  <button type="button" class="close-container" aria-label="Close" @click="$emit('close')">
+    <span class="close-x" aria-hidden="true">&times;</span>
+  </button>
 </template>
 
 <style lang="sass">
@@ -13,8 +19,8 @@ defineEmits(['close'])
 
 .close-container
     position: absolute
-    top: -5px
-    right: -5px
+    top: -10px
+    right: -10px
     display: flex
     align-items: center
     justify-content: center
@@ -30,6 +36,7 @@ defineEmits(['close'])
 
     &:hover
         background-color: #ccc
+        border: 2px solid $colorHighlightBorderHover
 
 .close-x
   font-size: 28px

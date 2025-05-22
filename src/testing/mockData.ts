@@ -1,129 +1,138 @@
-import { computed, ref } from 'vue'
-import type { Recipe } from '@/types/Recipes'
+import { computed, ref } from "vue";
+
+import { DurationUnits, Recipe, Visibility } from "@/types/Recipes.d";
+import type { ShoppingList } from "@/types/ShoppingLists.d";
 
 export const mockComputedRecipes = computed<Recipe[]>(() => [
-  { 
-    id: '1', 
-    name: 'Recipe 1', 
-    ingredients: [], 
-    directions: [], 
+  {
+    _id: "1",
+    name: "Recipe 1",
+    description: "",
+    imgPath: "",
+    info: {
+      mealType: [],
+      cuisineType: "",
+      cookTime: { value: 4, unit: DurationUnits.Hours },
+      prepTime: { value: 4, unit: DurationUnits.Hours },
+      servingSize: 1,
+      nutritionalInfo: []
+    },
+    ratings: {
+      ratings: [],
+      averageRating: 0,
+      totalRatings: 0,
+      ratingsSum: 0
+    },
+    url: "",
+    ingredients: [],
+    directions: [],
+    visibility: Visibility.Public,
     tags: [],
-    nutritionalInfo: [],
-    notes:[],
-    isPrivate: false,
-    creatorId: '1'
+    notes: [],
+    userId: ""
   },
-  { 
-    id: '2', 
-    name: 'Recipe 2', 
-    ingredients: [], 
-    directions: [], 
+  {
+    _id: "2",
+    name: "Recipe 2",
+    description: "",
+    imgPath: "",
+    info: {
+      mealType: [],
+      cuisineType: "",
+      cookTime: { value: 4, unit: DurationUnits.Hours },
+      prepTime: { value: 4, unit: DurationUnits.Hours },
+      servingSize: 1,
+      nutritionalInfo: []
+    },
+    ratings: {
+      ratings: [],
+      averageRating: 0,
+      totalRatings: 0,
+      ratingsSum: 0
+    },
+    url: "",
+    ingredients: [],
+    directions: [],
+    visibility: Visibility.Public,
     tags: [],
-    nutritionalInfo: [],
-    notes:[],
-    isPrivate: false,
-    creatorId: '1'
+    notes: [],
+    userId: ""
   }
 ]);
 
 export const mockRefRecipes = ref<Recipe[]>([
-    { 
-      id: '1', 
-      name: 'Recipe 1', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-      nutritionalInfo: [],
-      notes:[],
-      isPrivate: false,
-      creatorId: '1'
+  {
+    _id: "1",
+    name: "Recipe 1",
+    description: "",
+    imgPath: "",
+    info: {
+      mealType: [],
+      cuisineType: "",
+      cookTime: { value: 4, unit: DurationUnits.Hours },
+      prepTime: { value: 4, unit: DurationUnits.Hours },
+      servingSize: 1,
+      nutritionalInfo: []
     },
-    { 
-      id: '2', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-      nutritionalInfo: [],
-      notes:[],
-      isPrivate: false,
-      creatorId: '1'
+    ratings: {
+      ratings: [],
+      averageRating: 0,
+      totalRatings: 0,
+      ratingsSum: 0
     },
-    { 
-      id: '3', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-      nutritionalInfo: [],
-      notes:[],
-      isPrivate: false,
-      creatorId: '1'
+    url: "",
+    ingredients: [],
+    directions: [],
+    visibility: Visibility.Public,
+    tags: [],
+    notes: [],
+    userId: ""
+  },
+  {
+    _id: "2",
+    name: "Recipe 2",
+    description: "",
+    imgPath: "",
+    info: {
+      mealType: [],
+      cuisineType: "",
+      cookTime: { value: 4, unit: DurationUnits.Hours },
+      prepTime: { value: 4, unit: DurationUnits.Hours },
+      servingSize: 1,
+      nutritionalInfo: []
     },
-    { 
-      id: '4', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-      nutritionalInfo: [],
-      notes:[],
-      isPrivate: false,
-      creatorId: '1'
+    ratings: {
+      ratings: [],
+      averageRating: 0,
+      totalRatings: 0,
+      ratingsSum: 0
     },
-    { 
-      id: '5', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-      nutritionalInfo: [],
-      notes:[],
-      isPrivate: false,
-      creatorId: '1'
-    },
-    { 
-      id: '6', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-    nutritionalInfo: [],
-    notes:[],
-    isPrivate: false,
-    creatorId: '1'
-    },
-    { 
-      id: '7', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-    nutritionalInfo: [],
-    notes:[],
-    isPrivate: false,
-    creatorId: '1'
-    },
-    { 
-      id: '8', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-    nutritionalInfo: [],
-    notes:[],
-    isPrivate: false,
-    creatorId: '1'
-    },
-    { 
-      id: '9', 
-      name: 'Recipe 2', 
-      ingredients: [], 
-      directions: [], 
-      tags: [],
-    nutritionalInfo: [],
-    notes:[],
-    isPrivate: false,
-    creatorId: '1'
-    }
-  ]);
+    url: "",
+    ingredients: [],
+    directions: [],
+    visibility: Visibility.Public,
+    tags: [],
+    notes: [],
+    userId: ""
+  }
+]);
+
+export const mockComputedShoppingLists = computed<ShoppingList[]>(() => [
+  {
+    id: "1234",
+    isDefault: true,
+    items: ["toast"],
+    isOpen: true,
+    creator: "1234"
+  }
+]);
+
+export const mockRefShoppingLists = ref<ShoppingList[]>([
+  {
+    id: "1234",
+    isDefault: true,
+    items: ["toast"],
+    isOpen: true,
+    creator: "1234"
+  }
+]);

@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
-import MenuBurgerComponent from './menuBurger/MenuBurgerComponent.vue'
-import NavMenuComponent from './navMenu/NavMenuComponent.vue'
-import { useAppStore } from '@/stores/app';
+/**
+ * Component for apps header
+ * @example
+ * <HeaderComponent />
+ */
+import { RouterLink } from "vue-router";
 
-const appStore = useAppStore()
+import { useAppStore } from "@/stores/appStore";
+
+import MenuBurgerComponent from "./menuBurger/MenuBurgerComponent.vue";
+import NavMenuComponent from "./navMenu/NavMenuComponent.vue";
+
+const appStore = useAppStore();
 
 function closeMobileMenu() {
-  appStore.isMobileMenuOpen = false
+  appStore.isMobileMenuOpen = false;
 }
 </script>
 
@@ -16,9 +22,9 @@ function closeMobileMenu() {
   <nav class="navbar navbar-default">
     <div class="nav__container">
       <div class="navbar-brand-contain">
-        <RouterLink class="navbar-brand" @click="closeMobileMenu" to="/">Recipeasy</RouterLink>
+        <RouterLink class="navbar-brand" @click="closeMobileMenu" to="/">Tastyista</RouterLink>
       </div>
-      <MenuBurgerComponent/>
+      <MenuBurgerComponent />
       <div
         class="navbar-default nav__header"
         :class="{ active: appStore.isMobileMenuOpen }"
@@ -44,6 +50,8 @@ function closeMobileMenu() {
   height: $navbar-height
   display: flex
   align-items: center
+  max-width: 1366px
+  margin: auto
 
 .navbar-brand-contain
   flex-grow: 1
@@ -55,58 +63,54 @@ function closeMobileMenu() {
   float: left
   height: 50px
   padding: 15px
-  color: #777
+  color: #555
   text-decoration: none
   font-size: 24px
-  font-family: 'Pacifico', cursive
+  font-family: 'Limelight', sans-serif
   line-height: 20px
 
   &:hover
-    color: #555
+    color: #111
 
   @media (min-width: 768px)
-    font-size: 30px
+    font-size: 40px
     margin-left: 25px
 
 .nav__header
-  position: absolute
+  position: fixed
   top: 75px
-  left: 100vw
+  right: 0
+  transform: translateX(100%)
   display: flex
   flex-direction: column
   padding: 15px
-  transition: all 0.5s ease-in-out
+  transition: transform 0.3s ease-in-out
   width: 40vw
   background-color: white
   z-index: 100
   box-shadow: -2px 2px 2px -1px #666
+  opacity: 1
 
   &.active
-    left: 60vw
+    transform: translateX(0)
 
   @media (min-width: 560px)
     width: 25vw
     padding: 25px
 
     &.active
-      left: 75vw
+      transform: translateX(0)
 
   @media (min-width: 768px)
     position: relative
-    left: 0
     top: 0
+    transform: none
     justify-content: space-between
     flex-grow: 1
     flex-direction: row
     padding: 0
     border: none
-    border-top-color: currentcolor
-    border-right-color: currentcolor
-    border-bottom-color: currentcolor
-    border-left-color: currentcolor
     width: auto
     box-shadow: none
-
-    &.active
-      left: 0
+    transition: none
 </style>

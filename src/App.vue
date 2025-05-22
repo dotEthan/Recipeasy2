@@ -1,23 +1,26 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
-import { RouterView } from 'vue-router'
-import HeaderComponent from './components/core/header/HeaderComponent.vue'
-import { useAppService } from '@/composables/useAppService'
+import { RouterView } from "vue-router";
 
+import { onMounted, onUnmounted } from "vue";
 
-const appService = useAppService()
+import HeaderComponent from "@/components/core/header/HeaderComponent.vue";
+import AppOverlays from "@/components/core/shared/appOverlays/AppOverlays.vue";
+import { useAppService } from "@/composables/useAppService";
 
+const appService = useAppService();
 
+appService.initializeApp();
+
+// TODO changes coming with Express update
 onMounted(() => {
-  window.addEventListener('beforeunload', appService.handleUnsavedChanges)
-})
+  window.addEventListener("beforeunload", appService.handleUnsavedChanges);
+});
 onUnmounted(() => {
-  window.removeEventListener('beforeunload', appService.handleUnsavedChanges)
-})
+  window.removeEventListener("beforeunload", appService.handleUnsavedChanges);
+});
 
-// Once at start
-appService.onResize()
-
+// TODO Once at start (needed?)
+appService.onResize();
 </script>
 
 <template>
@@ -27,6 +30,8 @@ appService.onResize()
       <RouterView />
     </div>
   </div>
+
+  <AppOverlays />
 </template>
 
 <style lang="sass" scoped>

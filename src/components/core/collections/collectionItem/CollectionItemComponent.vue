@@ -1,9 +1,21 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import type { Recipe } from '@/types/Recipes'
-const props = defineProps({
+/**
+ * Component for display each item in the recipe collection
+ * @example
+ * <CollectionItemComponent
+    v-for="recipe in recipeData"
+    :key="recipe._id.toString()"
+    @click="() => openRecipeDetails(recipe._id)"
+    :recipeData="recipe"
+  />
+ */
+import type { PropType } from "vue";
+
+import type { Recipe } from "@/types/Recipes";
+
+defineProps({
   recipeData: Object as PropType<Recipe>
-})
+});
 </script>
 
 <template>
@@ -12,7 +24,7 @@ const props = defineProps({
       <img :src="recipeData?.imgPath" alt="Logo" />
     </div>
     <span :title="recipeData?.name" class="recipe-title">{{ recipeData?.name }}</span>
-    <span class="rating-text">rating: {{ recipeData?.publicRating }}</span>
+    <span class="rating-text">rating: {{ recipeData?.ratings?.averageRating }}</span>
   </div>
 </template>
 
@@ -24,11 +36,11 @@ const props = defineProps({
 
 .recipeicon
   padding: 5px
-  
+
   @media (min-width: 768px)
     padding: 15px
 
-  img 
+  img
     width: 100%
     height: 100%
     object-fit: cover
@@ -37,5 +49,4 @@ const props = defineProps({
 
 .rating-text
   font-size: 0.7em
-
 </style>

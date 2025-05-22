@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import NewRecipeButtonComponent from '../newRecipeButton/newRecipeButtonComponent.vue'
+/**
+ * Component to display when user has no recipes
+ * @todo Create it properly
+ * @example
+ *  <RecipesEmptyComponent />
+ */
+import NewRecipeButtonComponent from "../newRecipeButton/newRecipeButtonComponent.vue";
 </script>
 
 <template>
