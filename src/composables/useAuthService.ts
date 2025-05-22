@@ -108,7 +108,7 @@ export function useAuthService() {
       const appState = {
         lightMode: userState.localUser.preferences?.lightMode
       };
-      // TODO wasnt working, check
+
       appStore.setInitialAppState(appState);
       toastStore.showToast("Login Successful", ToastType.SUCCESS);
 

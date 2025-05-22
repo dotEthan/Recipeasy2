@@ -1,6 +1,8 @@
-# Recipeasy
+# Tastyista
 
-[Landing Rebuild is Here!](https://stupefied-morse-5e1233.netlify.com/)
+### (formerly Recipeasy)
+
+[Landing Rebuild is Here!](https://tastyist.com)
 
 [Backend Here!](https://github.com/dotEthan/Recipeasy-backend)
 
