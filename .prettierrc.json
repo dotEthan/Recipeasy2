@@ -1,13 +1,26 @@
 {
-  "semi": true,
-  "tabWidth": 2,
-  "singleQuote": false,
-  "printWidth": 100,
-  "trailingComma": "none",
-  "endOfLine": "lf",
-  "bracketSameLine": false,
-  "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "importOrder": ["^vue$", "^@/", "^[./]"],
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
+    "semi": true,
+    "tabWidth": 2,
+    "singleQuote": false,
+    "printWidth": 100,
+    "trailingComma": "none",
+    "endOfLine": "lf",
+    "vueIndentScriptAndStyle": false,
+    "bracketSameLine": true,
+    "htmlWhitespaceSensitivity": "css",
+    "plugins": ["@trivago/prettier-plugin-sort-imports"],
+    "importOrder": ["^vue$", "^@/", "^[./]"],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "overrides": [
+        {
+            "files": "*.vue",
+            "options": {
+                "parser": "vue",
+                "singleAttributePerLine": false,
+                "vueIndentScriptAndStyle": false,
+                "htmlWhitespaceSensitivity": "css"
+            }
+        }
+    ]
 }

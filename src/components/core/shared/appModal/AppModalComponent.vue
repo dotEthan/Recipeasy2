@@ -44,39 +44,57 @@ function onClose() {
 @use '@/assets/variables' as *
 
 .modal-contain
-    position: fixed
-    display: flex
-    justify-content: center
-    align-items: center
-    width: 100%
-    height: 100%
-    margin-top: $navbar-height
+  position: fixed
+  top: 0
+  left: 0
+  width: 100vw
+  height: 100vh
+  display: flex
+  justify-content: center
+  align-items: center
+  pointer-events: none
+  z-index: 1000
 
-.modal-wrapper
-    position: relative
-    display: flex
-    justify-content: center
-    align-items: center
-    // height: 100%
-    max-height: calc(80vh - $navbar-height)
-
-.modal
-    background: white
-    position: relative
-    border-radius: 15px
-    width: 80vw
-    box-shadow: 2px 3px 10px 1px rgba(0,0,0,.3)
-    padding: 50px
-    overflow-y: auto
-    margin: auto
-
-    @media (min-width: 1024px)
-      max-width: 50vw
-
-.backdrop
+  .backdrop
     position: absolute
+    top: 0
+    left: 0
     width: 100%
     height: 100%
-    // z-index: -10
-    background-color: rgba(0,0,0,0.8)
+    background-color: rgba(0, 0, 0, 0.8)
+    pointer-events: auto
+
+
+  .modal-wrapper
+    position: relative
+    pointer-events: auto
+    max-width: 90vw
+    max-height: 90vh
+    overflow: auto
+    background: white
+    border-radius: .5em
+    min-width: 50vw
+
+    @media (min-width: 768px)
+      min-width: 50vw
+
+    @media (min-width: 1200px)
+      min-width: 30vw
+
+
+  .modal
+    position: relative
+    margin: 0
+    padding: 25px
+    border: none
+    background: transparent
+    width: auto
+    max-width: 100%
+
+
+  .close-button
+    position: absolute
+    top: 10px
+    right: 10px
+    z-index: 1001
 </style>

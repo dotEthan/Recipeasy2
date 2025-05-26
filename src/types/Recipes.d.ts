@@ -11,9 +11,16 @@ export enum DurationUnits {
   Days = "days"
 }
 
+export enum MealTime {
+  Breakfast = "breakfast",
+  Lunch = "lunch",
+  Supper = "supper"
+}
+
 export interface RecipeStore {
   recipes: Ref<Recipe[]>;
   publicRecipes: Ref<Recipe[]>;
+  recipeCollections: Ref<RecipeCollection[]>;
   allTags: Ref<string[]>;
   ethansFavouritePublicIds: Ref<string[]>;
   selectedRecipeId: Ref<string | undefined>;
@@ -30,13 +37,14 @@ export interface RecipeStore {
   recipesLength: ComputedRef<number>;
   publicRecipesLength: ComputedRef<number>;
   getAllRecipeTags: ComputedRef<string[]>;
+  getMealTime: ComputedRef<MealTime>;
 
   useFilteredRecipes(activeFilters: string[]): Ref<Recipe[]>;
   setInitialPublicRecipeState(publicRecipeData: Recipe[]): void;
   setInitialUserRecipeState(userRecipeData: Recipe[]): void;
-  generatePublicRecipeCollections(): Ref<Recipe[]>[];
   updatePublicRecipe(recipe: Recipe): void;
   getRecipeById(id: string): void;
+  fetchRecipeCollections(): void;
   updateRecipe(recipe: Recipe): void;
   addRecipe(recipe: Recipe): void;
   setSelectedRecipeId(id: string): void;
@@ -63,7 +71,7 @@ export type CachedRecipeState = RecipeState & { expiresAt: number };
 
 export type RecipeState = {
   recipes: Recipe[];
-  publicRecipes: Recipe[];
+  recipeCollections: RecipeCollection[];
   allTags: string[];
   selectedRecipeId?: string;
   editSelectedRecipe: boolean;
@@ -132,4 +140,13 @@ export type RatingItem = {
   userId?: string;
   rating?: number;
   timestamp?: Date;
+};
+
+export type RecipeCollection = {
+  id: string;
+  title: string;
+  recipes: Recipe[];
+  tags: string[];
+  loading: boolean;
+  error: string | null;
 };

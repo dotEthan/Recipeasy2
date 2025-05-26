@@ -1,10 +1,17 @@
 import { defineStore } from "pinia";
 
-import { ComputedRef, Ref, computed, ref, watch, watchEffect } from "vue";
+import { ComputedRef, computed, ref, watch, watchEffect } from "vue";
 
-import { useAppStore } from "@/stores/appStore";
+import { useDataService } from "@/composables/useDataService";
 import { useUserStore } from "@/stores/userStore";
-import { Recipe, RecipeState, RecipeStore, Visibility } from "@/types/Recipes.d";
+import {
+  MealTime,
+  Recipe,
+  RecipeCollection,
+  RecipeState,
+  RecipeStore,
+  Visibility
+} from "@/types/Recipes.d";
 import { formatCachedValue } from "@/utilities";
 
 /**
@@ -17,11 +24,53 @@ import { formatCachedValue } from "@/utilities";
 
 export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
   const userStore = useUserStore();
-  const appStore = useAppStore();
+  const dataService = useDataService();
 
   // Variables
   const recipes = ref<Recipe[]>([]);
   const publicRecipes = ref<Recipe[]>([]);
+  const recipeCollections = ref<RecipeCollection[]>([
+    {
+      id: "recommended",
+      title: "Recommended Recipes",
+      recipes: [],
+      tags: ["popular"],
+      loading: false,
+      error: null
+    },
+    {
+      id: "ethansFavourites",
+      title: "Ethan's Favourites",
+      recipes: [],
+      tags: ["ethansFavourites"],
+      loading: false,
+      error: null
+    },
+    {
+      id: "snack",
+      title: "Snack Recipes",
+      recipes: [],
+      tags: ["snack"],
+      loading: false,
+      error: null
+    },
+    {
+      id: "mealtime",
+      title: `What's for `,
+      recipes: [],
+      tags: ["mealTime"],
+      loading: false,
+      error: null
+    },
+    {
+      id: "healthy",
+      title: "Healthy Recipes",
+      recipes: [],
+      tags: ["healthy"],
+      loading: false,
+      error: null
+    }
+  ]);
   const allTags = ref<string[]>([]);
   const ethansFavouritePublicIds = ref<string[]>([
     "67f1259f3177aa84c4a0595e",
@@ -52,9 +101,9 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
   );
 
   watch(
-    () => publicRecipes.value,
-    (newPublicRecipes: Recipe[]) => {
-      sessionStorage.setItem("publicRecipes", formatCachedValue(newPublicRecipes));
+    () => recipeCollections.value,
+    (newCollections: RecipeCollection[]) => {
+      sessionStorage.setItem("recipeCollections", formatCachedValue(newCollections));
     },
     { deep: true }
   );
@@ -88,9 +137,11 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
   });
 
   const selectedRecipe: ComputedRef<Recipe | undefined> = computed(() => {
-    const allCurrentRecipes = recipes.value
-      .concat(publicRecipes.value)
-      .concat(tempRecipeSaveArray.value);
+    const allCurrentRecipes = [
+      ...recipes.value,
+      ...tempRecipeSaveArray.value,
+      ...recipeCollections.value.flatMap((collection) => collection.recipes)
+    ];
     return allCurrentRecipes.find((r) => r._id === selectedRecipeId.value);
   });
 
@@ -124,6 +175,17 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
     )
   );
 
+  const getMealTime: ComputedRef<MealTime> = computed(() => {
+    const hour = new Date().getHours();
+    if (hour >= 2 && hour < 10) {
+      return MealTime.Breakfast;
+    } else if (hour >= 10 && hour < 15) {
+      return MealTime.Lunch;
+    } else {
+      return MealTime.Supper;
+    }
+  });
+
   // Functions
   function useFilteredRecipes(activeFilters: string[]): ComputedRef<Recipe[]> {
     const allFilters = new Set([...personalFilters.value, ...activeFilters]);
@@ -146,40 +208,6 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
     selectedRecipeId.value = undefined;
   }
 
-  //TODO API call for specific tags or search criteria needed
-  function generatePublicRecipeCollections(): Ref<Recipe[]>[] {
-    const numberOfRecipesEach = appStore.screenSize === "sm" ? 6 : 5;
-    const length = publicRecipes.value.length;
-    const usedIndices = new Set<number>();
-    // TODO refactor this
-    const ethansFavoriteIndices = ethansFavouritePublicIds.value
-      .map((id) => publicRecipes.value.findIndex((recipe) => recipe._id === id))
-      .filter((index) => index !== -1);
-
-    const ethansCollection: Recipe[] = [];
-    while (ethansCollection.length < numberOfRecipesEach && ethansFavoriteIndices.length > 0) {
-      const randomIndex = Math.floor(Math.random() * ethansFavoriteIndices.length);
-      const recipeIndex = ethansFavoriteIndices.splice(randomIndex, 1)[0];
-      usedIndices.add(recipeIndex);
-      ethansCollection.push(publicRecipes.value[recipeIndex]);
-    }
-    const randomCollections = Array.from({ length: 4 }, () => {
-      const recipesInGroup: Recipe[] = [];
-
-      while (recipesInGroup.length < numberOfRecipesEach && usedIndices.size < length) {
-        const randomIndex = Math.floor(Math.random() * length);
-
-        if (!usedIndices.has(randomIndex)) {
-          usedIndices.add(randomIndex);
-          recipesInGroup.push(publicRecipes.value[randomIndex]);
-        }
-      }
-
-      return ref(recipesInGroup);
-    });
-    return [ref(ethansCollection), ...randomCollections];
-  }
-
   function updatePublicRecipe(recipe: Recipe) {
     const index = publicRecipes.value.findIndex((publicRecipe) => publicRecipe._id === recipe._id);
     if (index === -1) {
@@ -194,6 +222,30 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
 
   function getRecipeById(id: string): Recipe | undefined {
     return recipes.value.find((recipe) => recipe._id === id);
+  }
+
+  async function fetchRecipeCollections() {
+    const collectionPromises = recipeCollections.value.map(async (collection) => {
+      await fetchOneCollection(collection);
+    });
+
+    await Promise.allSettled(collectionPromises);
+  }
+
+  async function fetchOneCollection(collection: RecipeCollection) {
+    collection.loading = true;
+    collection.error = null;
+    console.log("has: ", collection.tags.includes("mealTime"));
+    const tags = collection.tags.includes("mealTime") ? getMealTime.value : collection.tags;
+    console.log("tags: ", tags);
+    try {
+      const collectionResponse = await dataService.getRecipesForCollections(tags);
+      collection.recipes = collectionResponse || [];
+    } catch (error: unknown) {
+      collection.error = error instanceof Error ? error.message : "An unknown error occurred";
+    } finally {
+      collection.loading = false;
+    }
   }
 
   function updateRecipe(recipe: Recipe) {
@@ -305,7 +357,7 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
 
   function hydrateStore(RecipeState: RecipeState) {
     recipes.value = RecipeState.recipes || [];
-    publicRecipes.value = RecipeState.publicRecipes || [];
+    recipeCollections.value = RecipeState.recipeCollections || [];
     allTags.value = RecipeState.allTags || [];
     selectedRecipeId.value = RecipeState.selectedRecipeId;
     editSelectedRecipe.value = RecipeState.editSelectedRecipe;
@@ -330,6 +382,7 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
   return {
     recipes,
     publicRecipes,
+    recipeCollections,
     allTags,
     ethansFavouritePublicIds,
     selectedRecipeId,
@@ -346,13 +399,15 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
     recipesLength,
     publicRecipesLength,
     getAllRecipeTags,
+    getMealTime,
+    // generatePublicRecipeCollections,
 
     useFilteredRecipes,
     setInitialUserRecipeState,
     setInitialPublicRecipeState,
-    generatePublicRecipeCollections,
     updatePublicRecipe,
     getRecipeById,
+    fetchRecipeCollections,
     updateRecipe,
     addRecipe,
     setSelectedRecipeId,

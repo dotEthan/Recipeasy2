@@ -9,6 +9,7 @@ import { useAppService } from "@/composables/useAppService";
 
 const appService = useAppService();
 
+console.log("old data, refresh: ");
 appService.initializeApp();
 
 // TODO changes coming with Express update
@@ -30,7 +31,6 @@ appService.onResize();
       <RouterView />
     </div>
   </div>
-
   <AppOverlays />
 </template>
 

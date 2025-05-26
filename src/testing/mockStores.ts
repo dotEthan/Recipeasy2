@@ -13,9 +13,9 @@ import { mockRefRecipes, mockRefShoppingLists } from "@/testing/mockData";
 import { AppStore, ScreenSize } from "@/types/AppState.d";
 import type { RecipeStore } from "@/types/Recipes.d";
 import type { ShoppingListStore } from "@/types/ShoppingLists.d";
+import type { ToastStore } from "@/types/Toasts";
 import type { UserStore } from "@/types/UserState.d";
 import type { ErrorStore } from "@/types/errors.d";
-import type { ToastStore } from "@/types/toasts.d";
 
 export const getMockedAppStore = (overrides: Partial<AppStore> = {}) => ({
   authModalType: "",

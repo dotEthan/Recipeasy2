@@ -15,9 +15,12 @@ import type { Recipe } from "@/types/Recipes";
 
 import CollectionItemComponent from "./collectionItem/CollectionItemComponent.vue";
 
-defineProps({
+const props = defineProps({
   title: String,
-  recipeData: Array as PropType<Recipe[]>
+  recipeData: {
+    type: Array as PropType<Recipe[]>,
+    default: () => []
+  }
 });
 
 const recipeStore = useRecipeStore();
@@ -25,18 +28,29 @@ const recipeStore = useRecipeStore();
 function openRecipeDetails(id: string) {
   recipeStore.setSelectedRecipeId(id);
 }
+
+const getTitle = () => {
+  const mealTime = recipeStore.getMealTime;
+  if (props.title === "What's for ") {
+    return `${props.title}${mealTime}`;
+  } else {
+    return props.title;
+  }
+};
 </script>
 
 <template>
   <div class="collection-container">
-    <h3 data-test="mealtime" id="collection-title">{{ title }}:</h3>
-    <div class="collection-item-container">
-      <CollectionItemComponent
-        v-for="recipe in recipeData"
-        :key="recipe._id.toString()"
-        @click="() => openRecipeDetails(recipe._id)"
-        :recipeData="recipe"
-      />
+    <h3 data-test="mealtime" id="collection-title">{{ getTitle() }}:</h3>
+    <div>
+      <div class="collection-item-container" v-if="recipeData.length > 0">
+        <CollectionItemComponent
+          v-for="recipe in recipeData"
+          :key="recipe._id.toString()"
+          @click="() => openRecipeDetails(recipe._id)"
+          :recipeData="recipe" />
+      </div>
+      <div v-else>No recipes found using this tag</div>
     </div>
   </div>
 </template>

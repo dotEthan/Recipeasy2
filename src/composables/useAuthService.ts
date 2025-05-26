@@ -4,6 +4,7 @@ import { AxiosError } from "axios";
 import { ref } from "vue";
 
 import axios from "@/axios";
+import router from "@/router/main";
 import { useAppStore } from "@/stores/appStore";
 import { useRecipeStore } from "@/stores/recipeStore";
 import { useShoppingListStore } from "@/stores/shoppingListStore";
@@ -11,8 +12,9 @@ import { useToastStore } from "@/stores/toastStore";
 import { useUserStore } from "@/stores/userStore";
 import type { StandardRecipeApiResponse } from "@/types/ApiResponse.d";
 import type { Recipe } from "@/types/Recipes.d";
+import { ToastType } from "@/types/Toasts";
 import type { LocalUser } from "@/types/UserState.d";
-import { ToastType } from "@/types/toasts.d";
+import { handleError } from "@/utilities/ErrorHandler";
 
 /**
  * Handles Authorization related API calls and initilizations
@@ -117,6 +119,9 @@ export function useAuthService() {
       //TODO error handling
       console.log("signin failed: ", JSON.stringify(err));
       error.value = err instanceof Error ? err.message : "Sign in failed";
+      // handleError(error, {
+      //   onRetry: () => signIn(email, password)
+      // });
       throw err;
     }
   };

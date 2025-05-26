@@ -2,6 +2,7 @@ import { onMounted, onUnmounted, ref } from "vue";
 
 import axios from "@/axios";
 import { useDataService } from "@/composables/useDataService";
+import router from "@/router/main";
 import { useAppStore } from "@/stores/appStore";
 import { useRecipeStore } from "@/stores/recipeStore";
 import { useShoppingListStore } from "@/stores/shoppingListStore";
@@ -73,45 +74,61 @@ export function useAppService() {
   onUnmounted(() => window.removeEventListener("resize", onResize));
 
   const initializeApp = async () => {
-    await refreshTokens();
+    let isAutheticated = false;
 
-    let cachedLocalUser = checkIfCacheExpired("localUser");
-    let cachedUserRecipes = checkIfCacheExpired("userRecipes");
-    let cachedAllTags = checkIfCacheExpired("allTags");
-    const cachedPublicRecipes = checkIfCacheExpired("publicRecipes");
-    const cachedSelectedRecipeId = sessionStorage.getItem("selectedRecipeId") ?? undefined;
-    const cachedEditSelectedRecipe =
-      sessionStorage.getItem("editSelectedRecipe") === "true" || false;
-    const cachedShoppingLists = checkIfCacheExpired("shoppingLists");
-    if (
-      !cachedUserRecipes ||
-      !cachedLocalUser ||
-      !cachedAllTags ||
-      !cachedShoppingLists ||
-      !cachedPublicRecipes
-    ) {
-      // TODO No userId in here
-      const { userData, userRecipes } = await dataService.getCurrentUserData();
-      cachedLocalUser = userData;
-      cachedUserRecipes = userRecipes;
-      // TODO add when implementing tags
-      cachedAllTags = [];
+    try {
+      await refreshToken();
+      isAutheticated = true;
+
+      let cachedLocalUser = checkIfCacheExpired("localUser");
+      let cachedUserRecipes = checkIfCacheExpired("userRecipes");
+      let cachedAllTags = checkIfCacheExpired("allTags");
+      let cachedRecipeCollections = checkIfCacheExpired("recipeCollections");
+      const cachedSelectedRecipeId = sessionStorage.getItem("selectedRecipeId") ?? undefined;
+      const cachedEditSelectedRecipe =
+        sessionStorage.getItem("editSelectedRecipe") === "true" || false;
+      const cachedShoppingLists = checkIfCacheExpired("shoppingLists");
+      if (
+        isAutheticated &&
+        (!cachedUserRecipes ||
+          !cachedLocalUser ||
+          !cachedAllTags ||
+          !cachedShoppingLists ||
+          !cachedRecipeCollections)
+      ) {
+        console.log("old data, refresh: ");
+        // TODO No userId in here
+        const userResponse = await dataService.getCurrentUserData();
+        cachedRecipeCollections = await recipeStore.fetchRecipeCollections();
+        if (!userResponse) throw new Error("no response");
+        const { userData, userRecipes } = userResponse;
+        cachedLocalUser = userData;
+        cachedUserRecipes = userRecipes;
+        // TODO add when implementing tags
+        cachedAllTags = [];
+      }
+
+      recipeStore.hydrateStore({
+        recipes: cachedUserRecipes,
+        allTags: cachedAllTags,
+        recipeCollections: cachedRecipeCollections,
+        selectedRecipeId: cachedSelectedRecipeId,
+        editSelectedRecipe: cachedEditSelectedRecipe
+      });
+
+      userStore.setInitialUserState({ localUser: cachedLocalUser, authorized: true });
+      shoppingListStore.hydrateStore(cachedShoppingLists);
+    } catch (error) {
+      console.log("token refresh failed");
+      await recipeStore.fetchRecipeCollections();
+      appStore.resetAppStates();
+      router.push("/");
     }
 
-    recipeStore.hydrateStore({
-      recipes: cachedUserRecipes,
-      allTags: cachedAllTags,
-      publicRecipes: cachedPublicRecipes,
-      selectedRecipeId: cachedSelectedRecipeId,
-      editSelectedRecipe: cachedEditSelectedRecipe
-    });
-
-    userStore.setInitialUserState({ localUser: cachedLocalUser, authorized: true });
-    shoppingListStore.hydrateStore(cachedShoppingLists);
     console.log("Stores hydrated");
   };
 
-  const refreshTokens = async () => {
+  const refreshToken = async () => {
     try {
       const refreshTokenResponse = await axios.post("/admin/refresh-token");
       appStore.setAcessToken(refreshTokenResponse.data.accessToken);
@@ -125,6 +142,6 @@ export function useAppService() {
     onResize,
     handleUnsavedChanges,
     initializeApp,
-    refreshTokens
+    refreshToken
   };
 }

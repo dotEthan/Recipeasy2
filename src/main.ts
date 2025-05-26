@@ -8,6 +8,7 @@ import router from "@/router/main";
 import { useErrorStore } from "@/stores/errorStore";
 
 import "./assets/main.sass";
+import { handleError } from "./utilities/ErrorHandler";
 
 async function initializeApp() {
   const app = createApp(App);
@@ -22,7 +23,7 @@ async function initializeApp() {
           : "Unknown error occurred";
 
     const componentName = vm?.$options?.name || "AnonymousComponent";
-    errorStore.handleError(
+    handleError(
       new CriticalError(`Vue Error: ${errorMessage}`, {
         component: componentName,
         info,
@@ -39,5 +40,5 @@ async function initializeApp() {
 
 initializeApp().catch((error) => {
   const errorStore = useErrorStore();
-  errorStore.handleError(new CriticalError("App initialization failed", { originalError: error }));
+  handleError(new CriticalError("App initialization failed", { originalError: error }));
 });

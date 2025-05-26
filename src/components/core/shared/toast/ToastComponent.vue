@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * Toast connected to toastStore for displaying non-critical user notifications
- * @todo style
+ * @todo style properly
  * @example
  * <Toast
       v-for="toast in toastStore.toastQueue"
@@ -14,7 +14,7 @@
  */
 import { computed } from "vue";
 
-import type { ToastQueue } from "@/types/toasts";
+import type { ToastQueue } from "@/types/Toasts";
 
 const props = defineProps<{
   toast: ToastQueue;
@@ -42,14 +42,12 @@ const toastStyles = computed(() => ({
     :aria-type="ariaType"
     :aria-atomic="true"
     @mouseover="emit('pause')"
-    @mouseleave="emit('resume')"
-  >
+    @mouseleave="emit('resume')">
     <div class="toast-header">
-      <h3 class="toast-title">
-        {{ toast.type.charAt(0).toUpperCase() + toast.type.slice(1) }}
-      </h3>
+      <h3 class="toast-title">{{ toast.type.charAt(0).toUpperCase() + toast.type.slice(1) }}</h3>
       <button class="toast-close" @click="emit('close')" aria-label="Close Notifaction">x</button>
     </div>
+
     <p class="toast-message">{{ toast.message }}</p>
   </div>
 </template>

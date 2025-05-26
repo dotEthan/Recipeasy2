@@ -43,9 +43,7 @@ function toggleCheckbox() {
 <template>
   <label>
     <CheckboxRoot :checked="isChecked" @update:checked="toggleCheckbox" class="checkboxRoot">
-      <CheckboxIndicator class="checkboxIndicator">
-        <Check v-if="isChecked" />
-      </CheckboxIndicator>
+      <CheckboxIndicator class="checkboxIndicator"> <Check v-if="isChecked" /> </CheckboxIndicator>
     </CheckboxRoot>
     <span class="label">{{ checkboxLabel }}</span>
   </label>
