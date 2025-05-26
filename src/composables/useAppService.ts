@@ -83,7 +83,7 @@ export function useAppService() {
       let cachedLocalUser = checkIfCacheExpired("localUser");
       let cachedUserRecipes = checkIfCacheExpired("userRecipes");
       let cachedAllTags = checkIfCacheExpired("allTags");
-      let cachedRecipeCollections = checkIfCacheExpired("recipeCollections");
+      const cachedRecipeCollections = checkIfCacheExpired("recipeCollections");
       const cachedSelectedRecipeId = sessionStorage.getItem("selectedRecipeId") ?? undefined;
       const cachedEditSelectedRecipe =
         sessionStorage.getItem("editSelectedRecipe") === "true" || false;
@@ -99,7 +99,7 @@ export function useAppService() {
         console.log("old data, refresh: ");
         // TODO No userId in here
         const userResponse = await dataService.getCurrentUserData();
-        cachedRecipeCollections = await recipeStore.fetchRecipeCollections();
+        recipeStore.fetchRecipeCollections();
         if (!userResponse) throw new Error("no response");
         const { userData, userRecipes } = userResponse;
         cachedLocalUser = userData;

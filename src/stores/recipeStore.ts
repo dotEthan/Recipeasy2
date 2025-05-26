@@ -235,9 +235,7 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
   async function fetchOneCollection(collection: RecipeCollection) {
     collection.loading = true;
     collection.error = null;
-    console.log("has: ", collection.tags.includes("mealTime"));
     const tags = collection.tags.includes("mealTime") ? getMealTime.value : collection.tags;
-    console.log("tags: ", tags);
     try {
       const collectionResponse = await dataService.getRecipesForCollections(tags);
       collection.recipes = collectionResponse || [];
@@ -355,12 +353,13 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
     selectedRecipeId.value = undefined;
   }
 
-  function hydrateStore(RecipeState: RecipeState) {
-    recipes.value = RecipeState.recipes || [];
-    recipeCollections.value = RecipeState.recipeCollections || [];
-    allTags.value = RecipeState.allTags || [];
-    selectedRecipeId.value = RecipeState.selectedRecipeId;
-    editSelectedRecipe.value = RecipeState.editSelectedRecipe;
+  function hydrateStore(recipeState: RecipeState) {
+    // TODO Refactor recipeCollectoins for data persistence
+    recipes.value = recipeState.recipes || [];
+    recipeCollections.value = recipeState.recipeCollections || recipeCollections.value;
+    allTags.value = recipeState.allTags || [];
+    selectedRecipeId.value = recipeState.selectedRecipeId;
+    editSelectedRecipe.value = recipeState.editSelectedRecipe;
   }
 
   function resetState() {
