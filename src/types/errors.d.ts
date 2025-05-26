@@ -1,21 +1,15 @@
 import { Ref } from "vue";
 
-export interface ErrorStore {
-  errors: Ref<ToastError[]>;
+interface ErrorStore {
+  toastErrors: Ref<ToastError[]>;
+  currentModalError: Ref<ErrorModalConfig | null>;
   validationErrors: Ref<Record<string, string>>;
-  showErrorModal: Ref<boolean>;
-  currentModalError: Ref<BaseError | null>;
 
-  handleError(error: unknown): void;
-  handleApiError(error: AxiosError<ApiErrorResponse>): void;
-  addToastError(error: NonCriticalError): void;
-  setValidationErrors(fieldErrors: FieldError): void;
-  clearValidationErrors(): void;
-  dismissError(id: string): void;
-  handleUnauthRedirect(): void;
-  //   showCriticalErrorModal(error: CriticalError): void;
-  closeErrorModal(): void;
-  //   handleModalAction(actionType: CriticalErrorAction): void;
+  showCriticalErrorModal: (config: Omit<ErrorModalConfig, "id">) => void;
+  hideCriticalErrorModal: () => void;
+  addToastError: (error: ToastError) => string;
+  setValidationErrors: (errors: Record<string, string>) => void;
+  clearValidationErrors: () => void;
 }
 
 export interface SignatureError {
@@ -40,7 +34,7 @@ export interface ErrorDetails {
 export type FieldError = Record<string, string>;
 
 export type ToastError = {
-  id: string;
+  id: number;
   message: string;
   errorCode: string;
   timestamp: Date;

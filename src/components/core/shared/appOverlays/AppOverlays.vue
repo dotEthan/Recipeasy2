@@ -5,35 +5,34 @@
  * @example
  *  <AppOverlays />
  */
+import { useErrorStore } from "@/stores/errorStore";
 import { useToastStore } from "@/stores/toastStore";
 
 import Toast from "../../shared/toast/ToastComponent.vue";
+import ErrorModalComponent from "../errorModal/ErrorModalComponent.vue";
 
 const toastStore = useToastStore();
-// const modalStore = useModalStore();
+const errorStore = useErrorStore();
 </script>
 <template>
   <Teleport to="body">
-    <div class="toast-container">
+    <div class="toast-container" v-if="toastStore.toastQueue.length > 0">
       <Toast
         v-for="toast in toastStore.toastQueue"
         :key="toast.id"
         :toast="toast"
         @close="toastStore.removeToast(toast.id)"
         @pause="toastStore.pauseTimer(toast.id)"
-        @resume="toastStore.resumeTimer(toast.id)"
-      />
+        @resume="toastStore.resumeTimer(toast.id)" />
     </div>
   </Teleport>
 
   <!-- Modals -->
-  <!-- <Teleport to="body">
-    <component 
-      :is="modalStore.currentModal?.component"
-      v-if="modalStore.currentModal"
-      v-bind="modalStore.currentModal.props"
-    />
-  </Teleport> -->
+  <Teleport to="body">
+    <ErrorModalComponent
+      v-if="errorStore.currentModalError"
+      v-bind="errorStore.currentModalError.props" />
+  </Teleport>
 </template>
 
 <style lang="sass" scoped>

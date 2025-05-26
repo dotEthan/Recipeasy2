@@ -13,71 +13,31 @@ import { useRoute } from "vue-router";
 import { computed, onMounted, ref, unref } from "vue";
 
 import { useAuthService } from "@/composables/useAuthService";
-import { useDataService } from "@/composables/useDataService";
 import { useAppStore } from "@/stores/appStore";
 import { useRecipeStore } from "@/stores/recipeStore";
 import { useUserStore } from "@/stores/userStore";
-import type { Recipe } from "@/types/Recipes.d";
-import type { ExposedInWelcomeComponent } from "@/types/componentExposedValues.d";
+
+// import type { ExposedInWelcomeComponent } from "@/types/componentExposedValues.d";
 
 import AuthComponent from "../auth/AuthComponent.vue";
 import CollectionComponent from "../collections/CollectionComponent.vue";
 import PublicRecipeDetailsComponent from "./publicRecipeDetails/PublicRecipeDetailsComponent.vue";
 import SplashComponent from "./splash/SplashComponent.vue";
 
-const props = defineProps({
-  currentTime: {
-    type: [Object],
-    required: false,
-    default: () => new Date()
-  }
-});
-
 const appStore = useAppStore();
 const userStore = useUserStore();
 const recipeStore = useRecipeStore();
 const authService = useAuthService();
-const dataService = useDataService();
 
 const route = useRoute();
 const validToken = ref(false);
 const isLoading = ref(false);
-let ethansFavouriteRecipes = ref<Recipe[]>([]);
-let recommendedRecipes = ref<Recipe[]>([]);
-let mealTimeRecipes = ref<Recipe[]>([]);
-let healthyRecipes = ref<Recipe[]>([]);
-let snackRecipes = ref<Recipe[]>([]);
 
-onMounted(async () => {
-  if (recipeStore.publicRecipesLength === 0) {
-    try {
-      const publicRecipes = await dataService.getPublicRecipes();
-      if (!publicRecipes) throw new Error("No Public Recipes Found");
-      recipeStore.setInitialPublicRecipeState(publicRecipes);
-    } catch (error) {
-      console.log("loading public recipes error: ", error);
-    }
-  }
-  const [ethanFavs, recommended, mealTime, snack, healthy] =
-    recipeStore.generatePublicRecipeCollections();
-  ethansFavouriteRecipes.value = ethanFavs.value;
-  recommendedRecipes.value = recommended.value;
-  mealTimeRecipes.value = mealTime.value;
-  healthyRecipes.value = healthy.value;
-  snackRecipes.value = snack.value;
-});
+// const [ethansFavouriteRecipes, recommendedRecipes, mealTimeRecipes, snackRecipes, healthyRecipes] =
+//   recipeStore.generatePublicRecipeCollections;
+// console.log("favs: ", recommendedRecipes);
 let recipeDetailsOpen = ref(false);
 const isAuthModalOpen = computed(() => appStore.isAuthModalOpen);
-
-const currentTime = computed(() => {
-  const rawTime = unref(props.currentTime);
-  if (rawTime instanceof Date) {
-    return rawTime;
-  } else {
-    console.warn("Invalid currentTime prop. Falling back to new Date.");
-    return new Date();
-  }
-});
 
 const greeting = computed((): string => {
   const displayName = userStore.localUser?.displayName;
@@ -88,34 +48,20 @@ const greeting = computed((): string => {
   }
 });
 
-const mealTime = computed(() => {
-  return determineMealTime(currentTime.value.getHours());
-});
-
-function determineMealTime(hours: number) {
-  if (hours >= 2 && hours < 10) {
-    return "Breakfast";
-  } else if (hours >= 10 && hours < 15) {
-    return "Lunch";
-  } else {
-    return "Dinner";
-  }
-}
-
 function closeRecipeDetails() {
   recipeDetailsOpen.value = false;
   recipeStore.clearSelectedRecipeId();
 }
 
-defineExpose<ExposedInWelcomeComponent>({
-  ethansFavouriteRecipes,
-  recommendedRecipes,
-  mealTimeRecipes,
-  healthyRecipes,
-  snackRecipes,
-  recipeDetailsOpen,
-  closeRecipeDetails
-});
+// defineExpose<ExposedInWelcomeComponent>({
+//   ethansFavouriteRecipes,
+//   recommendedRecipes,
+//   mealTimeRecipes,
+//   healthyRecipes,
+//   snackRecipes,
+//   recipeDetailsOpen,
+//   closeRecipeDetails
+// });
 
 onMounted(async () => {
   const token = route.query.token as string;
@@ -150,18 +96,24 @@ onMounted(async () => {
       <span style="font-size: 0.7em">Search and Public Recipe Filtering Coming Soon!</span>
       <div class="base-content-container">
         <CollectionComponent
+          v-for="collection in recipeStore.recipeCollections"
+          :key="collection.id"
+          :ref="collection.id"
+          :title="collection.title"
+          :recipeData="collection.recipes"
+          :loading="collection.loading"
+          :error="collection.error" />
+        <!-- <CollectionComponent
           ref="recommended-recipes-collection"
           title="Recommended Public Recipes"
-          :recipeData="recommendedRecipes"
-        />
+          :recipeData="recommendedRecipes" />
         <CollectionComponent title="Ethan's Favourites" :recipeData="ethansFavouriteRecipes" />
         <CollectionComponent
           ref="mealtime-collection"
           :title="'Ready for ' + mealTime"
-          :recipeData="mealTimeRecipes"
-        />
+          :recipeData="mealTimeRecipes" />
         <CollectionComponent title="Snacks" :recipeData="snackRecipes" />
-        <CollectionComponent title="Healthy Foods" :recipeData="healthyRecipes" />
+        <CollectionComponent title="Healthy Foods" :recipeData="healthyRecipes" /> -->
       </div>
     </div>
     <div class="attribute">
@@ -171,8 +123,7 @@ onMounted(async () => {
 
   <PublicRecipeDetailsComponent
     v-if="recipeStore.selectedRecipeId"
-    @closeRecipeDetails="closeRecipeDetails()"
-  />
+    @closeRecipeDetails="closeRecipeDetails()" />
   <AuthComponent v-if="isAuthModalOpen" />
 </template>
 

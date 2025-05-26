@@ -38,6 +38,7 @@ export const useAppStore = defineStore("app", (): AppStore => {
 
   // Computed
   const isAuthModalOpen = computed(() => authModalType.value.length > 0);
+  const recipesPerCollection = computed(() => (screenSize.value !== ScreenSize.SMALL ? 5 : 6));
 
   // Functions
 
@@ -95,7 +96,10 @@ export const useAppStore = defineStore("app", (): AppStore => {
     isLoading,
     lightMode,
     authModalType,
+
     isAuthModalOpen,
+    recipesPerCollection,
+
     setInitialAppState,
     resetAppStates,
     setAuthModalType,

@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 import { TOAST_DURATION } from "@/constants";
-import type { ToastQueue, ToastStore, ToastType } from "@/types/toasts.d";
+import type { ToastQueue, ToastStore, ToastType } from "@/types/Toasts";
 
 export const useToastStore = defineStore("toast", (): ToastStore => {
   // State

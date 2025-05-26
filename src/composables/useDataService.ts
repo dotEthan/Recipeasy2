@@ -1,6 +1,8 @@
 import { ref } from "vue";
 
 import axios from "@/axios";
+import { useAppStore } from "@/stores/appStore";
+import { useErrorStore } from "@/stores/errorStore";
 import { useRecipeStore } from "@/stores/recipeStore";
 import { useToastStore } from "@/stores/toastStore";
 import { useUserStore } from "@/stores/userStore";
@@ -11,10 +13,11 @@ import {
   StandardRecipeApiResponse,
   StandardUserApiResponse
 } from "@/types/ApiResponse.d";
-import { Recipe } from "@/types/Recipes.d";
+import { MealTime, Recipe, Visibility } from "@/types/Recipes.d";
+import { ToastType } from "@/types/Toasts";
 import type { LocalUser } from "@/types/UserState.d";
-import { ToastType } from "@/types/toasts.d";
 import { getPublicIdFromUrl } from "@/utilities";
+import { handleError } from "@/utilities/ErrorHandler";
 
 /**
  * Handles all Data related API calls and initilizations
@@ -30,7 +33,9 @@ export function useDataService() {
   const error = ref<string | null>(null);
   const recipeStore = useRecipeStore();
   const userStore = useUserStore();
+  const errorStore = useErrorStore();
   const toastStore = useToastStore();
+  const appStore = useAppStore();
 
   /**
    * Calls API to save newly created recipes
@@ -138,10 +143,80 @@ export function useDataService() {
    * const dataService = useDataService();
    * await dataService.getPublicRecipes();
    */
-  const getPublicRecipes = async (): Promise<Recipe[]> => {
-    const publicRecipeResponse = await axios.get("/recipes?visibility=public&page=1&limit=25");
-    const publicRecipes = publicRecipeResponse.data;
-    return publicRecipes;
+  const getPublicRecipes = async (): Promise<Recipe[] | undefined> => {
+    try {
+      const publicRecipeResponse = await axios.get("/recipes?visibility=public&page=1&limit=25");
+      const publicRecipes = publicRecipeResponse.data;
+      recipeStore.setInitialPublicRecipeState(publicRecipes);
+      errorStore.hideCriticalErrorModal();
+      return publicRecipes;
+    } catch (error) {
+      handleError(error, {
+        showRetry: true,
+        showCancel: true,
+        onRetry: () => getPublicRecipes(),
+        onCancel: () => errorStore.hideCriticalErrorModal()
+      });
+    }
+  };
+
+  /**
+   * Calls API to get public recipes based on tags
+   * @param {string[]} tags - array of tags to use to search
+   * @returns {Promise<Recipe[]>} - An array of public recipes to use
+   * @example
+   * const dataService = useDataService();
+   * await dataService.getRecipesByTag(tags);
+   */
+  const getPublicRecipesByTag = async (tags: String[]): Promise<Recipe[] | undefined> => {
+    try {
+      const getRecipeByTagResponse = await axios.get("/recipes", {
+        params: {
+          visibility: Visibility.Public,
+          limit: 5,
+          tags: tags
+        }
+      });
+      return getRecipeByTagResponse.data as Recipe[];
+    } catch (error) {
+      handleError(error, {
+        showRetry: true,
+        showCancel: true,
+        onRetry: () => getPublicRecipesByTag(tags),
+        onCancel: () => errorStore.hideCriticalErrorModal()
+      });
+    }
+  };
+
+  /**
+   * Get recipes for each front page collection
+   * @param {string[]} tags - tags associated to collection
+   * @returns {Promise<Recipe[]>} - An array of public recipes to use
+   * @example
+   * const dataService = useDataService();
+   * await dataService.getRecipesForCollections(tags);
+   */
+  const getRecipesForCollections = async (
+    tags: String[] | MealTime
+  ): Promise<Recipe[] | undefined> => {
+    try {
+      const limit = appStore.recipesPerCollection;
+      const getRecipeByTagResponse = await axios.get("/recipes/collections", {
+        params: {
+          visibility: Visibility.Public,
+          limit: limit,
+          tags: tags
+        }
+      });
+      return getRecipeByTagResponse.data as Recipe[];
+    } catch (error) {
+      handleError(error, {
+        showRetry: true,
+        showCancel: true,
+        onRetry: () => getRecipesForCollections(tags),
+        onCancel: () => errorStore.hideCriticalErrorModal()
+      });
+    }
   };
 
   /**
@@ -169,11 +244,18 @@ export function useDataService() {
    * const dataService = useDataService();
    * const { userData, userRecipes } = await dataService.getUserData();
    */
-  const getCurrentUserData = async (): Promise<GetUserDataResponse> => {
-    const userDataResponse = await axios.get("/users/me");
-    const userData = userDataResponse.data.user;
-    const userRecipes = userDataResponse.data.userRecipes;
-    return { userData, userRecipes };
+  const getCurrentUserData = async (): Promise<GetUserDataResponse | undefined> => {
+    try {
+      const userDataResponse = await axios.get("/users/me");
+      const userData = userDataResponse.data.user;
+      const userRecipes = userDataResponse.data.userRecipes;
+      return { userData, userRecipes };
+    } catch (error) {
+      handleError(error, {
+        showRetry: true,
+        onRetry: () => getCurrentUserData()
+      });
+    }
   };
 
   /**
@@ -233,6 +315,8 @@ export function useDataService() {
     updateUserRecipes,
     updateRecipe,
     getPublicRecipes,
+    getPublicRecipesByTag,
+    getRecipesForCollections,
     deleteRecipe,
     getUserData,
     getCurrentUserData,

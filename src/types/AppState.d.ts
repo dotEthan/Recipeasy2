@@ -11,6 +11,7 @@ export interface AppStore {
   lightMode: Ref<boolean>;
 
   isAuthModalOpen: ComputedRef<boolean>;
+  recipesPerCollection: ComputedRef<number>;
 
   setInitialAppState(appState: InitialAppState): void;
   resetAppStates(): void;
