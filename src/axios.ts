@@ -5,7 +5,7 @@ import router from "./router/main";
 import { useAppStore } from "./stores/appStore";
 
 const instance: AxiosInstance = axios.create({
-  baseURL: `${import.meta.env.VITE_API_BASE_URL}/v1`,
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/v1`,
   withCredentials: true
 });
 
@@ -30,6 +30,7 @@ instance.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log("axios error: ", error);
     if (error.response?.status === 401) {
       if (error.response.errorCode === "401:ACCESS_TOKEN_EXPIRED") {
         console.log("refresh and retry");

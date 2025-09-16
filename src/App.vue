@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 
-import { onMounted, onUnmounted } from "vue";
+import { onBeforeMount } from "vue";
 
 import HeaderComponent from "@/components/core/header/HeaderComponent.vue";
 import AppOverlays from "@/components/core/shared/appOverlays/AppOverlays.vue";
@@ -9,19 +9,9 @@ import { useAppService } from "@/composables/useAppService";
 
 const appService = useAppService();
 
-console.log("old data, refresh: ");
-appService.initializeApp();
-
-// TODO changes coming with Express update
-onMounted(() => {
-  window.addEventListener("beforeunload", appService.handleUnsavedChanges);
+onBeforeMount(async () => {
+  await appService.initializeApp();
 });
-onUnmounted(() => {
-  window.removeEventListener("beforeunload", appService.handleUnsavedChanges);
-});
-
-// TODO Once at start (needed?)
-appService.onResize();
 </script>
 
 <template>

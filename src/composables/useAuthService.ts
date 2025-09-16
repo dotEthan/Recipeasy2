@@ -4,7 +4,6 @@ import { AxiosError } from "axios";
 import { ref } from "vue";
 
 import axios from "@/axios";
-import router from "@/router/main";
 import { useAppStore } from "@/stores/appStore";
 import { useRecipeStore } from "@/stores/recipeStore";
 import { useShoppingListStore } from "@/stores/shoppingListStore";
@@ -12,9 +11,9 @@ import { useToastStore } from "@/stores/toastStore";
 import { useUserStore } from "@/stores/userStore";
 import type { StandardRecipeApiResponse } from "@/types/ApiResponse.d";
 import type { Recipe } from "@/types/Recipes.d";
-import { ToastType } from "@/types/Toasts";
+import { TOAST_TYPES, ToastType } from "@/types/Toasts";
 import type { LocalUser } from "@/types/UserState.d";
-import { handleError } from "@/utilities/ErrorHandler";
+import { clearAllCachesExceptCollections } from "@/utilities";
 
 /**
  * Handles Authorization related API calls and initilizations
@@ -112,7 +111,7 @@ export function useAuthService() {
       };
 
       appStore.setInitialAppState(appState);
-      toastStore.showToast("Login Successful", ToastType.SUCCESS);
+      toastStore.addTimedToast("Login Successful", TOAST_TYPES.SUCCESS);
 
       return localUser.verified;
     } catch (err) {
@@ -138,21 +137,11 @@ export function useAuthService() {
     try {
       clearError();
       await axios.delete("/auth/refresh-token");
-
-      const storedKeys = Object.keys(sessionStorage);
-
-      storedKeys.map((key) => {
-        console.log("key:", key);
-        if (key !== "publicRecipes") {
-          console.log("remove:", key);
-          sessionStorage.removeItem(key);
-        }
-      });
-      localStorage.clear();
+      clearAllCachesExceptCollections();
       recipeStore.resetUserRecipeState();
       appStore.resetAppStates();
 
-      toastStore.showToast("User Logged out", ToastType.SUCCESS);
+      toastStore.addTimedToast("User Logged out", TOAST_TYPES.SUCCESS);
     } catch (err) {
       error.value = err instanceof Error ? err.message : "Logout failed";
       throw err;

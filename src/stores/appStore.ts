@@ -30,10 +30,10 @@ export const useAppStore = defineStore("app", (): AppStore => {
 
   // Watchers
   watchEffect(() => {
-    sessionStorage.setItem("authModalType", authModalType.value);
-    sessionStorage.setItem("screenSize", screenSize.value);
-    sessionStorage.setItem("isMobileMenuOpen", String(isMobileMenuOpen.value));
-    sessionStorage.setItem("lightMode", String(lightMode.value));
+    sessionStorage.setItem("authModalType-cached", authModalType.value);
+    sessionStorage.setItem("screenSize-cached", screenSize.value);
+    sessionStorage.setItem("isMobileMenuOpen-cached", String(isMobileMenuOpen.value));
+    sessionStorage.setItem("lightMode-cached", String(lightMode.value));
   });
 
   // Computed

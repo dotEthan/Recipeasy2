@@ -14,14 +14,14 @@ import {
   StandardUserApiResponse
 } from "@/types/ApiResponse.d";
 import { MealTime, Recipe, Visibility } from "@/types/Recipes.d";
-import { ToastType } from "@/types/Toasts";
+import { TOAST_TYPES } from "@/types/Toasts";
 import type { LocalUser } from "@/types/UserState.d";
 import { getPublicIdFromUrl } from "@/utilities";
-import { handleError } from "@/utilities/ErrorHandler";
+import { handleError } from "@/utilities";
 
 /**
  * Handles all Data related API calls and initilizations
- * @todo split into user/recipe?
+ * @todo split into user/recipe - In Progress
  * @todo remove error, tie into erorr store
  * @returns - saveNewRecipe, updateUserRecipes, updateRecipe, getPublicRecipes, deleteRecipe,  getUserData, error
  * @example
@@ -60,7 +60,7 @@ export function useDataService() {
 
       recipeStore.finishSuccessfulSave(returnedRecipe);
       userStore.addIdToLocalUserRecipes(recipe._id);
-      toastStore.showToast("New Recipe Created", ToastType.SUCCESS);
+      toastStore.addToast("New Recipe Created", TOAST_TYPES.SUCCESS, {});
     } catch (error) {
       recipeStore.revertFailedSave(recipe);
 
@@ -90,7 +90,7 @@ export function useDataService() {
       const user = addUserRecipesResponse.data.user;
       if (!user) throw new Error("Updated Data not found, retry, reset FE changes?");
       userStore.setLocalUser(user);
-      toastStore.showToast("Public recipe added", ToastType.SUCCESS);
+      toastStore.addToast("Public recipe added", TOAST_TYPES.SUCCESS, {});
       return user;
     } catch (error) {
       console.log("upset user recipe error: ", error);
@@ -126,10 +126,23 @@ export function useDataService() {
         recipeStore.updatePublicRecipe(returnedRecipe);
       }
       recipeStore.finishSuccessfulUpdate(returnedRecipe);
-      toastStore.showToast("Recipe Updated", ToastType.SUCCESS);
+      toastStore.addToast("Recipe Updated", TOAST_TYPES.SUCCESS, {});
     } catch (error) {
       console.log("Updating Recipe error: ", error);
-      recipeStore.revertFailedUpdate(recipe);
+      handleError(error, {
+        btnOptions: {
+          showRetry: true,
+          showCancel: true,
+          onCancel: () => recipeStore.revertFailedUpdate(recipe),
+          onRetry: () => updateRecipe(recipe)
+        },
+        context: {
+          location: "dataService",
+          operation: "updating recipe",
+          recipeId: recipe._id
+        }
+      });
+      // recipeStore.revertFailedUpdate(recipe);
     }
   };
 
@@ -151,11 +164,15 @@ export function useDataService() {
       errorStore.hideCriticalErrorModal();
       return publicRecipes;
     } catch (error) {
+      // This pattern?
+
       handleError(error, {
-        showRetry: true,
-        showCancel: true,
-        onRetry: () => getPublicRecipes(),
-        onCancel: () => errorStore.hideCriticalErrorModal()
+        btnOptions: {
+          showRetry: true,
+          showCancel: true,
+          onRetry: () => getPublicRecipes(),
+          onCancel: () => errorStore.hideCriticalErrorModal()
+        }
       });
     }
   };
@@ -180,10 +197,12 @@ export function useDataService() {
       return getRecipeByTagResponse.data as Recipe[];
     } catch (error) {
       handleError(error, {
-        showRetry: true,
-        showCancel: true,
-        onRetry: () => getPublicRecipesByTag(tags),
-        onCancel: () => errorStore.hideCriticalErrorModal()
+        btnOptions: {
+          showRetry: true,
+          showCancel: true,
+          onRetry: () => getPublicRecipesByTag(tags),
+          onCancel: () => errorStore.hideCriticalErrorModal()
+        }
       });
     }
   };
@@ -199,24 +218,15 @@ export function useDataService() {
   const getRecipesForCollections = async (
     tags: String[] | MealTime
   ): Promise<Recipe[] | undefined> => {
-    try {
-      const limit = appStore.recipesPerCollection;
-      const getRecipeByTagResponse = await axios.get("/recipes/collections", {
-        params: {
-          visibility: Visibility.Public,
-          limit: limit,
-          tags: tags
-        }
-      });
-      return getRecipeByTagResponse.data as Recipe[];
-    } catch (error) {
-      handleError(error, {
-        showRetry: true,
-        showCancel: true,
-        onRetry: () => getRecipesForCollections(tags),
-        onCancel: () => errorStore.hideCriticalErrorModal()
-      });
-    }
+    const limit = appStore.recipesPerCollection;
+    const getRecipeByTagResponse = await axios.get("/recipes/collections", {
+      params: {
+        visibility: Visibility.Public,
+        limit: limit,
+        tags: tags
+      }
+    });
+    return getRecipeByTagResponse.data as Recipe[];
   };
 
   /**
@@ -252,8 +262,10 @@ export function useDataService() {
       return { userData, userRecipes };
     } catch (error) {
       handleError(error, {
-        showRetry: true,
-        onRetry: () => getCurrentUserData()
+        btnOptions: {
+          showRetry: true,
+          onRetry: () => getCurrentUserData()
+        }
       });
     }
   };
@@ -273,7 +285,7 @@ export function useDataService() {
       await axios.delete(`/recipes/${id}`);
       recipeStore.finishRecipeDeletion();
       userStore.removeIdFromLocalUserRecipes(id);
-      toastStore.showToast("Recipe Deleted", ToastType.SUCCESS);
+      toastStore.addToast("Recipe Deleted", TOAST_TYPES.SUCCESS, {});
     } catch (error: unknown) {
       recipeStore.revertRecipeDeletion(id);
 

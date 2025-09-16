@@ -7,9 +7,21 @@ interface ErrorStore {
 
   showCriticalErrorModal: (config: Omit<ErrorModalConfig, "id">) => void;
   hideCriticalErrorModal: () => void;
-  addToastError: (error: ToastError) => string;
-  setValidationErrors: (errors: Record<string, string>) => void;
-  clearValidationErrors: () => void;
+  addToastError: (error: ToastError, persistent: boolean, options?: ErrorHandlerOptions) => void;
+}
+
+interface ErrorHandlerOptions {
+  btnOptions?: {
+    showRetry?: boolean;
+    showCancel?: boolean;
+    showCancelNoRevert?: boolean;
+    showReport?: boolean;
+    onRetry?: () => void | Promise<unknown>;
+    onCancel?: () => void | Promise<void>;
+    onCancelNoRevert?: () => void | Promise<void>;
+    onReport?: () => void | Promise<void>;
+  };
+  context?: any;
 }
 
 export interface SignatureError {

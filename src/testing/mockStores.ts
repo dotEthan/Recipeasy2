@@ -140,7 +140,7 @@ export const getMockedToastStore = (overrides: Partial<ToastStore> = {}) => ({
   activeTimeouts: new Map(),
   startTimes: new Map(),
 
-  showToast: vi.fn(),
+  addTimedToast: vi.fn(),
   startToastTimer: vi.fn(),
   removeToast: vi.fn(),
   pauseTimer: vi.fn(),

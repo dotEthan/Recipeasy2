@@ -103,17 +103,6 @@ onMounted(async () => {
           :recipeData="collection.recipes"
           :loading="collection.loading"
           :error="collection.error" />
-        <!-- <CollectionComponent
-          ref="recommended-recipes-collection"
-          title="Recommended Public Recipes"
-          :recipeData="recommendedRecipes" />
-        <CollectionComponent title="Ethan's Favourites" :recipeData="ethansFavouriteRecipes" />
-        <CollectionComponent
-          ref="mealtime-collection"
-          :title="'Ready for ' + mealTime"
-          :recipeData="mealTimeRecipes" />
-        <CollectionComponent title="Snacks" :recipeData="snackRecipes" />
-        <CollectionComponent title="Healthy Foods" :recipeData="healthyRecipes" /> -->
       </div>
     </div>
     <div class="attribute">

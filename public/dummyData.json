@@ -1,0 +1,1856 @@
+[
+  {
+    "id": "recommended",
+    "title": "Recommended Recipes",
+    "recipes": [
+      {
+        "_id": "67f125883177aa84c4a05938",
+        "name": "\"Chick'un\" Shreds",
+        "description": "So real they might worry Vegan guests",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1745600031/Recipeasy/user_uploads/67fd9f4603098c7b510d818d/uxkphxnj1huzvzdnarcg.webp",
+        "info": {
+          "mealType": ["dinner"],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": {
+          "ratings": [
+            {
+              "rating": 10,
+              "timestamp": "2025-04-05T12:43:52.240Z",
+              "userId": "67fd9f4603098c7b510d818d"
+            }
+          ],
+          "averageRating": 10,
+          "totalRatings": 1,
+          "ratingsSum": 10
+        },
+        "url": "https://avocadosandales.com/2017/12/17/chickwheat-shreds/",
+        "ingredients": [
+          {
+            "steps": [
+              { "amount": "2", "unit": "cups", "name": "Cold Cooked Chickpeas" },
+              {
+                "amount": "1",
+                "unit": "cup",
+                "name": "Aquafaba (Veggie broth or water can be substituted)"
+              },
+              { "amount": "2", "unit": "tbsp", "name": "Vegetable oil" },
+              { "unit": "tbsp", "name": "White miso paste", "amount": "2" },
+              { "unit": "tsp", "name": "Salt", "amount": "1.5" },
+              { "name": "Onion Powder", "amount": "1", "unit": "tbsp" },
+              { "unit": "tsp", "amount": "2", "name": "Garlic Powder" },
+              { "amount": "1", "unit": "tsp", "name": "Apple Cider Vinegar" },
+              { "amount": "1 3/4", "unit": "cup", "name": "Vital Wheat Gluten" }
+            ],
+            "title": "Ingredients"
+          }
+        ],
+        "directions": [
+          {
+            "title": "do first",
+            "steps": [
+              "Measure all ingredients up to the vinegar. ",
+              "Blend all ingredients in a high speed blender until completely smooth",
+              "Combine vital wheat gluten and chickpea mixture in a large bowl. Let rest about 15 minutes to allow gluten to absorb the moisture.",
+              "Separate dough into 2 parts. Fit a food processor with a dough hook (see note above), blend each portion until the dough is warm, stretchy, smooth, and ‘shreds’ of gluten are visible, this can take up to 8 minutes",
+              "Combine 2 kneaded balls of dough onto a large sheet of aluminum foil. Wrap fully, then repeat once more.",
+              "Add 2 cups of water to your Instant Pot, then set for manual, high pressure for 120 minutes. ",
+              "Once finished quick release the pressure and remove foil when cool enouhg to touch. Split roast in half and gently shred along the grains",
+              "Refrigerate for best texture."
+            ]
+          }
+        ],
+        "visibility": "public",
+        "tags": [
+          "Seitan",
+          "Chickwheat",
+          "Chickpeas",
+          "Vital Wheat Glute",
+          "Vegan",
+          "Protein",
+          "snack",
+          "lunch",
+          "supper"
+        ],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:43:52.240Z"
+      },
+      {
+        "_id": "67f125883177aa84c4a05937",
+        "name": "Plant Based Cheese Dip",
+        "description": "Healthy, gooey, and delicious!",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090140/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/yxqha612s1holyscxa5g.webp",
+        "info": {
+          "mealType": ["snack"],
+          "cookTime": { "value": "25 minutes", "unit": "minutes" },
+          "prepTime": { "value": "10 minutes", "unit": "minutes" }
+        },
+        "ratings": {
+          "ratings": [
+            {
+              "rating": 5,
+              "userId": "67eeb97488940f7d0833071e",
+              "timestamp": "2025-04-05T12:43:52.240Z"
+            }
+          ],
+          "averageRating": 5,
+          "totalRatings": 1,
+          "ratingsSum": 5
+        },
+        "url": "https://simpleveganblog.com/vegan-cheese/",
+        "ingredients": [
+          {
+            "title": "Ingredients",
+            "steps": [
+              { "name": "Carrots", "amount": "1", "unit": "cup" },
+              { "amount": "2", "name": "Potatoes", "unit": "cup" },
+              { "amount": "1/2", "unit": "cup", "name": "Water" },
+              { "name": "Nutritional Yeast", "amount": "1/2", "unit": "cup" },
+              { "unit": "cup", "name": "Extra virgin olive oil", "amount": "1/2" },
+              { "unit": "tablespoon", "amount": "1/2", "name": "Lemon Juice" },
+              { "name": "Salt", "unit": "teaspoon", "amount": "1/2" },
+              { "name": "Onion Powder", "unit": "teaspoon", "amount": "1/2" },
+              { "name": "Garlic Powder", "unit": "teaspoon", "amount": "1/2" }
+            ]
+          }
+        ],
+        "directions": [
+          {
+            "title": "Sauce-y",
+            "steps": [
+              "Place the potatoes and carrots in a medium pot and cover them with cold water by about 1 inch (2.5 cm).",
+              "Bring to a boil, then reduce the heat and simmer, uncovered, for about 15-20 minutes or until soft.",
+              "Drain the potatoes and carrots in a colander.",
+              "Transfer to a high-speed blender with all the remaining ingredients. Blend until smooth and serve immediately."
+            ]
+          }
+        ],
+        "visibility": "public",
+        "tags": ["cheese", "dip", "potato", "carrot", "vegan", "snack", "lunch", "side"],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:43:52.240Z"
+      },
+      {
+        "_id": "67f125883177aa84c4a05936",
+        "name": "Vanilla Milkshake",
+        "description": "A cool tasty Summer treat!",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733090094/Recipeasy/user_uploads/users/KrsgIBvUokhQmnSZ3cFJvzGAGRT2/x3gq5jk5hnnl6vgqmlhx.jpg",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "https://www.theconsciousplantkitchen.com/vegan-milkshake/",
+        "ingredients": [
+          {
+            "title": "Milkshake",
+            "steps": [
+              { "name": "Oat Milk", "unit": "cup", "amount": "1/2", "process": "" },
+              {
+                "unit": "cup",
+                "amount": "1",
+                "name": "Plant-Ice Vanilla Ice Cream",
+                "process": ""
+              },
+              { "amount": "3/4", "name": "Frozen Strawberries", "unit": "cup", "process": "" },
+              { "name": "Vanilla Extract", "unit": "teaspoon", "amount": "1/2", "process": "" }
+            ]
+          },
+          {
+            "steps": [
+              { "amount": "1-2", "name": "Plant Based sprinkles", "unit": "teaspoons" },
+              { "name": "Plant Based Marshmallows", "amount": "10" },
+              { "name": "Plant Based Whipped Cream", "unit": "cup", "amount": "1/4" }
+            ],
+            "title": "Topping"
+          }
+        ],
+        "directions": [
+          {
+            "title": "Milkshake",
+            "steps": ["Add all ingredients to a blender and blend till mixed"]
+          },
+          { "title": "Toppings", "steps": ["Add as desired"] }
+        ],
+        "visibility": "public",
+        "tags": ["milkshake", "drink", "vegan", "snack"],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-14T14:50:38.948Z"
+      },
+      {
+        "_id": "67f125883177aa84c4a05939",
+        "name": "Oatmeal Pancakes",
+        "description": "So real they might worry Vegan guests",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733251776/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/oxttjwzvsliystpma9zi.jpg",
+        "info": {
+          "mealType": ["breakfast"],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "https://avocadosandales.com/2017/12/17/chickwheat-shreds/",
+        "ingredients": [
+          {
+            "title": "Ingredients",
+            "steps": [
+              { "unit": "cup", "name": "oatmeal", "amount": "1" },
+              { "amount": "2", "name": "Apples" },
+              { "amount": "2", "unit": "tbsp", "name": "Egg Replacer" },
+              { "amount": "1/2", "name": "Yogurt", "unit": "cup" },
+              { "amount": "2", "unit": "tsp", "name": "Cinanmon" },
+              { "name": "Vanilla Extract", "amount": "1", "unit": "tbsp" },
+              { "name": "Salt", "amount": "sprinkle" }
+            ]
+          }
+        ],
+        "directions": [
+          {
+            "steps": ["Mix dry", "Add wet and mix", "Bake at medium heat till cooked"],
+            "title": "do first"
+          }
+        ],
+        "visibility": "public",
+        "tags": ["pancake", "Oatmeal", "Vegan", "breakfast"],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:43:52.240Z"
+      },
+      {
+        "_id": "67f125883177aa84c4a0593a",
+        "name": "Quinoa Black Bean Buddha Bowl",
+        "description": "A protein-packed, nutrient-dense bowl combining quinoa, roasted vegetables, and a zesty tahini dressing",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1737748143/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/iogiia8ma0n4ox518ldd.jpg",
+        "info": {
+          "mealType": ["lunch", "dinner"],
+          "cookTime": { "value": "25 minutes", "unit": "minutes" },
+          "prepTime": { "value": "15 minutes", "unit": "minutes" },
+          "nutritionalInfo": [
+            { "amount": "385", "name": "Calories" },
+            { "amount": "18g", "name": "Protein" },
+            { "name": "Carbohydrates", "amount": "55g" },
+            { "amount": "12g", "name": "Fat" },
+            { "name": "Fiber", "amount": "12g" }
+          ]
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "",
+        "ingredients": [
+          {
+            "title": "Quinoa Base",
+            "steps": [
+              { "unit": "cup", "name": "Quinoa", "amount": "1" },
+              { "amount": "2", "name": "Water", "unit": "cups" }
+            ]
+          },
+          {
+            "steps": [
+              { "unit": "large", "amount": "1", "name": "Sweet Potato" },
+              { "name": "Red Bell Pepper", "unit": "whole", "amount": "1" },
+              { "amount": "0.5", "unit": "whole", "name": "Red Onion" },
+              { "name": "Olive Oil", "unit": "tablespoons", "amount": "2" }
+            ],
+            "title": "Roasted Vegetables"
+          },
+          {
+            "steps": [
+              { "amount": "1", "unit": "can", "name": "Black Beans" },
+              { "unit": "teaspoon", "name": "Cumin", "amount": "1" }
+            ],
+            "title": "Black Beans"
+          },
+          {
+            "steps": [
+              { "name": "Tahini", "unit": "cup", "amount": "0.25" },
+              { "unit": "tablespoons", "amount": "2", "name": "Lemon Juice" },
+              { "amount": "1", "name": "Garlic", "unit": "clove" }
+            ],
+            "title": "Tahini Dressing"
+          }
+        ],
+        "directions": [
+          {
+            "title": "Quinoa Preparation",
+            "steps": [
+              "Rinse quinoa thoroughly",
+              "Add quinoa and water to pot",
+              "Bring to boil, then simmer for 15 minutes",
+              "Fluff with fork when done"
+            ]
+          },
+          {
+            "title": "Roasting Vegetables",
+            "steps": [
+              "Chop vegetables into 1-inch cubes",
+              "Toss with olive oil and salt",
+              "Roast at 425°F for 20-25 minutes",
+              "Stir halfway through cooking"
+            ]
+          },
+          {
+            "steps": [
+              "Drain and rinse canned beans",
+              "Heat in pan with cumin",
+              "Season with salt and pepper"
+            ],
+            "title": "Black Beans"
+          },
+          {
+            "steps": [
+              "Blend tahini, lemon juice, and garlic",
+              "Add water to reach desired consistency",
+              "Layer quinoa, vegetables, and beans in bowl",
+              "Drizzle with tahini dressing"
+            ],
+            "title": "Dressing and Assembly"
+          }
+        ],
+        "visibility": "public",
+        "tags": [
+          "vegan",
+          "quinoa",
+          "buddha-bowl",
+          "high-protein",
+          "meal-prep",
+          "gluten-free",
+          "healthy",
+          "black-beans",
+          "tahini",
+          "south-american-inspired",
+          "grain-bowl",
+          "quick-meal",
+          "plant-based",
+          "vegetable-rich",
+          "legumes",
+          "lunch"
+        ],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-05-19T21:48:29.946Z"
+      }
+    ],
+    "tags": ["popular"],
+    "loading": false,
+    "error": null
+  },
+  {
+    "id": "ethansFavourites",
+    "title": "Ethan's Favourites",
+    "recipes": [
+      {
+        "_id": "67f125883177aa84c4a05945",
+        "name": "Vietnamese Tofu Banh Mi",
+        "description": "Classic Vietnamese sandwich with crispy marinated tofu, pickled vegetables, and fresh herbs",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1737748523/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/rwjuq7idlw7nwbhzycwi.jpg",
+        "info": {
+          "mealType": ["lunch"],
+          "cookTime": { "value": "20 minutes", "unit": "minutes" },
+          "prepTime": { "value": "30 minutes", "unit": "minutes" },
+          "nutritionalInfo": [
+            { "amount": "380", "name": "Calories" },
+            { "amount": "20g", "name": "Protein" },
+            { "name": "Carbohydrates", "amount": "45g" },
+            { "name": "Fat", "amount": "15g" },
+            { "amount": "7g", "name": "Fiber" }
+          ]
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "",
+        "ingredients": [
+          {
+            "steps": [
+              { "unit": "block", "name": "Extra Firm Tofu", "amount": "1" },
+              { "unit": "tablespoons", "amount": "3", "name": "Soy Sauce" },
+              { "amount": "1", "unit": "tablespoon", "name": "Maple Syrup" }
+            ],
+            "title": "Tofu"
+          },
+          {
+            "title": "Pickled Vegetables",
+            "steps": [
+              { "unit": "medium", "amount": "2", "name": "Carrots" },
+              { "amount": "1", "unit": "small", "name": "Daikon Radish" },
+              { "name": "Rice Vinegar", "unit": "cup", "amount": "0.25" },
+              { "name": "Sugar", "unit": "tablespoon", "amount": "1" }
+            ]
+          },
+          {
+            "title": "Sandwich Components",
+            "steps": [
+              { "unit": "vegan", "name": "Baguette", "amount": "1" },
+              { "amount": "0.5", "unit": "cup", "name": "Fresh Cilantro" },
+              { "name": "Cucumber", "unit": "medium", "amount": "1" }
+            ]
+          },
+          {
+            "steps": [
+              { "name": "Vegan Mayonnaise", "unit": "cup", "amount": "0.25" },
+              { "name": "Sriracha", "amount": "1", "unit": "tablespoon" }
+            ],
+            "title": "Vegan Mayo"
+          }
+        ],
+        "directions": [
+          {
+            "steps": [
+              "Press tofu to remove moisture",
+              "Cut into thin slices",
+              "Marinate in soy sauce and maple syrup",
+              "Bake at 400°F until crispy"
+            ],
+            "title": "Tofu Preparation"
+          },
+          {
+            "steps": [
+              "Julienne carrots and daikon",
+              "Mix with rice vinegar and sugar",
+              "Let sit for 15-20 minutes"
+            ],
+            "title": "Pickled Vegetables"
+          },
+          {
+            "title": "Vegan Mayo",
+            "steps": ["Mix vegan mayonnaise with sriracha", "Adjust spice to taste"]
+          },
+          {
+            "steps": [
+              "Slice baguette",
+              "Spread sriracha mayo",
+              "Layer crispy tofu",
+              "Add pickled vegetables",
+              "Top with fresh cilantro and cucumber"
+            ],
+            "title": "Sandwich Assembly"
+          }
+        ],
+        "visibility": "public",
+        "tags": [
+          "vegan",
+          "vietnamese",
+          "banh-mi",
+          "tofu",
+          "sandwich",
+          "pickled-vegetables",
+          "street-food",
+          "plant-based",
+          "asian-cuisine",
+          "sriracha",
+          "fresh-herbs",
+          "snack"
+        ],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:43:52.240Z"
+      },
+      {
+        "_id": "67f1259f3177aa84c4a0595e",
+        "name": "Vegan Boston Cream Donuts",
+        "description": "Using Noracooks.com's Vegan Custard Recipe\n\nhttps://www.noracooks.com/vegan-custard/",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1738457319/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/q2nljp7yvdn8dh2lzetj.jpg",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "https://www.noracooks.com/vegan-boston-cream-donuts/",
+        "ingredients": [
+          {
+            "steps": [
+              { "amount": "1", "unit": "cup", "name": "unsweetened soy milk" },
+              { "amount": "1", "name": "Yeast ", "unit": "packet (2 1/4 tsp)" },
+              { "name": "granulated sugar", "unit": "cup", "amount": "1/3" },
+              { "name": "unsweetened Applesauce", "unit": "cup", "amount": "1/2" },
+              { "name": "Vegan butter (room temp)", "unit": "tbsp", "amount": "6" },
+              { "name": "vanilla extract", "unit": "tsp", "amount": "1" },
+              { "unit": "tsp", "amount": "1/2", "name": "salt" },
+              { "name": "Flour (+extra)", "amount": "4", "unit": "cups" },
+              { "name": "Oil for frying" },
+              { "name": "Vegan Custard", "unit": "Recipe", "amount": "1" }
+            ],
+            "title": "Donut Ingredients"
+          },
+          {
+            "steps": [
+              { "amount": "1/2", "unit": "cup", "name": "chocolate chips" },
+              { "amount": "2", "name": "Vegan Butter", "unit": "tbsp" },
+              { "amount": "1", "name": "corn syrup (optional)", "unit": "tbsp" },
+              { "unit": "tbsp", "name": "water", "amount": "1" }
+            ],
+            "title": "Chocolate Glaze"
+          }
+        ],
+        "directions": [
+          {
+            "title": "Donut Directions",
+            "steps": [
+              "Heat the soy milk in the microwave for about a minute until it's as warm as bath water. Too hot and it could kill the yeast. You could also warm it in a small pot.",
+              "Pour the warmed milk into a large bowl, or the bowl of a stand mixer. Add the instant yeast and sugar, give it a little stir and let sit for 3-4 minutes, until it's a bit frothy.",
+              "To the bowl with the yeast/milk/sugar mixture, add the applesauce, softened vegan butter, vanilla, salt and 2 cups of flour. Mix on low speed with a dough hook (or by hand with a spoon) for a few minutes, then add the rest of the flour and mix, until a soft dough starts to form. ",
+              "If using a stand mixer, beat with the dough hook for 2-3 minutes. If you are mixing the dough by hand, mix it as well as you can with a spoon, then transfer to a lightly floured surface and knead for about 5 minutes until you have a soft, sturdy ball of dough. It may be slightly sticky, but if it's very sticky, add flour, a little at a time, until it's easier to handle.",
+              "Lightly grease a large bowl, then place the dough inside the bowl. Cover with a tea towel, and allow to rise in a warm place for 30 minutes. I preheat my oven to 170℉, then turn it off, place the bowl inside and leave the oven door cracked.",
+              "After 30 minutes, punch the dough down gently, and place on a floured surface. Roll to about 1/2 inch thick and use a donut cutter (or biscuit cutter) to cut the donuts into round circles. You will get around 16.",
+              "Line a large baking sheet with parchment paper, and place the cut donuts on it. Cover with the towel for about 15 minutes while you heat the oil.",
+              "Heat 2-3 inches of oil in a large pan or pot until it reaches 375℉. Use a food thermometer to ensure the right temperature.",
+              "Add a few donuts at a time to the oil and cook for about 1-2 minutes on each side, until golden brown, being careful not to let them get too dark and burnt. If the oil is hot, this won't take long. Beware of splattering oil!",
+              "Place the cooked donuts on a cooling rack with a pan or parchment paper underneath to catch any oil drippings. Repeat until all donuts are fried."
+            ]
+          },
+          {
+            "steps": [
+              "Place chocolate chips, vegan butter, corn syrup and water in a small bowl and microwave in 30 second increments, stirring after each time, until completely melted and smooth.",
+              "Cut a deep slit in each donut, then use a piping bag with large tip and pipe pastry cream into each one. Dip the tops of the donuts in the glaze, then place back on the cooling rack. Enjoy!"
+            ],
+            "title": "Chocolate Glaze"
+          },
+          {
+            "steps": [
+              "Once the donuts are cut and placed on the parchment lined pan, preheat the oven to 350℉. Spray the tops of the donuts with oil, then bake for 10-15 minutes until lightly golden on top. You may also brush the outside with melted vegan butter, but it's not necessary. Fill and glaze the tops the same as if they were fried."
+            ],
+            "title": "To Bake"
+          },
+          {
+            "steps": [
+              "Spray the air fryer basket with oil, then place 3-4 donuts in a single layer. Spray the donuts with oil, and cook at 350℉ for 5 minutes, then flip and cook 3-5 more minutes until golden brown. You could brush them with melted butter when they are done, but you don't have to. Pipe with cream and glaze."
+            ],
+            "title": "To Air Fry"
+          },
+          {
+            "steps": [
+              "May use almond milk or another milk instead of soy, if needed.",
+              "Donuts are best when eaten the same day, but they can be kept in the refrigerator for 3-4 days if needed. They can also be frozen.",
+              "Gluten free - Try a gluten free all purpose flour like King Arthur Brand or Bob's Red Mill."
+            ],
+            "title": "Notes"
+          },
+          {
+            "title": "Nutiriton",
+            "steps": [
+              "Serving: 1of 16 donuts | Calories: 323kcal | Carbohydrates: 38g | Protein: 4g | Fat: 18g | Saturated Fat: 11g | Sodium: 124mg | Potassium: 57mg | Fiber: 1g | Sugar: 11g | Vitamin A: 299IU | Vitamin C: 1mg | Calcium: 31mg | Iron: 2mg"
+            ]
+          }
+        ],
+        "visibility": "public",
+        "tags": ["snack"],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:44:15.780Z"
+      },
+      {
+        "_id": "67f1259f3177aa84c4a05952",
+        "name": "Lahmacun",
+        "description": "Lahmacun, also known as Turkish Pizza, is one of the best Middle Eastern recipes around, and so quick and easy too. ",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1741188078/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/gzxoomxaztd8ylgjyr00.jpg",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "ingredients": [
+          {
+            "title": "Ingedients",
+            "steps": [
+              { "name": "Tortillas", "amount": "4", "unit": "Large" },
+              { "amount": "200g", "name": "firm tofu, crumbled " },
+              { "amount": "2", "name": " tomato paste", "unit": "tbsp" },
+              { "name": "Olive Oil", "unit": "tbsp", "amount": "1" },
+              { "name": "ground cumin", "amount": "1", "unit": "tsp" },
+              { "unit": "tsp", "amount": "1", "name": "smoked paprika" },
+              { "unit": "tsp", "name": "chilli flakes (optional)", "amount": "1/2" },
+              { "amount": "1/2", "name": "red onion (finely chopped)", "unit": "tsp" },
+              { "name": "tomato, finely diced", "amount": "1" },
+              { "unit": "bunch", "name": "Parsley", "amount": "1" },
+              { "name": "Salt and Pepper to taste" }
+            ]
+          },
+          {
+            "title": "Optional Garnish",
+            "steps": [
+              { "amount": " ", "name": "Lemon Wedges" },
+              { "name": "lettuce" },
+              { "name": "tomato" },
+              { "name": "parsley" }
+            ]
+          }
+        ],
+        "directions": [
+          {
+            "title": "Directions",
+            "steps": [
+              "In a bowl, mix crumbled tofu, tomato paste, olive oil, cumin, smoked paprika, chilli flakes, salt and pepper.",
+              "Stir in diced red onion, tomato, and chopped parsley.",
+              "Spread the tofu mixture evenly over the tortillas. ",
+              "Heat a non-stick frying pan over high heat. Pour over some olive oil Place the topped tortilla in the pan and cook for 3-4 minutes until the base is crispy and the topping is warmed through. ",
+              "Repeat with the remaining tortillas. ",
+              "Squeeze lemon juice over the top for a burst of freshness. ",
+              "Roll up and add fillings like lettuce parsley and tomatoes and enjoy warm or just eat on their own"
+            ]
+          }
+        ],
+        "visibility": "public",
+        "tags": ["Middle Easetern", "pizza", "Easy", "Quick", "supper"],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:44:15.780Z"
+      },
+      {
+        "_id": "67f1259f3177aa84c4a0594e",
+        "name": "Tiramisu Sheet Cake",
+        "description": "This vegan Tiramisu sheet cake is easier and quicker! It has a light and fluffy sponge cake that’s soaked with indulgent coffee syrup and then topped with a rich and creamy homemade vegan mascarpone! And sprinkled with cocoa. Creamy moist and perfect. Gluten-free and nutfree options included.",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1739113712/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/jsqdvt5lyrpeh8ctxvuv.webp",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "https://www.veganricha.com/vegan-tiramisu-sheet-cake/",
+        "ingredients": [
+          {
+            "steps": [
+              { "unit": "cups", "name": "Flour", "amount": "3" },
+              { "unit": "tbsp", "amount": "2", "name": "flour (extra)" },
+              { "name": "sugar", "unit": "cup", "amount": "1/4" },
+              { "unit": "tsp", "amount": "1/2 ", "name": "baking powder" },
+              { "amount": "1/8", "unit": "tsp", "name": "baking soda" },
+              { "amount": "1/8", "unit": "tsp", "name": "salt" },
+              { "unit": "tbsp", "name": "oil", "amount": "2" },
+              { "name": "yogurt", "amount": "2", "unit": "tbsp" },
+              { "amount": "1/2", "unit": "tsp", "name": "vanilla" },
+              { "name": "milk", "amount": "1/2", "unit": "cup" }
+            ],
+            "title": "Cake"
+          },
+          {
+            "title": "Coffee Syrup",
+            "steps": [
+              { "name": "Coffee", "unit": "cup", "amount": "1/2" },
+              { "amount": "1", "unit": "tbsp", "name": "coffee liquor" },
+              { "unit": "tbsp", "amount": "2", "name": "brown Sugar" }
+            ]
+          },
+          {
+            "title": "Cream Layer",
+            "steps": [
+              { "amount": "1", "unit": "cup", "name": "cashews (raw)" },
+              { "amount": "15", "unit": "oz (can)", "name": "full fat coconut milk" },
+              { "amount": "3.5", "name": "non-dairy yogurt,", "unit": "oz" },
+              { "name": "vanilla extract", "amount": "1/2", "unit": "tsp" },
+              { "name": "lemon juice", "amount": "1", "unit": "tbsp" },
+              { "unit": "drops", "name": "almond extract", "amount": "4" },
+              { "amount": "1/4", "unit": "tsp", "name": "salt" },
+              { "unit": "cup", "name": "sugar", "amount": "1/4" }
+            ]
+          },
+          {
+            "title": "topping",
+            "steps": [{ "unit": "cup", "name": "cocoa powder", "amount": "1/4" }]
+          }
+        ],
+        "directions": [
+          {
+            "steps": [
+              "Pre-heat Oven to 350 F (180 C)",
+              "Add all the dry ingredients to a bowl,,That’s the flour, sugar, baking powder and salt. Mix well. Then add in the oil, non-dairy yogurt, vanilla and 1/2 cup of milk and mix in to make a smooth batter which is like thick pancake batter. If the mixture is too stiff add in some non dairy milk, one teaspoon at a time to mix in.",
+              "Line a 8×8 inch or 9×9 inch brownie pan or grease as flour it well. pour the batter into the pan and even it out. Bake at 350 F (180 C) for 22 to 24 minutes or until a toothpick inserted in the centre comes out clean.",
+              "Then remove the cake from the oven, let it cool for 5 minutes then poke holes all over the cake. Depending on how soaked you want the cake you can poke lots of holes or just a few holes. More holes means more coffee syrup soaking. (For maximum soaking, slice a very thin slice from the cake top and then poke holes. This opens up the porous cake texture that absorbs well) "
+            ],
+            "title": "Cake"
+          },
+          {
+            "title": "Coffee Syrup",
+            "steps": [
+              " add all ingredients to a saucepan over medium heat then mix really well. Bring to a boil and take off heat. Pour this all over the cake and let it soak completely."
+            ]
+          },
+          {
+            "steps": [
+              "add all of the cream layer ingredients into a blender and blend until the cashews break down and get creamy. I usually blend for 1 minute then let it sit for 5 minutes then blend it again (repeat 2 – 3times) until the cashews are well blended. Taste and adjust sweetness.",
+              "Pour this blended mixture into a saucepan and cook over medium heat, stir occasionally in the beginning 3 to 4 minutes then stir frequently after that so that lumps do not form. Once the mixture has thickened evenly switch off the heat.",
+              "Let the mixture cool for a few minutes then pour over the soaked cake and even it out really well. Then freeze this cake for 3 to 4 hours. Once the top is set but not soft(not entirely frozen), take out the cake from the freezer.",
+              "Remove the cake using the parchment liner from the pan then dust it with the cocoa powder. Slice and serve! "
+            ],
+            "title": "Cream Layer"
+          }
+        ],
+        "visibility": "public",
+        "tags": [
+          "Plant Based",
+          "Dessert",
+          "Tiramisu",
+          "Sweet",
+          "Creamy",
+          "Cake",
+          "veganricha",
+          "snack"
+        ],
+        "notes": [
+          "Store refrigerated for upto 4 days. Freeze for upto a month.",
+          "if frozen, move it to the fridge the morning of the event or a few hours before. Then take from the fridge, slice and serve. ",
+          "Use about 3 ounces of silken tofu or 1/4 cup more cashews instead of yogurt.",
+          "Instead of coffee liqueur you can also use Kahlua.",
+          "To make this gluten free, use 1/2 cup of almond flour, 1/2 cup of oat flour and 1/4  cup of potato starch mixed really well. Use about 1 cup of this mixture in the cake mixture and also add in 1/4 cup of club soda and mix in. If the mixture is too thin add in the remaining flour, one tablespoon at a time. You don’t want the batter to be too thick but just about the thickness of pancake batter then pour it into parchment lined baking pan and bake.",
+          "Nutfree or cashew free: Use other nuts such as macadamia. Or use 1/2 cup more yogurt and 1/2 cup more coconut milk.",
+          "Coconut free: Use 3/4 cup more cashews and 1 cup water to blend. ",
+          "Oilfree : use 2 tbsp applesauce or 1 tbsp non dairy yogurt or use more non dairy milk instead. "
+        ],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:44:15.780Z"
+      },
+      {
+        "_id": "67f125883177aa84c4a05938",
+        "name": "\"Chick'un\" Shreds",
+        "description": "So real they might worry Vegan guests",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1745600031/Recipeasy/user_uploads/67fd9f4603098c7b510d818d/uxkphxnj1huzvzdnarcg.webp",
+        "info": {
+          "mealType": ["dinner"],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": {
+          "ratings": [
+            {
+              "rating": 10,
+              "timestamp": "2025-04-05T12:43:52.240Z",
+              "userId": "67fd9f4603098c7b510d818d"
+            }
+          ],
+          "averageRating": 10,
+          "totalRatings": 1,
+          "ratingsSum": 10
+        },
+        "url": "https://avocadosandales.com/2017/12/17/chickwheat-shreds/",
+        "ingredients": [
+          {
+            "steps": [
+              { "amount": "2", "unit": "cups", "name": "Cold Cooked Chickpeas" },
+              {
+                "amount": "1",
+                "unit": "cup",
+                "name": "Aquafaba (Veggie broth or water can be substituted)"
+              },
+              { "amount": "2", "unit": "tbsp", "name": "Vegetable oil" },
+              { "unit": "tbsp", "name": "White miso paste", "amount": "2" },
+              { "unit": "tsp", "name": "Salt", "amount": "1.5" },
+              { "name": "Onion Powder", "amount": "1", "unit": "tbsp" },
+              { "unit": "tsp", "amount": "2", "name": "Garlic Powder" },
+              { "amount": "1", "unit": "tsp", "name": "Apple Cider Vinegar" },
+              { "amount": "1 3/4", "unit": "cup", "name": "Vital Wheat Gluten" }
+            ],
+            "title": "Ingredients"
+          }
+        ],
+        "directions": [
+          {
+            "title": "do first",
+            "steps": [
+              "Measure all ingredients up to the vinegar. ",
+              "Blend all ingredients in a high speed blender until completely smooth",
+              "Combine vital wheat gluten and chickpea mixture in a large bowl. Let rest about 15 minutes to allow gluten to absorb the moisture.",
+              "Separate dough into 2 parts. Fit a food processor with a dough hook (see note above), blend each portion until the dough is warm, stretchy, smooth, and ‘shreds’ of gluten are visible, this can take up to 8 minutes",
+              "Combine 2 kneaded balls of dough onto a large sheet of aluminum foil. Wrap fully, then repeat once more.",
+              "Add 2 cups of water to your Instant Pot, then set for manual, high pressure for 120 minutes. ",
+              "Once finished quick release the pressure and remove foil when cool enouhg to touch. Split roast in half and gently shred along the grains",
+              "Refrigerate for best texture."
+            ]
+          }
+        ],
+        "visibility": "public",
+        "tags": [
+          "Seitan",
+          "Chickwheat",
+          "Chickpeas",
+          "Vital Wheat Glute",
+          "Vegan",
+          "Protein",
+          "snack",
+          "lunch",
+          "supper"
+        ],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:43:52.240Z"
+      }
+    ],
+    "tags": ["ethansFavourites"],
+    "loading": false,
+    "error": null
+  },
+  {
+    "id": "snack",
+    "title": "Snack Recipes",
+    "recipes": [
+      {
+        "_id": "67f1259f3177aa84c4a0595b",
+        "name": "Persian Love Cake",
+        "description": "This Vegan Persian Love Cake is a delightful blend of cardamom, rose, and citrus—perfect for special occasions or as a romantic treat! 🌹",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1745621871/recipeasy/user_uploads/67fd9f4603098c7b510d818d/wimlmvlsxrzpp1thfnmm.webp",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "ingredients": [
+          {
+            "title": "Cake",
+            "steps": [
+              { "amount": "1 1/2", "unit": "cups", "name": "Almond Meal " },
+              { "unit": "cup", "amount": "1", "name": "All Purpose Flour" },
+              { "name": "granulated sugar", "amount": "3/4", "unit": "cup" },
+              { "name": "Baking Powder", "amount": "1/2 ", "unit": "tsp" },
+              { "unit": "tsp", "amount": "1/2 ", "name": "Baking Soda" },
+              { "amount": "1/2", "name": "Ground Cardamom", "unit": "tsp" },
+              { "name": "salt", "amount": "1/2", "unit": "tsp" },
+              { "amount": "1/2", "name": "coconut yogurt ", "unit": "cup" },
+              { "name": "Plant Based Milk", "amount": "1/2", "unit": "cup" },
+              { "amount": "1/4", "name": "Melted Coconut Oil", "unit": "cup" },
+              { "name": "Rosewater", "amount": "1", "unit": "tsp" },
+              { "name": "Vanilla", "amount": "1", "unit": "tsp" },
+              { "name": "Lemon Zest", "amount": "1" }
+            ]
+          },
+          {
+            "steps": [
+              { "unit": "cup", "name": "Powdered Sugar", "amount": "1" },
+              { "amount": "2-3", "unit": "tbsp", "name": "Lemon Juice" }
+            ],
+            "title": "Glaze"
+          },
+          {
+            "steps": [
+              { "amount": "1/4", "unit": "cup", "name": "Chopped Pistachios" },
+              { "name": "Dried Rose Petals" }
+            ],
+            "title": "Garnish"
+          }
+        ],
+        "directions": [
+          {
+            "steps": [
+              " **Preheat oven:** Set to 350°F (175°C). Grease and line a 9-inch round cake pan with parchment paper.  ",
+              "**Mix dry ingredients:** In a large bowl, whisk together almond meal, all-purpose flour, sugar, baking powder, baking soda, cardamom, and salt.  ",
+              "**Mix wet ingredients:** In another bowl, whisk together coconut yogurt, plant-based milk, melted coconut oil, rose water, vanilla extract, and lemon zest.  ",
+              "**Combine:** Gradually add the wet ingredients to the dry ingredients, stirring until just combined. Do not overmix.  ",
+              "**Bake:** Pour the batter into the prepared cake pan and smooth the top. Bake for 30-35 minutes, or until a toothpick inserted into the center comes out clean. Let cool completely in the pan.  "
+            ],
+            "title": "Cake"
+          },
+          {
+            "title": "Glaze & Garnish",
+            "steps": [
+              " **Prepare the glaze:** In a small bowl, whisk powdered sugar with lemon juice until smooth and pourable.  ",
+              "**Glaze and garnish:** Drizzle the glaze over the cooled cake. Sprinkle with chopped pistachios and dried rose petals for a beautiful finish.  ",
+              "**Serve:** Slice and enjoy this aromatic and elegant cake.  ",
+              "**Prep Time:** 20 min | **Baking Time:** 35 min | **Total Time:** ~55 min   **Servings:** 8-10  "
+            ]
+          }
+        ],
+        "visibility": "public",
+        "tags": ["dessert", "snack"],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:44:15.780Z"
+      },
+      {
+        "_id": "67f1259f3177aa84c4a0594c",
+        "name": "Vegan Custard",
+        "description": "Silky smooth with light vanilla flavors, this 4-ingredient Vegan Custard recipe is a must-have filling for vegan donuts, cakes, cream puffs, and more. No coconut needed and it’s easy to make in just 10 minutes!",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1738458416/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/aeewel4ifqu3w0tzqt9i.webp",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "https://www.noracooks.com/vegan-custard/",
+        "ingredients": [{ "title": "Ingedients", "steps": [] }],
+        "directions": [{ "title": "Directions", "steps": [] }],
+        "visibility": "public",
+        "tags": ["dessert", "snack"],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:44:15.780Z"
+      },
+      {
+        "_id": "67f1259f3177aa84c4a0594e",
+        "name": "Tiramisu Sheet Cake",
+        "description": "This vegan Tiramisu sheet cake is easier and quicker! It has a light and fluffy sponge cake that’s soaked with indulgent coffee syrup and then topped with a rich and creamy homemade vegan mascarpone! And sprinkled with cocoa. Creamy moist and perfect. Gluten-free and nutfree options included.",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1739113712/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/jsqdvt5lyrpeh8ctxvuv.webp",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "https://www.veganricha.com/vegan-tiramisu-sheet-cake/",
+        "ingredients": [
+          {
+            "steps": [
+              { "unit": "cups", "name": "Flour", "amount": "3" },
+              { "unit": "tbsp", "amount": "2", "name": "flour (extra)" },
+              { "name": "sugar", "unit": "cup", "amount": "1/4" },
+              { "unit": "tsp", "amount": "1/2 ", "name": "baking powder" },
+              { "amount": "1/8", "unit": "tsp", "name": "baking soda" },
+              { "amount": "1/8", "unit": "tsp", "name": "salt" },
+              { "unit": "tbsp", "name": "oil", "amount": "2" },
+              { "name": "yogurt", "amount": "2", "unit": "tbsp" },
+              { "amount": "1/2", "unit": "tsp", "name": "vanilla" },
+              { "name": "milk", "amount": "1/2", "unit": "cup" }
+            ],
+            "title": "Cake"
+          },
+          {
+            "title": "Coffee Syrup",
+            "steps": [
+              { "name": "Coffee", "unit": "cup", "amount": "1/2" },
+              { "amount": "1", "unit": "tbsp", "name": "coffee liquor" },
+              { "unit": "tbsp", "amount": "2", "name": "brown Sugar" }
+            ]
+          },
+          {
+            "title": "Cream Layer",
+            "steps": [
+              { "amount": "1", "unit": "cup", "name": "cashews (raw)" },
+              { "amount": "15", "unit": "oz (can)", "name": "full fat coconut milk" },
+              { "amount": "3.5", "name": "non-dairy yogurt,", "unit": "oz" },
+              { "name": "vanilla extract", "amount": "1/2", "unit": "tsp" },
+              { "name": "lemon juice", "amount": "1", "unit": "tbsp" },
+              { "unit": "drops", "name": "almond extract", "amount": "4" },
+              { "amount": "1/4", "unit": "tsp", "name": "salt" },
+              { "unit": "cup", "name": "sugar", "amount": "1/4" }
+            ]
+          },
+          {
+            "title": "topping",
+            "steps": [{ "unit": "cup", "name": "cocoa powder", "amount": "1/4" }]
+          }
+        ],
+        "directions": [
+          {
+            "steps": [
+              "Pre-heat Oven to 350 F (180 C)",
+              "Add all the dry ingredients to a bowl,,That’s the flour, sugar, baking powder and salt. Mix well. Then add in the oil, non-dairy yogurt, vanilla and 1/2 cup of milk and mix in to make a smooth batter which is like thick pancake batter. If the mixture is too stiff add in some non dairy milk, one teaspoon at a time to mix in.",
+              "Line a 8×8 inch or 9×9 inch brownie pan or grease as flour it well. pour the batter into the pan and even it out. Bake at 350 F (180 C) for 22 to 24 minutes or until a toothpick inserted in the centre comes out clean.",
+              "Then remove the cake from the oven, let it cool for 5 minutes then poke holes all over the cake. Depending on how soaked you want the cake you can poke lots of holes or just a few holes. More holes means more coffee syrup soaking. (For maximum soaking, slice a very thin slice from the cake top and then poke holes. This opens up the porous cake texture that absorbs well) "
+            ],
+            "title": "Cake"
+          },
+          {
+            "title": "Coffee Syrup",
+            "steps": [
+              " add all ingredients to a saucepan over medium heat then mix really well. Bring to a boil and take off heat. Pour this all over the cake and let it soak completely."
+            ]
+          },
+          {
+            "steps": [
+              "add all of the cream layer ingredients into a blender and blend until the cashews break down and get creamy. I usually blend for 1 minute then let it sit for 5 minutes then blend it again (repeat 2 – 3times) until the cashews are well blended. Taste and adjust sweetness.",
+              "Pour this blended mixture into a saucepan and cook over medium heat, stir occasionally in the beginning 3 to 4 minutes then stir frequently after that so that lumps do not form. Once the mixture has thickened evenly switch off the heat.",
+              "Let the mixture cool for a few minutes then pour over the soaked cake and even it out really well. Then freeze this cake for 3 to 4 hours. Once the top is set but not soft(not entirely frozen), take out the cake from the freezer.",
+              "Remove the cake using the parchment liner from the pan then dust it with the cocoa powder. Slice and serve! "
+            ],
+            "title": "Cream Layer"
+          }
+        ],
+        "visibility": "public",
+        "tags": [
+          "Plant Based",
+          "Dessert",
+          "Tiramisu",
+          "Sweet",
+          "Creamy",
+          "Cake",
+          "veganricha",
+          "snack"
+        ],
+        "notes": [
+          "Store refrigerated for upto 4 days. Freeze for upto a month.",
+          "if frozen, move it to the fridge the morning of the event or a few hours before. Then take from the fridge, slice and serve. ",
+          "Use about 3 ounces of silken tofu or 1/4 cup more cashews instead of yogurt.",
+          "Instead of coffee liqueur you can also use Kahlua.",
+          "To make this gluten free, use 1/2 cup of almond flour, 1/2 cup of oat flour and 1/4  cup of potato starch mixed really well. Use about 1 cup of this mixture in the cake mixture and also add in 1/4 cup of club soda and mix in. If the mixture is too thin add in the remaining flour, one tablespoon at a time. You don’t want the batter to be too thick but just about the thickness of pancake batter then pour it into parchment lined baking pan and bake.",
+          "Nutfree or cashew free: Use other nuts such as macadamia. Or use 1/2 cup more yogurt and 1/2 cup more coconut milk.",
+          "Coconut free: Use 3/4 cup more cashews and 1 cup water to blend. ",
+          "Oilfree : use 2 tbsp applesauce or 1 tbsp non dairy yogurt or use more non dairy milk instead. "
+        ],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:44:15.780Z"
+      },
+      {
+        "_id": "67f1259f3177aa84c4a05950",
+        "name": "Almond Butter Bars",
+        "description": "Protein-Packed Plant Based Snacks ",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1739230725/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/bkdj3kannr04pl28glmg.jpg",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "ingredients": [
+          {
+            "steps": [
+              { "amount": "1", "name": "chickpeas", "unit": "can" },
+              { "amount": "1/4", "unit": "cup", "name": "almond butter  " },
+              { "unit": "cup", "amount": "1/4", "name": "maple syrup" },
+              { "unit": "cup", "amount": "1/3", "name": "oat flour  " },
+              { "amount": "1", "unit": "tsp", "name": "vanilla extract" },
+              { "name": "dark chocolate chips  ", "unit": "cup", "amount": "1/4" }
+            ],
+            "title": "Ingedients"
+          }
+        ],
+        "directions": [
+          {
+            "steps": [
+              "Blend chickpeas, almond butter, maple syrup, oat flour, and vanilla until smooth.  ",
+              "Mix in chocolate chips, press into a pan, and chill for 2 hours.  "
+            ],
+            "title": "Directions"
+          }
+        ],
+        "visibility": "public",
+        "tags": ["bars", "chocolate", "snack", "cookie dough", "Gluten Free", "Vegan", "healthy"],
+        "notes": [
+          "Recipe Information:   Preparation Time: 10 min | Cooking Time: 0 min | Total Time: 2 hr 10 min | Calories per Serving: 150 | Number of Servings: 8  "
+        ],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:44:15.780Z"
+      },
+      {
+        "_id": "67f1259f3177aa84c4a05958",
+        "name": "Gluten-Free Falafel Recipe",
+        "description": "Falafel is a popular Middle Eastern dish, often enjoyed in pita bread or served as part of a mezze platter. This recipe offers a gluten-free twist on the classic, making it accessible for those with dietary restrictions",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1742739427/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/ms1pncpcfql8s50norwl.webp",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "https://ketosisguide.us/gluten-free-vegan-falafel-recipe/",
+        "ingredients": [
+          {
+            "title": "Ingedients",
+            "steps": [
+              { "name": "Oil for frying" },
+              { "unit": "tsp", "name": " baking powder", "amount": "1/2" },
+              { "name": "Black Pepper", "amount": "1/2", "unit": "tsp" },
+              { "amount": "1.5", "unit": "tsp", "name": "salt" },
+              { "amount": "4", "unit": "cloves", "name": "garlic (minced)" },
+              { "amount": "2", "unit": "tbsp", "name": "gluten-free flour" },
+              { "unit": "leaves", "name": "mint", "amount": "10" },
+              { "amount": "1", "name": "lemon zest" },
+              { "name": "cilantro (leaves)", "unit": "cup", "amount": "1" },
+              { "unit": "tsp", "amount": "1/2", "name": "coriander (ground)" },
+              { "name": "onion (diced)", "amount": "1" },
+              { "name": "dried Chickpeas (soaked over night)", "unit": "cup", "amount": "1" },
+              { "amount": "1", "name": "cumin (ground)", "unit": "tsp" }
+            ]
+          }
+        ],
+        "directions": [
+          {
+            "steps": [
+              "Begin by soaking the dried chickpeas in water overnight. This is a crucial step, as canned chickpeas will not provide the right texture for falafel. After soaking, drain and rinse the chickpeas.",
+              "Add the soaked chickpeas to a blender or food processor. Pulse for a few minutes until they are coarsely ground. The texture should resemble coarse sand.",
+              "To the ground chickpeas, add minced garlic, diced onion, fresh coriander, mint leaves, lemon zest, ground coriander, ground cumin, baking powder, salt, and black pepper. Blend these ingredients until they form a smooth paste. If the mixture is too dry, add a teaspoon of water at a time until you reach the desired consistency. The mixture should hold together when formed into a ball.",
+              "Using a tablespoon, scoop out the mixture and shape it into balls. You can also flatten them slightly to form patties. This recipe should yield about 15 to 18 falafel balls, depending on the size.",
+              "In a medium-sized pan, heat the oil over medium heat. The oil should be hot enough to sizzle when the falafel is added. Carefully place the falafel balls or patties into the pan, frying them in batches. Cook until they are golden brown on all sides, about 2-3 minutes per side. Remove them from the oil and drain on a paper towel-lined plate.",
+              "Serve the falafel hot, with your choice of sauces such as tahini, hummus, or tzatziki. They can also be enjoyed in pita bread with fresh vegetables or as part of a salad."
+            ],
+            "title": "Directions"
+          }
+        ],
+        "visibility": "public",
+        "tags": ["snack", "healthy", "Plant Based", "Vegan", "Middle Eastern"],
+        "notes": [
+          "Soaking Chickpeas: Be sure to use dried chickpeas that have been soaked overnight. Canned chickpeas are not suitable for this recipe as they are too soft and will not hold together during frying.",
+          "Texture: The falafel mixture should be somewhat coarse but able to hold together when shaped. If it’s too wet, add a little more flour; if it’s too dry, add a little water.",
+          "Baking Option: For a healthier alternative, you can bake the falafel. Preheat the oven to 200°C (400°F) and bake for about 15 minutes on each side, or until golden brown.",
+          "     Calories: 129 kcal     Fat: 8.6g     Protein: 3.3g     Fiber: 2.3g     Carbohydrates: 10.4g",
+          "Freshness: Use fresh herbs and spices for the best flavor. The combination of fresh mint and coriander gives the falafel a vibrant taste.",
+          "Consistency: The mixture should not be overly smooth; a little texture is good. This helps the falafel maintain their shape and gives them a satisfying crunch.",
+          "Storing and Reheating: Falafel can be stored in an airtight container in the refrigerator for up to 3 days. Reheat them in the oven to maintain their crispiness."
+        ],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:44:15.780Z"
+      }
+    ],
+    "tags": ["snack"],
+    "loading": false,
+    "error": null
+  },
+  {
+    "id": "mealtime",
+    "title": "What's for ",
+    "recipes": [
+      {
+        "_id": "67f125883177aa84c4a0593c",
+        "name": "Stuffed Portobello Mushrooms",
+        "description": "Hearty portobello mushrooms filled with a mix of quinoa, spinach, sun-dried tomatoes, and Mediterranean spices",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733326397/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/sk7z4mlw0zfuox1fozzu.jpg",
+        "info": {
+          "mealType": ["dinner"],
+          "cookTime": { "value": "35 minutes", "unit": "minutes" },
+          "prepTime": { "value": "25 minutes", "unit": "minutes" },
+          "nutritionalInfo": [
+            { "name": "Calories", "amount": "280" },
+            { "name": "Protein", "amount": "15g" },
+            { "name": "Carbohydrates", "amount": "35g" },
+            { "name": "Fat", "amount": "10g" },
+            { "amount": "9g", "name": "Fiber" }
+          ]
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "",
+        "ingredients": [
+          {
+            "title": "Mushroom Base",
+            "steps": [
+              { "unit": "large", "amount": "4", "name": "Portobello Mushrooms" },
+              { "unit": "tablespoons", "name": "Olive Oil", "amount": "2" },
+              { "unit": "cloves", "amount": "3", "name": "Garlic" }
+            ]
+          },
+          {
+            "title": "Filling",
+            "steps": [
+              { "amount": "1", "unit": "cup", "name": "Quinoa" },
+              { "amount": "2", "name": "Fresh Spinach", "unit": "cups" },
+              { "amount": "0.5", "name": "Sun-Dried Tomatoes", "unit": "cup" },
+              { "amount": "0.25", "unit": "cup", "name": "Pine Nuts" }
+            ]
+          },
+          {
+            "title": "Herbs and Spices",
+            "steps": [
+              { "amount": "1", "unit": "teaspoon", "name": "Dried Oregano" },
+              { "name": "Dried Thyme", "amount": "1", "unit": "teaspoon" },
+              { "unit": "tablespoons", "amount": "2", "name": "Nutritional Yeast" }
+            ]
+          }
+        ],
+        "directions": [
+          {
+            "steps": [
+              "Clean portobello mushrooms",
+              "Remove stems",
+              "Brush with olive oil",
+              "Roast at 400°F for 10 minutes"
+            ],
+            "title": "Mushroom Preparation"
+          },
+          {
+            "title": "Quinoa Cooking",
+            "steps": ["Cook quinoa according to package instructions", "Let cool slightly"]
+          },
+          {
+            "steps": [
+              "Sauté garlic in olive oil",
+              "Add spinach and cook until wilted",
+              "Mix with quinoa, sun-dried tomatoes, and pine nuts",
+              "Season with herbs and nutritional yeast"
+            ],
+            "title": "Filling Preparation"
+          },
+          {
+            "title": "Final Assembly",
+            "steps": [
+              "Fill roasted mushrooms with quinoa mixture",
+              "Bake for additional 15 minutes",
+              "Garnish with fresh herbs"
+            ]
+          }
+        ],
+        "visibility": "public",
+        "tags": [
+          "vegan",
+          "mediterranean",
+          "portobello",
+          "mushrooms",
+          "quinoa",
+          "gluten-free",
+          "stuffed-vegetables",
+          "spinach",
+          "sun-dried-tomatoes",
+          "pine-nuts",
+          "plant-based",
+          "protein-rich",
+          "vegetable-main",
+          "low-carb",
+          "nutritional-yeast",
+          "supper"
+        ],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:43:52.240Z"
+      },
+      {
+        "_id": "67f1259f3177aa84c4a05952",
+        "name": "Lahmacun",
+        "description": "Lahmacun, also known as Turkish Pizza, is one of the best Middle Eastern recipes around, and so quick and easy too. ",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1741188078/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/gzxoomxaztd8ylgjyr00.jpg",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "ingredients": [
+          {
+            "title": "Ingedients",
+            "steps": [
+              { "name": "Tortillas", "amount": "4", "unit": "Large" },
+              { "amount": "200g", "name": "firm tofu, crumbled " },
+              { "amount": "2", "name": " tomato paste", "unit": "tbsp" },
+              { "name": "Olive Oil", "unit": "tbsp", "amount": "1" },
+              { "name": "ground cumin", "amount": "1", "unit": "tsp" },
+              { "unit": "tsp", "amount": "1", "name": "smoked paprika" },
+              { "unit": "tsp", "name": "chilli flakes (optional)", "amount": "1/2" },
+              { "amount": "1/2", "name": "red onion (finely chopped)", "unit": "tsp" },
+              { "name": "tomato, finely diced", "amount": "1" },
+              { "unit": "bunch", "name": "Parsley", "amount": "1" },
+              { "name": "Salt and Pepper to taste" }
+            ]
+          },
+          {
+            "title": "Optional Garnish",
+            "steps": [
+              { "amount": " ", "name": "Lemon Wedges" },
+              { "name": "lettuce" },
+              { "name": "tomato" },
+              { "name": "parsley" }
+            ]
+          }
+        ],
+        "directions": [
+          {
+            "title": "Directions",
+            "steps": [
+              "In a bowl, mix crumbled tofu, tomato paste, olive oil, cumin, smoked paprika, chilli flakes, salt and pepper.",
+              "Stir in diced red onion, tomato, and chopped parsley.",
+              "Spread the tofu mixture evenly over the tortillas. ",
+              "Heat a non-stick frying pan over high heat. Pour over some olive oil Place the topped tortilla in the pan and cook for 3-4 minutes until the base is crispy and the topping is warmed through. ",
+              "Repeat with the remaining tortillas. ",
+              "Squeeze lemon juice over the top for a burst of freshness. ",
+              "Roll up and add fillings like lettuce parsley and tomatoes and enjoy warm or just eat on their own"
+            ]
+          }
+        ],
+        "visibility": "public",
+        "tags": ["Middle Easetern", "pizza", "Easy", "Quick", "supper"],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:44:15.780Z"
+      },
+      {
+        "_id": "67f125883177aa84c4a05943",
+        "name": "Black Bean Feijoada",
+        "description": "Traditional Brazilian black bean stew reimagined as a hearty vegan main course with plantains and rice",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733326773/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/sl2m2bmyhaeqxp6jrrrt.webp",
+        "info": {
+          "mealType": ["dinner"],
+          "cookTime": { "value": "90 minutes", "unit": "minutes" },
+          "prepTime": { "value": "20 minutes", "unit": "minutes" },
+          "nutritionalInfo": [
+            { "amount": "420", "name": "Calories" },
+            { "amount": "25g", "name": "Protein" },
+            { "name": "Carbohydrates", "amount": "65g" },
+            { "name": "Fat", "amount": "10g" },
+            { "amount": "18g", "name": "Fiber" }
+          ]
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "",
+        "ingredients": [
+          {
+            "steps": [
+              { "name": "Black Beans", "unit": "cups", "amount": "2" },
+              { "name": "Onion", "unit": "large", "amount": "1" },
+              { "name": "Garlic", "unit": "cloves", "amount": "5" },
+              { "name": "Bay Leaves", "unit": "whole", "amount": "2" }
+            ],
+            "title": "Bean Stew"
+          },
+          {
+            "steps": [
+              { "amount": "2", "unit": "ripe", "name": "Plantains" },
+              { "name": "Bell Peppers", "amount": "2", "unit": "whole" },
+              { "unit": "whole", "amount": "1", "name": "Orange" }
+            ],
+            "title": "Vegetable Mix"
+          },
+          {
+            "steps": [
+              { "unit": "tablespoon", "amount": "1", "name": "Smoked Paprika" },
+              { "amount": "2", "name": "Cumin", "unit": "teaspoons" },
+              { "name": "Liquid Smoke", "unit": "teaspoon", "amount": "1" }
+            ],
+            "title": "Spices"
+          },
+          {
+            "steps": [
+              { "name": "White Rice", "amount": "1", "unit": "cup" },
+              { "amount": "2", "name": "Water", "unit": "cups" }
+            ],
+            "title": "Rice"
+          }
+        ],
+        "directions": [
+          {
+            "steps": [
+              "Soak black beans overnight",
+              "Drain and rinse",
+              "Cook with bay leaves until tender"
+            ],
+            "title": "Bean Preparation"
+          },
+          {
+            "title": "Vegetable Cooking",
+            "steps": ["Chop onions and garlic", "Sauté until golden", "Add spices and cook briefly"]
+          },
+          {
+            "title": "Plantain Preparation",
+            "steps": ["Slice ripe plantains", "Caramelize in pan", "Set aside"]
+          },
+          {
+            "title": "Stew Assembly",
+            "steps": [
+              "Combine beans with sautéed vegetables",
+              "Add liquid smoke",
+              "Simmer for 45 minutes"
+            ]
+          },
+          {
+            "steps": [
+              "Cook rice separately",
+              "Serve stew over rice",
+              "Top with caramelized plantains"
+            ],
+            "title": "Final Touches"
+          }
+        ],
+        "visibility": "public",
+        "tags": [
+          "vegan",
+          "brazilian",
+          "black-beans",
+          "feijoada",
+          "plantains",
+          "gluten-free",
+          "dinner",
+          "stew",
+          "plant-based",
+          "latin-american",
+          "protein-rich",
+          "comfort-food",
+          "supper"
+        ],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-05-26T03:15:58.509Z"
+      },
+      {
+        "_id": "67f1259f3177aa84c4a05949",
+        "name": "Thai Coconut Soup",
+        "description": "Delicious and flavourful, made in a slow cooker",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733894298/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/rwtqvtup3vo9x6x3ous2.jpg",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "ingredients": [
+          {
+            "title": "Ingedients",
+            "steps": [
+              { "amount": "1", "unit": "tbsp", "name": "Coconut Oil" },
+              { "amount": "1", "unit": "medium", "name": "Onion (sliced)" },
+              { "name": "Garlic Cloves (minced)", "amount": "2" },
+              { "amount": "1", "name": "Ginger (grated)", "unit": "tbsp" },
+              { "unit": "cups", "name": "Vegetable Broth", "amount": "3" },
+              { "unit": "can", "amount": "1", "name": "Coconut Milk (15oz)" },
+              { "unit": "cup", "name": "Mushrooms (sliced)", "amount": "1" },
+              { "amount": "1", "name": "red bell pepper (sliced)" },
+              { "name": "Firm Tofu (cubed)", "unit": "block", "amount": "1" },
+              { "name": "Soy Sauce", "unit": "tbsp", "amount": "1" },
+              { "name": "red curry paste  ", "amount": "2", "unit": "tbsp" },
+              { "name": "kaffir lime leaves (optional)  ", "amount": "2" },
+              { "name": "lime (juiced)", "amount": "1" },
+              { "name": "Cilantro & Lime Wedges (garnish)" }
+            ]
+          }
+        ],
+        "directions": [
+          {
+            "steps": [
+              "Heat coconut oil in a skillet and sauté onion, garlic, and ginger until aromatic. Transfer to the slow cooker.  ",
+              "Add vegetable broth, coconut milk, mushrooms, bell pepper, tofu, soy sauce, red curry paste, and kaffir lime leaves to the slow cooker. Stir well.  ",
+              "Cook on low for 6-8 hours or high for 3-4 hours.  ",
+              "Before serving, stir in lime juice. Adjust seasoning to taste.  ",
+              "Garnish with fresh cilantro and serve with lime wedges on the side.  ",
+              "10 mins prep | 6-8 hrs slow cooking | 6 hrs 10 mins total | 270 calories per serving | serves 4"
+            ],
+            "title": "Directions"
+          }
+        ],
+        "visibility": "public",
+        "tags": ["lunch", "supper"],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:44:15.780Z"
+      },
+      {
+        "_id": "67f125883177aa84c4a05940",
+        "name": "Jerk Jackfruit Tacos",
+        "description": "Spicy Caribbean-style pulled jackfruit tacos with mango salsa and lime crema. Yum!",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1733326630/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/aluhu820wa07mmdopnmc.jpg",
+        "info": {
+          "mealType": ["lunch", "dinner"],
+          "cookTime": { "value": "35 minutes", "unit": "minutes" },
+          "prepTime": { "value": "20 minutes", "unit": "minutes" },
+          "nutritionalInfo": [
+            { "amount": "340", "name": "Calories" },
+            { "amount": "12g", "name": "Protein" },
+            { "name": "Carbohydrates", "amount": "45g" },
+            { "name": "Fat", "amount": "14g" },
+            { "name": "Fiber", "amount": "8g" }
+          ]
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "",
+        "ingredients": [
+          {
+            "steps": [
+              { "unit": "cans", "amount": "2", "name": "Young Green Jackfruit" },
+              { "amount": "2", "name": "Jerk Seasoning", "unit": "tablespoons" },
+              { "unit": "cup", "amount": "0.25", "name": "Coconut Milk" }
+            ],
+            "title": "Jackfruit"
+          },
+          {
+            "title": "Mango Salsa",
+            "steps": [
+              { "unit": "large", "name": "Ripe Mango", "amount": "1" },
+              { "amount": "0.5", "name": "Red Onion", "unit": "whole" },
+              { "unit": "cup", "name": "Fresh Cilantro", "amount": "0.25" },
+              { "amount": "2", "name": "Lime Juice", "unit": "tablespoons" }
+            ]
+          },
+          {
+            "steps": [
+              { "name": "Coconut Yogurt", "unit": "cup", "amount": "0.5" },
+              { "amount": "1", "unit": "teaspoon", "name": "Lime Zest" },
+              { "name": "Lime Juice", "unit": "tablespoon", "amount": "1" }
+            ],
+            "title": "Lime Crema"
+          },
+          {
+            "title": "Taco Components",
+            "steps": [
+              { "amount": "8", "name": "Corn Tortillas", "unit": "whole" },
+              { "name": "Avocado", "amount": "1", "unit": "whole" }
+            ]
+          }
+        ],
+        "directions": [
+          {
+            "title": "Jackfruit Preparation",
+            "steps": [
+              "Drain and rinse canned jackfruit",
+              "Shred with fork",
+              "Mix with jerk seasoning and coconut milk",
+              "Bake at 400°F for 25-30 minutes"
+            ]
+          },
+          {
+            "title": "Mango Salsa",
+            "steps": [
+              "Dice mango and red onion",
+              "Chop cilantro",
+              "Mix with lime juice",
+              "Let sit to develop flavors"
+            ]
+          },
+          {
+            "steps": ["Mix coconut yogurt with lime zest", "Add lime juice", "Season with salt"],
+            "title": "Lime Crema"
+          },
+          {
+            "steps": [
+              "Warm corn tortillas",
+              "Fill with jerk jackfruit",
+              "Top with mango salsa",
+              "Drizzle lime crema",
+              "Garnish with avocado slices"
+            ],
+            "title": "Taco Assembly"
+          }
+        ],
+        "visibility": "public",
+        "tags": [
+          "vegan",
+          "caribbean",
+          "jackfruit",
+          "tacos",
+          "jerk-seasoning",
+          "mango",
+          "gluten-free",
+          "spicy",
+          "plant-based",
+          "tropical",
+          "mexican-inspired",
+          "coconut-milk",
+          "street-food",
+          "supper",
+          "lunch"
+        ],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-03T16:38:12.663Z"
+      }
+    ],
+    "tags": ["mealTime"],
+    "loading": false,
+    "error": null
+  },
+  {
+    "id": "healthy",
+    "title": "Healthy Recipes",
+    "recipes": [
+      {
+        "_id": "67f1259f3177aa84c4a05957",
+        "name": "Sweet Potato Truffles",
+        "description": "These chocolate sweet potato truffles have a mousse-like filling surrounded by a crunchy dark chocolate shell. They’re delicious and perfect when you’re in the mood for a nutrient-rich treat.",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1742739071/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/t27x9ddorqg8ucn152wj.jpg",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "https://www.asweetalternative.com/blog/sweet-potato-truffles",
+        "ingredients": [
+          {
+            "title": "Ingedients",
+            "steps": [
+              { "unit": "cup", "amount": "1.5", "name": "dark chocolate (chopped)" },
+              { "unit": "cup", "amount": "3/4", "name": "baked sweet potato (no skin)" },
+              { "name": "ground turmeric" }
+            ]
+          }
+        ],
+        "directions": [
+          {
+            "title": "Directions",
+            "steps": [
+              "Add 3/4 cup of chopped dark chocolate to a pot on the stove set to low heat (reserve the remaining chocolate for later).",
+              "Transfer the melted chocolate and baked sweet potato (with skin removed) to a food processor.",
+              "Blend until incorporated, scraping down the sides of the food processor as needed.",
+              "Transfer the sweet potato chocolate mixture to a bowl, then place it in the fridge to chill for 30 minutes or until it’s solid enough to hold its shape.",
+              "Scoop out 1 heaping tablespoon of the chilled sweet potato chocolate mixture and use your hands to shape it into a ball, then place it on a large plate lined with parchment paper or a silicone baking mat (I recommend wearing kitchen gloves to make this easy).",
+              "Repeat with the rest of the sweet potato chocolate mixture (you should end up with 12 balls).",
+              "Add the remaining 3/4 cup of chopped dark chocolate to a pot on the stove set to low heat.",
+              "Cook, stirring constantly until the chocolate has melted, then immediately remove the pot from the heat.",
+              "Transfer the melted chocolate to a small bowl.",
+              "Add one of the sweet potato chocolate balls to the bowl of melted chocolate, then gently stir to coat it completely",
+              "Use a fork to lift the chocolate coated ball out of the bowl, allowing any excess chocolate to drip back into the bowl, then place the ball on the plate lined with parchment paper or a silicone baking mat.",
+              "Add a small sprinkle of ground turmeric on top, if desired.",
+              "Repeat steps 11-13 with the rest of the balls.",
+              "Place the plate of truffles in the fridge to chill for at least 1 hour before serving."
+            ]
+          }
+        ],
+        "visibility": "public",
+        "tags": ["healthy", "plant based", "vegan"],
+        "notes": [
+          "Course Dessert Cuisine American Prep Time 15 minutes minutes Cook Time 3 minutes minutes Chilling Time 1 hour hour 30 minutes minutes Total Time 1 hour hour 48 minutes minutes Servings 12 Calories 138kcal Author Jennifer Bell",
+          "Store these truffles in an airtight container in the fridge for up to five days or in the freezer for up to three months. Thaw at room temperature or in the fridge before serving.",
+          "Serving: 1Truffle | Calories: 138kcal | Carbohydrates: 11.7g | Protein: 1.8g | Fat: 9.3g | Saturated Fat: 5.4g | Polyunsaturated Fat: 0.3g | Monounsaturated Fat: 2.8g | Cholesterol: 0.7mg | Sodium: 8.9mg | Potassium: 184.4mg | Fiber: 2.6g | Sugar: 5.6g | Vitamin A: 1187.8IU | Vitamin C: 0.2mg | Calcium: 18.5mg | Iron: 2.7mg"
+        ],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:44:15.780Z"
+      },
+      {
+        "_id": "67f1259f3177aa84c4a05958",
+        "name": "Gluten-Free Falafel Recipe",
+        "description": "Falafel is a popular Middle Eastern dish, often enjoyed in pita bread or served as part of a mezze platter. This recipe offers a gluten-free twist on the classic, making it accessible for those with dietary restrictions",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1742739427/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/ms1pncpcfql8s50norwl.webp",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "https://ketosisguide.us/gluten-free-vegan-falafel-recipe/",
+        "ingredients": [
+          {
+            "title": "Ingedients",
+            "steps": [
+              { "name": "Oil for frying" },
+              { "unit": "tsp", "name": " baking powder", "amount": "1/2" },
+              { "name": "Black Pepper", "amount": "1/2", "unit": "tsp" },
+              { "amount": "1.5", "unit": "tsp", "name": "salt" },
+              { "amount": "4", "unit": "cloves", "name": "garlic (minced)" },
+              { "amount": "2", "unit": "tbsp", "name": "gluten-free flour" },
+              { "unit": "leaves", "name": "mint", "amount": "10" },
+              { "amount": "1", "name": "lemon zest" },
+              { "name": "cilantro (leaves)", "unit": "cup", "amount": "1" },
+              { "unit": "tsp", "amount": "1/2", "name": "coriander (ground)" },
+              { "name": "onion (diced)", "amount": "1" },
+              { "name": "dried Chickpeas (soaked over night)", "unit": "cup", "amount": "1" },
+              { "amount": "1", "name": "cumin (ground)", "unit": "tsp" }
+            ]
+          }
+        ],
+        "directions": [
+          {
+            "steps": [
+              "Begin by soaking the dried chickpeas in water overnight. This is a crucial step, as canned chickpeas will not provide the right texture for falafel. After soaking, drain and rinse the chickpeas.",
+              "Add the soaked chickpeas to a blender or food processor. Pulse for a few minutes until they are coarsely ground. The texture should resemble coarse sand.",
+              "To the ground chickpeas, add minced garlic, diced onion, fresh coriander, mint leaves, lemon zest, ground coriander, ground cumin, baking powder, salt, and black pepper. Blend these ingredients until they form a smooth paste. If the mixture is too dry, add a teaspoon of water at a time until you reach the desired consistency. The mixture should hold together when formed into a ball.",
+              "Using a tablespoon, scoop out the mixture and shape it into balls. You can also flatten them slightly to form patties. This recipe should yield about 15 to 18 falafel balls, depending on the size.",
+              "In a medium-sized pan, heat the oil over medium heat. The oil should be hot enough to sizzle when the falafel is added. Carefully place the falafel balls or patties into the pan, frying them in batches. Cook until they are golden brown on all sides, about 2-3 minutes per side. Remove them from the oil and drain on a paper towel-lined plate.",
+              "Serve the falafel hot, with your choice of sauces such as tahini, hummus, or tzatziki. They can also be enjoyed in pita bread with fresh vegetables or as part of a salad."
+            ],
+            "title": "Directions"
+          }
+        ],
+        "visibility": "public",
+        "tags": ["snack", "healthy", "Plant Based", "Vegan", "Middle Eastern"],
+        "notes": [
+          "Soaking Chickpeas: Be sure to use dried chickpeas that have been soaked overnight. Canned chickpeas are not suitable for this recipe as they are too soft and will not hold together during frying.",
+          "Texture: The falafel mixture should be somewhat coarse but able to hold together when shaped. If it’s too wet, add a little more flour; if it’s too dry, add a little water.",
+          "Baking Option: For a healthier alternative, you can bake the falafel. Preheat the oven to 200°C (400°F) and bake for about 15 minutes on each side, or until golden brown.",
+          "     Calories: 129 kcal     Fat: 8.6g     Protein: 3.3g     Fiber: 2.3g     Carbohydrates: 10.4g",
+          "Freshness: Use fresh herbs and spices for the best flavor. The combination of fresh mint and coriander gives the falafel a vibrant taste.",
+          "Consistency: The mixture should not be overly smooth; a little texture is good. This helps the falafel maintain their shape and gives them a satisfying crunch.",
+          "Storing and Reheating: Falafel can be stored in an airtight container in the refrigerator for up to 3 days. Reheat them in the oven to maintain their crispiness."
+        ],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:44:15.780Z"
+      },
+      {
+        "_id": "67f1259f3177aa84c4a05950",
+        "name": "Almond Butter Bars",
+        "description": "Protein-Packed Plant Based Snacks ",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1739230725/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/bkdj3kannr04pl28glmg.jpg",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "ingredients": [
+          {
+            "steps": [
+              { "amount": "1", "name": "chickpeas", "unit": "can" },
+              { "amount": "1/4", "unit": "cup", "name": "almond butter  " },
+              { "unit": "cup", "amount": "1/4", "name": "maple syrup" },
+              { "unit": "cup", "amount": "1/3", "name": "oat flour  " },
+              { "amount": "1", "unit": "tsp", "name": "vanilla extract" },
+              { "name": "dark chocolate chips  ", "unit": "cup", "amount": "1/4" }
+            ],
+            "title": "Ingedients"
+          }
+        ],
+        "directions": [
+          {
+            "steps": [
+              "Blend chickpeas, almond butter, maple syrup, oat flour, and vanilla until smooth.  ",
+              "Mix in chocolate chips, press into a pan, and chill for 2 hours.  "
+            ],
+            "title": "Directions"
+          }
+        ],
+        "visibility": "public",
+        "tags": ["bars", "chocolate", "snack", "cookie dough", "Gluten Free", "Vegan", "healthy"],
+        "notes": [
+          "Recipe Information:   Preparation Time: 10 min | Cooking Time: 0 min | Total Time: 2 hr 10 min | Calories per Serving: 150 | Number of Servings: 8  "
+        ],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:44:15.780Z"
+      },
+      {
+        "_id": "67f125883177aa84c4a0593a",
+        "name": "Quinoa Black Bean Buddha Bowl",
+        "description": "A protein-packed, nutrient-dense bowl combining quinoa, roasted vegetables, and a zesty tahini dressing",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1737748143/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/iogiia8ma0n4ox518ldd.jpg",
+        "info": {
+          "mealType": ["lunch", "dinner"],
+          "cookTime": { "value": "25 minutes", "unit": "minutes" },
+          "prepTime": { "value": "15 minutes", "unit": "minutes" },
+          "nutritionalInfo": [
+            { "amount": "385", "name": "Calories" },
+            { "amount": "18g", "name": "Protein" },
+            { "name": "Carbohydrates", "amount": "55g" },
+            { "amount": "12g", "name": "Fat" },
+            { "name": "Fiber", "amount": "12g" }
+          ]
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "",
+        "ingredients": [
+          {
+            "title": "Quinoa Base",
+            "steps": [
+              { "unit": "cup", "name": "Quinoa", "amount": "1" },
+              { "amount": "2", "name": "Water", "unit": "cups" }
+            ]
+          },
+          {
+            "steps": [
+              { "unit": "large", "amount": "1", "name": "Sweet Potato" },
+              { "name": "Red Bell Pepper", "unit": "whole", "amount": "1" },
+              { "amount": "0.5", "unit": "whole", "name": "Red Onion" },
+              { "name": "Olive Oil", "unit": "tablespoons", "amount": "2" }
+            ],
+            "title": "Roasted Vegetables"
+          },
+          {
+            "steps": [
+              { "amount": "1", "unit": "can", "name": "Black Beans" },
+              { "unit": "teaspoon", "name": "Cumin", "amount": "1" }
+            ],
+            "title": "Black Beans"
+          },
+          {
+            "steps": [
+              { "name": "Tahini", "unit": "cup", "amount": "0.25" },
+              { "unit": "tablespoons", "amount": "2", "name": "Lemon Juice" },
+              { "amount": "1", "name": "Garlic", "unit": "clove" }
+            ],
+            "title": "Tahini Dressing"
+          }
+        ],
+        "directions": [
+          {
+            "title": "Quinoa Preparation",
+            "steps": [
+              "Rinse quinoa thoroughly",
+              "Add quinoa and water to pot",
+              "Bring to boil, then simmer for 15 minutes",
+              "Fluff with fork when done"
+            ]
+          },
+          {
+            "title": "Roasting Vegetables",
+            "steps": [
+              "Chop vegetables into 1-inch cubes",
+              "Toss with olive oil and salt",
+              "Roast at 425°F for 20-25 minutes",
+              "Stir halfway through cooking"
+            ]
+          },
+          {
+            "steps": [
+              "Drain and rinse canned beans",
+              "Heat in pan with cumin",
+              "Season with salt and pepper"
+            ],
+            "title": "Black Beans"
+          },
+          {
+            "steps": [
+              "Blend tahini, lemon juice, and garlic",
+              "Add water to reach desired consistency",
+              "Layer quinoa, vegetables, and beans in bowl",
+              "Drizzle with tahini dressing"
+            ],
+            "title": "Dressing and Assembly"
+          }
+        ],
+        "visibility": "public",
+        "tags": [
+          "vegan",
+          "quinoa",
+          "buddha-bowl",
+          "high-protein",
+          "meal-prep",
+          "gluten-free",
+          "healthy",
+          "black-beans",
+          "tahini",
+          "south-american-inspired",
+          "grain-bowl",
+          "quick-meal",
+          "plant-based",
+          "vegetable-rich",
+          "legumes",
+          "lunch"
+        ],
+        "notes": [],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-05-19T21:48:29.946Z"
+      },
+      {
+        "_id": "67f1259f3177aa84c4a05959",
+        "name": "KooKoo Sabzi",
+        "description": "This Vegan KooKoo Sabzi recipe recreates the traditional Persian herb frittata with “Just Egg” and blending herbs, potato, and spices. It is quick, easy, and delicious. ",
+        "imgPath": "https://res.cloudinary.com/dotethan/image/upload/v1742740281/Recipeasy/user_uploads/users/l2p5ICaFhQRIOm5nM7oSY0YjZtI2/teqa9c4njltiaqpaabvz.webp",
+        "info": {
+          "mealType": [],
+          "cookTime": { "value": "30", "unit": "minutes" },
+          "prepTime": { "value": "30", "unit": "minutes" }
+        },
+        "ratings": { "ratings": [], "averageRating": 0, "totalRatings": 0, "ratingsSum": 0 },
+        "url": "https://plantbasedpersian.com/kookoo-sabzi/",
+        "ingredients": [
+          {
+            "title": "Ingedients",
+            "steps": [
+              { "unit": "bunch", "name": "green onion", "amount": "1" },
+              { "name": "cilantro", "unit": "bunch", "amount": "1" },
+              { "name": "parsley", "amount": "1", "unit": "bunch" },
+              { "amount": "1", "name": "potato (russet)", "unit": "medium" },
+              { "unit": "tsp", "name": "pepper", "amount": "1/2" },
+              { "amount": "1/2", "unit": "tsp", "name": "salt" },
+              { "name": "tumeric", "unit": "tsp", "amount": "1/2" },
+              { "name": "baking powder", "unit": "tsp", "amount": "1/2" },
+              { "name": "Just Egg (Plant Based Egg)", "unit": "bottle", "amount": "1" },
+              { "name": "oil (cooking)", "unit": "tbsp", "amount": "2" }
+            ]
+          }
+        ],
+        "directions": [
+          {
+            "steps": [
+              "Wash the green onions, cilantro, and parsley (collectively called the “Sabzi”). Remove excess water with a salad spinner. Pat dry with a paper towel, and lay out to continue to dry while completing next step.",
+              "Wash, peel and chop the potato into 4 quarters. Place in small pot filled with water. Cover and cook on high heat for 10-15 minutes until potato is cooked and tender.",
+              "Remove any thick stems from the parsley and cilantro. Cut the ends from the green onions. Finely chop the Sabzi.",
+              "Once the potato is cooked, drain the pot, rinse the potato under cold water and let the potato cool down 10 minutes.",
+              "Mash the cooled down potato with a potato masher. Add to the finely chopped Sabzi and mix together.",
+              "Add turmeric, salt, pepper, and baking powder to the Sabzi and potato mixture. Mix the ingredients until well blended.",
+              "Shake the bottle of Just Egg well and add to the mixture. Mix together ingredients until well blended.",
+              "Add the cooking oil to a medium non-stick pan on medium heat. Wait 1 minute for the oil to heat.",
+              "Add the mixture to the pan.",
+              "Cover and cook on medium/low for about 15 minutes until the mixture is firm.",
+              "Cut the mixture into 4 quadrants and flip over each quadrant. Continue to cook (uncovered) another 10 minutes until cooked throughout.",
+              "Noosh-e-Jan (Enjoy)!"
+            ],
+            "title": "Directions"
+          }
+        ],
+        "visibility": "public",
+        "tags": ["Plant Based", "Vegan", "healthy", "KooKoo Sabzi", "Persian", "breakfast"],
+        "notes": [
+          "While the recipe itself is simple, the key to this recipe is the slow cooking process to prevent the KooKoo Sabzi from burning and ensure the Just Egg is cooked throughout.",
+          "Make sure to shake the Just Egg bottle well before using.",
+          "Use a non-stick pan to prevent the Just Egg from sticking to the pan."
+        ],
+        "userId": "67fd9f4603098c7b510d818d",
+        "updatedAt": "2025-04-05T12:44:15.780Z"
+      }
+    ],
+    "tags": ["healthy"],
+    "loading": false,
+    "error": null
+  }
+]

@@ -13,7 +13,7 @@
       <div class="col-xs-12">
         <div class="titleback">
           <h1 class="app-title">Welcome to Tastyista</h1>
-          <span>(Redesign Underway)</span>
+          <h2>(Full Redesign Underway)</h2>
         </div>
       </div>
     </div>

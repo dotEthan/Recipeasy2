@@ -12,6 +12,7 @@ import type { PropType } from "vue";
 
 import { useRecipeStore } from "@/stores/recipeStore";
 import type { Recipe } from "@/types/Recipes";
+import { getMealTime } from "@/utilities";
 
 import CollectionItemComponent from "./collectionItem/CollectionItemComponent.vue";
 
@@ -30,7 +31,7 @@ function openRecipeDetails(id: string) {
 }
 
 const getTitle = () => {
-  const mealTime = recipeStore.getMealTime;
+  const mealTime = getMealTime();
   if (props.title === "What's for ") {
     return `${props.title}${mealTime}`;
   } else {

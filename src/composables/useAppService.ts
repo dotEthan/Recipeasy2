@@ -2,13 +2,16 @@ import { onMounted, onUnmounted, ref } from "vue";
 
 import axios from "@/axios";
 import { useDataService } from "@/composables/useDataService";
+import { CriticalError } from "@/errors";
 import router from "@/router/main";
 import { useAppStore } from "@/stores/appStore";
 import { useRecipeStore } from "@/stores/recipeStore";
 import { useShoppingListStore } from "@/stores/shoppingListStore";
 import { useUserStore } from "@/stores/userStore";
 import { ScreenSize } from "@/types/AppState.d";
-import { checkIfCacheExpired, debounce } from "@/utilities";
+import { debounce, loadCachedData } from "@/utilities";
+
+import { useRecipeService } from "./useRecipeService";
 
 /**
  * Handles all methods to help bootstrap the App: screen size tracking.
@@ -21,6 +24,7 @@ export function useAppService() {
   const recipeStore = useRecipeStore();
   const shoppingListStore = useShoppingListStore();
   const dataService = useDataService();
+  const recipeService = useRecipeService();
   const screenWidth = ref(window.innerWidth);
 
   /**
@@ -73,68 +77,98 @@ export function useAppService() {
   onMounted(() => window.addEventListener("resize", onResize));
   onUnmounted(() => window.removeEventListener("resize", onResize));
 
+  /**
+   * Initial flow to start app. Check server, check caches and hydrate stores, or make calls to refresh data
+   * @todo Loading Component
+   * @todo Dummy Data and offline: true; if server down
+   * @param {e} - Event object
+   * @returns {Promise<void>} - The dark void.
+   * @example
+   * const { handleUnsavedChanges } = useAppService();
+   * handleUnsavedChanges();
+   */
   const initializeApp = async () => {
     let isAutheticated = false;
 
     try {
-      await refreshToken();
-      isAutheticated = true;
-
-      let cachedLocalUser = checkIfCacheExpired("localUser");
-      let cachedUserRecipes = checkIfCacheExpired("userRecipes");
-      let cachedAllTags = checkIfCacheExpired("allTags");
-      const cachedRecipeCollections = checkIfCacheExpired("recipeCollections");
-      const cachedSelectedRecipeId = sessionStorage.getItem("selectedRecipeId") ?? undefined;
-      const cachedEditSelectedRecipe =
-        sessionStorage.getItem("editSelectedRecipe") === "true" || false;
-      const cachedShoppingLists = checkIfCacheExpired("shoppingLists");
-      if (
-        isAutheticated &&
-        (!cachedUserRecipes ||
-          !cachedLocalUser ||
-          !cachedAllTags ||
-          !cachedShoppingLists ||
-          !cachedRecipeCollections)
-      ) {
-        console.log("old data, refresh: ");
-        // TODO No userId in here
-        const userResponse = await dataService.getCurrentUserData();
-        recipeStore.fetchRecipeCollections();
-        if (!userResponse) throw new Error("no response");
-        const { userData, userRecipes } = userResponse;
-        cachedLocalUser = userData;
-        cachedUserRecipes = userRecipes;
-        // TODO add when implementing tags
-        cachedAllTags = [];
+      const serverUp = await serverHealthCheck();
+      if (!serverUp) {
+        throw new CriticalError("Backend Server not responding");
       }
 
-      recipeStore.hydrateStore({
-        recipes: cachedUserRecipes,
-        allTags: cachedAllTags,
-        recipeCollections: cachedRecipeCollections,
-        selectedRecipeId: cachedSelectedRecipeId,
-        editSelectedRecipe: cachedEditSelectedRecipe
-      });
+      const tokenSet = await refreshToken();
+      if (!tokenSet) {
+        console.log("token refresh failed: ");
+        // TODO Needed? or need new method?
+        // await recipeStore.fetchRecipeCollections();
+        appStore.resetAppStates();
+        router.push("/");
+      } else {
+        // TODO DO I need isAutheticated now?
+        isAutheticated = true;
+        const cachedData = loadCachedData();
+        if (
+          isAutheticated &&
+          (!cachedData.userRecipes ||
+            !cachedData.localUser ||
+            !cachedData.allTags ||
+            !cachedData.shoppingLists ||
+            !cachedData.recipeCollections)
+        ) {
+          console.log("old data, refresh: ");
+          cachedData.recipeCollections = await recipeService.fetchRecipeCollections();
+          const userResponse = await dataService.getCurrentUserData();
+          // TODO what happens in this flow?
+          if (!userResponse) throw new Error("No User Data Found.");
+          const { userData, userRecipes } = userResponse;
+          cachedData.localUser = userData;
+          cachedData.shoppingLists = userData.shoppingLists;
+          cachedData.userRecipes = userRecipes;
+          // TODO add when implementing tags
+          cachedData.allTags = [];
+        }
 
-      userStore.setInitialUserState({ localUser: cachedLocalUser, authorized: true });
-      shoppingListStore.hydrateStore(cachedShoppingLists);
+        recipeStore.hydrateStore({
+          recipes: cachedData.userRecipes,
+          allTags: cachedData.allTags,
+          recipeCollections: cachedData.recipeCollections,
+          selectedRecipeId: cachedData.selectedRecipeId,
+          editSelectedRecipe: cachedData.editSelectedRecipe
+        });
+
+        userStore.setInitialUserState({ localUser: cachedData.localUser, authorized: true });
+        shoppingListStore.hydrateStore(cachedData.shoppingLists);
+      }
     } catch (error) {
-      console.log("token refresh failed");
-      await recipeStore.fetchRecipeCollections();
-      appStore.resetAppStates();
-      router.push("/");
-    }
+      // Handle Error here? or whwat pattern to deal with this?
 
-    console.log("Stores hydrated");
+      console.log("FAILURE");
+      if (error instanceof CriticalError) {
+        throw error;
+      }
+      throw new CriticalError("App Initilization Critical Failure, reload page");
+    }
   };
 
-  const refreshToken = async () => {
+  const refreshToken = async (): Promise<boolean> => {
     try {
       const refreshTokenResponse = await axios.post("/admin/refresh-token");
       appStore.setAcessToken(refreshTokenResponse.data.accessToken);
+      return true;
     } catch (error) {
       console.log("token refresh failiure: ", error);
-      throw new Error("Token Refresh Failed, relogin");
+      return false;
+    }
+  };
+
+  const serverHealthCheck = async () => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_BASE_URL}/health`);
+      console.log("Server Up");
+      return true;
+    } catch {
+      console.log("Server Down");
+      return false;
     }
   };
 
@@ -142,6 +176,7 @@ export function useAppService() {
     onResize,
     handleUnsavedChanges,
     initializeApp,
-    refreshToken
+    refreshToken,
+    serverHealthCheck
   };
 }

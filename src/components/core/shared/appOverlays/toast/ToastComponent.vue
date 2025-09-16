@@ -16,6 +16,18 @@ import { computed } from "vue";
 
 import type { ToastQueue } from "@/types/Toasts";
 
+const BUTTON_MAP = [
+  { key: "retry", label: "Retry", show: "showRetry", handler: "onRetry" },
+  { key: "cancel", label: "Cancel", show: "showCancel", handler: "onCancel" },
+  {
+    key: "cancelNoRevert",
+    label: "Cancel",
+    show: "showCancelNoRevert",
+    handler: "onCancelNoRevert"
+  },
+  { key: "report", label: "Report", show: "showReport", handler: "onReport" }
+] as const;
+
 const props = defineProps<{
   toast: ToastQueue;
 }>();
@@ -34,6 +46,18 @@ const toastStyles = computed(() => ({
   "toast-success": props.toast.type === "success",
   "toast-info": props.toast.type === "info"
 }));
+
+const availableButtons = computed(() => {
+  const btnOptions = props.toast.options?.btnOptions;
+  if (!btnOptions) return [];
+
+  const currentBtns = BUTTON_MAP.filter((btn) => btnOptions[btn.show]).map((btn) => ({
+    key: btn.key,
+    label: btn.label,
+    handler: () => btnOptions[btn.handler]?.()
+  }));
+  return currentBtns;
+});
 </script>
 
 <template>
@@ -47,8 +71,14 @@ const toastStyles = computed(() => ({
       <h3 class="toast-title">{{ toast.type.charAt(0).toUpperCase() + toast.type.slice(1) }}</h3>
       <button class="toast-close" @click="emit('close')" aria-label="Close Notifaction">x</button>
     </div>
-
-    <p class="toast-message">{{ toast.message }}</p>
+    <div class="toast-message">
+      <p class="toast-message">{{ toast.message }}</p>
+    </div>
+    <div class="toast-buttons" v-if="toast.duration === undefined">
+      <button v-for="button in availableButtons" :key="button.key" @click="button.handler">
+        {{ button.label }}
+      </button>
+    </div>
   </div>
 </template>
 

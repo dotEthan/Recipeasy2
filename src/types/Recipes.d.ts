@@ -37,14 +37,13 @@ export interface RecipeStore {
   recipesLength: ComputedRef<number>;
   publicRecipesLength: ComputedRef<number>;
   getAllRecipeTags: ComputedRef<string[]>;
-  getMealTime: ComputedRef<MealTime>;
 
   useFilteredRecipes(activeFilters: string[]): Ref<Recipe[]>;
   setInitialPublicRecipeState(publicRecipeData: Recipe[]): void;
   setInitialUserRecipeState(userRecipeData: Recipe[]): void;
   updatePublicRecipe(recipe: Recipe): void;
   getRecipeById(id: string): void;
-  fetchRecipeCollections(): void;
+  setRecipeCollections(collections: any): void;
   updateRecipe(recipe: Recipe): void;
   addRecipe(recipe: Recipe): void;
   setSelectedRecipeId(id: string): void;
@@ -148,5 +147,11 @@ export type RecipeCollection = {
   recipes: Recipe[];
   tags: string[];
   loading: boolean;
+  error: string | null;
+};
+
+export type RecipeCollectionResult = {
+  tags: string[];
+  recipes: Recipes[];
   error: string | null;
 };

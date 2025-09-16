@@ -3,7 +3,8 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 import { TOAST_DURATION } from "@/constants";
-import type { ToastQueue, ToastStore, ToastType } from "@/types/Toasts";
+import type { ToastAction, ToastQueue, ToastStore, ToastType } from "@/types/Toasts";
+import { ErrorHandlerOptions } from "@/types/errors";
 
 export const useToastStore = defineStore("toast", (): ToastStore => {
   // State
@@ -14,13 +15,25 @@ export const useToastStore = defineStore("toast", (): ToastStore => {
   // Getters
 
   // Actions
-  function showToast(message: string, type: ToastType, duration: number = TOAST_DURATION) {
+  function addToast(
+    message: string,
+    type: ToastType,
+    config?: {
+      duration?: number;
+      options?: ErrorHandlerOptions;
+    }
+  ) {
     const id = Date.now();
-    const currentToast: ToastQueue = { id, message, type, duration, remaining: duration };
-    toastQueue.value.push(currentToast);
+    const toast: ToastQueue = { id, message, type, ...config };
 
-    if (toastQueue.value.length === 1) {
-      startToastTimer(currentToast);
+    if (config?.duration) {
+      toast.remaining = config.duration;
+    }
+
+    toastQueue.value.push(toast);
+
+    if (config?.duration && toastQueue.value.length === 1) {
+      startToastTimer(toast);
     }
   }
 
@@ -47,7 +60,7 @@ export const useToastStore = defineStore("toast", (): ToastStore => {
 
   function pauseTimer(id: number) {
     const activeToast = toastQueue.value.find((toast) => toast.id === id);
-    if (!activeToast || !startTimes.has(id)) return;
+    if (!activeToast || activeToast.duration == null || !startTimes.has(id)) return;
 
     const startTime = startTimes.get(id);
     if (startTime === undefined) return;
@@ -56,13 +69,13 @@ export const useToastStore = defineStore("toast", (): ToastStore => {
     activeTimeouts.delete(id);
 
     const elapsed = Date.now() - startTime;
-    activeToast.remaining = activeToast.duration - elapsed;
+    activeToast.remaining = activeToast.duration! - elapsed;
     startTimes.delete(id);
   }
 
   function resumeTimer(id: number) {
     const activeToast = toastQueue.value.find((toast) => toast.id === id);
-    if (!activeToast?.remaining) return;
+    if (!activeToast?.remaining || activeToast.duration == null) return;
 
     startTimes.set(id, Date.now());
     const timeoutId = setTimeout(() => {
@@ -75,7 +88,7 @@ export const useToastStore = defineStore("toast", (): ToastStore => {
 
   return {
     toastQueue,
-    showToast,
+    addToast,
     startToastTimer,
     removeToast,
     pauseTimer,

@@ -24,7 +24,7 @@ export const useShoppingListStore = defineStore("shopping-lists", (): ShoppingLi
   watch(
     () => shoppingLists.value,
     (newShoppingLists: ShoppingList[]) => {
-      sessionStorage.setItem("shoppingLists", formatCachedValue(newShoppingLists));
+      sessionStorage.setItem("shoppingLists-cached", formatCachedValue(newShoppingLists));
     },
     { deep: true }
   );

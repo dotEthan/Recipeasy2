@@ -2,7 +2,7 @@
 import { useErrorStore } from "@/stores/errorStore";
 import { useModalStore } from "@/stores/modalStore";
 
-import AppModalComponent from "../appModal/AppModalComponent.vue";
+import AppModalComponent from "../../appModal/AppModalComponent.vue";
 
 const modalStore = useModalStore();
 const errorStore = useErrorStore();
@@ -47,11 +47,16 @@ function onModalClose() {
         </button>
         <button
           v-if="errorStore.currentModalError.showReport"
-          @click="modalStore.handleReport"
+          @click="errorStore.currentModalError.onReport"
           class="btn btn-info">
           Report Issue
         </button>
-        <button @click="onModalClose" class="btn btn-ghost">Dismiss</button>
+        <button
+          v-if="errorStore.currentModalError.canDismiss"
+          @click="onModalClose"
+          class="btn btn-ghost">
+          Dismiss
+        </button>
       </div>
     </div>
   </AppModalComponent>

@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { ComputedRef, computed, ref, watch, watchEffect } from "vue";
 
 import { useDataService } from "@/composables/useDataService";
+import { COLLECTION_TAGS } from "@/constants";
 import { useUserStore } from "@/stores/userStore";
 import {
   MealTime,
@@ -34,7 +35,7 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
       id: "recommended",
       title: "Recommended Recipes",
       recipes: [],
-      tags: ["popular"],
+      tags: COLLECTION_TAGS.COLLECTION_1,
       loading: false,
       error: null
     },
@@ -42,7 +43,7 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
       id: "ethansFavourites",
       title: "Ethan's Favourites",
       recipes: [],
-      tags: ["ethansFavourites"],
+      tags: COLLECTION_TAGS.COLLECTION_2,
       loading: false,
       error: null
     },
@@ -50,7 +51,7 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
       id: "snack",
       title: "Snack Recipes",
       recipes: [],
-      tags: ["snack"],
+      tags: COLLECTION_TAGS.COLLECTION_3,
       loading: false,
       error: null
     },
@@ -58,7 +59,7 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
       id: "mealtime",
       title: `What's for `,
       recipes: [],
-      tags: ["mealTime"],
+      tags: COLLECTION_TAGS.COLLECTION_4,
       loading: false,
       error: null
     },
@@ -66,7 +67,7 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
       id: "healthy",
       title: "Healthy Recipes",
       recipes: [],
-      tags: ["healthy"],
+      tags: COLLECTION_TAGS.COLLECTION_5,
       loading: false,
       error: null
     }
@@ -95,7 +96,7 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
   watch(
     () => recipes.value,
     (newRecipes: Recipe[]) => {
-      sessionStorage.setItem("userRecipes", formatCachedValue(newRecipes));
+      sessionStorage.setItem("userRecipes-cached", formatCachedValue(newRecipes));
     },
     { deep: true }
   );
@@ -103,7 +104,7 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
   watch(
     () => recipeCollections.value,
     (newCollections: RecipeCollection[]) => {
-      sessionStorage.setItem("recipeCollections", formatCachedValue(newCollections));
+      sessionStorage.setItem("recipeCollections-cached", formatCachedValue(newCollections));
     },
     { deep: true }
   );
@@ -111,7 +112,7 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
   watch(
     () => allTags.value,
     (newAllTags: string[]) => {
-      sessionStorage.setItem("allTags", formatCachedValue(newAllTags));
+      sessionStorage.setItem("allTags-cached", formatCachedValue(newAllTags));
     },
     { deep: true }
   );
@@ -120,15 +121,18 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
     () => selectedRecipeId.value,
     (newSelectedRecipeId: string | undefined) => {
       if (newSelectedRecipeId !== undefined) {
-        sessionStorage.setItem("selectedRecipeId", newSelectedRecipeId);
+        sessionStorage.setItem("selectedRecipeId-cached", formatCachedValue(newSelectedRecipeId));
       } else {
-        sessionStorage.removeItem("selectedRecipeId");
+        sessionStorage.removeItem("selectedRecipeId-cached");
       }
     }
   );
 
   watchEffect(() => {
-    sessionStorage.setItem("editSelectedRecipe", String(editSelectedRecipe.value));
+    sessionStorage.setItem(
+      "editSelectedRecipe-cached",
+      formatCachedValue(String(editSelectedRecipe.value))
+    );
   });
 
   // Computed
@@ -175,17 +179,6 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
     )
   );
 
-  const getMealTime: ComputedRef<MealTime> = computed(() => {
-    const hour = new Date().getHours();
-    if (hour >= 2 && hour < 10) {
-      return MealTime.Breakfast;
-    } else if (hour >= 10 && hour < 15) {
-      return MealTime.Lunch;
-    } else {
-      return MealTime.Supper;
-    }
-  });
-
   // Functions
   function useFilteredRecipes(activeFilters: string[]): ComputedRef<Recipe[]> {
     const allFilters = new Set([...personalFilters.value, ...activeFilters]);
@@ -224,26 +217,18 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
     return recipes.value.find((recipe) => recipe._id === id);
   }
 
-  async function fetchRecipeCollections() {
-    const collectionPromises = recipeCollections.value.map(async (collection) => {
-      await fetchOneCollection(collection);
+  function setRecipeCollections(collections: RecipeCollection[]): void {
+    collections.forEach((collection) => {
+      const matchingCollection = recipeCollections.value.find(
+        (recipeCollection) =>
+          JSON.stringify(recipeCollection.tags) === JSON.stringify(collection.tags)
+      );
+
+      if (matchingCollection) {
+        matchingCollection.recipes = collection.recipes;
+        matchingCollection.error = collection.error;
+      }
     });
-
-    await Promise.allSettled(collectionPromises);
-  }
-
-  async function fetchOneCollection(collection: RecipeCollection) {
-    collection.loading = true;
-    collection.error = null;
-    const tags = collection.tags.includes("mealTime") ? getMealTime.value : collection.tags;
-    try {
-      const collectionResponse = await dataService.getRecipesForCollections(tags);
-      collection.recipes = collectionResponse || [];
-    } catch (error: unknown) {
-      collection.error = error instanceof Error ? error.message : "An unknown error occurred";
-    } finally {
-      collection.loading = false;
-    }
   }
 
   function updateRecipe(recipe: Recipe) {
@@ -354,9 +339,9 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
   }
 
   function hydrateStore(recipeState: RecipeState) {
-    // TODO Refactor recipeCollectoins for data persistence
+    setRecipeCollections(recipeState.recipeCollections);
+
     recipes.value = recipeState.recipes || [];
-    recipeCollections.value = recipeState.recipeCollections || recipeCollections.value;
     allTags.value = recipeState.allTags || [];
     selectedRecipeId.value = recipeState.selectedRecipeId;
     editSelectedRecipe.value = recipeState.editSelectedRecipe;
@@ -398,15 +383,13 @@ export const useRecipeStore = defineStore("recipes", (): RecipeStore => {
     recipesLength,
     publicRecipesLength,
     getAllRecipeTags,
-    getMealTime,
-    // generatePublicRecipeCollections,
 
     useFilteredRecipes,
     setInitialUserRecipeState,
     setInitialPublicRecipeState,
     updatePublicRecipe,
     getRecipeById,
-    fetchRecipeCollections,
+    setRecipeCollections,
     updateRecipe,
     addRecipe,
     setSelectedRecipeId,

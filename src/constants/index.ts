@@ -14,3 +14,11 @@ export enum AuthFormType {
   SET_PASSWORD = "set-password",
   VERIFY_EMAIL = "verify-email" // Remove?
 }
+
+export const COLLECTION_TAGS = {
+  COLLECTION_1: ["popular"],
+  COLLECTION_2: ["ethansFavourites"],
+  COLLECTION_3: ["snack"],
+  COLLECTION_4: ["mealTime"],
+  COLLECTION_5: ["healthy"]
+};

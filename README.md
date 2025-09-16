@@ -54,8 +54,9 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### In Progress (on hold as Backend Work On-Going)
 
+- New Recipe button turns to hand before clickable! Noooo!
 - Switch from function to arrow functions & full prettier update
-- Verified User Flow
+- Verified User Flow (test all failures)
 - Switch to id based routing instead of event based (recipe url slugs for sharing)
 - Display newly added Recipe Data (time, servings, nutritional info, etc) & Add Cuisine type & Nutritional Info (Edit and Display)
 - Checking Basic Desktop design
@@ -64,7 +65,7 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 
 ### To Come:
 
-- On Fresh load, 'get/session' called unecessarily
+- Sorting & Ordering
 - Tailor Cloudinary Image settings (refactor for new ExpressJS app)
 - Route Guards
 - Optimistic UI changes with reverts on errors (provide link to selected REcipe if fails)

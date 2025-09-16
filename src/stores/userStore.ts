@@ -14,7 +14,7 @@ export const useUserStore = defineStore("user", (): UserStore => {
   watch(
     () => localUser.value,
     (newLocalUser: LocalUser | undefined) => {
-      sessionStorage.setItem("localUser", formatCachedValue(newLocalUser));
+      sessionStorage.setItem("localUser-cached", formatCachedValue(newLocalUser));
     },
     { deep: true }
   );

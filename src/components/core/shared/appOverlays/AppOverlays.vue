@@ -8,8 +8,8 @@
 import { useErrorStore } from "@/stores/errorStore";
 import { useToastStore } from "@/stores/toastStore";
 
-import Toast from "../../shared/toast/ToastComponent.vue";
-import ErrorModalComponent from "../errorModal/ErrorModalComponent.vue";
+import ErrorModalComponent from "./errorModal/ErrorModalComponent.vue";
+import Toast from "./toast/ToastComponent.vue";
 
 const toastStore = useToastStore();
 const errorStore = useErrorStore();
