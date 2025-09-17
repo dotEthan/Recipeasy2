@@ -99,9 +99,10 @@ export function useAppService() {
       const tokenSet = await refreshToken();
       if (!tokenSet) {
         console.log("token refresh failed: ");
-        // TODO Needed? or need new method?
-        // await recipeStore.fetchRecipeCollections();
         appStore.resetAppStates();
+
+        const recipeCollections = await recipeService.fetchRecipeCollections();
+        recipeStore.setRecipeCollections(recipeCollections);
         router.push("/");
       } else {
         // TODO DO I need isAutheticated now?

@@ -8,7 +8,7 @@ import router from "@/router/main";
 import { useErrorStore } from "@/stores/errorStore";
 
 import "./assets/main.sass";
-import { handleError } from "./utilities/ErrorHandler";
+import { handleError } from "./utilities/errorHandler";
 
 async function initializeApp() {
   const app = createApp(App);
