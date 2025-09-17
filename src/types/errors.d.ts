@@ -16,12 +16,18 @@ interface ErrorHandlerOptions {
     showCancel?: boolean;
     showCancelNoRevert?: boolean;
     showReport?: boolean;
+    showCreate?: boolean;
     onRetry?: () => void | Promise<unknown>;
     onCancel?: () => void | Promise<void>;
     onCancelNoRevert?: () => void | Promise<void>;
     onReport?: () => void | Promise<void>;
+    onCreate?: () => void | Promise<void>;
   };
-  context?: any;
+  context?: {
+    actionId: string;
+    resourceId: string;
+    maxRetries?: number;
+  };
 }
 
 export interface SignatureError {
@@ -46,8 +52,9 @@ export interface ErrorDetails {
 export type FieldError = Record<string, string>;
 
 export type ToastError = {
-  id: number;
+  toastId: number;
   message: string;
   errorCode: string;
   timestamp: Date;
+  actionId: string;
 };

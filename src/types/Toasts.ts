@@ -8,7 +8,11 @@ export interface ToastStore {
   addToast(
     message: string,
     type: ToastType,
-    config: { duration?: number; options?: ErrorHandlerOptions }
+    config: {
+      duration?: number;
+      isPersistent: boolean;
+      options?: ErrorHandlerOptions;
+    }
   ): void;
   startToastTimer(toast: ToastQueue): void;
   removeToast(id: number): void;
@@ -40,7 +44,10 @@ export type ToastQueue = {
   duration?: number;
   remaining?: number;
   timeoutId?: number;
+  isPersistent: boolean;
   options?: ErrorHandlerOptions;
+  retry: number;
+  maxRetries: number;
 };
 
 export type ToastAction = {

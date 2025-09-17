@@ -1,5 +1,8 @@
+import { AxiosError } from "axios";
+
 import { useUserStore } from "@/stores/userStore";
-import { MealTime, NewRecipe, Visibility } from "@/types/Recipes.d";
+import { MealTime, NewRecipe, Recipe, RecipeInfo, Visibility } from "@/types/Recipes.d";
+import { ToastError } from "@/types/errors";
 
 /**
  * Create URL slug out of recipe's title and id slice
@@ -49,26 +52,26 @@ export function debounce(fn: Function, delay: number) {
  * import { createNewRecipe } from '/utilities';
  * createNewRecipe();
  */
-export function createNewRecipe(): NewRecipe {
+export function createNewRecipe(recipe?: Recipe): NewRecipe {
   const userStore = useUserStore();
   const userId = userStore.getCurrentUserId || "";
   const newRecipe = {
-    name: "",
-    description: "",
-    imgPath: "",
-    url: "",
+    name: recipe?.name ?? "",
+    description: recipe?.description ?? "",
+    imgPath: recipe?.imgPath ?? "",
+    url: recipe?.url ?? "",
     ratings: {
-      ratings: [],
-      averageRating: 0,
-      totalRatings: 0,
-      ratingsSum: 0
+      ratings: recipe?.ratings.ratings ?? [],
+      averageRating: recipe?.ratings.averageRating ?? 0,
+      totalRatings: recipe?.ratings.totalRatings ?? 0,
+      ratingsSum: recipe?.ratings.ratingsSum ?? 0
     },
-    ingredients: [],
-    directions: [],
-    info: {},
-    notes: [],
-    visibility: Visibility.Public,
-    tags: [],
+    ingredients: recipe?.ingredients || [],
+    directions: recipe?.directions || [],
+    info: recipe?.info || {},
+    notes: recipe?.notes || [],
+    visibility: recipe?.visibility || Visibility.Public,
+    tags: recipe?.tags || [],
     userId: userId
   };
 

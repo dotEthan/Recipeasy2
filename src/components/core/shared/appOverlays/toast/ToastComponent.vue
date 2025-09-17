@@ -17,7 +17,12 @@ import { computed } from "vue";
 import type { ToastQueue } from "@/types/Toasts";
 
 const BUTTON_MAP = [
-  { key: "retry", label: "Retry", show: "showRetry", handler: "onRetry" },
+  {
+    key: "retry",
+    label: "Retry",
+    show: "showRetry",
+    handler: "onRetry"
+  },
   { key: "cancel", label: "Cancel", show: "showCancel", handler: "onCancel" },
   {
     key: "cancelNoRevert",
@@ -25,7 +30,8 @@ const BUTTON_MAP = [
     show: "showCancelNoRevert",
     handler: "onCancelNoRevert"
   },
-  { key: "report", label: "Report", show: "showReport", handler: "onReport" }
+  { key: "report", label: "Report", show: "showReport", handler: "onReport" },
+  { key: "createNew", label: "Re-create", show: "showCreate", handler: "onCreate" }
 ] as const;
 
 const props = defineProps<{
@@ -73,9 +79,16 @@ const availableButtons = computed(() => {
     </div>
     <div class="toast-message">
       <p class="toast-message">{{ toast.message }}</p>
+      <span class="toast-message" v-if="toast.retry > 0">
+        Retry: {{ toast.retry }} | Max retries: {{ toast.maxRetries }}
+      </span>
     </div>
-    <div class="toast-buttons" v-if="toast.duration === undefined">
-      <button v-for="button in availableButtons" :key="button.key" @click="button.handler">
+    <div class="toast-buttons" v-if="toast.isPersistent">
+      <button
+        v-for="button in availableButtons"
+        :key="button.key"
+        @click="button.handler"
+        :disabled="button.key === 'retry' && toast.retry >= toast.maxRetries">
         {{ button.label }}
       </button>
     </div>

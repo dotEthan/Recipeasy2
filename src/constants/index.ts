@@ -5,7 +5,8 @@ export const CACHED_DATA_TTL = 900000;
 
 export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5mb
 
-export const TOAST_DURATION = 3000;
+export const DEFAULT_TOAST_DURATION = 3000;
+export const DEFAULT_TOAST_MAX_RETRY = 3;
 
 export enum AuthFormType {
   SIGNIN = "signin",

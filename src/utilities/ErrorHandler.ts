@@ -1,6 +1,8 @@
-import { AuthError, BaseError, CriticalError, NonCriticalError } from "@/errors";
+import { AxiosError } from "axios";
+
+import { BaseError, CriticalError, NonCriticalError } from "@/errors";
 import { useErrorStore } from "@/stores/errorStore";
-import { ErrorHandlerOptions } from "@/types/errors";
+import { ErrorHandlerOptions, ToastError } from "@/types/errors";
 
 /**
  * Central error handler - delegates to appropriate handling method
@@ -11,60 +13,30 @@ export function handleError(error: unknown, options: ErrorHandlerOptions = {}) {
   console.log("handling error: ", error.name);
   console.log("Error type:", error.constructor.name);
 
-  if (error.name === "AxiosError") {
-    switch (error.status) {
-      case 404:
-        console.log("404s");
-        errorStore.addToastError(error, true, options);
-    }
+  if (error instanceof AxiosError) {
+    handleApiError(error, options);
+  } else {
+    console.log("what is this?: ", error);
   }
-  // Handle Axios errors first
-  // if (typeof error === "object" && error instanceof AxiosError) {
-  //   console.log("axios");
-  //   return handleApiError(error, options);
-  // }
-
-  if (error instanceof AuthError) {
-    return handleAuthError(error, options);
-  }
-
-  if (error instanceof NonCriticalError) {
-    return handleNonCriticalError(error);
-  }
-
-  if (error instanceof CriticalError) {
-    return handleCriticalError(error, options);
-  }
-
-  if (error instanceof BaseError) {
-    return handleBaseError(error, options);
-  }
-
-  // Handle generic JavaScript errors
-  return handleGenericError(error, options);
 }
 
 /**
- * Handle authentication errors
+ * Handle API errors
  */
-function handleAuthError(error: AuthError, options: ErrorHandlerOptions) {}
-
-/**
- * Handle non-critical errors (always toast)
- */
-function handleNonCriticalError(error: NonCriticalError) {}
-
-/**
- * Handle critical errors (always modal)
- */
-function handleCriticalError(error: CriticalError, options: ErrorHandlerOptions) {}
-
-/**
- * Handle base errors
- */
-function handleBaseError(error: BaseError, options: ErrorHandlerOptions) {}
-
-/**
- * Handle generic JavaScript errors
- */
-function handleGenericError(error: unknown, options: ErrorHandlerOptions) {}
+function handleApiError(error: AxiosError, options: ErrorHandlerOptions) {
+  const errorStore = useErrorStore();
+  switch (error.status) {
+    case 404: {
+      console.log("404s: ", error);
+      const toastError: ToastError = {
+        toastId: Date.now(),
+        message: error.message,
+        errorCode: `error.status`,
+        timestamp: new Date(),
+        actionId: options.context?.actionId || ""
+      };
+      errorStore.addToastError(toastError, true, options);
+      break;
+    }
+  }
+}

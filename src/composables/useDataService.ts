@@ -16,7 +16,7 @@ import {
 import { MealTime, Recipe, Visibility } from "@/types/Recipes.d";
 import { TOAST_TYPES } from "@/types/Toasts";
 import type { LocalUser } from "@/types/UserState.d";
-import { getPublicIdFromUrl } from "@/utilities";
+import { createNewRecipe, getPublicIdFromUrl } from "@/utilities";
 import { handleError } from "@/utilities";
 
 /**
@@ -39,6 +39,8 @@ export function useDataService() {
 
   /**
    * Calls API to save newly created recipes
+   * @todo - Finish the split from useRecipeService
+   * @todo - SaveNewRecipe should be using NewRecipe, yeah?
    * @param {Recipe} - The newly created recipe
    * @returns {Promise<void>} - None
    * @example
@@ -47,6 +49,7 @@ export function useDataService() {
    */
   const saveNewRecipe = async (recipe: Recipe) => {
     try {
+      console.log("new recipe: ", recipe);
       const saveNewRecipeResponse = await axios.post<StandardRecipeApiResponse>("/recipes", {
         recipe
       });
@@ -60,7 +63,7 @@ export function useDataService() {
 
       recipeStore.finishSuccessfulSave(returnedRecipe);
       userStore.addIdToLocalUserRecipes(recipe._id);
-      toastStore.addToast("New Recipe Created", TOAST_TYPES.SUCCESS, {});
+      toastStore.addToast("New Recipe Created", TOAST_TYPES.SUCCESS, { isPersistent: false });
     } catch (error) {
       recipeStore.revertFailedSave(recipe);
 
@@ -90,7 +93,7 @@ export function useDataService() {
       const user = addUserRecipesResponse.data.user;
       if (!user) throw new Error("Updated Data not found, retry, reset FE changes?");
       userStore.setLocalUser(user);
-      toastStore.addToast("Public recipe added", TOAST_TYPES.SUCCESS, {});
+      toastStore.addToast("Public recipe added", TOAST_TYPES.SUCCESS, { isPersistent: false });
       return user;
     } catch (error) {
       console.log("upset user recipe error: ", error);
@@ -110,9 +113,7 @@ export function useDataService() {
     try {
       const saveNewRecipeResponse = await axios.put<StandardRecipeApiResponse>(
         `/recipes/${recipe._id}`,
-        {
-          recipe
-        }
+        { recipe }
       );
       const returnedData = saveNewRecipeResponse.data;
 
@@ -126,23 +127,25 @@ export function useDataService() {
         recipeStore.updatePublicRecipe(returnedRecipe);
       }
       recipeStore.finishSuccessfulUpdate(returnedRecipe);
-      toastStore.addToast("Recipe Updated", TOAST_TYPES.SUCCESS, {});
+      toastStore.addToast("Recipe Updated", TOAST_TYPES.SUCCESS, { isPersistent: false });
     } catch (error) {
       console.log("Updating Recipe error: ", error);
       handleError(error, {
         btnOptions: {
           showRetry: true,
           showCancel: true,
+          showCreate: false,
+          // TODO Also close Toast
           onCancel: () => recipeStore.revertFailedUpdate(recipe),
-          onRetry: () => updateRecipe(recipe)
+          onRetry: () => updateRecipe(recipe),
+          onCreate: () => saveNewRecipe(recipe)
+          // onCreate: () => saveNewRecipe(createNewRecipe(recipe));
         },
         context: {
-          location: "dataService",
-          operation: "updating recipe",
-          recipeId: recipe._id
+          actionId: `update-recipe-${recipe._id}`,
+          resourceId: recipe._id
         }
       });
-      // recipeStore.revertFailedUpdate(recipe);
     }
   };
 
@@ -285,7 +288,7 @@ export function useDataService() {
       await axios.delete(`/recipes/${id}`);
       recipeStore.finishRecipeDeletion();
       userStore.removeIdFromLocalUserRecipes(id);
-      toastStore.addToast("Recipe Deleted", TOAST_TYPES.SUCCESS, {});
+      toastStore.addToast("Recipe Deleted", TOAST_TYPES.SUCCESS, { isPersistent: false });
     } catch (error: unknown) {
       recipeStore.revertRecipeDeletion(id);
 

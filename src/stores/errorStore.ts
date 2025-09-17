@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 import { ref } from "vue";
 
-import { TOAST_DURATION } from "@/constants";
+import { DEFAULT_TOAST_DURATION } from "@/constants";
 import { TOAST_TYPES } from "@/types";
 import { ErrorModalConfig } from "@/types/Modal";
 import { ErrorHandlerOptions, ErrorStore, ToastError } from "@/types/errors";
@@ -37,17 +37,20 @@ export const useErrorStore = defineStore("error", (): ErrorStore => {
   }
 
   // funneling all toast errors through here for future logging
-  function addToastError(error: ToastError, persistent: boolean, options?: ErrorHandlerOptions) {
-    const errorData = {
-      id: String(Date.now()),
-      message: error.message,
-      errorCode: error.errorCode || "GENERAL",
-      timestamp: new Date()
-    };
+  function addToastError(error: ToastError, isPersistent: boolean, options?: ErrorHandlerOptions) {
+    // const errorData = {
+    //   id: String(Date.now()),
+    //   message: error.message,
+    //   errorCode: error.errorCode || "GENERAL",
+    //   timestamp: new Date()
+    // };
+    // Log errorData
 
-    !persistent
-      ? toastStore.addToast(errorData.message, TOAST_TYPES.ERROR, { duration: TOAST_DURATION })
-      : toastStore.addToast(errorData.message, TOAST_TYPES.ERROR, { options });
+    toastStore.addToast(error.message, TOAST_TYPES.ERROR, {
+      isPersistent,
+      options,
+      duration: DEFAULT_TOAST_DURATION
+    });
 
     console.log("Log error to toast");
   }

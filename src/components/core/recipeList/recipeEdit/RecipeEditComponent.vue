@@ -30,7 +30,7 @@ const props = defineProps({
 const emit = defineEmits(["editingFinished", "recipeDeleted"]);
 
 let formValid = true;
-let formData: Ref<Recipe>;
+let formData: Ref<Recipe | NewRecipe>;
 let formError = ref("");
 const newImageFile = ref<File | null>(null);
 const imageChanged = ref(false);
@@ -86,13 +86,14 @@ const onSubmit = async () => {
   }
 
   if (formData?.value && !props.isNew) {
-    recipeStore.prepRecipeDataForUpdate(formData.value);
-    dataService.updateRecipe(formData.value);
+    recipeStore.prepRecipeDataForUpdate(formData.value as Recipe);
+    dataService.updateRecipe(formData.value as Recipe);
 
     onEditingOver();
   } else if (formData?.value && formValid) {
-    recipeStore.backupNewRecipeDataForSave(formData.value);
-    dataService.saveNewRecipe(formData.value);
+    // TODO These are both NewRecipe types
+    recipeStore.backupNewRecipeDataForSave(formData.value as Recipe);
+    dataService.saveNewRecipe(formData.value as Recipe);
 
     onEditingOver();
   } else {
@@ -249,8 +250,7 @@ onUnmounted(() => {
                   :content="formError"
                   format="warning"
                   class="tooltip"
-                  v-bind:class="{ 'show-tooltip': !formValid }"
-                />
+                  v-bind:class="{ 'show-tooltip': !formValid }" />
               </div>
               <div class="cancel-btn">
                 <button type="button" class="recipe-manage-btn cancel" @click="onCancel">
@@ -270,8 +270,7 @@ onUnmounted(() => {
                   <img
                     :src="formData.imgPath"
                     class="img-responsive recipe-edit-image"
-                    v-if="formData.imgPath"
-                  />
+                    v-if="formData.imgPath" />
                   <UserImageUploadComponent @file-selected="handleImageSelected" v-else />
                 </div>
               </div>
@@ -283,8 +282,7 @@ onUnmounted(() => {
                     id="name"
                     class="form-control"
                     v-model="formData.name"
-                    @blur="validateName"
-                  />
+                    @blur="validateName" />
                 </div>
                 <div class="form-group">
                   <label for="description">Description</label>
@@ -293,8 +291,7 @@ onUnmounted(() => {
                     id="description"
                     class="form-control recipe-description-area"
                     v-model="formData.description"
-                    rows="6"
-                  ></textarea>
+                    rows="6"></textarea>
                 </div>
                 <div class="form-group">
                   <label for="url">Website URL:</label>
@@ -306,8 +303,7 @@ onUnmounted(() => {
                       type="radio"
                       id="private"
                       value="private"
-                      v-model="formData.visibility"
-                    />
+                      v-model="formData.visibility" />
                     <label for="private">Private</label>
                   </div>
                 </div>
@@ -317,8 +313,7 @@ onUnmounted(() => {
               <div
                 class="item-contain"
                 v-for="(ingredientType, i) of formData.ingredients"
-                :key="i"
-              >
+                :key="i">
                 <div class="form-group item-type-contain">
                   <label class="section-title" for="ingredient-group{{i}}"
                     >INGREDIENT GROUP NAME:</label
@@ -334,13 +329,11 @@ onUnmounted(() => {
                           if (el) ingredientTypeRefs[`ingredientType-${i}`] = el;
                         }
                       "
-                      placeholder="Main Dish"
-                    />
+                      placeholder="Main Dish" />
                     <button
                       type="button"
                       class="btn-delete"
-                      @click="onDeleteIngredientType(i)"
-                    ></button>
+                      @click="onDeleteIngredientType(i)"></button>
                   </div>
                   <div class="item-list-contain">
                     <div class="section-title">INGREDIENTS:</div>
@@ -348,8 +341,7 @@ onUnmounted(() => {
                       <div
                         class="item-each"
                         v-for="(ingredient, j) of ingredientType.steps"
-                        :key="j"
-                      >
+                        :key="j">
                         <div class="item-each-container">
                           <div class="item-each-row amount-row">
                             <label class="item-label" for="ingredient-{{j}}">Amount:</label>
@@ -364,8 +356,7 @@ onUnmounted(() => {
                                     if (el) amountRefs[`amount-${i}-${j}`] = el;
                                   }
                                 "
-                                placeholder="1"
-                              />
+                                placeholder="1" />
                             </div>
                           </div>
                           <div class="item-each-row unit-row">
@@ -376,8 +367,7 @@ onUnmounted(() => {
                                 class="form-control item-input"
                                 v-model="formData.ingredients[i].steps[j].unit"
                                 id="ingredient-{{j}}"
-                                placeholder="cup"
-                              />
+                                placeholder="cup" />
                             </div>
                           </div>
                           <div class="item-each-row name-row">
@@ -388,16 +378,14 @@ onUnmounted(() => {
                                 class="form-control item-input"
                                 v-model="formData.ingredients[i].steps[j].name"
                                 id="ingredient-{{j}}"
-                                placeholder="Pepper"
-                              />
+                                placeholder="Pepper" />
                             </div>
                           </div>
                         </div>
                         <button
                           type="button"
                           class="btn-delete"
-                          @click="onDeleteIngredient(i, j)"
-                        ></button>
+                          @click="onDeleteIngredient(i, j)"></button>
                       </div>
                       <div class="item-each">
                         <button type="button" class="btn btn-clear" @click="onAddIngredient(i)">
@@ -434,13 +422,11 @@ onUnmounted(() => {
                           if (el) directionTypeRefs[`directionType-${k}`] = el;
                         }
                       "
-                      placeholder="Main Dish"
-                    />
+                      placeholder="Main Dish" />
                     <button
                       type="button"
                       class="btn-delete"
-                      @click="onDeleteDirectionType(k)"
-                    ></button>
+                      @click="onDeleteDirectionType(k)"></button>
                   </div>
                   <div class="item-list-contain">
                     <div class="section-title">DIRECTIONS</div>
@@ -460,13 +446,11 @@ onUnmounted(() => {
                                 }
                               "
                               id="direction{{l}}"
-                              placeholder="Cut, Stir, Bake"
-                            />
+                              placeholder="Cut, Stir, Bake" />
                             <button
                               type="button"
                               class="btn-delete"
-                              @click="onDeleteDirection(k, l)"
-                            ></button>
+                              @click="onDeleteDirection(k, l)"></button>
                           </div>
                         </div>
                       </div>
@@ -501,8 +485,7 @@ onUnmounted(() => {
                   type="text"
                   v-model="tagsInput"
                   name="tagsInput"
-                  @keydown.enter.prevent="addTag"
-                />
+                  @keydown.enter.prevent="addTag" />
                 <button class="existing-tag-remove" @click="addTag()">Add Tag</button>
               </div>
             </div>
@@ -518,8 +501,7 @@ onUnmounted(() => {
                       class="form-control direction-input"
                       v-model="formData.notes[n]"
                       id="note{{n}}"
-                      placeholder="Be sure to wash your hands!"
-                    />
+                      placeholder="Be sure to wash your hands!" />
                     <button type="button" class="btn-delete" @click="onDeleteNote(n)"></button>
                   </div>
                 </div>

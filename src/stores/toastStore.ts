@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 
 import { ref } from "vue";
 
-import { TOAST_DURATION } from "@/constants";
-import type { ToastAction, ToastQueue, ToastStore, ToastType } from "@/types/Toasts";
+import { DEFAULT_TOAST_DURATION, DEFAULT_TOAST_MAX_RETRY } from "@/constants";
+import type { ToastQueue, ToastStore, ToastType } from "@/types/Toasts";
 import { ErrorHandlerOptions } from "@/types/errors";
 
 export const useToastStore = defineStore("toast", (): ToastStore => {
@@ -18,22 +18,44 @@ export const useToastStore = defineStore("toast", (): ToastStore => {
   function addToast(
     message: string,
     type: ToastType,
-    config?: {
+    config: {
       duration?: number;
+      isPersistent: boolean;
       options?: ErrorHandlerOptions;
     }
   ) {
-    const id = Date.now();
-    const toast: ToastQueue = { id, message, type, ...config };
+    const existingToast: ToastQueue | undefined = toastQueue.value.find(
+      (toast) => config.options?.context?.actionId === toast.options?.context?.actionId
+    );
 
-    if (config?.duration) {
-      toast.remaining = config.duration;
-    }
+    if (!existingToast) {
+      const id = Date.now();
 
-    toastQueue.value.push(toast);
+      if (!config?.isPersistent && !config?.duration) {
+        config.duration = DEFAULT_TOAST_DURATION;
+      }
 
-    if (config?.duration && toastQueue.value.length === 1) {
-      startToastTimer(toast);
+      const toast: ToastQueue = {
+        id,
+        message,
+        type,
+        ...config,
+        maxRetries: config.options?.context?.maxRetries || DEFAULT_TOAST_MAX_RETRY,
+        retry: 0
+      };
+      toastQueue.value.push(toast);
+
+      if (!config.isPersistent) {
+        startToastTimer(toast);
+      }
+    } else {
+      // update exsiting toast
+      existingToast.retry++;
+      if (existingToast.retry >= existingToast.maxRetries) {
+        existingToast.options ??= {};
+        existingToast.options.btnOptions ??= {};
+        existingToast.options.btnOptions.showCreate = true;
+      }
     }
   }
 
