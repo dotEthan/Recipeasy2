@@ -7,6 +7,7 @@ import { CriticalError } from "@/errors";
 import router from "@/router/main";
 import { useErrorStore } from "@/stores/errorStore";
 
+import "./assets/main.css";
 import "./assets/main.sass";
 import { handleError } from "./utilities/errorHandler";
 

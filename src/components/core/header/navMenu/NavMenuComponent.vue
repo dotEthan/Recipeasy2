@@ -5,40 +5,9 @@
  * @example
  * <NavMenuComponent />
  */
-import { computed } from "vue";
-
-import { useAuthService } from "@/composables/useAuthService";
-import router from "@/router/main";
 import { useAppStore } from "@/stores/appStore";
-import { useUserStore } from "@/stores/userStore";
 
 const appStore = useAppStore();
-const userStore = useUserStore();
-const authService = useAuthService();
-const isAuthorized = computed(() => userStore.isAuthorized);
-
-function onClickRegisterSigning(type: string) {
-  closeMobileMenu();
-  appStore.setAuthModalType(type);
-}
-
-async function onSave() {
-  closeMobileMenu();
-}
-
-function onReset() {
-  console.log("reset");
-}
-
-async function onSignOut() {
-  closeMobileMenu();
-  try {
-    await authService.logOut();
-  } catch (error) {
-    console.error("Error signing out:", error);
-  }
-  router.push("/");
-}
 
 function closeMobileMenu() {
   appStore.isMobileMenuOpen = false;
@@ -46,47 +15,34 @@ function closeMobileMenu() {
 </script>
 
 <template>
-  <ul class="nav navbar-nav">
-    <li routerLinkActive="active" class="nav-recipes" v-if="isAuthorized">
-      <RouterLink class="nav-menu-item" to="recipes" @click="closeMobileMenu">Recipes</RouterLink>
+  <ul class="flex flex-row items-center grow-1 justify-center">
+    <li routerLinkActive="active" class="">
+      <RouterLink class="hover:underline nav-menu-item" to="/" @click="closeMobileMenu"
+        >Home</RouterLink
+      >
     </li>
-    <li routerLinkActive="active" class="nav-shopping-list" v-if="isAuthorized">
-      <RouterLink class="nav-menu-item" to="shopping-lists" @click="closeMobileMenu"
+    <li routerLinkActive="active" class="">
+      <RouterLink class="hover:underline nav-menu-item" to="recipes" @click="closeMobileMenu"
+        >Recipes</RouterLink
+      >
+    </li>
+    <li routerLinkActive="active" class="nav-shopping-list">
+      <RouterLink class="hover:underline nav-menu-item" to="shopping-lists" @click="closeMobileMenu"
         >Shopping Lists</RouterLink
       >
     </li>
-  </ul>
-  <ul class="nav navbar-nav rightward">
-    <div class="nav-menu-items" v-if="isAuthorized">
-      <li class="nav-menu-item">
-        <a @click="onSignOut()" style="cursor: pointer" routerLink="/">Log Out</a>
-      </li>
-      <li class="dropdown nav-menu-item" appDropdown>
-        <a style="cursor: pointer" class="dropdown-toggle" role="button"
-          >Manage <span class="caret"></span
-        ></a>
-        <ul class="dropdown-menu">
-          <li>
-            <a class="dropdown-menu-item" style="cursor: pointer" @click="onSave()">Save Data</a>
-          </li>
-          <li>
-            <a class="dropdown-menu-item" style="cursor: pointer" @click="onReset()">Reset Data</a>
-          </li>
-        </ul>
-      </li>
-    </div>
-    <div class="nav-menu-items" v-if="!isAuthorized">
-      <li>
-        <a class="nav-menu-item" style="cursor: pointer" @click="onClickRegisterSigning('register')"
-          >Register</a
-        >
-      </li>
-      <li class="sign-in-button">
-        <a class="nav-menu-item" style="cursor: pointer" @click="onClickRegisterSigning('signin')"
-          >Sign In</a
-        >
-      </li>
-    </div>
+    <li routerLinkActive="active" class="nav-shopping-list">
+      <RouterLink
+        class="relative text-gray-400 nav-menu-item cursor-default"
+        to="#"
+        @click="closeMobileMenu">
+        Meal Planner
+        <div
+          class="p-1 absolute -top-1 -right-2 text-xs text-center bg-accent rounded-sm opacity-70 text-[#152547]">
+          (Coming Soon)
+        </div>
+      </RouterLink>
+    </li>
   </ul>
 </template>
 
@@ -113,11 +69,11 @@ function closeMobileMenu() {
     position: relative
     display: flex
     flex-direction: column
-    text-decoration: none
+    // text-decoration: none
     padding: 5px 10px
 
-    &:hover
-        text-decoration: underline
+    // &:hover
+    //     text-decoration: underline
 
 
 .rightward

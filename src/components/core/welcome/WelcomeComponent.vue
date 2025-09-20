@@ -10,7 +10,7 @@
 import { Search } from "lucide-vue-next";
 import { useRoute } from "vue-router";
 
-import { computed, onMounted, ref, unref } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 import { useAuthService } from "@/composables/useAuthService";
 import { useAppStore } from "@/stores/appStore";
@@ -21,6 +21,7 @@ import { useUserStore } from "@/stores/userStore";
 
 import AuthComponent from "../auth/AuthComponent.vue";
 import CollectionComponent from "../collections/CollectionComponent.vue";
+import ButtonComponent from "../shared/button/ButtonComponent.vue";
 import PublicRecipeDetailsComponent from "./publicRecipeDetails/PublicRecipeDetailsComponent.vue";
 import SplashComponent from "./splash/SplashComponent.vue";
 
@@ -33,24 +34,16 @@ const route = useRoute();
 const validToken = ref(false);
 const isLoading = ref(false);
 
-// const [ethansFavouriteRecipes, recommendedRecipes, mealTimeRecipes, snackRecipes, healthyRecipes] =
-//   recipeStore.generatePublicRecipeCollections;
-// console.log("favs: ", recommendedRecipes);
 let recipeDetailsOpen = ref(false);
 const isAuthModalOpen = computed(() => appStore.isAuthModalOpen);
-
-const greeting = computed((): string => {
-  const displayName = userStore.localUser?.displayName;
-  if (displayName) {
-    return `Welcome, ${displayName}!`;
-  } else {
-    return `Welcome!`;
-  }
-});
-
+const displayName = userStore.getCurrentUserDisplayName;
 function closeRecipeDetails() {
   recipeDetailsOpen.value = false;
   recipeStore.clearSelectedRecipeId();
+}
+
+function onClick() {
+  console.log("click");
 }
 
 // defineExpose<ExposedInWelcomeComponent>({
@@ -81,20 +74,26 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="welcome-container">
+  <div class="bg-primary max-w-[1500px] w-full">
     <div v-if="isLoading">... Page is loading</div>
-    <div class="guest-welcome" v-if="!userStore.authorized">
+    <div v-if="!userStore.authorized">
       <SplashComponent />
     </div>
-    <div class="welcome">
-      <h1 class="greeting">{{ greeting }}</h1>
-      <h2>What's for Supper?</h2>
-      <div class="searchbar">
-        <input disabled type="text" class="searchbar-input" placeholder="Burritos" />
+    <div class="flex flex-col items-center">
+      <div>
+        <h1 class="" v-if="displayName">Welcome {{ displayName }}!</h1>
+        <h2 class="text-4xl">What do you want to eat today?</h2>
+      </div>
+      <div class="mt-5 outline-accent border-1 searchbar">
+        <input disabled type="text" class="searchbar-input outline-black" placeholder="Burritos" />
         <button disabled><Search class="magnifying" :size="15" /></button>
       </div>
+      <div>
+        <ButtonComponent @click="onClick" label="Highest Rated Recipes" size="md" />
+      </div>
       <span style="font-size: 0.7em">Search and Public Recipe Filtering Coming Soon!</span>
-      <div class="base-content-container">
+
+      <div class="w-full">
         <CollectionComponent
           v-for="collection in recipeStore.recipeCollections"
           :key="collection.id"
@@ -104,9 +103,6 @@ onMounted(async () => {
           :loading="collection.loading"
           :error="collection.error" />
       </div>
-    </div>
-    <div class="attribute">
-      <a href="https://nick-karvounis.com/" target="_blank">Photo by Nick Karvounis on Unsplash</a>
     </div>
   </div>
 
@@ -119,36 +115,21 @@ onMounted(async () => {
 <style lang="sass" scoped>
 @use '@/assets/variables' as *
 
-.welcome-container
-  display: flex
-  align-items: center
-  flex-direction: column
-  height: calc(95vh - $navbar-height)
-  width: 95vw
+// .welcome-container
+//   display: flex
+//   align-items: center
+//   flex-direction: column
+//   height: calc(95vh - $navbar-height)
+//   width: 95vw
+//   overflow-y: auto
 
-  @media (min-width: 768px)
-    max-width: 1366px
+//   @media (min-width: 768px)
+//     max-width: 1366px
 
-.guest-welcome
-  height: 100%
-  margin-bottom: 20px
+// .guest-welcome
+//   height: 100%
+//   margin-bottom: 20px
 
-.welcome
-  overflow-y: auto
-
-.welcome, .guest-welcome
-  display: flex
-  align-items: center
-  flex-direction: column
-  background-color: white
-  border-radius: 5px
-  width: 100%
-
-  h1
-    margin-bottom: 0
-
-  h2
-    margin: 5px 0
 
 .searchbar
   width: 90%

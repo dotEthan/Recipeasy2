@@ -29,6 +29,7 @@
   "devDependencies": {
     "@pinia/testing": "^0.1.7",
     "@rushstack/eslint-patch": "^1.8.0",
+    "@tailwindcss/vite": "^4.1.13",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@tsconfig/node20": "^20.1.4",
     "@types/axios": "^0.9.36",
@@ -50,6 +51,7 @@
     "sass": "^1.79.3",
     "sass-embedded": "^1.79.2",
     "sass-loader": "^16.0.2",
+    "tailwindcss": "^4.1.13",
     "typescript": "~5.4.0",
     "vite": "^5.3.1",
     "vitest": "^3.0.2",

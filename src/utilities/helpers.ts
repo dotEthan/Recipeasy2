@@ -1,5 +1,6 @@
 import { AxiosError } from "axios";
 
+import { ScreenSize } from "@/constants";
 import { useUserStore } from "@/stores/userStore";
 import { MealTime, NewRecipe, Recipe, RecipeInfo, Visibility } from "@/types/Recipes.d";
 import { ToastError } from "@/types/errors";
@@ -101,4 +102,17 @@ export const getMealTime = () => {
   } else {
     return MealTime.Supper;
   }
+};
+
+/**
+ * Returns what breakpoint the screen is at using tailwindcss points
+ * @returns tailwindcss valid breakpiont
+ */
+export const getCurrentScreenSize = (width: number): ScreenSize => {
+  if (width >= 1536) return "2xl";
+  if (width >= 1280) return "xl";
+  if (width >= 1024) return "lg";
+  if (width >= 768) return "md";
+  if (width >= 640) return "sm";
+  return "xs";
 };

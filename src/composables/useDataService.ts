@@ -130,7 +130,7 @@ export function useDataService() {
       toastStore.addToast("Recipe Updated", TOAST_TYPES.SUCCESS, { isPersistent: false });
     } catch (error) {
       console.log("Updating Recipe error: ", error);
-      handleError(error, {
+      handleError(error as Error, {
         btnOptions: {
           showRetry: true,
           showCancel: true,
@@ -169,7 +169,7 @@ export function useDataService() {
     } catch (error) {
       // This pattern?
 
-      handleError(error, {
+      handleError(error as Error, {
         btnOptions: {
           showRetry: true,
           showCancel: true,
@@ -199,7 +199,7 @@ export function useDataService() {
       });
       return getRecipeByTagResponse.data as Recipe[];
     } catch (error) {
-      handleError(error, {
+      handleError(error as Error, {
         btnOptions: {
           showRetry: true,
           showCancel: true,
@@ -264,7 +264,7 @@ export function useDataService() {
       const userRecipes = userDataResponse.data.userRecipes;
       return { userData, userRecipes };
     } catch (error) {
-      handleError(error, {
+      handleError(error as Error, {
         btnOptions: {
           showRetry: true,
           onRetry: () => getCurrentUserData()

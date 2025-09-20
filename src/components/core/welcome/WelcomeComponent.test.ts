@@ -8,7 +8,7 @@ import { useRecipeStore } from "@/stores/recipeStore";
 // import { useUserStore } from "@/stores/userStore";
 import { mockRefRecipes } from "@/testing/mockData";
 import { createMockedStores } from "@/testing/mockStores";
-import { ScreenSize } from "@/types/AppState.d";
+// import { ScreenSize } from "@/types/AppState.d";
 import type { Recipe } from "@/types/Recipes.d";
 
 import WelcomeComponent from "./WelcomeComponent.vue";
@@ -27,7 +27,7 @@ describe("WelcomeComponent", () => {
       userStore: mockedUserStore
     } = createMockedStores({
       appStore: {
-        screenSize: ref(ScreenSize.SMALL)
+        screenSize: ref("xs")
       },
       recipeStore: {
         selectedRecipeId: ref("123"),

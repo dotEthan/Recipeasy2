@@ -13,6 +13,7 @@ export interface UserStore {
   getCurrentUserId: ComputedRef<string | undefined>;
   getCurrentUserEmail: ComputedRef<string | undefined>;
   getUserPersonalPreferences: ComputedRef<string[] | undefined>;
+  getCurrentUserDisplayName: ComputedRef<string | undefined>;
 
   deauthorize(): void;
   authorize(): void;

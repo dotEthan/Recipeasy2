@@ -7,7 +7,7 @@ import { ErrorHandlerOptions, ToastError } from "@/types/errors";
 /**
  * Central error handler - delegates to appropriate handling method
  */
-export function handleError(error: unknown, options: ErrorHandlerOptions = {}) {
+export function handleError(error: Error, options: ErrorHandlerOptions = {}) {
   const errorStore = useErrorStore();
   console.log("options: ", options);
   console.log("handling error: ", error.name);

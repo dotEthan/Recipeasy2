@@ -2,10 +2,11 @@ import { defineStore } from "pinia";
 
 import { computed, ref, watchEffect } from "vue";
 
+import { ScreenSize } from "@/constants";
 import { useRecipeStore } from "@/stores/recipeStore";
 import { useShoppingListStore } from "@/stores/shoppingListStore";
 import { useUserStore } from "@/stores/userStore";
-import { AppStore, InitialAppState, ScreenSize } from "@/types/AppState.d";
+import { AppStore, InitialAppState } from "@/types/AppState.d";
 
 /**
  * Store for all App State
@@ -20,7 +21,7 @@ export const useAppStore = defineStore("app", (): AppStore => {
 
   // Variables
   const authModalType = ref<string>("");
-  const screenSize = ref<ScreenSize>("lg");
+  const screenSize = ref<ScreenSize>("xs");
   const isMobileMenuOpen = ref<boolean>(false);
   const appHasUnsavedChanges = ref<boolean>(false);
   const showUnsavedChangesModal = ref<boolean>(false);
@@ -38,7 +39,7 @@ export const useAppStore = defineStore("app", (): AppStore => {
 
   // Computed
   const isAuthModalOpen = computed(() => authModalType.value.length > 0);
-  const recipesPerCollection = computed(() => (screenSize.value !== ScreenSize.SMALL ? 5 : 6));
+  const recipesPerCollection = computed(() => (screenSize.value !== "xs" ? 12 : 10));
 
   // Functions
 
@@ -47,6 +48,13 @@ export const useAppStore = defineStore("app", (): AppStore => {
     isMobileMenuOpen.value = appState.isMobileMenuOpen || false;
     isLoading.value = true;
     lightMode.value = appState.lightMode || true;
+  }
+
+  function toggleLightMode() {
+    lightMode.value = !lightMode.value;
+
+    const root = document.documentElement;
+    lightMode.value ? root.classList.remove("dark") : root.classList.add("dark");
   }
 
   function resetAppStates() {
@@ -101,6 +109,7 @@ export const useAppStore = defineStore("app", (): AppStore => {
     recipesPerCollection,
 
     setInitialAppState,
+    toggleLightMode,
     resetAppStates,
     setAuthModalType,
     setScreenSize,

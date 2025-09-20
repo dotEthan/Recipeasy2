@@ -19,34 +19,20 @@ defineProps({
 </script>
 
 <template>
-  <div class="recipeitem-container">
-    <div class="recipeicon">
-      <img :src="recipeData?.imgPath" alt="Logo" />
+  <div class="w-45 lg:w-60 flex-shrink-0">
+    <div class="w-full flex flex-col rounded-md overflow-hidden cursor-pointer">
+      <div>
+        <img
+          :src="recipeData?.imgPath"
+          alt="recipe image"
+          class="w-full aspect-square object-cover" />
+      </div>
+      <div class="h-20 bg-surface text-primary">
+        <div :title="recipeData?.name">{{ recipeData?.name }}</div>
+        <div class="text-sm">rating: {{ recipeData?.ratings?.averageRating }}</div>
+      </div>
     </div>
-    <span :title="recipeData?.name" class="recipe-title">{{ recipeData?.name }}</span>
-    <span class="rating-text">rating: {{ recipeData?.ratings?.averageRating }}</span>
   </div>
 </template>
 
-<style lang="sass" scoped>
-.recipeitem-container
-  display: flex
-  flex-direction: column
-  width: 100%
-
-.recipeicon
-  padding: 5px
-
-  @media (min-width: 768px)
-    padding: 15px
-
-  img
-    width: 100%
-    height: 100%
-    object-fit: cover
-    object-position: center
-    aspect-ratio: 1 / 1
-
-.rating-text
-  font-size: 0.7em
-</style>
+<style lang="sass" scoped></style>

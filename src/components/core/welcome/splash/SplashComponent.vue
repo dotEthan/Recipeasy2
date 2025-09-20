@@ -8,20 +8,62 @@
 </script>
 
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="titleback">
-          <h1 class="app-title">Welcome to Tastyista</h1>
-          <h2>(Full Redesign Underway)</h2>
-        </div>
+  <div class="h-[75dvh] flex flex-col md:flex-row max-w-[1500px] mx-auto">
+    <div class="flex-1 text-left flex justify-center items-center">
+      <div class="max-w-[500px] p-10 rounded-md">
+        <h1 class="font-brand mb-6 text-8xl">Tasty<span class="text-accent">ista</span></h1>
+        <h2 class="text-lg">
+          Create, discover, and plan your perfect meals with our sophisticated recipe management
+          system.
+        </h2>
+      </div>
+    </div>
+    <div class="flex-1 flex justify-center items-center">
+      <div class="image-shadows max-w-[600px] relative z-1">
+        <!-- <div
+          class="bg-accent w-75 h-75 opacity-75 rounded-lg absolute top-0 left-0 rotate-30"></div>
+        <div
+          class="bg-surface w-75 h-75 opacity-75 rounded-lg absolute top-0 left-0 rotate-20"></div> -->
+        <img
+          src="https://res.cloudinary.com/dotethan/image/upload/v1758303573/Recipeasy/pexels-photo-1640772.jpg"
+          class="w-[clamp(200px,35vw,600px)] rounded-lg z-5 rotate-2 hover:rotate-0 duration-200"
+          alt="Picture of food" />
       </div>
     </div>
   </div>
 </template>
 
 <style lang="sass" scoped>
-@use '@/assets/variables' as *
+.image-shadows
+  z-index: 1
+
+  &::before,
+  &::after
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    border-radius: 0.5rem
+    opacity: 0.75
+    z-index: -1
+
+  &::before
+    background: var(--color-accent)
+    transform: rotate(20deg)
+
+  &::after
+    background: var(--color-surface)
+    transform: rotate(13deg)
+
+
+.app-title
+  margin-bottom: 25px
+  font-size: 2em
+
+  @media (min-width: 768px)
+    font-size: 4em
 
 .container
   position: relative
@@ -48,12 +90,12 @@
     @media (min-width: 768px)
      font-size: .8rem
 
-.app-title
-  margin-bottom: 25px
-  font-size: 2em
+// .app-title
+//   margin-bottom: 25px
+//   font-size: 2em
 
-  @media (min-width: 768px)
-    font-size: 4em
+//   @media (min-width: 768px)
+//     font-size: 4em
 
 
 

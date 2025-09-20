@@ -25,6 +25,7 @@ export const useUserStore = defineStore("user", (): UserStore => {
   const getCurrentUser = computed(() => localUser.value);
   const getCurrentUserId = computed(() => localUser.value?._id);
   const getCurrentUserEmail = computed(() => localUser.value?.email);
+  const getCurrentUserDisplayName = computed(() => localUser.value?.displayName);
   const getUserPersonalPreferences = computed(() => localUser.value?.preferences?.personalFilters);
 
   // Functions
@@ -83,6 +84,7 @@ export const useUserStore = defineStore("user", (): UserStore => {
     getCurrentUserId,
     getCurrentUserEmail,
     getUserPersonalPreferences,
+    getCurrentUserDisplayName,
     deauthorize,
     authorize,
     setLocalUser,

@@ -41,53 +41,19 @@ const getTitle = () => {
 </script>
 
 <template>
-  <div class="collection-container">
-    <h3 data-test="mealtime" id="collection-title">{{ getTitle() }}:</h3>
-    <div>
-      <div class="collection-item-container" v-if="recipeData.length > 0">
-        <CollectionItemComponent
-          v-for="recipe in recipeData"
-          :key="recipe._id.toString()"
-          @click="() => openRecipeDetails(recipe._id)"
-          :recipeData="recipe" />
-      </div>
-      <div v-else>No recipes found using this tag</div>
+  <div class="flex flex-col mt-2.5 p-2.5 w-full md:mt-5 pr-3.5 prl-3.5 pt-5 pb-5">
+    <h3 class="mt-0 mb-3.5" data-test="mealtime" id="collection-title">{{ getTitle() }}:</h3>
+    <div
+      class="w-full grid grid-rows-2 md:flex gap-6 grid-flow-col overflow-x-auto auto-cols-max justify-start"
+      v-if="recipeData.length > 0">
+      <CollectionItemComponent
+        v-for="recipe in recipeData"
+        :key="recipe._id.toString()"
+        @click="() => openRecipeDetails(recipe._id)"
+        :recipeData="recipe" />
     </div>
+    <div v-else>No recipes found using this tag</div>
   </div>
 </template>
 
-<style lang="sass" scoped>
-@use '@/assets/variables' as *
-
-.collection-container
-  display: flex
-  flex-direction: column
-  margin-top: 10px
-  padding: 10px
-  width: 100%
-
-  @media (min-width: 768px)
-    margin-top: 20px
-    padding: 15px 20px
-
-  h3
-    margin-top: 0
-    margin-bottom: 15px
-
-
-
-.collection-item-container
-  width: 100%
-  display: grid
-  grid-template-columns: 45% 45%
-  column-gap: 5px
-  row-gap: 10px
-  justify-content: space-around
-  cursor: pointer
-
-  @media (min-width: 768px)
-    grid-template-columns: 19% 19% 19% 19% 19%
-    column-gap: 10px
-    row-gap: 10px
-    padding: 15px 50px
-</style>
+<style lang="sass" scoped></style>

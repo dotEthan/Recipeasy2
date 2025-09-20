@@ -8,7 +8,6 @@ import { useAppStore } from "@/stores/appStore";
 import { useRecipeStore } from "@/stores/recipeStore";
 import { useShoppingListStore } from "@/stores/shoppingListStore";
 import { useUserStore } from "@/stores/userStore";
-import { ScreenSize } from "@/types/AppState.d";
 import { debounce, loadCachedData } from "@/utilities";
 
 import { useRecipeService } from "./useRecipeService";
@@ -25,35 +24,6 @@ export function useAppService() {
   const shoppingListStore = useShoppingListStore();
   const dataService = useDataService();
   const recipeService = useRecipeService();
-  const screenWidth = ref(window.innerWidth);
-
-  /**
-   * Updates the screensize variable in the appStore for business rules
-   * @todo Refactor for app's new structure if needed
-   * @param {} - None
-   * @returns {Promise<void>} - The dark void.
-   * @example
-   * const { updatescreenSize } = useAppService();
-   * updatescreenSize();
-   */
-
-  const updatescreenSize = () => {
-    const width = screenWidth.value;
-    let screenSize: ScreenSize;
-    if (width < 640) {
-      screenSize = ScreenSize.SMALL;
-    } else if (width < 1024) {
-      screenSize = ScreenSize.MEDIUM;
-    } else {
-      screenSize = ScreenSize.LARGE;
-    }
-    appStore.setScreenSize(screenSize);
-  };
-  // TODO longer debounce?
-  const onResize = debounce(() => {
-    screenWidth.value = window.innerWidth;
-    updatescreenSize();
-  }, 10);
 
   /**
    * Was Temporarily used to ensure users can't leave without saving.
@@ -73,9 +43,9 @@ export function useAppService() {
     }
   };
 
-  // TODO check if still needed or better route
-  onMounted(() => window.addEventListener("resize", onResize));
-  onUnmounted(() => window.removeEventListener("resize", onResize));
+  // // TODO if resize is working, not needed
+  // onMounted(() => window.addEventListener("resize", onResize));
+  // onUnmounted(() => window.removeEventListener("resize", onResize));
 
   /**
    * Initial flow to start app. Check server, check caches and hydrate stores, or make calls to refresh data
@@ -163,8 +133,10 @@ export function useAppService() {
   };
 
   const serverHealthCheck = async () => {
+    const url = `${import.meta.env.VITE_API_BASE_URL}/health`;
+    console.log("url: ", url);
     try {
-      await fetch(`${import.meta.env.VITE_API_BASE_URL}/health`);
+      await fetch(url);
       console.log("Server Up");
       return true;
     } catch {
@@ -174,7 +146,7 @@ export function useAppService() {
   };
 
   return {
-    onResize,
+    // onResize,
     handleUnsavedChanges,
     initializeApp,
     refreshToken,

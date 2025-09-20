@@ -1,5 +1,7 @@
 import { ComputedRef, Ref } from "vue";
 
+import { ScreenSize } from "@/constants";
+
 export interface AppStore {
   authModalType: Ref<string>;
   screenSize: Ref<ScreenSize>;
@@ -14,6 +16,7 @@ export interface AppStore {
   recipesPerCollection: ComputedRef<number>;
 
   setInitialAppState(appState: InitialAppState): void;
+  toggleLightMode(): void;
   resetAppStates(): void;
   setAuthModalType(type: string): void;
   setScreenSize(updatedScreenSize: ScreenSize): void;
@@ -45,11 +48,3 @@ export type CachedAppState = {
 };
 
 export type InitialAppState = Partial<AppState>;
-
-export const ScreenSize = {
-  SMALL: "sm",
-  MEDIUM: "md",
-  LARGE: "lg"
-} as const;
-
-export type ScreenSize = (typeof ScreenSize)[keyof typeof ScreenSize];

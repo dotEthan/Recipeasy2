@@ -10,7 +10,7 @@ import { useShoppingListStore } from "@/stores/shoppingListStore";
 import { useToastStore } from "@/stores/toastStore";
 import { useUserStore } from "@/stores/userStore";
 import { mockRefRecipes, mockRefShoppingLists } from "@/testing/mockData";
-import { AppStore, ScreenSize } from "@/types/AppState.d";
+import { AppStore } from "@/types/AppState.d";
 import type { RecipeStore } from "@/types/Recipes.d";
 import type { ShoppingListStore } from "@/types/ShoppingLists.d";
 import type { ToastStore } from "@/types/Toasts";
@@ -19,7 +19,7 @@ import type { ErrorStore } from "@/types/errors.d";
 
 export const getMockedAppStore = (overrides: Partial<AppStore> = {}) => ({
   authModalType: "",
-  screenSize: ScreenSize.MEDIUM,
+  screenSize: "md",
   isMobileMenuOpen: false,
   appHasUnsavedChanges: false,
   showUnsavedChangesModal: false,

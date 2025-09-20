@@ -111,7 +111,7 @@ export function useAuthService() {
       };
 
       appStore.setInitialAppState(appState);
-      toastStore.addTimedToast("Login Successful", TOAST_TYPES.SUCCESS);
+      toastStore.addToast("Login Successful", TOAST_TYPES.SUCCESS, { isPersistent: false });
 
       return localUser.verified;
     } catch (err) {
@@ -141,7 +141,7 @@ export function useAuthService() {
       recipeStore.resetUserRecipeState();
       appStore.resetAppStates();
 
-      toastStore.addTimedToast("User Logged out", TOAST_TYPES.SUCCESS);
+      toastStore.addToast("User Logged out", TOAST_TYPES.SUCCESS, { isPersistent: false });
     } catch (err) {
       error.value = err instanceof Error ? err.message : "Logout failed";
       throw err;
