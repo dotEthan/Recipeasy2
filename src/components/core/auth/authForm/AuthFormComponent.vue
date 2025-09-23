@@ -81,8 +81,7 @@ async function onSubmit(e: any) {
           @blur="validateField(field, formData[field.name])"
           class="form-control"
           :class="{ 'is-invalid': fieldErrors[field.name] }"
-          v-model="formData[field.name]"
-        />
+          v-model="formData[field.name]" />
         <div class="error-slot">
           <span v-if="fieldErrors[field.name]" class="warning">{{ fieldErrors[field.name] }}</span>
         </div>

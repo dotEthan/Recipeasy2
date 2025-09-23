@@ -41,14 +41,14 @@ function openAuthModal(type: string) {
     <li v-if="isAuthorized">
       <a class="cursor-pointer" @click="onSignOut()" routerLink="/">Log Out</a>
     </li>
-    <li class="mr-5" v-if="!isAuthorized">
+    <li class="mr-3 text-base lg:text-lg" v-if="!isAuthorized">
       <a class="cursor-pointer" @click="openAuthModal('signin')"
         ><span class="text-accent">></span> Sign In</a
       >
     </li>
     <li v-if="!isAuthorized">
       <a
-        class="p-1.5 rounded-sm bg-accent text-primary md:text-[#152547] cursor-pointer text-lg"
+        class="p-1 lg:p-1.5 rounded-sm bg-accent text-primary md:text-[#152547] cursor-pointer text-base lg:text-lg"
         @click="openAuthModal('register')"
         >Register</a
       >

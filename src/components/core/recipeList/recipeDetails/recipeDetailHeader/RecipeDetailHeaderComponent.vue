@@ -17,7 +17,12 @@ defineProps({
 <template>
   <div class="recipe-header">
     <div class="recipe-image-contain">
-      <img :src="selectedRecipe?.imgPath" class="recipe-image-bg" />
+      <img
+        :src="
+          selectedRecipe?.imgPath ||
+          'https://res.cloudinary.com/dotethan/image/upload/v1758641724/Recipeasy/noimageyet.png'
+        "
+        class="recipe-image-bg" />
       <div class="recipe-name">
         <h3>{{ selectedRecipe?.name }}</h3>
       </div>

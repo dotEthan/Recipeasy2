@@ -4,15 +4,13 @@
  * @example
  * <HeaderComponent />
  */
-import { ChefHat } from "lucide-vue-next";
-import { RouterLink } from "vue-router";
-
 import { computed } from "vue";
 
 import { useScreenSizeService } from "@/composables/useScreenSizeService";
 import { useAppStore } from "@/stores/appStore";
 import { useUserStore } from "@/stores/userStore";
 
+import BrandComponent from "./brand/BrandComponent.vue";
 import DarkModeToggleComponentVue from "./darkModeToggle/DarkModeToggleComponent.vue.vue";
 import DesktopAuthMenuComponent from "./desktopAuthMenu/DesktopAuthMenuComponent.vue";
 import MenuBurgerComponent from "./menuBurger/MenuBurgerComponent.vue";
@@ -32,22 +30,25 @@ function closeMobileMenu() {
 
 <template>
   <div class="max-w-[1600px] w-full flex justify-center mx-auto">
-    <nav class="h-19 w-full text-xl flex flex-row justify-between items-center mr-8 ml-8">
-      <div class="flex flex-row text-3xl font-brand">
-        <ChefHat class="h-8 w-8 text-accent" />
-        <RouterLink class="ml-2" @click="closeMobileMenu" to="/"
-          >Tasty<span class="text-accent">ista</span></RouterLink
-        >
-      </div>
+    <nav class="h-15 md:h-25 w-full text-xl flex flex-col justify-center">
       <div
-        class="flex flex-row items-center grow-1 justify-end"
-        :class="{ active: appStore.isMobileMenuOpen }"
-        ref="headermenu">
-        <NavMenuComponent v-if="isAuthorized" />
-        <DarkModeToggleComponentVue class="mr-8" @clicked="appStore.toggleLightMode" />
-        <MenuBurgerComponent class="mr-4" />
-        <DesktopAuthMenuComponent v-if="!screenSizeService.isMobile.value" />
-        <MobileAuthMenuComponent v-if="screenSizeService.isMobile.value" />
+        class="grid grid-cols-[1fr_1fr_1fr] xs:grid-cols-[1fr_2fr_1fr] lg:grid-cols-[1fr_2.5fr_1fr] items-center mr-4 ml-4 md:mr-8 md:ml-8 lg:mr-10 lg:ml-10">
+        <BrandComponent />
+        <div>
+          <NavMenuComponent v-if="isAuthorized && screenSizeService.isDesktop" />
+          <!-- <NavMenuComponent v-if="isAuthorized & appStore.screenSize === ''" /> -->
+        </div>
+        <div class="w-full flex flex-row justify-end items-center">
+          <DarkModeToggleComponentVue class="mr-2" @clicked="appStore.toggleLightMode" />
+          <MenuBurgerComponent />
+          <DesktopAuthMenuComponent v-if="!screenSizeService.isMobile.value" />
+          <MobileAuthMenuComponent v-if="screenSizeService.isMobile.value" />
+        </div>
+      </div>
+      <div class="w-2/5 h-px mt-4 bg-surface mx-auto" v-if="isAuthorized"></div>
+      <div class="w-full flex flex-row justify-between" v-if="!isAuthorized">
+        <div class="w-[25%] h-px mt-4 bg-accent"></div>
+        <div class="w-[25%] h-px mt-4 bg-accent"></div>
       </div>
     </nav>
   </div>

@@ -27,10 +27,15 @@ defineProps({
       recipeData?._id
         ? $emit('openRecipe', recipeData?._id)
         : console.log('Item not saved, please wait.')
-    "
-  >
+    ">
     <a style="cursor: pointer" class="recipeItem-contain">
-      <img class="recipe-image" :class="{ grey: !recipeData?._id }" :src="recipeData?.imgPath" />
+      <img
+        class="recipe-image"
+        :class="{ grey: !recipeData?._id }"
+        :src="
+          recipeData?.imgPath ||
+          'https://res.cloudinary.com/dotethan/image/upload/v1758641724/Recipeasy/noimageyet.png'
+        " />
       <span class="recipe-title">
         {{ recipeData?.name }}
       </span>

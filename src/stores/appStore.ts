@@ -40,6 +40,7 @@ export const useAppStore = defineStore("app", (): AppStore => {
   // Computed
   const isAuthModalOpen = computed(() => authModalType.value.length > 0);
   const recipesPerCollection = computed(() => (screenSize.value !== "xs" ? 12 : 10));
+  // const
 
   // Functions
 
@@ -73,6 +74,7 @@ export const useAppStore = defineStore("app", (): AppStore => {
   }
 
   function setScreenSize(updatedScreenSize: ScreenSize) {
+    console.log("setting screensize: ", updatedScreenSize);
     screenSize.value = updatedScreenSize;
   }
 

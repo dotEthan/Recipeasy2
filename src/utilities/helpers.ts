@@ -109,6 +109,7 @@ export const getMealTime = () => {
  * @returns tailwindcss valid breakpiont
  */
 export const getCurrentScreenSize = (width: number): ScreenSize => {
+  console.log("inside: ", width);
   if (width >= 1536) return "2xl";
   if (width >= 1280) return "xl";
   if (width >= 1024) return "lg";

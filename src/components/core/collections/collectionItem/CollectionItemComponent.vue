@@ -13,21 +13,26 @@ import type { PropType } from "vue";
 
 import type { Recipe } from "@/types/Recipes";
 
-defineProps({
+const props = defineProps({
   recipeData: Object as PropType<Recipe>
 });
+console.log("recipeData: ", props.recipeData);
 </script>
 
 <template>
-  <div class="w-45 lg:w-60 flex-shrink-0">
+  <div>
     <div class="w-full flex flex-col rounded-md overflow-hidden cursor-pointer">
-      <div>
+      <div class="overflow-hidden">
         <img
-          :src="recipeData?.imgPath"
+          :src="
+            recipeData?.imgPath ||
+            'https://res.cloudinary.com/dotethan/image/upload/v1758641724/Recipeasy/noimageyet.png'
+          "
           alt="recipe image"
-          class="w-full aspect-square object-cover" />
+          class="w-full aspect-square object-cover transition-transform duration-300 scale-110 hover:scale-100"
+          v-if="recipeData?.imgPath" />
       </div>
-      <div class="h-20 bg-surface text-primary">
+      <div class="h-20 bg-primary text-surface">
         <div :title="recipeData?.name">{{ recipeData?.name }}</div>
         <div class="text-sm">rating: {{ recipeData?.ratings?.averageRating }}</div>
       </div>

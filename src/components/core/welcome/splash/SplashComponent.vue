@@ -8,11 +8,14 @@
 </script>
 
 <template>
-  <div class="h-[75dvh] flex flex-col md:flex-row max-w-[1500px] mx-auto">
+  <div
+    class="h-[50dvh] md:h-[75dvh] flex flex-col-reverse mt-20 md:mt-0 md:flex-row max-w-[1500px] mx-auto">
     <div class="flex-1 text-left flex justify-center items-center">
-      <div class="max-w-[500px] p-10 rounded-md">
-        <h1 class="font-brand mb-6 text-8xl">Tasty<span class="text-accent">ista</span></h1>
-        <h2 class="text-lg">
+      <div class="max-w-[500px] p-10 rounded-md text-center md:text-left">
+        <h1 class="font-brand mb-6 text-5xl md:text-8xl">
+          Tasty<span class="text-accent">ista</span>
+        </h1>
+        <h2 class="text-sm md:text-lg">
           Create, discover, and plan your perfect meals with our sophisticated recipe management
           system.
         </h2>

@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Limelight&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Aladin&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Aladin&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 
 /* :root {
@@ -10,23 +10,31 @@
 } */
 
 :root {
+  /* --color-secondary: #dbdfe7; */
+  --color-dark-navy: #152547;
   --color-primary: #fefefe;
   --color-surface: #152547;
+  --color-heading: #f0c125;
   --color-accent: #f0c125;
+
   --font-brand: "Aladin", system-ui;
-  --font-main: "";
+  --font-main: "Raleway", system-ui;
+  --font-main2: "Helvetica", sans-serif;
 }
 
 .dark {
   --color-primary: #152547;
   --color-surface: #fefefe;
   --color-accent: #f0c125;
+  --color-heading: #152547;
 }
 
 @theme {
   --color-primary: var(--color-primary);
+  /* --color-secondary: var(--color-secondary); */
   --color-surface: var(--color-surface);
   --color-accent: var(--color-accent);
+  --color-heading: var(--color-heading);
 
   --font-brand: var(--font-brand);
   --font-main: var(--font-main);

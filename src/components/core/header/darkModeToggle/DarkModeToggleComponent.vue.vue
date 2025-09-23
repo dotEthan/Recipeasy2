@@ -16,7 +16,7 @@ const appStore = useAppStore();
 
 <template>
   <div
-    class="flex items-center justify-center h-7 w-7 rounded-full cursor-pointer"
+    class="flex items-center justify-center h-6 lg:h-7 w-6 lg:w-7 rounded-full cursor-pointer"
     @click="$emit('clicked')">
     <Moon :size="32" v-if="appStore.lightMode" />
     <Sun color="#f0c125" :size="32" v-if="!appStore.lightMode" />

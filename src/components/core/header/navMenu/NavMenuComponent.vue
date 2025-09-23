@@ -15,23 +15,26 @@ function closeMobileMenu() {
 </script>
 
 <template>
-  <ul class="flex flex-row items-center grow-1 justify-center">
-    <li routerLinkActive="active" class="">
-      <RouterLink class="hover:underline nav-menu-item" to="/" @click="closeMobileMenu"
-        >Home</RouterLink
+  <ul class="flex flex-row items-center grow-1 justify-around md:justify-center text-base">
+    <li routerLinkActive="active" class="hidden sm:block md:ml-5">
+      <RouterLink class="hover:underline hover:text-accent" to="/" @click="closeMobileMenu"
+        >Search</RouterLink
       >
     </li>
-    <li routerLinkActive="active" class="">
-      <RouterLink class="hover:underline nav-menu-item" to="recipes" @click="closeMobileMenu"
+    <li routerLinkActive="active" class="md:ml-5">
+      <RouterLink class="hover:underline hover:text-accent" to="recipes" @click="closeMobileMenu"
         >Recipes</RouterLink
       >
     </li>
-    <li routerLinkActive="active" class="nav-shopping-list">
-      <RouterLink class="hover:underline nav-menu-item" to="shopping-lists" @click="closeMobileMenu"
+    <li routerLinkActive="active" class="hidden md:block ml-5">
+      <RouterLink
+        class="hover:underline hover:text-accent"
+        to="shopping-lists"
+        @click="closeMobileMenu"
         >Shopping Lists</RouterLink
       >
     </li>
-    <li routerLinkActive="active" class="nav-shopping-list">
+    <li routerLinkActive="active" class="hidden md:block ml-5">
       <RouterLink
         class="relative text-gray-400 nav-menu-item cursor-default"
         to="#"
@@ -47,40 +50,6 @@ function closeMobileMenu() {
 </template>
 
 <style lang="sass" scoped>
-.navbar-nav
-    display: flex
-    flex-direction: column
-    padding: 0
-    margin: 0
-    list-style-type: none
-
-    @media (min-width: 768px)
-        flex-direction: row
-        align-items: center
-
-.nav-menu-items
-    display: flex
-    flex-direction: column
-
-    @media (min-width: 768px)
-        flex-direction: row
-
-.nav-menu-item
-    position: relative
-    display: flex
-    flex-direction: column
-    // text-decoration: none
-    padding: 5px 10px
-
-    // &:hover
-    //     text-decoration: underline
-
-
-.rightward
-
-    @media (min-width: 768px)
-      margin-top: 15px
-      margin-right: 30px
 
 .dropdown
     position: relative

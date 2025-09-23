@@ -15,12 +15,10 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="bg-primary text-surface">
+  <div class="bg-primary font-main text-surface h-[100dvh]">
     <HeaderComponent />
-    <div class="h-[100dvh]">
-      <div class="overflow-y-auto h-full">
-        <RouterView />
-      </div>
+    <div class="overflow-y-auto h-full">
+      <RouterView />
     </div>
     <AppOverlays />
   </div>
