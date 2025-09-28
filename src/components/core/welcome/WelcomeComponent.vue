@@ -14,6 +14,7 @@ import { useRoute } from "vue-router";
 import { computed, onMounted, ref } from "vue";
 
 import { useAuthService } from "@/composables/useAuthService";
+import { useScreenSizeService } from "@/composables/useScreenSizeService";
 import { useAppStore } from "@/stores/appStore";
 import { useRecipeStore } from "@/stores/recipeStore";
 import { useUserStore } from "@/stores/userStore";
@@ -30,10 +31,12 @@ const appStore = useAppStore();
 const userStore = useUserStore();
 const recipeStore = useRecipeStore();
 const authService = useAuthService();
+const screenSizeService = useScreenSizeService();
 
 const route = useRoute();
 const validToken = ref(false);
 const isLoading = ref(false);
+const isMobile = screenSizeService.isMobile;
 
 let recipeDetailsOpen = ref(false);
 const isAuthModalOpen = computed(() => appStore.isAuthModalOpen);
@@ -104,7 +107,7 @@ onMounted(async () => {
             <div>
               <ButtonComponent @click="onClick" label="Highest Rated Recipes" size="md" />
             </div>
-            <div>
+            <div v-if="!isMobile">
               <ButtonComponent @click="onClick" label="Newest Recipes" size="md" />
             </div>
             <div>

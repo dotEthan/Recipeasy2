@@ -42,7 +42,9 @@ const getTitle = () => {
 };
 
 const scrollRight = () => {
+  console.log("right");
   const container = document.getElementById(`collectionItemComponent-${props.collectionKey}`);
+  console.log("container: ", container);
   if (container) container.scrollBy({ left: container.clientWidth, behavior: "smooth" });
 };
 
@@ -63,22 +65,26 @@ const scrollLeft = () => {
     <div class="bg-accent absolute -bottom-1.5 -left-1.5 w-[75px] h-[75px] rounded-2xl"></div>
     <div class="bg-accent absolute -bottom-1.5 -right-1.5 w-[75px] h-[75px] rounded-lg"></div>
     <div
-      class="relative flex flex-col mt-2.5 p-8 w-full md:mt-5 pr-3.5 prl-3.5 mb-20 bg-surface rounded-lg border-1 border-solid border-accent z-2">
+      class="relative flex flex-col mt-2.5 p-8 w-full md:mt-5 pr-10 pl-10 mb-20 bg-surface rounded-lg border-1 border-solid border-accent z-2">
       <h3 class="mt-0 mb-5 text-heading" data-test="mealtime" id="collection-title">
         {{ getTitle() }}:
       </h3>
-      <div
-        :id="`collectionItemComponent-${collectionKey}`"
-        class="w-full grid grid-rows-2 md:flex gap-6 grid-flow-col overflow-x-hidden auto-cols-max justify-start"
-        v-if="recipeData.length > 0">
-        <CollectionItemComponent
-          class="flex-shrink-0 w-[18%]"
-          v-for="recipe in recipeData"
-          :key="recipe._id.toString()"
-          @click="() => openRecipeDetails(recipe._id)"
-          :recipeData="recipe" />
+      <div>
+        <div
+          :id="`collectionItemComponent-${props.collectionKey}`"
+          class="no-scrollbar overflow-x-auto"
+          v-if="recipeData.length > 0">
+          <div class="grid grid-rows-2 grid-cols-auto grid-flow-col gap-4 w-max sm:flex">
+            <CollectionItemComponent
+              class="w-[35vw] sm:w-[20vw] md:w-[15vw] max-w-[240px]"
+              v-for="recipe in recipeData"
+              :key="recipe._id.toString()"
+              @click="() => openRecipeDetails(recipe._id)"
+              :recipeData="recipe" />
+          </div>
+        </div>
+        <div v-else>No recipes found using this tag</div>
       </div>
-      <div v-else>No recipes found using this tag</div>
       <div class="absolute -right-8 top-[50%] translate-y-[-50%]">
         <CollectionButtonComponent direction="right" @click="scrollRight" />
       </div>

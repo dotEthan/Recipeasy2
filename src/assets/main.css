@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Aladin&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Aladin&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
-
+/* More themes here later */
 /* :root {
   --color-primary: #023f65;
   --color-surface: #ffb948;
@@ -10,19 +10,24 @@
 } */
 
 :root {
-  /* --color-secondary: #dbdfe7; */
+  /* --color-primary: #023f65;
+  --color-surface: #ffb948;
+  --color-accent: #b83201; */
   --color-dark-navy: #152547;
   --color-primary: #fefefe;
   --color-surface: #152547;
-  --color-heading: #f0c125;
   --color-accent: #f0c125;
+  --color-heading: #f0c125;
 
   --font-brand: "Aladin", system-ui;
   --font-main: "Raleway", system-ui;
-  --font-main2: "Helvetica", sans-serif;
+  /* --font-main-2: "Helvetica", sans-serif; */
 }
 
 .dark {
+  /* --color-surface: #023f65;
+  --color-primary: #ffb948;
+  --color-accent: #b83201; */
   --color-primary: #152547;
   --color-surface: #fefefe;
   --color-accent: #f0c125;
@@ -30,14 +35,21 @@
 }
 
 @theme {
+  /* Colouring */
   --color-primary: var(--color-primary);
-  /* --color-secondary: var(--color-secondary); */
   --color-surface: var(--color-surface);
   --color-accent: var(--color-accent);
   --color-heading: var(--color-heading);
 
+  /* Fonts */
   --font-brand: var(--font-brand);
   --font-main: var(--font-main);
+
+  /* Z-Indexing */
+  --z-ui: 10;
+  --z-content: 20;
+  --z-modals: 30;
+  --z-warnings: 40;
 }
 
 @layer base {
@@ -52,5 +64,13 @@
   }
   h4 {
     @apply text-base font-bold;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }

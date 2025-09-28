@@ -42,7 +42,7 @@ async function onRecipeRemoval() {
 </script>
 
 <template>
-  <div class="recipe-detail-container">
+  <div class="recipe-detail-container z-99">
     <div class="overlay-shadow" @click="onClose()"></div>
     <div class="recipe-overlay">
       <XToCloseComponent @close="onClose" />
@@ -59,8 +59,7 @@ async function onRecipeRemoval() {
               v-for="(ingredient, index) of selectedRecipe?.ingredients"
               :key="index"
               :itemObject="ingredient"
-              itemType="ingredient"
-            />
+              itemType="ingredient" />
           </div>
           <div class="ingredients-contain">
             <div class="type-section-title" v-if="selectedRecipe?.directions">DIRECTIONS:</div>
@@ -69,8 +68,7 @@ async function onRecipeRemoval() {
               v-for="(direction, index) of selectedRecipe?.directions"
               :key="index"
               :itemObject="direction"
-              itemType="direction"
-            />
+              itemType="direction" />
           </div>
           <div class="ingredients-contain">
             <div class="type-section-title">Tags:</div>
@@ -78,8 +76,7 @@ async function onRecipeRemoval() {
               <TagItemComponent
                 v-for="(tag, index) of selectedRecipe?.tags"
                 :key="index"
-                :tag="tag"
-              />
+                :tag="tag" />
             </div>
             <div class="type-section-none" v-else>No tags</div>
           </div>
@@ -89,8 +86,7 @@ async function onRecipeRemoval() {
               <NoteItemComponent
                 v-for="(note, index) of selectedRecipe?.notes"
                 :key="index"
-                :note="note"
-              />
+                :note="note" />
             </div>
             <div class="type-section-none" v-else>No Notes</div>
           </div>
