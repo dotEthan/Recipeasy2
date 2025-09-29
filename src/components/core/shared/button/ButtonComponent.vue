@@ -17,7 +17,7 @@ const handleClick = () => {
     :click="{ handleClick }"
     class="recipe-button bg-accent text-[var(--color-dark-navy)] rounded-md shadow-md transition-all duration-300 ease-in-out transform hover:scale-[1.02] hover:shadow-lg hover:brightness-105 active:scale-[0.98] active:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-50 w-full max-w-fit relative overflow-hidden m-2 lg:m-4 cursor-pointer group">
     <div class="flex flex-row justify-around items-center p-2">
-      <span className="relative z-10 block text-center leading-tight text-sm">
+      <span className="relative block text-center leading-tight text-sm">
         {{ label }}
       </span>
       <Search

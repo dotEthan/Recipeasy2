@@ -47,7 +47,7 @@ const menuClassChanges = computed(() => {
 <template>
   <div
     :class="[
-      'fixed top-0 right-0 h-full w-64 bg-surface transform transition-all duration-300 z-30',
+      'fixed top-0 right-0 h-full w-64 bg-surface transform transition-all duration-300 z-20',
       menuClassChanges
     ]">
     <XToCloseComponent @close="closeMobileMenu" />

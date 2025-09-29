@@ -16,7 +16,7 @@ const errorStore = useErrorStore();
 </script>
 <template>
   <Teleport to="body">
-    <div class="toast-container" v-if="toastStore.toastQueue.length > 0">
+    <div class="toast-container z-30" v-if="toastStore.toastQueue.length > 0">
       <Toast
         v-for="toast in toastStore.toastQueue"
         :key="toast.id"
@@ -28,7 +28,7 @@ const errorStore = useErrorStore();
   </Teleport>
 
   <!-- Modals -->
-  <Teleport to="body">
+  <Teleport to="body z-40">
     <ErrorModalComponent
       v-if="errorStore.currentModalError"
       v-bind="errorStore.currentModalError.props" />
@@ -41,5 +41,4 @@ const errorStore = useErrorStore();
   top: 120px
   left: 50%
   transform: translateX(-50%)
-  z-index: 1000
 </style>

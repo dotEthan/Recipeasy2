@@ -45,11 +45,12 @@
   --font-brand: var(--font-brand);
   --font-main: var(--font-main);
 
-  /* Z-Indexing */
+  /* Z-Indexing
   --z-ui: 10;
   --z-content: 20;
   --z-modals: 30;
-  --z-warnings: 40;
+  --z-modals-btn: 31;
+  --z-warnings: 40; */
 }
 
 @layer base {

@@ -29,13 +29,13 @@ function onClose() {
 </script>
 
 <template>
-  <div class="modal-contain">
+  <div class="modal-contain z-30">
     <div class="backdrop" v-if="backdrop" @click="onClose"></div>
     <div class="modal-wrapper">
       <dialog open class="modal">
         <slot></slot>
       </dialog>
-      <XToCloseComponent class="close-button" @close="onClose" v-if="xToClose" />
+      <XToCloseComponent class="close-button z-31" @close="onClose" v-if="xToClose" />
     </div>
   </div>
 </template>
@@ -53,7 +53,6 @@ function onClose() {
   justify-content: center
   align-items: center
   pointer-events: none
-  z-index: 1000
 
   .backdrop
     position: absolute
@@ -96,5 +95,4 @@ function onClose() {
     position: absolute
     top: 10px
     right: 10px
-    z-index: 1001
 </style>

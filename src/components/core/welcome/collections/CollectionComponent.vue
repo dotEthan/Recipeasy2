@@ -8,7 +8,7 @@
     :recipeData="recommendedRecipes"
   />
  */
-import type { PropType } from "vue";
+import { type PropType, onMounted, ref } from "vue";
 
 import { useRecipeStore } from "@/stores/recipeStore";
 import type { Recipe } from "@/types/Recipes";
@@ -28,6 +28,11 @@ const props = defineProps({
 
 const recipeStore = useRecipeStore();
 
+const scrollContainer = ref<Element | null>(null);
+
+let canScrollLeft = ref(false);
+let canScrollRight = ref(true);
+
 function openRecipeDetails(id: string) {
   recipeStore.setSelectedRecipeId(id);
 }
@@ -41,38 +46,46 @@ const getTitle = () => {
   }
 };
 
-const scrollRight = () => {
-  console.log("right");
-  const container = document.getElementById(`collectionItemComponent-${props.collectionKey}`);
-  console.log("container: ", container);
-  if (container) container.scrollBy({ left: container.clientWidth, behavior: "smooth" });
+const updateScrollPosition = (direction: string) => {
+  const el = scrollContainer.value;
+  if (el) {
+    const scrollAmount = direction === "left" ? -el.clientWidth : el.clientWidth;
+    el.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  }
 };
 
-const scrollLeft = () => {
-  const container = document.getElementById(`collectionItemComponent-${props.collectionKey}`);
-  if (container) container.scrollBy({ left: -container.clientWidth, behavior: "smooth" });
-};
+onMounted(() => {
+  const el = scrollContainer.value;
+  if (el) {
+    const updateScrollState = () => {
+      canScrollLeft.value = el.scrollLeft > 0;
+      canScrollRight.value = el.scrollLeft < el.scrollWidth - el.clientWidth;
+    };
+
+    el.addEventListener("scroll", updateScrollState);
+    updateScrollState(); // Initial state
+  }
+});
 </script>
 
 <template>
   <div class="relative">
-    <!-- <div class="tl-gradient absolute -top-2 -left-2 w-[100px] h-[100px] rounded-md"></div>
-    <div class="tr-gradient absolute -top-2 -right-2 w-[100px] h-[100px] rounded-xl"></div>
-    <div class="bl-gradient absolute -bottom-2 -left-2 w-[100px] h-[100px] rounded-2xl"></div>
-    <div class="br-gradient absolute -bottom-2 -right-2 w-[100px] h-[100px] rounded-lg"></div> -->
     <div class="bg-accent absolute -top-1.5 -left-1.5 w-[75px] h-[75px] rounded-md"></div>
     <div class="bg-accent absolute -top-1.5 -right-1.5 w-[75px] h-[75px] rounded-xl"></div>
     <div class="bg-accent absolute -bottom-1.5 -left-1.5 w-[75px] h-[75px] rounded-2xl"></div>
     <div class="bg-accent absolute -bottom-1.5 -right-1.5 w-[75px] h-[75px] rounded-lg"></div>
     <div
-      class="relative flex flex-col mt-2.5 p-8 w-full md:mt-5 pr-10 pl-10 mb-20 bg-surface rounded-lg border-1 border-solid border-accent z-2">
+      class="relative flex flex-col mt-2.5 p-8 w-full md:mt-5 pr-10 pl-10 mb-20 bg-surface rounded-lg border-1 border-solid border-accent z-10">
       <h3 class="mt-0 mb-5 text-heading" data-test="mealtime" id="collection-title">
         {{ getTitle() }}:
       </h3>
       <div>
         <div
-          :id="`collectionItemComponent-${props.collectionKey}`"
+          ref="scrollContainer"
           class="no-scrollbar overflow-x-auto"
+          role="region"
+          aria-label="Recipe collection"
+          aria-live="polite"
           v-if="recipeData.length > 0">
           <div class="grid grid-rows-2 grid-cols-auto grid-flow-col gap-4 w-max sm:flex">
             <CollectionItemComponent
@@ -85,11 +98,11 @@ const scrollLeft = () => {
         </div>
         <div v-else>No recipes found using this tag</div>
       </div>
-      <div class="absolute -right-8 top-[50%] translate-y-[-50%]">
-        <CollectionButtonComponent direction="right" @click="scrollRight" />
+      <div v-if="canScrollLeft" class="absolute -left-8 top-[50%] translate-y-[-50%]">
+        <CollectionButtonComponent direction="left" @click="() => updateScrollPosition('left')" />
       </div>
-      <div class="absolute -left-8 top-[50%] translate-y-[-50%]">
-        <CollectionButtonComponent direction="left" @click="scrollLeft" />
+      <div v-if="canScrollRight" class="absolute -right-8 top-[50%] translate-y-[-50%]">
+        <CollectionButtonComponent direction="right" @click="() => updateScrollPosition('right')" />
       </div>
     </div>
   </div>

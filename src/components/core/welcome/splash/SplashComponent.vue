@@ -22,14 +22,14 @@
       </div>
     </div>
     <div class="flex-1 flex justify-center items-center">
-      <div class="image-shadows max-w-[600px] relative z-1">
+      <div class="image-shadows max-w-[600px] relative">
         <!-- <div
           class="bg-accent w-75 h-75 opacity-75 rounded-lg absolute top-0 left-0 rotate-30"></div>
         <div
           class="bg-surface w-75 h-75 opacity-75 rounded-lg absolute top-0 left-0 rotate-20"></div> -->
         <img
           src="https://res.cloudinary.com/dotethan/image/upload/v1758303573/Recipeasy/pexels-photo-1640772.jpg"
-          class="w-[clamp(200px,35vw,600px)] rounded-lg z-5 rotate-2 hover:rotate-0 duration-200"
+          class="w-[clamp(200px,35vw,600px)] rounded-lg rotate-2 hover:rotate-0 duration-200"
           alt="Picture of food" />
       </div>
     </div>

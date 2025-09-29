@@ -22,8 +22,8 @@ import { useUserStore } from "@/stores/userStore";
 // import type { ExposedInWelcomeComponent } from "@/types/componentExposedValues.d";
 
 import AuthComponent from "../auth/AuthComponent.vue";
-import CollectionComponent from "../collections/CollectionComponent.vue";
 import ButtonComponent from "../shared/button/ButtonComponent.vue";
+import CollectionComponent from "./collections/CollectionComponent.vue";
 import PublicRecipeDetailsComponent from "./publicRecipeDetails/PublicRecipeDetailsComponent.vue";
 import SplashComponent from "./splash/SplashComponent.vue";
 

@@ -14,12 +14,12 @@ import { PropType } from "vue";
 
 import type { Recipe } from "@/types/Recipes";
 
+import ListItemComponent from "../../shared/recipeDetails/listItem/ListItemComponent.vue";
+import NoteItemComponent from "../../shared/recipeDetails/noteItem/NoteItemComponent.vue";
+import RecipeDetailHeaderComponent from "../../shared/recipeDetails/recipeDetailHeader/RecipeDetailHeaderComponent.vue";
+import TagItemComponent from "../../shared/recipeDetails/tag-item/TagItemComponent.vue";
 import XToCloseComponent from "../../shared/xToClose/XToCloseComponent.vue";
-import ListItemComponent from "./listItem/ListItemComponent.vue";
-import NoteItemComponent from "./noteItem/NoteItemComponent.vue";
-import RecipeDetailHeaderComponent from "./recipeDetailHeader/RecipeDetailHeaderComponent.vue";
 import RecipeManageButtonsComponent from "./recipeManageButtons/RecipeManageButtonsComponent.vue";
-import TagItemComponent from "./tag-item/TagItemComponent.vue";
 
 const props = defineProps({
   selectedRecipe: Object as PropType<Recipe>
@@ -42,7 +42,7 @@ async function onRecipeRemoval() {
 </script>
 
 <template>
-  <div class="recipe-detail-container z-99">
+  <div class="recipe-detail-container z-30">
     <div class="overlay-shadow" @click="onClose()"></div>
     <div class="recipe-overlay">
       <XToCloseComponent @close="onClose" />

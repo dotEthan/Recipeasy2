@@ -13,10 +13,9 @@ import type { PropType } from "vue";
 
 import type { Recipe } from "@/types/Recipes";
 
-const props = defineProps({
+defineProps({
   recipeData: Object as PropType<Recipe>
 });
-console.log("recipeData: ", props.recipeData);
 </script>
 
 <template>

@@ -11,8 +11,8 @@ import { computed, ref } from "vue";
 
 import { useRecipeStore } from "@/stores/recipeStore";
 
+import RecipeDetailsComponent from "../shared/recipeDetails/recipeDetailsComponent.vue";
 import NewRecipeButtonComponent from "./newRecipeButton/newRecipeButtonComponent.vue";
-import RecipeDetailsComponent from "./recipeDetails/recipeDetailsComponent.vue";
 import RecipeEditComponent from "./recipeEdit/RecipeEditComponent.vue";
 import FilterComponent from "./recipeFilter/FilterComponent.vue";
 import RecipeListItemComponent from "./recipeListItem/RecipeListItemComponent.vue";
@@ -69,16 +69,14 @@ function editingFinishedCleanUp() {
       <NewRecipeButtonComponent
         class="recipe-item-contain"
         icon-size="large"
-        @add-new-recipe="addNewRecipe"
-      />
+        @add-new-recipe="addNewRecipe" />
       <RecipeListItemComponent
         class="recipe-item-contain"
         v-for="recipe in filteredRecipes.value"
         :key="recipe._id?.toString() ?? uuidv4()"
         :recipeData="recipe"
         @openRecipe="openRecipeDetail"
-        @removedRecipe="removedRecipe"
-      />
+        @removedRecipe="removedRecipe" />
     </div>
     <RecipesEmptyComponent v-else />
   </div>
@@ -86,15 +84,13 @@ function editingFinishedCleanUp() {
     v-if="recipeStore.selectedRecipeId && !recipeStore.editSelectedRecipe"
     :selected-recipe="selectedRecipe"
     @closeRecipeDetails="closeRecipeDetails"
-    @edit-selected-recipe="recipeStore.setEditStatusSelectedId(true)"
-  />
+    @edit-selected-recipe="recipeStore.setEditStatusSelectedId(true)" />
   <RecipeEditComponent
     v-else-if="recipeStore.selectedRecipeId && recipeStore.editSelectedRecipe"
     class="recipe-item-contain"
     :selected-recipe="selectedRecipe"
     :isNew="isAddedRecipeNew"
-    @editing-finished="editingFinishedCleanUp"
-  />
+    @editing-finished="editingFinishedCleanUp" />
 </template>
 
 <style lang="sass" scoped>
