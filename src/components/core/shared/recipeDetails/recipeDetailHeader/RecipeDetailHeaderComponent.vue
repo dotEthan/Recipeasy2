@@ -39,7 +39,9 @@ defineProps({
       <div class="flex flex-row justify-between">
         <div class="flex flex-col">
           <div class="text-xl md:text-4xl font-bold">{{ selectedRecipe?.name }}</div>
-          <div class="flex flex-row items-center text-surface text-2xs md:text-sm mt-1">
+          <div
+            v-if="selectedRecipe?.url"
+            class="flex flex-row items-center text-surface text-2xs md:text-sm mt-1">
             <a
               class="flex flex-row text-surface hover:text-accent items-center cursor-pointer"
               :href="selectedRecipe?.url"
