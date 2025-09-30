@@ -23,8 +23,9 @@ import { useUserStore } from "@/stores/userStore";
 
 import AuthComponent from "../auth/AuthComponent.vue";
 import ButtonComponent from "../shared/button/ButtonComponent.vue";
+import RecipeDetailsComponent from "../shared/recipeDetails/recipeDetailsComponent.vue";
 import CollectionComponent from "./collections/CollectionComponent.vue";
-import PublicRecipeDetailsComponent from "./publicRecipeDetails/PublicRecipeDetailsComponent.vue";
+// import PublicRecipeDetailsComponent from "./publicRecipeDetails/PublicRecipeDetailsComponent.vue";
 import SplashComponent from "./splash/SplashComponent.vue";
 
 const appStore = useAppStore();
@@ -105,13 +106,21 @@ onMounted(async () => {
           <span>Search Suggestions:</span>
           <div class="flex flex-row justify-around w-full mt-3 mb-5">
             <div>
-              <ButtonComponent @click="onClick" label="Highest Rated Recipes" size="md" />
+              <ButtonComponent
+                :hasIcon="true"
+                @click="onClick"
+                label="Highest Rated Recipes"
+                size="md" />
             </div>
             <div v-if="!isMobile">
-              <ButtonComponent @click="onClick" label="Newest Recipes" size="md" />
+              <ButtonComponent :hasIcon="true" @click="onClick" label="Newest Recipes" size="md" />
             </div>
             <div>
-              <ButtonComponent @click="onClick" label="Plant Based Desserts" size="md" />
+              <ButtonComponent
+                :hasIcon="true"
+                @click="onClick"
+                label="Plant Based Desserts"
+                size="md" />
             </div>
           </div>
         </div>
@@ -133,9 +142,10 @@ onMounted(async () => {
     </div>
   </div>
 
-  <PublicRecipeDetailsComponent
+  <RecipeDetailsComponent
     v-if="recipeStore.selectedRecipeId"
-    @closeRecipeDetails="closeRecipeDetails()" />
+    @closeRecipeDetails="closeRecipeDetails()"
+    :isPublic="true" />
   <AuthComponent v-if="isAuthModalOpen" />
 </template>
 

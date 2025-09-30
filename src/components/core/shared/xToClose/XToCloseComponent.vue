@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { X } from "lucide-vue-next";
+
 import { PropType, computed } from "vue";
 
 /**
@@ -21,10 +23,10 @@ defineEmits(["close"]);
 const positionClasses = computed(() => {
   const classes = ["absolute", "z-40"];
 
-  if (props.position.includes("top")) classes.push("top-2");
+  if (props.position.includes("top")) classes.push("top-0");
   if (props.position.includes("bottom")) classes.push("-bottom-2");
   if (props.position.includes("left")) classes.push("left-2");
-  if (props.position.includes("right")) classes.push("-right-2");
+  if (props.position.includes("right")) classes.push("right-6");
 
   return classes.join(" ");
 });
@@ -35,11 +37,11 @@ const positionClasses = computed(() => {
     type="button"
     :class="[
       positionClasses,
-      'absolute! flex! items-center! justify-center! rounded-full! z-40 cursor-pointer! bg-surface! text-primary! border-3! border-solid! border-accent! close-container translate-[50%]'
+      'absolute! flex! items-center! justify-center! rounded-full! z-40 cursor-pointer! bg-surface! active:bg-primary! text-primary! active:text-surface! border-3! hover:border-4! focus:border-4 border-solid! border-accent! close-container translate-[50%]'
     ]"
     aria-label="Close"
     @click="$emit('close')">
-    <span class="close-x" aria-hidden="true">&times;</span>
+    <span class="close-x" aria-hidden="true"><X :size="20" /></span>
   </button>
 </template>
 

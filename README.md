@@ -42,13 +42,16 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 - API proxy for tokens
 - Data persistence
 - Es-lint/prettier enforcement
+- Custom Backend Functionality using Expressjs, Nodejs, and MongoDB.
 
 ### Working on Now:
 
+- TailwindCSS redesign
 - test email sending
-- Custom Backend Functionality using Expressjs, Nodejs, and MongoDB.
 - - Working: security & all auth flows. user Recipe Creation, and updating.User persistence public Recipe flow, Data Persistence - User, Recipes, soft deletes for public recipes
 - - Error Handling
+- - Cron jobs for hard deletes
+- - Recipe Ratings proper with stars and ability to rate
 - - implement URL persistence
 - - Deploy
 
@@ -68,18 +71,16 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 - Sorting & Ordering
 - Tailor Cloudinary Image settings (refactor for new ExpressJS app)
 - Route Guards
-- Optimistic UI changes with reverts on errors (provide link to selected REcipe if fails)
-- TODO & Misc Functionality (Search, tags, rating, ignore/report recipe)
-- Filter (Functional, but waiting on final schema)
-- Error Handling & User feedback (loadin spinners, unsaved data etc)
+- Optimistic UI changes where appropriate (important saves use "loading/saving" modal)
+- Search & ignore/report recipe)
+- Filter (backend Functional, but waiting on final schema)
+- Error Handling & User feedback (loadin spinners, unsaved data etc) - Toasts working (add undo for some actions like Delete?)
 - Shopping List divider titles (add recipe, recipe name is title)
 - Documentation (JSDocs)
 - Defaults (images)
-- TailwindCSS redesign
 - Animations
 - Offline Functionality
 - User Dashboard
-- Google/Facebook login (maybe)
 
 ### Future thoughts:
 
@@ -87,6 +88,7 @@ I've also been using this as a time to work with ChatGPT/Claude.ai to see how mu
 - Meal Planning & Calendar
 - Website Parsing to allow importing recipes
 - Calorie counter
+- Social Media logins/sharing
 
 ## Built With
 

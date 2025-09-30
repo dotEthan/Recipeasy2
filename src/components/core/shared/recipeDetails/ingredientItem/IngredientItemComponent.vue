@@ -42,25 +42,14 @@ function onAddIngredientToList(item: string | undefined) {
 </script>
 
 <template>
-  <div class="item-list">
+  <div class="w-full md:w-[calc(50%-2rem)] mb-4 mt-4 bg-surface text-primary p-4 m-4 rounded-lg">
     <div class="item-contain">
-      <div class="item-list-title">{{ itemObject?.title }}</div>
+      <div class="item-list-title font-bold mb-3 underline decoration-accent">
+        {{ itemObject?.title }}
+      </div>
       <ul class="items-list">
-        <li
-          :class="itemType === 'ingredient' ? 'ingredient-contain' : 'direction-contain'"
-          v-for="(item, index) of steps"
-          :key="index"
-        >
-          <div
-            :class="itemType === 'ingredient' ? 'text ingredient-text' : 'text direction-text'"
-            @click="
-              () => {
-                if (itemType === 'ingredient') onAddIngredientToList(item);
-              }
-            "
-          >
-            - {{ item }}
-          </div>
+        <li class="list-disc list-inside" v-for="(item, index) of steps" :key="index">
+          {{ item }}
         </li>
       </ul>
     </div>
@@ -69,15 +58,7 @@ function onAddIngredientToList(item: string | undefined) {
 
 <style lang="sass" scoped>
 
-.ingredient-contain, .direction-contain
-  list-style-type: none
-
-.directions-text, .ingredients-text
-    padding: 0 5px
-
-    @media (min-width: 768px)
-        padding: 0 10px
-
-.direction-text
-  margin-bottom: 10px
+li::marker
+  color: var(--color-accent)
+  font-size: 18px
 </style>

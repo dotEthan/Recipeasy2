@@ -4,6 +4,7 @@ import { Search } from "lucide-vue-next";
 defineProps<{
   label: string;
   size: "sm" | "md" | "lg";
+  hasIcon: boolean;
 }>();
 defineEmits(["click"]);
 
@@ -21,14 +22,10 @@ const handleClick = () => {
         {{ label }}
       </span>
       <Search
+        v-if="hasIcon"
         class="scale-90 opacity-70 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300" />
     </div>
   </button>
-  <!-- <button
-    @click="$emit('click')"
-    class="bg-accent text-[var(--color-dark-navy)] w-30 h-12 p-2 rounded-sm text-sm cursor-pointer">
-    {{ label }}
-  </button> -->
 </template>
 <style lang="css">
 .recipe-button::before {

@@ -10,22 +10,11 @@ defineProps({
 </script>
 
 <template>
-  <div class="item-list">
-    <div class="item-contain">
-      <ul class="items-list">
-        <li class="direction-contain">
-          <div class="text direction-text">- {{ note }}</div>
-        </li>
-      </ul>
-    </div>
+  <div class="">
+    <ul class="">
+      <li class="list-none bg-accent/10 border-l-4 border-l-solid border-l-accent p-4 mb-4">
+        {{ note }}
+      </li>
+    </ul>
   </div>
 </template>
-
-<style lang="sass" scoped>
-
-.direction-contain
-  list-style-type: none
-
-.direction-text
-  margin-bottom: 10px
-</style>

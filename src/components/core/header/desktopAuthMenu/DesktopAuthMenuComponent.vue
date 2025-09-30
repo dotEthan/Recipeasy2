@@ -1,6 +1,7 @@
 <script setup lang="ts">
 /**
  * Component for the Desktop authorization elements
+ * @todo should be buttons?
  * @example
  * <DesktopAuthMenuComponent />
  */

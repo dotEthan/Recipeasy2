@@ -4,6 +4,7 @@
  * @example
  *  <PublicRecipeManageButtonsComponent />
  */
+import ButtonComponent from "../../../button/ButtonComponent.vue";
 
 const openRegistration = () => {
   console.log("opening");
@@ -12,8 +13,11 @@ const openRegistration = () => {
 
 <template>
   <div
-    class="w-full flex flex-row justify-around bg-surface text-primary h-20 border-2 border-solid border-accent cursor-pointer">
-    <button>Register today to track, share and find new great recipes!</button>
+    class="w-full flex flex-row justify-between items-center bg-surface text-primary h-20 border-b-2 border-l-2 border-r-2 border-solid border-accent">
+    <div class="grow ml-4 md:ml-10">Register today to track, share and find new great recipes!</div>
+    <div class="mr-2 md:mr-10">
+      <ButtonComponent label="Register Today" size="sm" :hasIcon="false" />
+    </div>
   </div>
 </template>
 

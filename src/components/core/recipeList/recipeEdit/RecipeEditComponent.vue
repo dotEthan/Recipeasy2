@@ -22,6 +22,7 @@ import { createNewRecipe } from "@/utilities";
 
 import ToolTipComponent from "../../shared/toolTip/ToolTipComponent.vue";
 import UserImageUploadComponent from "../../shared/userImageUpload/UserImageUploadComponent.vue";
+import RecipeEditDescriptionComponent from "./recipeEditDescription/RecipeEditDescriptionComponent.vue";
 
 const props = defineProps({
   isNew: Boolean,
@@ -235,10 +236,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="recipe-detail-container">
-    <div class="overlay-shadow" @click="onCancel"></div>
+  <div class="absolute top-0 left-0 w-full h-dvh flex justify-center items-center bg-black/40 z-30">
     <div class="recipe-overlay edit">
-      <div class="overlay-contain edit">
+      <div class="overlay-contain edit bg-primary">
         <div class="form-contain">
           <form @submit.prevent="onSubmit">
             <div class="save-cancel-btns text-center">
@@ -284,15 +284,7 @@ onUnmounted(() => {
                     v-model="formData.name"
                     @blur="validateName" />
                 </div>
-                <div class="form-group">
-                  <label for="description">Description</label>
-                  <textarea
-                    type="text"
-                    id="description"
-                    class="form-control recipe-description-area"
-                    v-model="formData.description"
-                    rows="6"></textarea>
-                </div>
+                <RecipeEditDescriptionComponent v-model="formData.description" />
                 <div class="form-group">
                   <label for="url">Website URL:</label>
                   <input type="text" id="url" class="form-control" v-model="formData.url" />

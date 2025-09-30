@@ -10,16 +10,25 @@
       @edit-selected-recipe="recipeStore.setEditStatusSelectedId(true)"
     />
  */
+import { ReceiptText, Utensils } from "lucide-vue-next";
+
 import { useRecipeStore } from "@/stores/recipeStore";
 
-import ListItemComponent from "../../shared/recipeDetails/listItem/ListItemComponent.vue";
 import NoteItemComponent from "../../shared/recipeDetails/noteItem/NoteItemComponent.vue";
 import RecipeDetailHeaderComponent from "../../shared/recipeDetails/recipeDetailHeader/RecipeDetailHeaderComponent.vue";
 import TagItemComponent from "../../shared/recipeDetails/tag-item/TagItemComponent.vue";
 import XToCloseComponent from "../../shared/xToClose/XToCloseComponent.vue";
-import PublicRecipeManageButtonsComponent from "./publicRecipeManageButtons/PublicRecipeManageButtonsComponent.vue";
-import RecipeManageButtonsComponent from "./recipeManageButtons copy/RecipeManageButtonsComponent.vue";
+import DirectionItemComponent from "./directionItem/DirectionItemComponent.vue";
+import IngredientItemComponent from "./ingredientItem/IngredientItemComponent.vue";
+import RecipeManageButtonsComponent from "./recipeManageButtons/personalRecipeManageButtons/PersonalRecipeManageButtonsComponent.vue";
+import PublicRecipeManageButtonsComponent from "./recipeManageButtons/publicRecipeManageButtons/PublicRecipeManageButtonsComponent.vue";
 
+defineProps({
+  isPublic: {
+    type: Boolean,
+    default: false
+  }
+});
 const emit = defineEmits(["closeRecipeDetails", "removedRecipe", "editSelectedRecipe"]);
 const recipeStore = useRecipeStore();
 const selectedRecipe = recipeStore.selectedRecipe;
@@ -33,51 +42,61 @@ function onClose() {
     class="absolute top-0 left-0 w-full h-dvh flex justify-center items-center bg-black/40 z-30"
     @click="onClose()">
     <div
-      class="relative w-[90vw] h-[90dvh] flex justify-center lg:w-[60vw] bg-primary rounded-xl shadow-lg"
+      class="relative w-[90vw] h-[90dvh] flex justify-center lg:w-[60vw] bg-primary rounded-xl shadow-lg overflow-hidden"
       @click.stop>
       <XToCloseComponent :position="['top', 'right']" @close="onClose" />
       <div class="relative w-full h-full flex flex-col">
         <RecipeDetailHeaderComponent :selectedRecipe="selectedRecipe" />
-        <PublicRecipeManageButtonsComponent />
-        <RecipeManageButtonsComponent />
-        <div class="flex-1 overflow-y-auto">
-          <div class="w-full">
-            <div class="type-section-title" v-if="selectedRecipe?.ingredients">INGREDIENTS:</div>
-            <div v-else class="type-section-title">No Ingredients</div>
-            <ListItemComponent
-              v-for="(ingredient, index) of selectedRecipe?.ingredients"
-              :key="index"
-              :itemObject="ingredient"
-              itemType="ingredient" />
-          </div>
-          <div class="w-full">
-            <div class="type-section-title" v-if="selectedRecipe?.directions">DIRECTIONS:</div>
-            <div class="type-section-title" v-else>No Directions</div>
-            <ListItemComponent
-              v-for="(direction, index) of selectedRecipe?.directions"
-              v-bind:key="index"
-              :itemObject="direction"
-              itemType="direction" />
-          </div>
-          <div class="w-full">
-            <div class="type-section-title">Tags:</div>
-            <div class="tags-wrapper" v-if="selectedRecipe?.tags">
-              <TagItemComponent
-                v-for="(tag, index) of selectedRecipe?.tags"
-                v-bind:key="index"
-                :tag="tag" />
+        <PublicRecipeManageButtonsComponent v-if="isPublic" />
+        <RecipeManageButtonsComponent v-if="!isPublic" />
+        <div class="flex-1 overflow-y-auto p-8">
+          <div class="w-full mb-10">
+            <div class="flex flex-row font-bold mb-2 text-lg" v-if="selectedRecipe?.ingredients">
+              <Utensils :size="30" class="text-accent mr-2" /> Ingredients:
             </div>
-            <div class="type-section-none" v-else>No tags</div>
+            <div v-else class="mb-2 text-base">No Ingredients</div>
+            <div class="flex flex-row flex-wrap">
+              <IngredientItemComponent
+                v-for="(ingredient, index) of selectedRecipe?.ingredients"
+                :key="index"
+                :itemObject="ingredient"
+                itemType="ingredient" />
+            </div>
           </div>
-          <div class="w-full">
-            <div class="type-section-title">Notes:</div>
+          <div class="w-full mb-10">
+            <div class="flex flex-row font-bold mb-2 text-lg" v-if="selectedRecipe?.directions">
+              <ReceiptText :size="30" class="text-accent mr-2" />
+              Directions:
+            </div>
+            <div class="flex flex-row font-bold mb-2 text-base" v-else>No Directions</div>
+
+            <div class="flex flex-col">
+              <DirectionItemComponent
+                v-for="(direction, index) of selectedRecipe?.directions"
+                v-bind:key="index"
+                :itemObject="direction"
+                itemType="direction" />
+            </div>
+          </div>
+          <div class="w-full mb-10">
+            <div class="flex flex-row font-bold mb-2 text-lg">Notes:</div>
             <div class="notes-wrapper" v-if="selectedRecipe?.notes">
               <NoteItemComponent
                 v-for="(note, index) of selectedRecipe?.notes"
                 v-bind:key="index"
                 :note="note" />
             </div>
-            <div class="type-section-none" v-else>No Notes</div>
+            <div class="mb-2 text-base" v-else>No Notes</div>
+          </div>
+          <div class="w-full">
+            <div class="flex flex-row font-bold mb-2 text-lg">Tags:</div>
+            <div class="tags-wrapper" v-if="selectedRecipe?.tags">
+              <TagItemComponent
+                v-for="(tag, index) of selectedRecipe?.tags"
+                v-bind:key="index"
+                :tag="tag" />
+            </div>
+            <div class="mb-2 text-base" v-else>No tags</div>
           </div>
         </div>
       </div>
@@ -110,13 +129,6 @@ function onClose() {
 .help-text
     font-size: .8em
 
-.type-section-title
-    margin-bottom: 10px
-    font-size: 1.4em
-
-.type-section-none
-    margin-bottom: 10px
-    font-size: 1em
 
 .directions-text, .ingredients-text
     padding: 0 5px

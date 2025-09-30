@@ -19,7 +19,9 @@ defineProps({
     <div class="item-contain">
       <ul class="items-list">
         <li class="direction-contain">
-          <div class="text direction-text">- {{ tag }}</div>
+          <div class="text direction-text border-1 border-surface border-solid p-1 m-1">
+            {{ tag }}
+          </div>
         </li>
       </ul>
     </div>
