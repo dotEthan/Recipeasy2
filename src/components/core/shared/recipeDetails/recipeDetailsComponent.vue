@@ -12,7 +12,9 @@
  */
 import { ReceiptText, Utensils } from "lucide-vue-next";
 
+import { useAppStore } from "@/stores/appStore";
 import { useRecipeStore } from "@/stores/recipeStore";
+import { useUserStore } from "@/stores/userStore";
 
 import NoteItemComponent from "../../shared/recipeDetails/noteItem/NoteItemComponent.vue";
 import RecipeDetailHeaderComponent from "../../shared/recipeDetails/recipeDetailHeader/RecipeDetailHeaderComponent.vue";
@@ -31,7 +33,11 @@ defineProps({
 });
 const emit = defineEmits(["closeRecipeDetails", "removedRecipe", "editSelectedRecipe"]);
 const recipeStore = useRecipeStore();
+const userStore = useUserStore();
+
 const selectedRecipe = recipeStore.selectedRecipe;
+const userAuthorized = userStore.authorized;
+
 function onClose() {
   emit("closeRecipeDetails");
 }
@@ -47,8 +53,8 @@ function onClose() {
       <XToCloseComponent :position="['top', 'right']" @close="onClose" />
       <div class="relative w-full h-full flex flex-col">
         <RecipeDetailHeaderComponent :selectedRecipe="selectedRecipe" />
-        <PublicRecipeManageButtonsComponent v-if="isPublic" />
-        <RecipeManageButtonsComponent v-if="!isPublic" />
+        <PublicRecipeManageButtonsComponent v-if="isPublic && !userAuthorized" />
+        <RecipeManageButtonsComponent v-if="!isPublic || userAuthorized" />
         <div class="flex-1 overflow-y-auto p-8">
           <div class="w-full mb-10">
             <div class="flex flex-row font-bold mb-2 text-lg" v-if="selectedRecipe?.ingredients">

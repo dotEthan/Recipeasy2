@@ -11,6 +11,7 @@ import { PropType } from "vue";
 
 import type { Recipe } from "@/types/Recipes";
 
+import VisibilityIconComponent from "../visbilityIcon/VisibilityIconComponent.vue";
 import RecipeDetailHeaderDescComponent from "./recipeDetailHeaderDesc/RecipeDetailHeaderDescComponent.vue";
 
 defineProps({
@@ -19,7 +20,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="flex flex-col md:flex-row max-h-[300px]">
+  <div class="flex flex-col md:flex-row max-h-[350px]">
     <div
       class="relative flex w-full text-center md:w-[350px] min-h-[100px] xs:min-h-[175px] md:min-h-[250px] overflow-hidden">
       <img
@@ -46,7 +47,7 @@ defineProps({
             v-if="selectedRecipe?.url"
             class="flex flex-row items-center text-surface text-xs md:text-sm md:mt-1">
             <a
-              class="flex flex-row text-surface hover:text-accent items-center cursor-pointer"
+              class="flex flex-row text-surface hover:text-accent items-center cursor-pointer underline"
               :href="selectedRecipe?.url"
               rel="noopener noreferrer"
               target="_blank"
@@ -54,40 +55,51 @@ defineProps({
             >
           </div>
         </div>
-        <div
-          v-if="selectedRecipe?.visibility === 'public'"
-          class="absolute top-2 left-2 md:static flex flex-col items-center justify-center w-fit">
-          <Globe color="green" />
-          <span class="bg-accent md:bg-transparent rounded-md p-0.5 text-xs mt-1 md:mt-0">{{
-            selectedRecipe?.visibility
-          }}</span>
-        </div>
-        <div
-          v-if="selectedRecipe?.visibility === 'private'"
-          class="absolute top-2 left-2 md:static flex flex-col items-center justify-center w-fit">
-          <Globe color="red" />
-          {{ selectedRecipe?.visibility }}
-        </div>
+        <VisibilityIconComponent :selectedRecipe="selectedRecipe" />
       </div>
       <RecipeDetailHeaderDescComponent :selectedRecipe="selectedRecipe" />
       <div class="w-full flex flex-col text-xs md:text-sm">
-        <div class="w-full flex flex-row flex-wrap">
-          <div class="w-1/3"><span class="font-bold">Servings:</span> 9</div>
-          <div class="w-1/3"><span class="font-bold">cusine:</span> Italian</div>
-          <div class="w-1/3"><span class="font-bold">course:</span> Breakfast</div>
-          <div class="w-1/3"><span class="font-bold">Calories:</span> 4500cal</div>
-          <div class="w-1/3"><span class="font-bold">Author:</span> Frank Sinatra</div>
+        <div class="flex flex-row md:flex-col">
+          <div class="w-full flex flex-col md:flex-row flex-wrap">
+            <div class="w-full md:w-1/3 flex flex-row">
+              <span class="font-bold">Servings:</span>
+              <span class="ml-1">9</span>
+            </div>
+            <div class="w-full md:w-1/3 flex flex-row">
+              <span class="font-bold">Cusine: </span>
+              <span class="ml-1">Italian</span>
+            </div>
+            <div class="w-full md:w-1/3 flex flex-row">
+              <span class="font-bold">Course:</span>
+              <span class="ml-1">Breakfast</span>
+            </div>
+          </div>
+          <div class="w-full flex flex-col md:flex-row text-xs md:text-sm md:mt-2">
+            <div class="w-full md:w-1/3 flex flex-row">
+              <span class="font-bold">Calories: </span>
+              <span class="ml-1">4500cal</span>
+            </div>
+            <div class="w-full md:w-1/3 flex flex-row">
+              <span class="font-bold">Author: </span>
+              <span class="ml-1">Frank Sinatra</span>
+            </div>
+          </div>
         </div>
-        <div class="w-full"><span class="font-bold">equipment:</span> blender, stove, magic</div>
-        <div class="w-full flex flex-row text-xs mt-4">
+        <div class="w-full md:mt-2">
+          <span class="font-bold">equipment: </span>
+          <span class="ml-1">blender, stove, magic</span>
+        </div>
+        <div class="w-full flex flex-row text-xs mt-2 md:mt-4">
           <div class="w-1/3 flex flex-row justify-center items-center">
-            <Shuffle class="" /> prep: 30min
+            <Shuffle class="w-[15px] md:w-[30px] mr-1" /> prep: 30min
           </div>
           <div
             class="w-1/3 flex flex-row justify-center items-center border-l-1 border-accent border-r-1">
-            <CookingPot /> cook: 20min
+            <CookingPot class="w-[15px] md:w-[30px] mr-1" /> cook: 20min
           </div>
-          <div class="w-1/3 flex flex-row justify-center items-center"><Clock /> total: 50min</div>
+          <div class="w-1/3 flex flex-row justify-center items-center">
+            <Clock class="w-[15px] md:w-[30px] mr-1" /> total: 50min
+          </div>
         </div>
       </div>
     </div>

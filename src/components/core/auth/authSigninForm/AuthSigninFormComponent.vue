@@ -49,15 +49,14 @@ async function handleSubmit(formData: FormData) {
   <div class="row">
     <div class="col-xs-10 col-xs-offset-1">
       <div class="text-center auth__title">
-        <h1>Sign In</h1>
+        <h1 class="font-brand text-primary">Sign In</h1>
       </div>
       <AuthFormComponent
         :fields="signinFields"
         button-text="Sign In"
         :formType="AuthFormType.SIGNIN"
         @submit="handleSubmit"
-        error=""
-      />
+        error="" />
       <hr />
       <div class="auth-mistake">
         <div class="auth-footer">

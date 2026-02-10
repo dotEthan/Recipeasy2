@@ -75,7 +75,7 @@ const menuClassChanges = computed(() => {
         <a class="cursor-pointer" @click="openAuthModal('signin')">Sign In</a>
       </li>
       <li class="hove:text-accent mt-5" v-if="!isAuthorized">
-        <a class="cursor-pointer" @click="openAuthModal('register')">Register</a>
+        <a class="cursor-pointer" @click="openAuthModal('verify-email')">Register</a>
       </li>
     </ul>
   </div>

@@ -478,7 +478,7 @@ onUnmounted(() => {
                   v-model="tagsInput"
                   name="tagsInput"
                   @keydown.enter.prevent="addTag" />
-                <button class="existing-tag-remove" @click="addTag()">Add Tag</button>
+                <button type="button" class="existing-tag-remove" @click="addTag()">Add Tag</button>
               </div>
             </div>
             <div class="item-group-contain">

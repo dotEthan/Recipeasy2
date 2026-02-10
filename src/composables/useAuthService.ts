@@ -61,17 +61,24 @@ export function useAuthService() {
         localUser: response.data,
         authorized: true
       };
-      // const publicRecipeArray = publicRecipeStoredData
+
       userStore.setInitialUserState(userState);
-      return;
+      return { success: true };
     } catch (error: unknown) {
-      if (error instanceof AxiosError) {
-        if (error.response) {
-          console.error(error.response.data);
-        } else {
-          console.error("Error", error.message);
+      console.log("res: ", error);
+      console.log("res: ", error instanceof AxiosError);
+      if (error instanceof AxiosError && error.response) {
+        const { status, data } = error.response;
+
+        switch (status) {
+          case 409:
+            return { success: false, message: data.message };
+
+          default:
+            throw error;
         }
       }
+      throw error;
     }
   };
 

@@ -66,25 +66,26 @@ async function onSubmit(e: any) {
 </script>
 
 <template>
-  <div class="container">
-    <div class="auth__warning" v-if="error">
-      {{ error }}
-    </div>
+  <div class="bg-primary p-6 rounded-lg mt-4 mb-4 w-full">
     <form @submit.prevent="onSubmit">
-      <div class="form-group" v-for="field in fields" :key="field.name">
-        <label :for="field.name" class="auth-form__label"
-          >{{ field.label }}<span class="warning" v-if="field.required">*</span></label
-        >
+      <div class="mb-3" v-for="field in fields" :key="field.name">
+        <div class="flex flex-row">
+          <label :for="field.name" class="mb-0.5 font-bold text-surface"
+            >{{ field.label }}<span class="text-red-500 ml-2" v-if="field.required">*</span></label
+          >
+          <div class="ml-2">
+            <span v-if="fieldErrors[field.name]" class="text-red-500 text-sm">
+              {{ fieldErrors[field.name] }}
+            </span>
+          </div>
+        </div>
         <input
           :type="field.type"
           :id="field.name"
           @blur="validateField(field, formData[field.name])"
-          class="form-control"
+          class="form-control text-surface outline-1 outline-surface"
           :class="{ 'is-invalid': fieldErrors[field.name] }"
           v-model="formData[field.name]" />
-        <div class="error-slot">
-          <span v-if="fieldErrors[field.name]" class="warning">{{ fieldErrors[field.name] }}</span>
-        </div>
       </div>
       <button type="submit" :disabled="hasErrors">{{ buttonText }}</button>
     </form>
@@ -96,23 +97,6 @@ async function onSubmit(e: any) {
 .is-invalid
   border-color: red
 
-.auth__warning
-    color: red
-    font-size: clamp(10px, 1vw, 20px)
-    margin: 5px auto 10px
-    text-align: center
-    border: 1px solid red
-    width: 75%
-    padding: 5px
-
-    @media (min-width: 768px)
-      margin: 25px auto
-
-.form-group
-    margin-bottom: 10px
-
-    // @media (min-width: 768px)
-    //   margin-bottom: 15px
 
 .auth-form__label
     font-weight: 700
@@ -131,34 +115,12 @@ input.ng-invalid.ng-touched
 .form-control
     display: block
     width: 100%
-    height: 2em
+    // height: 2em
     padding: 6px 12px
     margin-top: 0
 
     @media (min-width: 768px)
-        height: 3em
+        // height: 3em
         margin-top: 10px
 
-.error-slot
-  height: 1.2em
-  line-height: 1.2
-
-.warning
-    color: red
-    font-size: .7em
-    margin-top: 5px
-
-
-button
-    padding: 3px 6px
-    color: #fff
-    background-color: #337ab7
-    border-color: #2e6da4
-
-    &:disabled
-      opacity: 0.5
-      cursor: not-allowed
-
-    @media (min-width: 768px)
-        padding: 6px 12px
 </style>

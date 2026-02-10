@@ -4,10 +4,18 @@
  * @example
  *  <PublicRecipeManageButtonsComponent />
  */
+import { useAppStore } from "@/stores/appStore";
+import { useRecipeStore } from "@/stores/recipeStore";
+
 import ButtonComponent from "../../../button/ButtonComponent.vue";
+
+const appStore = useAppStore();
+const recipeStore = useRecipeStore();
 
 const openRegistration = () => {
   console.log("opening");
+  appStore.setAuthModalType("registration");
+  recipeStore.clearSelectedRecipeId();
 };
 </script>
 
@@ -16,7 +24,11 @@ const openRegistration = () => {
     class="w-full flex flex-row justify-between items-center bg-surface text-primary h-20 border-b-2 border-l-2 border-r-2 border-solid border-accent">
     <div class="grow ml-4 md:ml-10">Register today to track, share and find new great recipes!</div>
     <div class="mr-2 md:mr-10">
-      <ButtonComponent label="Register Today" size="sm" :hasIcon="false" />
+      <ButtonComponent
+        label="Register Today"
+        size="sm"
+        :hasIcon="false"
+        @click="openRegistration" />
     </div>
   </div>
 </template>

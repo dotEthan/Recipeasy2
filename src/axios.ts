@@ -30,7 +30,7 @@ instance.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log("axios error: ", error);
+    console.log("axios error: ", error.response?.data);
     if (error.response?.status === 401) {
       if (error.response.errorCode === "401:ACCESS_TOKEN_EXPIRED") {
         console.log("refresh and retry");

@@ -29,70 +29,20 @@ function onClose() {
 </script>
 
 <template>
-  <div class="modal-contain z-30">
-    <div class="backdrop" v-if="backdrop" @click="onClose"></div>
-    <div class="modal-wrapper">
-      <dialog open class="modal">
+  <div
+    class="fixed top-0 left-0 w-screen h-dvh flex justify-center items-center pointer-events-none modal-contain z-30">
+    <div
+      class="absolute top-0 left-0 w-full h-full pointer-events-auto bg-black opacity-70"
+      v-if="backdrop"
+      @click="onClose"></div>
+    <div
+      class="relative max-w-[90vw] min-w-[50vw] lg:min-w-[30vw] max-h-[90vw] overflow-auto pointer-events-auto rounded-lg bg-[var(--color-primary)]">
+      <dialog open class="relative m-0 p-6 border-0 bg-transparent w-auto max-w-full">
         <slot></slot>
       </dialog>
-      <XToCloseComponent class="close-button z-31" @close="onClose" v-if="xToClose" />
+      <XToCloseComponent class="absolute top-2 r-3 z-31" @close="onClose" v-if="xToClose" />
     </div>
   </div>
 </template>
 
-<style lang="sass" scoped>
-@use '@/assets/variables' as *
-
-.modal-contain
-  position: fixed
-  top: 0
-  left: 0
-  width: 100vw
-  height: 100vh
-  display: flex
-  justify-content: center
-  align-items: center
-  pointer-events: none
-
-  .backdrop
-    position: absolute
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
-    background-color: rgba(0, 0, 0, 0.8)
-    pointer-events: auto
-
-
-  .modal-wrapper
-    position: relative
-    pointer-events: auto
-    max-width: 90vw
-    max-height: 90vh
-    overflow: auto
-    background: white
-    border-radius: .5em
-    min-width: 50vw
-
-    @media (min-width: 768px)
-      min-width: 50vw
-
-    @media (min-width: 1200px)
-      min-width: 30vw
-
-
-  .modal
-    position: relative
-    margin: 0
-    padding: 25px
-    border: none
-    background: transparent
-    width: auto
-    max-width: 100%
-
-
-  .close-button
-    position: absolute
-    top: 10px
-    right: 10px
-</style>
+<style lang="sass" scoped></style>

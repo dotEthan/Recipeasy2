@@ -9,6 +9,8 @@ import { ref } from "vue";
 import { useAuthService } from "@/composables/useAuthService";
 import { useAppStore } from "@/stores/appStore";
 
+import ButtonComponent from "../../shared/button/ButtonComponent.vue";
+
 const authService = useAuthService();
 const appStore = useAppStore();
 
@@ -40,14 +42,18 @@ const handlePaste = (e: ClipboardEvent) => {
     codes.value = pasteData.split("");
   }
 };
+
+const resendEmailVerification = () => {
+  console.log("resend");
+};
 </script>
 
 <template>
   <div class="verification-container">
     <h1>Verification Code</h1>
-    <h2>Please enter email verification Code</h2>
+    <h2 class="mt-2">Please enter email verification Code</h2>
 
-    <form method="dialog" @submit="handleSubmit">
+    <form class="mt-5" method="dialog" @submit="handleSubmit">
       <input
         v-for="n in 6"
         :key="n"
@@ -57,10 +63,18 @@ const handlePaste = (e: ClipboardEvent) => {
         maxlength="1"
         ref="inputs"
         @paste="handlePaste"
-        class="code-input"
-      />
-      <button type="submit">Verify</button>
+        class="code-input border-1 w-2 h-3 bg-[var(--color-surface)]" />
+      <ButtonComponent
+        type="submit"
+        label="Verify"
+        size="md"
+        :hasIcon="false"
+        @click="resendEmailVerification" />
     </form>
+    <div class="flex flex-row items-center">
+      <span class="text-sm">Email did not come? </span>
+      <ButtonComponent label="Resend" size="sm" :hasIcon="false" @click="resendEmailVerification" />
+    </div>
   </div>
 </template>
 

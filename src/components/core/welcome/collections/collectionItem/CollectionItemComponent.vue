@@ -31,8 +31,8 @@ defineProps({
           class="w-full aspect-square object-cover transition-transform duration-300 scale-110 hover:scale-100"
           v-if="recipeData?.imgPath" />
       </div>
-      <div class="h-20 bg-primary text-surface">
-        <div :title="recipeData?.name">{{ recipeData?.name }}</div>
+      <div class="h-20 flex flex-col justify-between bg-primary text-surface p-2">
+        <div class="text-base " :title="recipeData?.name">{{ recipeData?.name }}</div>
         <div class="text-sm">rating: {{ recipeData?.ratings?.averageRating }}</div>
       </div>
     </div>

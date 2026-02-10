@@ -42,7 +42,7 @@ function onAddIngredientToList(item: string | undefined) {
 </script>
 
 <template>
-  <div class="w-full md:w-[calc(50%-2rem)] mb-4 mt-4 bg-surface text-primary p-4 m-4 rounded-lg">
+  <div class="w-full md:w-[calc(50%-2rem)] bg-surface text-primary p-4 mt-4 mb-4 md:m-4 rounded-lg">
     <div class="item-contain">
       <div class="item-list-title font-bold mb-3 underline decoration-accent">
         {{ itemObject?.title }}
